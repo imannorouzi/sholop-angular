@@ -1,3 +1,8 @@
-.nav.navbar-nav.navbar-right li a {
-    color: black;
+.navbar.navbar-expand-lg a{
+  color:grey;
+  font-family: Gill Sans,Helvetica,sans-serif;
+
+}
+//.navbar.navbar-expand-lg{
+  background-color: #E0E2E6;
 }

@@ -4,10 +4,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {CreateEventComponent} from "./create-event/create-event.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
+import {HomeComponent} from "./home/home.component";
+
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'create', component: CreateEventComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
 ];
 
