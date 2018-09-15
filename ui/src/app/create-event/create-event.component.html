@@ -1,3 +1,78 @@
-<p>
-  create-event works!
-</p>
+<div class="container" >
+
+  <form class="sholop_form" ng-show="meetingStep==1" >
+
+    <!--Title-->
+    <div class="form-group row ">
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-list"></i></span>
+      <label class="col-sm-2 col-form-label">Title</label>
+      <div class="col-sm-9">
+        <input id="title" type="text" name="title" class="form-control" placeholder="Title" ng-model="event.title">
+      </div>
+    </div>
+
+    <!--Times-->
+    <div class="form-group row ">
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-calendar"></i></span>
+      <label class="col-sm-2 col-form-label">Times</label>
+      <div class="col-sm-3">
+        <date
+          [inputClasses]="'form-control'"></date>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control">
+          <option disabled selected value="">-- : --</option>
+          <option *ngFor="let x of times">{{x}}</option>
+        </select>
+      </div>
+      <div class="col-sm-3">
+        <select class="form-control">
+          <option disabled selected value="">-- : --</option>
+          <option *ngFor="let x of times">{{x}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!--Location-->
+    <div class="form-group row">
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-map-marker"></i></span>
+      <label class="col-sm-2 col-form-label">Location</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="location_1" size=80
+               ng-model="event.location.farsiAddress1"
+               on-place-changed="vm.placeChanged()" name="title" placeholder="Addresss 1" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <span class="col-sm-3"></span>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" id="location_2" size=80
+               ng-model="event.location.farsiAddress1"
+               on-place-changed="vm.placeChanged()" name="title" placeholder="Addresss 2" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-9" >
+        <div class="form-group" id="map" #gmap style="height:200px"></div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-sticky-note"></i></span>
+      <label class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-9">
+        <textarea id="note" type="text" rows="3" class="form-control" name="title" placeholder="Description" ng-model="event.description"></textarea>
+      </div>
+    </div>
+
+
+    <div layout="row" class="">
+      <button type="button" class="btn btn-outline-primary pull-right" >OK</button>
+      <button type="button" class="btn btn-outline-primary" >Cancel</button>
+    </div>
+
+  </form>
+
+
+</div>

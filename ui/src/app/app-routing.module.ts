@@ -9,7 +9,7 @@ import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'create', component: CreateEventComponent },
+  { path: 'create-event', component: CreateEventComponent },
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
 ];

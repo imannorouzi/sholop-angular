@@ -1,0 +1,39 @@
+.tiny-calendar{
+  border: 1px solid #eee;
+  padding: 10px;
+  text-align: center;
+  position: absolute;
+  z-index: 1;
+  background: white;
+}
+.today>.tiny-calendar-cell{
+  background: rgb(140,158,255);
+}
+.tiny-calendar-cell{
+  width:40px;
+  height:40px;
+  text-align: center;
+  border-radius:50%;
+  cursor: pointer;
+  line-height: 1;
+  padding: 8px;
+}
+.event-date{
+  position:relative;
+}
+.tiny-calendar-cell.selected{
+  font-weight:bold;
+  background:yellow;
+}
+
+.tiny-calendar-cell:hover{
+  background: rgb(245,0,87);
+  color: white;
+}
+
+.tiny-calendar-gday{
+  font-size: 11px;
+}
+.tiny-calendar-jday{
+  font-size: 16px;
+}
