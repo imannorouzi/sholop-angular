@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CalendarService} from "../calendar.service";
+import {Calendar} from "../calendar";
 
 const daysInMonth: number[] = [
   31,31,31,31,31,31,30,30,30,30,30,29
@@ -29,7 +29,7 @@ export class DateComponent implements OnInit {
   @Input() inputClasses: string = '';
   isShowing: boolean = false;
 
-  constructor(private calendarService: CalendarService) { }
+  constructor() { }
 
   ngOnInit() {
     this.getMonthMapArray(0);
@@ -43,7 +43,7 @@ export class DateComponent implements OnInit {
     }
 
     this.month.monthOffset = monthOffset%12;
-    this.today = this.calendarService.PersianCalendar(new Date());
+    this.today = new Calendar(new Date());
     this.selectedDate = this.today;
 
     this.month.currentMonth = this.today.month+monthOffset;
@@ -64,7 +64,7 @@ export class DateComponent implements OnInit {
       }
 
       week.push(
-        this.calendarService.PersianCalendar(
+        new Calendar(
           new Date(this.today.today.getFullYear(),
             this.today.today.getMonth(),
             this.today.today.getDate() - this.today.day + d

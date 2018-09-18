@@ -12,24 +12,33 @@
     </div>
 
     <!--Times-->
+    <div class="form-group row " *ngFor="let time of event.times; let i = index" [attr.data-index]="i">
+      <span class="align-bottom col-sm-1"><i *ngIf="i===0" class="align-bottom fa fa-calendar"></i></span>
+      <label class="col-sm-2 col-form-label"><span *ngIf="i===0">Times</span></label>
+      <div class="col-sm-3">
+        <date [inputClasses]="'form-control'"></date>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-control">
+          <option disabled selected value="">-- : --</option>
+          <option *ngFor="let x of times">{{x}}</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <select class="form-control">
+          <option disabled selected value="">-- : --</option>
+          <option *ngFor="let x of times">{{x}}</option>
+        </select>
+      </div>
+      <div class="col-sm-2">
+        <button class="w-100 btn btn-outline-primary" [disabled]="event.times.length===1" (click)="removeDateTime($event, i)"><span class=""><i class="fa fa-times"></i> Remove</span></button>
+      </div>
+    </div>
     <div class="form-group row ">
-      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-calendar"></i></span>
-      <label class="col-sm-2 col-form-label">Times</label>
-      <div class="col-sm-3">
-        <date
-          [inputClasses]="'form-control'"></date>
+      <div class="col-sm-10">
       </div>
-      <div class="col-sm-3">
-        <select class="form-control">
-          <option disabled selected value="">-- : --</option>
-          <option *ngFor="let x of times">{{x}}</option>
-        </select>
-      </div>
-      <div class="col-sm-3">
-        <select class="form-control">
-          <option disabled selected value="">-- : --</option>
-          <option *ngFor="let x of times">{{x}}</option>
-        </select>
+      <div class="col-sm-2">
+        <button class="w-100 btn btn-outline-primary" (click)="addDateTime($event)"><span class=""><i class="fa fa-plus"></i> Add Date</span></button>
       </div>
     </div>
 
@@ -40,7 +49,7 @@
       <div class="col-sm-9">
         <input type="text" class="form-control" id="location_1" size=80
                ng-model="event.location.farsiAddress1"
-               on-place-changed="vm.placeChanged()" name="title" placeholder="Addresss 1" />
+               #searchBox name="title" placeholder="Addresss 1" />
       </div>
     </div>
     <div class="form-group row">
@@ -58,13 +67,13 @@
       </div>
     </div>
 
-    <div class="form-group row">
+    <!--<div class="form-group row">
       <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-sticky-note"></i></span>
       <label class="col-sm-2 col-form-label">Description</label>
       <div class="col-sm-9">
         <textarea id="note" type="text" rows="3" class="form-control" name="title" placeholder="Description" ng-model="event.description"></textarea>
       </div>
-    </div>
+    </div>-->
 
 
     <div layout="row" class="">

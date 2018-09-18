@@ -24,7 +24,7 @@ const buf2: number[] = [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335];
 @Injectable({
   providedIn: 'root'
 })
-export class CalendarService {
+export class Calendar {
 
   strWeekDay: string = null;
   strMonth: string = null;
@@ -41,10 +41,7 @@ export class CalendarService {
   gregorianDate = null;
   WeekDay = null;
 
-  constructor() {
-  }
-
-  PersianCalendar(gregorianDate): any {
+  constructor(gregorianDate = new Date()) {
     this.today = gregorianDate;
     gregorianDate.getFullYear()
     gregorianDate.getDate(
@@ -57,12 +54,10 @@ export class CalendarService {
     this.WeekDay = this.today.getDay();
     this.toPersian(gregorianDate);
     this.month = Math.floor(this.month - 1);
-    return Object.assign({}, this);
-    // return this.strWeekDay + " " + this.day + " " + this.strMonth + " " + this.year;
   }
 
   JDate(year, month, day): any{
-    return this.PersianCalendar(new Date(year, month, day));
+    return new Calendar(new Date(year, month, day));
   }
 
   toPersian(gregorianDate) {
@@ -111,7 +106,7 @@ export class CalendarService {
       }
       this.year = this.gregorianYear - 622;
     }
-    var fullDate = this.day + "/" + Math.floor(this.month) + "/" + this.year;
+    var fullDate = this.year + "/" + Math.floor(this.month) + "/" + this.day;
     return fullDate
   }
 
