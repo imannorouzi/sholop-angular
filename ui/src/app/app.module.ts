@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
+import {HttpClientModule} from "@angular/common/http";
 
 
 @NgModule({
@@ -21,17 +22,19 @@ import { DateComponent} from "./date/date.component";
     NavbarComponent,
     HomeComponent,
     EventCardComponent,
-    DateComponent
+    DateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     AngularFontAwesomeModule,
+    HttpClientModule
   ],
   exports: [
   ],
   providers: [
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

@@ -93,6 +93,59 @@ public class SholopRestController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/create-tiny-event")
+    public Response createTinyEvent(String jsonEventString) throws JSONException {
+
+        Gson gson = new Gson();
+        int id = -1;
+        try {
+            JSONObject jsonEvent = new JSONObject(jsonEventString);
+
+            Event event = new Event(jsonEvent);
+            if(event.getLocation().getId() == -1) {
+                event.setVenueId(locationDao.insert(event.getLocation()));
+            }else{
+                event.setVenueId(event.getLocation().getId());
+            }
+
+
+            if(event.getId() > 0){
+                // It means user is editing this event
+                eventDao.update(event);
+                id = event.getId();
+
+                //delete previous dates and contacts
+                sholopDateDao.deleteEventDates(id);
+                contactEventDao.deleteEventContacts(id);
+            }else{
+
+                //create a link for the event
+                event.createLink();
+
+                id = eventDao.insert(event);
+                event.setId(id);
+            }
+
+            for( SholopDate date : event.getDates()){
+                sholopDateDao.insert(date, id);
+            }
+
+            if(id == -1){
+                return Response.ok(gson.toJson(new ResponseObject("FAIL", null))).build();
+            }
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", event)))
+                    .header("Access-Control-Allow-Origin", "http://0.0.0.0:8094").build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500).header("Access-Control-Allow-Origin", "http://0.0.0.0:8094")
+                    .build();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/create-event")
     public Response createEvent(String jsonEventString) throws JSONException {

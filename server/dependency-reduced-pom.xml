@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <artifactId>sholop</artifactId>
-    <groupId>sholop</groupId>
-    <version>1.0</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
+  <groupId>sholop</groupId>
   <artifactId>server</artifactId>
   <name>server Maven Webapp</name>
+  <version>1.0</version>
   <url>http://maven.apache.org</url>
   <build>
-    <finalName>server-${parent.version}</finalName>
+    <finalName>server-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -150,14 +147,14 @@
                 </goals>
                 <configuration>
                   <descriptors>
-                    <descriptor>/home/puyan/projects/sholop-java/sholop/server/assembly.xml</descriptor>
+                    <descriptor>/home/puyan/projects/sholop-angular/server/assembly.xml</descriptor>
                   </descriptors>
                 </configuration>
               </execution>
             </executions>
             <configuration>
               <descriptors>
-                <descriptor>/home/puyan/projects/sholop-java/sholop/server/assembly.xml</descriptor>
+                <descriptor>/home/puyan/projects/sholop-angular/server/assembly.xml</descriptor>
               </descriptors>
             </configuration>
           </plugin>
