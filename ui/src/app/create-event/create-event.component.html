@@ -11,6 +11,18 @@
       </div>
     </div>
 
+    <!-- Image -->
+    <div>
+      <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+      <span class="result" *ngIf="data1.image" >
+        <img [src]="data1.image"
+             [width]="croppedWidth"
+             [height]="croppedHeight">
+        {{data1.image.length}}
+    </span>
+
+    </div>
+
     <!--Times-->
     <div class="form-group row " *ngFor="let time of event.times; let i = index" [attr.data-index]="i">
       <span class="align-bottom col-sm-1"><i *ngIf="i===0" class="align-bottom fa fa-calendar"></i></span>

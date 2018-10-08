@@ -12,7 +12,7 @@ import { EventCardComponent } from './event-card/event-card.component';
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
 import {HttpClientModule} from "@angular/common/http";
-
+import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
 
 @NgModule({
   declarations: [
@@ -23,13 +23,14 @@ import {HttpClientModule} from "@angular/common/http";
     HomeComponent,
     EventCardComponent,
     DateComponent,
+    ImageCropperComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     AngularFontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
   ],
