@@ -4,6 +4,7 @@ import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../data.service";
 import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 
 @Component({
@@ -16,6 +17,7 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   @ViewChild('searchBox') searchInput: ElementRef;
   @ViewChild('address2') address2: ElementRef;
   @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
+  @ViewChild('imageCropper', undefined) imageCropper:ModalComponent;
 
   name:string;
   data1:any;
@@ -133,6 +135,7 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     // more details for that place.
     searchBox.addListener('places_changed', handleMap);
 
+    this.imageCropper.show();
   }
 
   cropped(bounds:Bounds) {
