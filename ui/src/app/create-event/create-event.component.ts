@@ -17,7 +17,8 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   @ViewChild('searchBox') searchInput: ElementRef;
   @ViewChild('address2') address2: ElementRef;
   @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-  @ViewChild('imageCropper', undefined) imageCropper:ModalComponent;
+  @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   name:string;
   data1:any;
@@ -25,14 +26,16 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   croppedWidth:number;
   croppedHeight:number;
 
-  constructor(private dataService : DataService) {
-    this.name = 'Angular2'
-    this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 200;
-    this.cropperSettings1.height = 200;
+  fileName : string = "";
 
-    this.cropperSettings1.croppedWidth = 200;
-    this.cropperSettings1.croppedHeight = 200;
+  constructor(private dataService : DataService) {
+    this.name = 'Angular2';
+    this.cropperSettings1 = new CropperSettings();
+    this.cropperSettings1.width = 220;
+    this.cropperSettings1.height = 150;
+
+    this.cropperSettings1.croppedWidth = 220;
+    this.cropperSettings1.croppedHeight = 150;
 
     this.cropperSettings1.canvasWidth = 500;
     this.cropperSettings1.canvasHeight = 300;
@@ -41,12 +44,14 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     this.cropperSettings1.minHeight = 10;
 
     this.cropperSettings1.rounded = false;
-    this.cropperSettings1.keepAspect = false;
+    this.cropperSettings1.keepAspect = true;
 
     this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
     this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
+    this.cropperSettings1.noFileInput = true;
 
     this.data1 = {};
+
   }
 
   times : string[] = [];
@@ -134,8 +139,6 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     // Listen for the event fired when the user selects a prediction and retrieve
     // more details for that place.
     searchBox.addListener('places_changed', handleMap);
-
-    this.imageCropper.show();
   }
 
   cropped(bounds:Bounds) {
@@ -197,4 +200,17 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   }
 
 
+  fileChanged($event) {
+    let file = $event.target.files[0];
+    if(file){
+      this.imageCropperModal.show();
+      this.cropper.fileChangeListener($event);
+      this.fileName = file.name;
+    }
+  }
+
+  removeImage() {
+    this.fileName = "";
+    this.cropper.reset();
+  }
 }

@@ -12,34 +12,46 @@
     </div>
 
     <!-- Image -->
-    <modal #imageCropper
+    <modal #imageCropperModal
                [modalTitle]="'Edit Image Size'"
-               [width]="900"
                [zIndex]="5"
                [maximizable]="true"
                (close)="onCloseModal()">
       <ng-container class="app-modal-body">
-        <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+        <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
       </ng-container>
       <ng-container class="app-modal-footer">
         <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
         <!--<button type="button" class="btn btn-default">Save</button>-->
         <div class="text-right">
-          <button type="button" class="btn btn-default" (click)="imageCropper.hide()">Close</button>
+          <button type="button" class="btn btn-default" (click)="imageCropperModal.hide()">OK</button>
         </div>
       </ng-container>
     </modal>
 
-    <div class="form-group row " *ngIf="data1.image">
-      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-list"></i></span>
+    <div class="form-group row " >
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-image"></i></span>
       <label class="col-sm-2 col-form-label">Image</label>
       <div class="col-sm-9">
-        <img [src]="data1.image"
-             class="w-100"
-             [width]="croppedWidth"
-             [height]="croppedHeight"
-             (click)="imageCropper.show();"
-        />
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" (click)="imageCropperModal.show()" id="inputGroupFileAddon01">Edit</span>
+          </div>
+          <div class="custom-file">
+            <input (change)="fileChanged($event)" type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">{{fileName ? fileName : "Choose File"}}</label>
+          </div>
+        </div>
+
+        <div class="image-container" *ngIf="data1.image">
+          <img class="image-element" [src]="data1.image"
+               [width]="croppedWidth"
+               [height]="croppedHeight"
+               (click)="imageCropperModal.show();" />
+          <i (click)="removeImage()" class="fa fa-times image-remove"></i>
+        </div>
+
       </div>
     </div>
 
