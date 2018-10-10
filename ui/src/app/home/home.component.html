@@ -1,53 +1,187 @@
-<div class="h-100 bg-body">
-  <div class="bg" id="header">
-    <div class="container">
-      <div class="text-center">
-        <img src="../assets/images/Sholop-Logo-White.png" class="rounded" alt="img-fluid">
-        <p class="h2">
-          <a href="#" class="text-secondary">
-            <u class="inline">Meeting Planing</u>
-          </a>
-          and
-          <a href="#" class="text-secondary">
-            <u class="inline">Event Planing</u>
-          </a>
-          Platform
-        </p>
-        <form>
-          <div class="form-row justify-content-center">
-            <div class="col-xl-8">
-              <input type="text" class="form-control form-control-lg" id="inlineFormInputName2" placeholder="Search by: City, Country, Industry or Event name">
-            </div>
-            <div>
-              <button type="search" class="btn btn-lg" id="searchItem">Search</button>
-            </div>
+<div class=" bg-body">
+  <div class="bg"  id="header">
+    <p class="py-5"></p>
+    <div class="container text-center a">
+      <img src="../assets/images/Sholop-Logo-White.png" class="rounded mb-3" alt="img-fluid">
+      <p class="h1 mb-5">
+        <a href="#" class="text-secondary">
+          <u class="inline">Meeting Planing</u>
+        </a>
+        and
+        <a href="#" class="text-secondary">
+          <u class="inline">Event Planing</u>
+        </a>
+        Platform
+      </p>
+      <form>
+        <div class="form-row justify-content-center">
+          <div class="col-xl-8">
+            <input type="text" class="form-control form-control-lg" id="inlineFormInputName2" placeholder="Search by: City, Country, Industry or Event name">
           </div>
-        </form>
-      </div>
+          <div>
+            <button type="search" class="btn btn-lg" id="searchItem">Search</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-    <div class="container" id="content">
-      <div class="row">
-        <div class="col-md-8 col-sm-8 col-xs-12" id="left-box">
-          <label> Upcoming Events
-            <small class="event-comment">handpicked and popular event to go</small>
-          </label>
-         <div class="row">
-           <section class="col-md-4 col-sm-4">
-              <div class="card">
-                 <img class="card-img-top" src="../assets/images/ev1.jpg" alt="Card image cap">
-                   <div class="card-body">
-                       <h5 class="card-title">Know the Frogs</h5>
-                        <p class="card-text">Price: Free</p>
-                        <a href="#" class="btn btn-secondary">Register</a>
-                        <p class="card-text">
-                          <small class="text-muted">Tehran, Iran</small>
-                        </p>
-                   </div>
-              </div>
-           </section>
-         </div>
+
+  <div class="jumbotron text-center py-5 mb-5">
+    <!--<img class="card-img-top flex-auto" src="../assets/images/plan.jpg" alt="Card image cap" style="height: 200px; width: 500px;">-->
+    <h3 class="display-4">Meeting Planning and Event Planning Platform</h3>
+    <p class="lead">Free, Fast and Easy method to manage your meetings and events</p>
+    <hr class="my-4">
+    <p>It's absolutely free!</p>
+    <a class="btn btn-secondary btn-lg" href="#" role="button">Start Now!</a>
+  </div>
+
+  <div>
+    <h4 class="ml-3 mb-3">Events</h4>
+  </div>
+  <div class="container-fluid">
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <div class="card  mb-4 shadow-sm">
+          <img class="card-img-top" src="../assets/images/ev1.png" alt="Card image cap" style="height:200px;">
+          <div class="card-body">
+            <h5 class="card-title">Media Exhibition</h5>
+            <div class="text-muted mb-1">21 Sep 2018</div>
+            <div class="text-muted mb-2">Price: Free</div>
+            <a href="#" class="btn btn-secondary mb-3">Register</a>
+            <p class="card-text"><small class="text-muted">Iran, Tehran</small></p>
+          </div>
         </div>
       </div>
+      <div class="col-md-3">
+        <div class="card  mb-4 shadow-sm">
+          <img class="card-img-top flex-auto" src="../assets/images/ev4.jpg" alt="Card image cap" style="height:200px;">
+          <div class="card-body">
+            <h5 class="card-title">Crush</h5>
+            <div class="text-muted mb-1">28 Sep 2018</div>
+            <div class="text-muted mb-2">Price: 20$</div>
+            <a href="#" class="btn btn-secondary mb-3">Register</a>
+            <p class="card-text"><small class="text-muted">Iran, Tehran</small></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card  mb-4 shadow-sm">
+          <img class="card-img-top flex-auto" src="../assets/images/ev2.jpg" alt="Card image cap" style="height:200px;">
+          <div class="card-body">
+            <h5 class="card-title">Internet of Things</h5>
+            <div class="text-muted mb-1">11 Oct 2018</div>
+            <div class="text-muted mb-2">Price: Free</div>
+            <a href="#" class="btn btn-secondary mb-3">Register</a>
+            <p class="card-text"><small class="text-muted">Iran, Isfahan</small></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3 pl-5 d-none d-md-block bg-light sidebar">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Categoris</span>
+        </h6>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Categories</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">IT</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Entertainment</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Art & Culture</a>
+          </li>
+        </ul>
+      </div>
     </div>
+
+
+    <!--<h5 class="d-flex justify-content-between">Categories</h5>
+    <ol class="list-unstyled mb-5">
+      <li>
+        <i class="fa fa-fw fa-genderless text-muted mr-3"></i>
+        <a class="text-muted" href="#">IT</a>
+      </li>
+      <li>
+        <i class="fa fa-fw fa-genderless text-muted mr-3"></i>
+        <a class="text-muted" href="#">Entertainment</a>
+      </li>
+      <li>
+        <i class="fa fa-fw fa-genderless text-muted mr-3"></i>
+        <a class="text-muted" href="#">Culture</a>
+      </li>
+      <li>
+        <i class="fa fa-fw fa-genderless text-muted mr-3"></i>
+        <a class="text-muted" href="#">Education</a>
+      </li>
+    </ol>
+      <h5 class="d-flex justify-content-between">Archive</h5>
+      <ol class="list-unstyled mb-0">
+        <li>
+          <a class="text-muted" href="#">January</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">February</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">March</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">June</a>
+        </li>
+      </ol>-->
+
+  </div>
 </div>
+
+<footer class="container py-5 pt-4 my-md-5 pt-md-5 border-top">
+  <div class="row">
+    <div class="col-6 col-md">
+      <img src="../assets/images/Sholop-Logo-White.png" class="rounded mb-2" alt width="60" height="30">
+      <small class="d-block mb-3 text-muted">© 2017-2018</small>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Features</h5>
+      <ul class="list-unstyled text-small">
+        <li>
+          <a class="text-muted" href="#">Easy access to full message history</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Organise meetings with few clicks</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Free for both commercial and personal users</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Location finder functionality</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Issue the ID badges</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Different access level for staffs</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>About Us</h5>
+      <ul class="list-unstyled text-small">
+        <li>
+          <a class="text-muted" href="#">Wise Aspect Limited</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Contact Us</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">Terms and Conditions</a>
+        </li>
+        <li>
+          <a class="text-muted" href="#">FAQ</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>

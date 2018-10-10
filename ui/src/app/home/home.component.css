@@ -1,17 +1,20 @@
 .bg{
     background-size:100%;
-    background-color:#fed95d;
     color:#696969;
+    background-image:url("/assets/images/h2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
-.text-center{
+.bg .a{
     transform: scale(0.6);
     }
 #searchItem{
     color:#696969;
     }
-.event-comment{
+.h2{
     color:#696969;
 }
 .bg-body{
-    background-color:Gainsboro;
+    background-color:WhiteSmoke;
 }
