@@ -12,7 +12,8 @@ import { EventCardComponent } from './event-card/event-card.component';
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
 import {HttpClientModule} from "@angular/common/http";
-
+import { ImageCropperComponent } from 'ng2-img-cropper';
+import { ModalComponent } from "./ng-modal/modal.component";
 
 @NgModule({
   declarations: [
@@ -23,13 +24,15 @@ import {HttpClientModule} from "@angular/common/http";
     HomeComponent,
     EventCardComponent,
     DateComponent,
+    ImageCropperComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
     AngularFontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   exports: [
   ],

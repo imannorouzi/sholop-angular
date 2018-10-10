@@ -29,8 +29,10 @@
     "font-awesome": "^4.7.0",
     "glyphicons": "^0.2.0",
     "jquery": "^3.3.1",
+    "ng2-img-cropper": "^0.9.0",
     "ng2-jalali-date-picker": "^2.2.6",
     "ngx-image-cropper": "^1.0.2",
+    "ngx-img-cropper": "^0.10.4",
     "popper.js": "^1.14.4",
     "rxjs": "^6.3.2",
     "zone.js": "~0.8.26"

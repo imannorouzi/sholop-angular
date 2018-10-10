@@ -11,6 +11,38 @@
       </div>
     </div>
 
+    <!-- Image -->
+    <modal #imageCropper
+               [modalTitle]="'Edit Image Size'"
+               [width]="900"
+               [zIndex]="5"
+               [maximizable]="true"
+               (close)="onCloseModal()">
+      <ng-container class="app-modal-body">
+        <img-cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+      </ng-container>
+      <ng-container class="app-modal-footer">
+        <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+        <!--<button type="button" class="btn btn-default">Save</button>-->
+        <div class="text-right">
+          <button type="button" class="btn btn-default" (click)="imageCropper.hide()">Close</button>
+        </div>
+      </ng-container>
+    </modal>
+
+    <div class="form-group row " *ngIf="data1.image">
+      <span class="align-bottom col-sm-1 "><i class="align-bottom fa fa-list"></i></span>
+      <label class="col-sm-2 col-form-label">Image</label>
+      <div class="col-sm-9">
+        <img [src]="data1.image"
+             class="w-100"
+             [width]="croppedWidth"
+             [height]="croppedHeight"
+             (click)="imageCropper.show();"
+        />
+      </div>
+    </div>
+
     <!--Times-->
     <div class="form-group row " *ngFor="let time of event.times; let i = index" [attr.data-index]="i">
       <span class="align-bottom col-sm-1"><i *ngIf="i===0" class="align-bottom fa fa-calendar"></i></span>
