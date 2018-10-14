@@ -38,12 +38,12 @@ public class SholopDate {
     public SholopDate(JSONObject jo) throws JSONException {
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        date = dtf.parseDateTime(jo.getJSONObject("date").getString("gDate")).toDate();
+        date = dtf.parseDateTime(jo.getJSONObject("date").getString("today")).toDate();
 
-        dateString = jo.getJSONObject("date").getString("dateString");
+        dateString = "";
 
-        startTime = jo.getString("startTime");
-        endTime = jo.getString("endTime");
+        startTime = jo.getString("from");
+        endTime = jo.getString("to");
     }
 
     public Date getDate() {

@@ -1,0 +1,40 @@
+<!-- import contact Modal -->
+<modal #selectContacts
+       [modalTitle]="'Select Contacts'"
+       [zIndex]="5"
+       [width]="700"
+       [maximizable]="true">
+  <ng-container class="app-modal-body">
+
+    <a href="#" class="m-4" (click)="onImportClick()"><span class=""><i class="fa fa-list"></i> Select All</span></a>
+
+    <ul class="list-group">
+      <li [class.selected]="contact.selected" class="list-group-item" *ngFor="let contact of contacts" (click)="contact.selected = !contact.selected">
+        <div class="row">
+        <!-- Image -->
+          <div class="col-md-1">
+            <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+          </div>
+          <div class="col-md-10">
+            <!--Name-->
+            <h5 class="mb-0">{{contact.name}}</h5>
+            <!--Email, Phone-->
+            <small class="text-muted"><i class="fa fa-envelope"></i> {{contact.email}}</small>
+            <small class="text-muted ml-3"><i class="fa fa-phone"></i> {{contact.phone}}</small>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+
+
+  </ng-container>
+  <ng-container class="app-modal-footer">
+    <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+    <!--<button type="button" class="btn btn-default">Save</button>-->
+    <div class="text-right">
+      <button type="button" class="btn btn-default pull-left" (click)="selectContacts.hide()">Cancel</button>
+      <button type="button" class="btn btn-default" (click)="onSubmit()" >OK</button>
+    </div>
+  </ng-container>
+</modal>

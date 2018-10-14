@@ -39,42 +39,10 @@
     <h4 class="ml-3 mb-3">Events</h4>
   </div>
   <div class="container-fluid">
-    <div class="row mb-3">
-      <div class="col-md-3">
-        <div class="card  mb-4 shadow-sm">
-          <img class="card-img-top" src="../assets/images/ev1.png" alt="Card image cap" style="height:200px;">
-          <div class="card-body">
-            <h5 class="card-title">Media Exhibition</h5>
-            <div class="text-muted mb-1">21 Sep 2018</div>
-            <div class="text-muted mb-2">Price: Free</div>
-            <a href="#" class="btn btn-secondary mb-3">Register</a>
-            <p class="card-text"><small class="text-muted">Iran, Tehran</small></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card  mb-4 shadow-sm">
-          <img class="card-img-top flex-auto" src="../assets/images/ev4.jpg" alt="Card image cap" style="height:200px;">
-          <div class="card-body">
-            <h5 class="card-title">Crush</h5>
-            <div class="text-muted mb-1">28 Sep 2018</div>
-            <div class="text-muted mb-2">Price: 20$</div>
-            <a href="#" class="btn btn-secondary mb-3">Register</a>
-            <p class="card-text"><small class="text-muted">Iran, Tehran</small></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="card  mb-4 shadow-sm">
-          <img class="card-img-top flex-auto" src="../assets/images/ev2.jpg" alt="Card image cap" style="height:200px;">
-          <div class="card-body">
-            <h5 class="card-title">Internet of Things</h5>
-            <div class="text-muted mb-1">11 Oct 2018</div>
-            <div class="text-muted mb-2">Price: Free</div>
-            <a href="#" class="btn btn-secondary mb-3">Register</a>
-            <p class="card-text"><small class="text-muted">Iran, Isfahan</small></p>
-          </div>
-        </div>
+    <div class="row mb-3" >
+      <div class="col-md-9 row">
+
+        <event-card class="col-md-4" *ngFor="let event of events" [event]="event"></event-card>
       </div>
 
       <div class="col-md-3 pl-5 d-none d-md-block bg-light sidebar">

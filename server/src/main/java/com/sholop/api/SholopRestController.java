@@ -20,9 +20,12 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
@@ -92,14 +95,22 @@ public class SholopRestController {
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Path("/create-tiny-event")
-    public Response createTinyEvent(String jsonEventString) throws JSONException {
+    public Response createTinyEvent(@FormDataParam("file") InputStream uploadedInputStream,
+                               @FormDataParam("file") FormDataContentDisposition fileDetail,
+                               @FormDataParam("file") FormDataBodyPart body,
+                               @FormDataParam("eventString") String jsonEventString) throws JSONException, IOException {
 
         Gson gson = new Gson();
         int id = -1;
         try {
             JSONObject jsonEvent = new JSONObject(jsonEventString);
+
+            Files.copy(uploadedInputStream,
+                    Paths.get("./ui/src/assets/images/event/" + fileDetail.getFileName()),
+                    StandardCopyOption.REPLACE_EXISTING);
+            String relationalUrl = "../assets/images/" + fileDetail.getFileName();
 
             Event event = new Event(jsonEvent);
             if(event.getLocation().getId() == -1) {
@@ -131,65 +142,11 @@ public class SholopRestController {
             }
 
             if(id == -1){
-                return Response.ok(gson.toJson(new ResponseObject("FAIL", null))).build();
+                return Response.ok(gson.toJson(new ResponseObject("FAIL", null)))
+                        .build();
             }
 
-            return Response.ok(gson.toJson(new ResponseObject("OK", event)))
-                    .header("Access-Control-Allow-Origin", "http://0.0.0.0:8094").build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500).header("Access-Control-Allow-Origin", "http://0.0.0.0:8094")
-                    .build();
-        }
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/create-event")
-    public Response createEvent(String jsonEventString) throws JSONException {
-
-        Gson gson = new Gson();
-        int id = -1;
-        try {
-            JSONObject jsonEvent = new JSONObject(jsonEventString);
-
-            Event event = new Event(jsonEvent);
-            if(event.getLocation().getId() == -1) {
-                event.setVenueId(locationDao.insert(event.getLocation()));
-            }else{
-                event.setVenueId(event.getLocation().getId());
-            }
-
-
-            if(event.getId() > 0){
-                // It means user is editing this event
-                eventDao.update(event);
-                id = event.getId();
-
-                //delete previous dates and contacts
-                sholopDateDao.deleteEventDates(id);
-                contactEventDao.deleteEventContacts(id);
-            }else{
-
-                //create a link for the event
-                event.createLink();
-
-               id = eventDao.insert(event);
-               event.setId(id);
-            }
-
-            for( SholopDate date : event.getDates()){
-                sholopDateDao.insert(date, id);
-            }
-
-            if(id == -1){
-                return Response.ok(gson.toJson(new ResponseObject("FAIL", null))).build();
-            }
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", event)))
-                    .build();
+            return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -200,9 +157,8 @@ public class SholopRestController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
     @Path("/get-events")
-    public Response getEvents(@Auth User user, String userId) throws JSONException {
+    public Response getEvents(/*@Auth User user, String userId*/) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -244,14 +200,15 @@ public class SholopRestController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
+//    @PermitAll
     @Path("/get-contacts")
-    public Response getContacts(@Auth User user) throws JSONException {
+    public Response getContacts(/*@Auth User user*/) throws JSONException {
 
         Gson gson = new Gson();
         try {
 
-            List<Contact> contacts = contactDao.getContactByUserId(user.getId());
+            //TODO user ID !!!
+            List<Contact> contacts = contactDao.getContactByUserId(/*user.getId()*/1);
 
             return Response.ok(gson.toJson(new ResponseObject("OK", contacts))).build();
 
@@ -467,9 +424,9 @@ public class SholopRestController {
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @PermitAll
+//    @PermitAll
     @Path("/update-contact")
-    public Response updateContact(@Auth User user,
+    public Response updateContact(/*@Auth User user,*/
                                   @FormDataParam("file") InputStream uploadedInputStream,
                                   @FormDataParam("file") FormDataContentDisposition fileDetail,
                                   @FormDataParam("file") FormDataBodyPart body,
@@ -481,20 +438,22 @@ public class SholopRestController {
         Contact contact = null;
         try {
 
-            String uploadedFileName =  fileDetail.getFileName();
-            String uniqueUploadedFileName =  (uploadedFileName + "_"
-                    + (new Date()).toString()).replace(" ", "").replace(":","")
-                    + "." + body.getMediaType().getSubtype();
-
-            Files.copy(uploadedInputStream, Paths.get(SRC_UPLOAD_PATH + uniqueUploadedFileName),
+            Files.copy(uploadedInputStream,
+                    Paths.get("./ui/src/assets/images/contacts/" + fileDetail.getFileName()),
                     StandardCopyOption.REPLACE_EXISTING);
+            String relationalUrl = "../assets/images/contacts/" + fileDetail.getFileName();
 
             JSONObject jsonContact = new JSONObject(contactJsonString);
             contact = new Contact(jsonContact);
-            contact.setUserId(user.getId());
-            contact.setImageUrl("/images/contact/" + uniqueUploadedFileName);
 
-            contactDao.update(contact);
+            //TODO user id should be replaces
+            contact.setUserId(1/*user.getId()*/);
+            contact.setImageUrl(relationalUrl);
+
+            if(contact.getId() != -1 )
+                contactDao.update(contact);
+            else
+                contactDao.insert(contact);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -68,29 +68,35 @@ public class Event {
     public Event(JSONObject jo) throws JSONException {
 
         this.setTitle(jo.getString("title"));
-        this.setDescription(jo.getString("description"));
+        this.setDescription(jo.has("description") ? jo.getString("description") : "");
         this.setEventType(jo.has("event_type")? EVENT_TYPE.valueOf(jo.getString("event_type")) : EVENT_TYPE.MEETING);
-        this.setLocation(new Location(jo.getJSONObject("location")));
+        this.setLocation(new Location(jo.getJSONObject("venue")));
         this.setUserId(jo.getInt("userId"));
 
-        JSONArray datesArray = jo.getJSONArray("dates");
+        JSONArray datesArray = jo.getJSONArray("times");
         this.dates = new ArrayList<>();
         for(int i=0; i<datesArray.length(); i++) {
             this.dates.add(new SholopDate(datesArray.getJSONObject(i)));
         }
 
-        this.setAllowComments(jo.getBoolean("allowComments"));
-        this.setAllowJoinViaLink(jo.getBoolean("joinViaLink"));
-        this.setLimitGuests(jo.getBoolean("limitGuests"));
-        this.setConfirmNeeded(jo.getBoolean("confirmNeeded"));
-        this.setMaxGuests(jo.getInt("maxGuests"));
+        this.setAllowComments(jo.has("allowComments") && jo.getBoolean("allowComments"));
+        this.setAllowJoinViaLink(jo.has("joinViaLink") && jo.getBoolean("joinViaLink"));
+        this.setLimitGuests(jo.has("limitGuests") && jo.getBoolean("limitGuests"));
+        this.setConfirmNeeded(jo.has("confirmNeeded") && jo.getBoolean("confirmNeeded"));
+        this.setMaxGuests(jo.has("maxGuests") ? jo.getInt("maxGuests") : 0);
 
-        JSONArray tagsJsonArray = jo.getJSONArray("tags");
-        String []tags = new String[tagsJsonArray.length()];
-        for(int i=0; i<tagsJsonArray.length(); i++){
-            tags[i] = tagsJsonArray.getString(i);
+        String tagString = "";
+        if(jo.has("tags")) {
+
+            JSONArray tagsJsonArray = jo.getJSONArray("tags");
+            String[] tags = new String[tagsJsonArray.length()];
+            for (int i = 0; i < tagsJsonArray.length(); i++) {
+                tags[i] = tagsJsonArray.getString(i);
+            }
+
+            tagString = String.join(",", tags);
         }
-        this.setTags(String.join(",", tags));
+        this.setTags(tagString);
         this.setId(jo.has("id") ? jo.getInt("id") : -1);
     }
 

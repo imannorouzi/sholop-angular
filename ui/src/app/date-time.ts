@@ -5,4 +5,8 @@ export class DateTime {
   to : string = '';
 
   date : Calendar = new Calendar();
+
+  setDate(date){
+    this.date = date;
+  }
 }

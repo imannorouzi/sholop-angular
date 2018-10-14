@@ -1,0 +1,87 @@
+<!-- Add new contact Modal -->
+<modal #addNewContact
+       [modalTitle]="'Add New Contact'"
+       [zIndex]="5"
+       [maximizable]="true">
+  <ng-container class="app-modal-body">
+
+    <div class="row justify-content-center">
+      <div class="col-sm-5 m-2">
+        <img class="rounded-circle w-100" (click)="onImageClick()" [src]="data1.image ? data1.image : '../assets/images/user-placeholder.png'">
+      </div>
+    </div>
+
+    <!-- Image Modal -->
+    <modal #imageCropperModal
+           [modalTitle]="'Edit Image Size'"
+           [zIndex]="6"
+           [maximizable]="true">
+      <ng-container class="app-modal-body">
+        <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" ></img-cropper>
+      </ng-container>
+      <ng-container class="app-modal-footer">
+        <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+        <!--<button type="button" class="btn btn-default">Save</button>-->
+        <div class="text-right">
+          <button type="button" class="btn btn-default" (click)="imageCropperModal.hide()">OK</button>
+        </div>
+      </ng-container>
+    </modal>
+
+      <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+
+    <!--Title-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
+          </div>
+          <input id="title" type="text" name="name" class="form-control" placeholder="Full Name" [(ngModel)]="contact.name">
+        </div>
+
+      </div>
+    </div>
+
+    <!--Email-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">Email</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
+          </div>
+          <input id="email" type="text" name="email" class="form-control" placeholder="Email" [(ngModel)]="contact.email">
+        </div>
+
+      </div>
+    </div>
+
+    <!--Email-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">Phone</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-phone"></i></span>
+          </div>
+          <input id="phone" type="text" name="phone" class="form-control" placeholder="Phone" [(ngModel)]="contact.phone">
+        </div>
+
+      </div>
+    </div>
+
+  </ng-container>
+  <ng-container class="app-modal-footer">
+    <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+    <!--<button type="button" class="btn btn-default">Save</button>-->
+    <div class="text-right">
+      <button type="button" class="btn btn-default pull-left" (click)="addNewContact.hide()">Cancel</button>
+      <button type="button" class="btn btn-default" (click)="onSubmit()">OK</button>
+    </div>
+  </ng-container>
+</modal>

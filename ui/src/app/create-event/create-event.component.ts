@@ -5,6 +5,7 @@ import {Venue} from "../venue";
 import { DataService } from "../data.service";
 import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
+import {NavigationService} from "../navigation.service";
 
 
 @Component({
@@ -28,16 +29,17 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
 
   fileName : string = "";
 
-  constructor(private dataService : DataService) {
+  constructor(private dataService : DataService,
+              private navigationService: NavigationService) {
     this.name = 'Angular2';
     this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 220;
-    this.cropperSettings1.height = 150;
+    this.cropperSettings1.width = 440;
+    this.cropperSettings1.height = 330;
 
-    this.cropperSettings1.croppedWidth = 220;
-    this.cropperSettings1.croppedHeight = 150;
+    this.cropperSettings1.croppedWidth = 440;
+    this.cropperSettings1.croppedHeight = 300;
 
-    this.cropperSettings1.canvasWidth = 500;
+    this.cropperSettings1.canvasWidth = 440;
     this.cropperSettings1.canvasHeight = 300;
 
     this.cropperSettings1.minWidth = 10;
@@ -62,7 +64,10 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     times: [],
     title: '',
     venue: this.venue,
+    image: File,
+    userId: -1
   };
+  submitting: boolean = false;
 
   ngOnInit() {
     for(var h=0; h<24; h++){
@@ -166,6 +171,10 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     event.preventDefault();
   }
 
+  onDateSelected(index, event){
+    this.event.times[index].setDate(event);
+  }
+
   removeDateTime($event, index) {
     this.event.times.splice(index, 1);
     event.preventDefault();
@@ -189,12 +198,17 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
         );
       }
 
+      this.submitting = true;
       this.dataService.postTinyEvent(this.event).subscribe(
         (value:any) => {
-        console.log(value);
-      },
+        // console.log(value);
+          this.submitting = false;
+          this.navigationService.navigate("/");
+          alert('slsl');
+        },
       (error:any) => {
-      console.log(error);
+        console.log(error);
+        this.submitting = false;
       });
     }
   }
@@ -206,11 +220,20 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
       this.imageCropperModal.show();
       this.cropper.fileChangeListener($event);
       this.fileName = file.name;
+      this.event.image = file;
     }
   }
 
   removeImage() {
     this.fileName = "";
     this.cropper.reset();
+    this.fileInput.nativeElement.value = '';
+  }
+
+  onImageClick() {
+    if(this.data1.image)
+      this.imageCropperModal.show();
+    else
+      this.fileInput.nativeElement.click();
   }
 }

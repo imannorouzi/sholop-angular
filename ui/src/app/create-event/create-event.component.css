@@ -1,9 +1,9 @@
 .image-container{
-  border: 1px solid #bbb;
-  border-radius: 3px;
+  /*border: 1px solid #bbb;*/
+  /*border-radius: 3px;*/
   position: relative;
-  max-width: 200px;
-  height: auto;
+  /*max-width: 200px;*/
+  /*height: auto;*/
 }
 
 .image-element{
@@ -14,11 +14,10 @@
 .image-remove:hover{
   color: red;
 }
-.image-remove{
-  position: absolute;
-  right: 0;
+.image-remove{position: absolute;
+  right: 15px;
   top: 0;
-  background: #ffffff3b;
+  background: #ffffff91;
   border-radius: 50%;
   margin: 5px;
   cursor: pointer;

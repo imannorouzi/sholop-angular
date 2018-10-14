@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Calendar} from "../calendar";
 
 const daysInMonth: number[] = [
@@ -27,6 +27,8 @@ export class DateComponent implements OnInit {
   };
 
   @Input() inputClasses: string = '';
+  @Output() onDateSelected: EventEmitter<any> = new EventEmitter();
+
   isShowing: boolean = false;
 
   constructor() { }
@@ -81,6 +83,7 @@ export class DateComponent implements OnInit {
   onDaySelected(day) {
     this.isShowing = false;
     this.selectedDate = day;
+    this.onDateSelected.emit(day);
   }
 
   onFocus(){

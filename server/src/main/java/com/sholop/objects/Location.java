@@ -9,7 +9,7 @@ import com.amazonaws.util.json.JSONObject;
 public class Location {
 
     int id, userId;
-    String farsiAddress1, farsiAddress2, englishAddress, title, description;
+    String farsiAddress1, farsiAddress2, englishAddress, title, description, mapUrl;
 
     double latitude, longitude;
 
@@ -24,11 +24,11 @@ public class Location {
     }
 
     public Location(JSONObject jo) throws JSONException {
-        this.setFarsiAddress1(jo.getString("farsiAddress1"));
-        this.setFarsiAddress2(jo.getString("farsiAddress2"));
-        this.setEnglishAddress(jo.getString("englishAddress"));
-        this.setLatitude(jo.getJSONObject("latLng").getDouble("lat"));
-        this.setLongitude(jo.getJSONObject("latLng").getDouble("lng"));
+        this.setFarsiAddress1(jo.getString("address1"));
+        this.setFarsiAddress2(jo.getString("address2"));
+        this.setEnglishAddress(jo.getString("address1"));
+        this.setLatitude(jo.getDouble("lat"));
+        this.setLongitude(jo.getDouble("lng"));
 
         this.setTitle(jo.has("title") ? jo.getString("title") : jo.getString("farsiAddress1"));
         this.setDescription(jo.has("description") ? jo.getString("description") : "");
@@ -106,5 +106,13 @@ public class Location {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getMapUrl() {
+        return mapUrl;
+    }
+
+    public void setMapUrl(String mapUrl) {
+        this.mapUrl = mapUrl;
     }
 }

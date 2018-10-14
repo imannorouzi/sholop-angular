@@ -1,3 +1,11 @@
-<p>
-  event-card works!
-</p>
+<div class="card  mb-4 shadow-sm">
+  <img class="card-img-top" src="../assets/images/ev1.png" alt="Card image cap" style="height:200px;">
+  <div class="card-body">
+    <h5 class="card-title">{{event.title}}</h5>
+    <div class="text-muted mb-1">{{event.dates[0].date}}</div>
+    <div class="text-muted mb-2">Price: Free</div>
+    <a href="#" class="btn btn-secondary mb-3">Register</a>
+    <p class="card-text"><small class="text-muted">{{event.location ? event.location.farsiAddress1 : ""}}</small></p>
+  </div>
+
+</div>

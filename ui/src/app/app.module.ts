@@ -14,6 +14,14 @@ import { DateComponent} from "./date/date.component";
 import {HttpClientModule} from "@angular/common/http";
 import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ModalComponent } from "./ng-modal/modal.component";
+import {FormsModule} from "@angular/forms";
+import { CreateMeetingComponent } from './create-meeting/create-meeting.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { AddContactComponent } from './add-contact/add-contact.component';
+import { ContactsModalComponent } from './contacts-modal/contacts-modal.component';
+import { AlertComponent } from './alert/alert.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +33,14 @@ import { ModalComponent } from "./ng-modal/modal.component";
     EventCardComponent,
     DateComponent,
     ImageCropperComponent,
-    ModalComponent
+    ModalComponent,
+    CreateMeetingComponent,
+    ContactsComponent,
+    AddContactComponent,
+    ContactsModalComponent,
+    AlertComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +48,7 @@ import { ModalComponent } from "./ng-modal/modal.component";
     CommonModule,
     AngularFontAwesomeModule,
     HttpClientModule,
+    FormsModule
   ],
   exports: [
   ],

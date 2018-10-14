@@ -43,11 +43,6 @@ export class Calendar {
 
   constructor(gregorianDate = new Date()) {
     this.today = gregorianDate;
-    gregorianDate.getFullYear()
-    gregorianDate.getDate(
-
-    )
-    gregorianDate.getMonth()
     this.gregorianYear = this.today.getFullYear();
     this.gregorianMonth = this.today.getMonth() + 1;
     this.gregorianDate = this.today.getDate();

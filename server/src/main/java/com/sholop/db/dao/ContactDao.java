@@ -41,6 +41,7 @@ public abstract class ContactDao implements Transactional<ContactDao> {
                 contact.getEmail(),
                 contact.getPhone(),
                 contact.getAddress(),
+                contact.getImageUrl(),
                 contact.isValid(),
                 contact.getUserId()
         );
@@ -71,15 +72,16 @@ public abstract class ContactDao implements Transactional<ContactDao> {
         Contact getContactById(@Bind("id") int id);
 
         @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id")
-        List<Contact> getContactsByUserId(@Bind("user_id") int user_id);
+        List<Contact> getContactsByUserId(@Bind("user_id") int userId);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_contact (name, email, phone, address, valid, user_id)" +
-                " values(:name, :email, :phone, :address, :valid, :user_id)")
+        @SqlUpdate("insert into sh_contact (name, email, phone, address, image_url, valid, user_id)" +
+                " values(:name, :email, :phone, :address, :image_url, :valid, :user_id)")
         int insert(@Bind("name") String name,
                    @Bind("email") String email,
                    @Bind("phone") String phone,
                    @Bind("address") String address,
+                   @Bind("image_url") String imageUrl,
                    @Bind("valid") boolean valid,
                    @Bind("user_id") int userId);
     }

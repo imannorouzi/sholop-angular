@@ -1,0 +1,6 @@
+.text-overflow{
+  overflow: hidden;
+}
+.text-overflow:hover{
+  overflow: visible;
+}

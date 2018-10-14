@@ -1,0 +1,48 @@
+<div class="">
+
+  <div class="container pt-5" >
+
+    <div class="m-3 text-right">
+      <button type="button" class="btn btn-primary" (click)="addNewContact.show()" >Add New Contact <i class="fa fa-user"></i></button>
+      <add-contact #addNewContact></add-contact>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-3" *ngFor="let contact of contacts">
+        <div class="card">
+          <div class="card-body">
+
+            <!--address: ""-->
+            <!--created: "Oct 14, 2018 6:03:40 PM"-->
+            <!--createdBy: 0-->
+            <!--email: "atieh.ghazizadeh@gmail.com"-->
+            <!--id: 46-->
+            <!--modified: "Oct 2, 2018 12:00:00 AM"-->
+            <!--modifiedBy: 1-->
+            <!--name: "Iman Norouzi"-->
+            <!--phone: "0435072839"-->
+            <!--userId: 1-->
+            <!--imageUrl: 1-->
+            <!--valid: true-->
+
+            <div class="row">
+              <div class="col-sm-6 m-2">
+                <img class="rounded-circle w-100" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+              </div>
+            </div>
+            <h5 class="card-title">{{contact.name}}</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-nowrap text-overflow"><i class="fa fa-envelope"></i>  {{contact.email}}</li>
+            <li class="list-group-item text-nowrap"><i class="fa fa-phone"></i>  {{contact.phone}}</li>
+          </ul>
+          <div class="card-body">
+            <a href="#" class="card-link">Edit</a>
+            <a href="#" class="card-link">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
