@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from "../data.service";
+import {User} from "../user";
+import {first} from "rxjs/operators";
+import {UserService} from "../user.service";
 
 @Component({
   selector: 'app-contacts',
@@ -10,10 +13,17 @@ export class ContactsComponent implements OnInit {
 
   contacts: any[] = [];
 
-  constructor(private dataService: DataService) { }
+  currentUser: User;
+  users: User[] = [];
+
+  constructor(private dataService: DataService,
+              private userService: UserService) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  }
 
   ngOnInit() {
     this.readContacts();
+    this.loadAllUsers();
   }
 
   readContacts(){
@@ -29,5 +39,18 @@ export class ContactsComponent implements OnInit {
       }
     )
   }
+
+  deleteUser(id: number) {
+    this.userService.delete(id).pipe(first()).subscribe(() => {
+      this.loadAllUsers()
+    });
+  }
+
+  private loadAllUsers() {
+    this.userService.getAll().pipe(first()).subscribe(users => {
+      this.users = users;
+    });
+  }
+
 
 }

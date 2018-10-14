@@ -7,6 +7,9 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 import {HomeComponent} from "./home/home.component";
 import {CreateMeetingComponent} from "./create-meeting/create-meeting.component";
 import {ContactsComponent} from "./contacts/contacts.component";
+import {AuthGuard} from "./auth-guard.service";
+import {LoginComponent} from "./login/login.component";
+import {RegisterComponent} from "./register/register.component";
 
 
 const routes: Routes = [
@@ -16,6 +19,12 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'contacts', component: ContactsComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+
+  // otherwise redirect to home
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

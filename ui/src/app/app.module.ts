@@ -11,10 +11,10 @@ import { HomeComponent } from './home/home.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { ImageCropperComponent } from 'ng2-img-cropper';
 import { ModalComponent } from "./ng-modal/modal.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { CreateMeetingComponent } from './create-meeting/create-meeting.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
@@ -22,6 +22,12 @@ import { ContactsModalComponent } from './contacts-modal/contacts-modal.componen
 import { AlertComponent } from './alert/alert.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import {ErrorInterceptor} from "./error-interceptor.service";
+import {JwtInterceptor} from "./jwt-interceptor.service";
+import {UserService} from "./user.service";
+import {AuthenticationService} from "./authentication.service";
+import {AlertService} from "./alert.service";
+import {AuthGuard} from "./auth-guard.service";
 
 @NgModule({
   declarations: [
@@ -48,12 +54,21 @@ import { RegisterComponent } from './register/register.component';
     CommonModule,
     AngularFontAwesomeModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
   ],
   providers: [
-    HttpClientModule
+    HttpClientModule,
+    AuthGuard,
+    AlertService,
+    AuthenticationService,
+    UserService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

@@ -55,7 +55,7 @@ export class DataService {
   updateContact(contact: any) {
     let apiURL = serverUrl + "/update-contact";
 
-    if(contact.image) {
+    if(contact.image ) {
       let file: File = contact.image;
       let formData:FormData = new FormData();
       formData.append('file', file, file.name);
