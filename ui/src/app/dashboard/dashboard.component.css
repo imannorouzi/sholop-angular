@@ -1,0 +1,15 @@
+.meeting-container{
+}
+
+.date-title{
+  background: #ff4400bd;
+  padding: 5px 15px;
+  border-radius: 13px;
+  margin-bottom: 10px;
+  color: white;
+  line-height: 3;
+}
+
+.owl{
+  max-height: 250px;
+}

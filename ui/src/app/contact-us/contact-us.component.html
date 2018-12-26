@@ -1,0 +1,123 @@
+<section class="my-5 container">
+
+  <div class="row">
+
+    <div class="col-lg-7">
+
+      <!--Google map-->
+      <div id="map-container-section" class="z-depth-1-half map-container-section mb-4" style="height: 400px">
+        <agm-map class="map" [latitude]="35.6892" [longitude]="51.3890" [scrollwheel]="true" [zoom]="12">
+          <agm-marker [latitude]="35.6892" [longitude]="51.3890"></agm-marker>
+        </agm-map>
+      </div>
+      <!-- Buttons-->
+      <div class="row text-center contact-info">
+        <div class="col-md-4">
+          <a class="btn-floating blue accent-1">
+            <i class="fa fa-map-marker font-x-large"></i>
+          </a>
+          <p>تهران،‌ خیابان پاسداران</p>
+          <p class="mb-md-0">بوستان هشتم</p>
+        </div>
+        <div class="col-md-4">
+          <a class="btn-floating blue accent-1">
+            <i class="fa fa-phone font-x-large"></i>
+          </a>
+          <p class="ltr">+98 (21) 8457 8457</p>
+          <p class="mb-md-0">شنبه تا چهارشنبه، 16:۰۰ - ۹:۰۰</p>
+        </div>
+        <div class="col-md-4">
+          <a class="btn-floating blue accent-1">
+            <i class="fa fa-envelope font-x-large"></i>
+          </a>
+          <p>info@sholop.com</p>
+          <p class="mb-0">sale@sholop.com</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="col-lg-5 mb-lg-0 mb-4">
+
+      <div class="card">
+        <div class="card-body">
+          <!-- Header -->
+          <div class="form-header blue accent-1">
+            <h5 class="mt-2 text-right"><i class="fa fa-envelope"></i> برای ما بنویسید</h5>
+          </div>
+          <p class="dark-grey-text text-muted text-right">سوالات و مشکلات خود را برای ما بنویسید.</p>
+
+          <div class="row ">
+            <label class="col-sm-2 col-form-label">نام</label>
+            <div class="col-sm-10">
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
+                </div>
+                <input id="name" type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="messgae.name">
+              </div>
+
+            </div>
+          </div>
+
+          <!--Email-->
+          <div class="row ">
+            <label class="col-sm-2 col-form-label">ایمیل</label>
+            <div class="col-sm-10">
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
+                </div>
+                <input id="email" type="text" name="email" class="form-control ltr" placeholder="ali@gmail.com" [(ngModel)]="message.email">
+              </div>
+
+            </div>
+          </div>
+
+          <!--Title-->
+          <div class="row ">
+            <label class="col-sm-2 col-form-label">موضوع</label>
+            <div class="col-sm-10">
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="align-bottom fa fa-tag"></i></span>
+                </div>
+                <input id="title" type="text" name="title" class="form-control" placeholder="موضوع ارتباط">
+              </div>
+
+            </div>
+          </div>
+
+
+          <!--Messgae-->
+          <div class="row ">
+            <label class="col-sm-2 col-form-label">پیام</label>
+            <div class="col-sm-10">
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="align-bottom fa fa-tag"></i></span>
+                </div>
+                <textarea id="message" type="text" rows="10" name="email" class="form-control" placeholder="متن پیام"></textarea>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <div class="text-right w-100">
+              <button type="button" class="btn btn-primary ml-2" (click)="sendMessage()">ارسال</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

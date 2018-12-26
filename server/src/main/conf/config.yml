@@ -40,3 +40,8 @@ database:
   validationQuery: "/* Health Check */ SELECT 1"
   validationQueryTimeout: 3s
 
+app:
+  mappings:
+    /assets: /
+  overrides:
+    /: ./assets/

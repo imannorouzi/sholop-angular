@@ -2,7 +2,18 @@
   <a routerLink="/dashboard">Dashboard</a>
   <a routerLink="/create">Create Event</a>
 </nav>-->
-<alert></alert>
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
 
+<div class="flex-parent rtl h-100 app-container">
+
+  <app-navbar></app-navbar>
+  <alert></alert>
+
+
+  <div class="grow scroll flex-parent">
+    <div class="grow">
+      <router-outlet></router-outlet>
+    </div>
+
+    <sholop-footer class="mt-2">I'm footer</sholop-footer>
+  </div>
+</div>

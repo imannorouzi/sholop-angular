@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 
 import {AlertService} from "../alert.service";
 import {UserService} from "../user.service";
+import {AfService} from "../providers/af.service";
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -16,13 +17,13 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private alertService: AlertService) { }
+    private alertService: AlertService,
+    private afService: AfService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
+      name: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -43,12 +44,24 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['/login']);
+          if (data && data['msg'] === "OK" && data['object'].token) {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            this.alertService.success('Registration successful', true);
+            localStorage.setItem('currentUser', JSON.stringify(data['object']));
+            this.router.navigate(['/']);
+          }else{
+            this.alertService.error('Failed', true);
+          }
         },
         error => {
           this.alertService.error(error);
           this.loading = false;
         });
+  }
+
+
+  loginWithGoogle(){
+    this.afService.logout();
+    this.afService.loginWithGoogle();
   }
 }

@@ -1,6 +1,7 @@
 package com.sholop;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.sholop.api.SholopRestController;
@@ -12,6 +13,7 @@ import com.sholop.db.dao.*;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
 import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
@@ -32,19 +34,20 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
     public void initialize(Bootstrap<ApplicationConfiguration> bootstrap) {
 
         bootstrap.addBundle(new DBIExceptionsBundle());
+
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "content"));
+        bootstrap.addBundle(new FileAssetsBundle("/contents/", "/contents/", "index.html"));
+        bootstrap.addBundle(new FileAssetsBundle("/app", "/", "index.html", "app"));
 //        bootstrap.addBundle(new MultiPartBundle());
 //        bootstrap.addBundle(new AssetsBundle("/assets/", "/assets/"));
-
-//        bootstrap.addBundle(new AssetsBundle("/assets", "/assets", "/*"));
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html"));
-
-//        AssetsBundle assetsBundle = new AssetsBundle("/assets/", "/", "index.html", "static");
-//        bootstrap.addBundle(assetsBundle);
+//        bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html", "static"));
 
     }
 
     @Override
     public void run(ApplicationConfiguration configuration, Environment environment) throws Exception {
+
+        environment.jersey().setUrlPattern("/api/*");
 
         final DBIFactory factory = new DBIFactory();
         final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mySql");
@@ -62,6 +65,7 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
         environment.jersey().register(injector.getInstance(ContactEventDao.class));
         environment.jersey().register(injector.getInstance(ContactDao.class));
         environment.jersey().register(injector.getInstance(UserDao.class));
+        environment.jersey().register(injector.getInstance(CommentDao.class));
 
         /***************  security ******************/
         /*environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()

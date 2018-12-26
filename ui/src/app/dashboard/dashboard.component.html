@@ -1,3 +1,42 @@
-<p>
-  dashboard works!
-</p>
+<meeting-item-modal #meetingModal [event]="selectedMeeting"></meeting-item-modal>
+
+<div class="container mt-3">
+  <div class="card h-100 shadow">
+    <div class="card-body flex-parent">
+
+      <div class="row">
+
+        <!--calendar-->
+        <div class="col-md-3">
+          <div class="sticky-top mt-2">
+          <calendar #calendar (onDateSelected)="onDateChanged($event)"></calendar>
+          </div>
+        </div>
+
+        <div class="col-md-9 meeting-container scroll">
+
+          <div class="mt-2 text-center sticky-top" *ngIf="selectedDate">
+            <span class="date-title">
+              <i class="fa fa-calendar ml-2"></i>
+              {{dateService.greToPersian(selectedDate, true)}}
+              </span>
+          </div>
+
+          <meeting-item (click)="onMeetingClick(event)"
+            class="col-md-4 mt-2" *ngFor="let event of meetings" [event]="event">
+          </meeting-item>
+
+          <div class="text-center" *ngIf="!loading && (!meetings || meetings.length === 0)">
+            <object class="w-25 owl" type="image/svg+xml" data="../../assets/images/owl.svg">
+              <param name="class" value="look-around" />
+            </object>
+          </div>
+
+          <spinner #spinner></spinner>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

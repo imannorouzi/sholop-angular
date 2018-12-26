@@ -17,7 +17,7 @@ public class User implements Principal {
     private int id;
     private String name, username;
     private List<String> roles;
-    private String password, email, phone, address;
+    private String password, email, phone, address, imageUrl;
     private String token;
 
     private int createdBy, modifiedBy;
@@ -25,8 +25,14 @@ public class User implements Principal {
 
     public User(){}
 
-    public User(String name) {
+    public User(String name, String email, String password, String imageUrl, String phone) {
         this.name = name;
+        this.username = email;
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.phone = phone;
+        this.password = password;
+        this.id = -1;
         this.roles = null;
     }
 
@@ -41,6 +47,7 @@ public class User implements Principal {
                 String username,
                 String password,
                 String email,
+                String imageUrl,
                 String phone,
                 String roles,
                 Timestamp created,
@@ -53,11 +60,14 @@ public class User implements Principal {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.imageUrl = imageUrl;
         this.phone = phone;
         this.roles = new ArrayList<>();
-        String[] rolesSplit = roles.split(",");
-        for(String role : rolesSplit ){
-            this.roles.add(role);
+        if(roles != null) {
+            String[] rolesSplit = roles.split(",");
+            for (String role : rolesSplit) {
+                this.roles.add(role);
+            }
         }
 
         this.created = created;
@@ -185,5 +195,13 @@ public class User implements Principal {
 
     public void setModified(Timestamp modified) {
         this.modified = modified;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

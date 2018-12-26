@@ -1,0 +1,41 @@
+<div class="container position-relative">
+  <div class="row">
+    <div class="span12 w-100">
+      <table class="calendar-table table-condensed w-100 text-center">
+        <thead>
+        <tr>
+          <th colspan="7">
+                        <span class="btn-group">
+                          <a class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i></a>
+                        	<a class="btn active">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</a>
+                        	<a class="btn" (click)="getMonthMapArray(monthOffset+1)"><i class="fa fa-arrow-circle-left"></i></a>
+                        </span>
+          </th>
+        </tr>
+        <tr>
+          <th>شنبه</th>
+          <th>یکشنبه</th>
+          <th>دوشنبه</th>
+          <th>سه شنبه</th>
+          <th>چهارشنبه</th>
+          <th>پنجشنبه</th>
+          <th>جمعه</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let week of month.weeks; ">
+            <td (click)="onDaySelected(day.gDate)" [class.selected]="day && selectedDate===day.gDate" class="calendar-day"
+                [class.today]="monthOffset === 0 && day && (today.gDate.getDate()===day.gDate.getDate())"
+
+                *ngFor="let day of week;  let i = index;">
+              <div *ngIf="day" class="calendar-cell">
+                <div class="calendar-jday" [class.holiday]="i%7===6">{{day.jDate.date}}</div>
+                <div class="calendar-gday english_font" [class.holiday]="i%7===6">{{day.gDate.getDate()}}</div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

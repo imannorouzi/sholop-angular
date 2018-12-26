@@ -1,0 +1,30 @@
+<div class="position-relative">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="align-bottom fa fa-hospital-o"></i></span>
+    </div>
+    <input id="chair" (blur)="blur()" (focus)="show=true" (keyup)="onKeyUp($event)" type="text" name="title" class="form-control" placeholder="نام مخاطب" [(ngModel)]="inputValue">
+  </div>
+
+  <div class="contacts " *ngIf="show">
+    <div *ngFor="let c of contacts; let i = index;" [class.selected]="selectedIndex===i" (click)="onContactSelected(c)" class="row contact p-1 ml-2 mr-2">
+      <div class="col-md-1">
+        <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">
+      </div>
+      <div class="col-md-11 contact_name">{{c.name}}</div>
+    </div>
+
+    <div class="row contact p-1" *ngIf="!loading && contacts.length === 0 && inputValue.length===0">
+      <div class="col-md-12 contact_name">نام کانتکت رو تایپ کن.</div>
+    </div>
+
+    <div class="row contact p-1" *ngIf="!loading && contacts.length === 0 && inputValue.length!==0">
+      <div class="col-md-12 contact_name">هیچی پیدا نکردم.</div>
+    </div>
+
+    <div class="contact p-1" *ngIf="loading">
+      <spinner [size]="'small'" [showing]="true" #spinner></spinner>
+    </div>
+  </div>
+
+</div>

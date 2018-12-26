@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 public class SholopDateMapper implements ResultSetMapper<SholopDate>{
 
@@ -21,14 +22,19 @@ public class SholopDateMapper implements ResultSetMapper<SholopDate>{
 
     @Override
     public SholopDate map(int i, ResultSet rs, StatementContext sc) throws SQLException {
-        SholopDate date = new SholopDate(
-                rs.getInt("id"),
-                rs.getInt("event_id"),
-                rs.getDate("date"),
-                rs.getString("date_string"),
-                rs.getString("start_time_string"),
-                rs.getString("end_time_string")
-        );
+        SholopDate date = null;
+        try {
+            date = new SholopDate(
+                        rs.getInt("id"),
+                        rs.getInt("event_id"),
+                        rs.getString("date"),
+                        rs.getString("date_string"),
+                        rs.getString("start_time_string"),
+                        rs.getString("end_time_string")
+                );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return date;
     }

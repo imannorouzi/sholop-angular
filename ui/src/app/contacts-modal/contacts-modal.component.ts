@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../ng-modal/modal.component";
 import {DataService} from "../data.service";
+import {ModalDirective} from "ngx-bootstrap";
 
 @Component({
   selector: 'contacts-modal',
@@ -8,7 +8,7 @@ import {DataService} from "../data.service";
   styleUrls: ['./contacts-modal.component.css']
 })
 export class ContactsModalComponent implements OnInit {
-  @ViewChild('selectContacts') selectContacts: ModalComponent;
+  @ViewChild('selectContacts') public selectContacts:ModalDirective;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
 
@@ -22,7 +22,7 @@ export class ContactsModalComponent implements OnInit {
 
   readContacts(){
 
-    this.dataService.getContacts(1).subscribe(
+    this.dataService.getContacts().subscribe(
       data => {
         data.object.forEach( contact => {
           this.contacts.push(contact);
@@ -36,6 +36,10 @@ export class ContactsModalComponent implements OnInit {
 
   show(){
     this.selectContacts.show();
+  }
+
+  hide(){
+    this.selectContacts.hide();
   }
 
   onSubmit(){

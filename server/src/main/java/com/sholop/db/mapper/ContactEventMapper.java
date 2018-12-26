@@ -33,8 +33,8 @@ public class ContactEventMapper implements ResultSetMapper<ContactEvent>{
                 rs.getString("status"),
                 rs.getTimestamp("created"),
                 rs.getInt("created_by"),
-                rs.getTimestamp("modified"),
-                rs.getInt("modified_by")
+                rs.getTimestamp("created"),
+                rs.getInt("created_by")
         );
 
         return contact;

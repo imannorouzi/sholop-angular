@@ -1,0 +1,74 @@
+<!-- Add new contact Modal -->
+<modal #addAttendee
+       [modalTitle]="'مخاطب جدید'"
+       [width]="500"
+       [zIndex]="5"
+       [maximizable]="false">
+  <ng-container class="app-modal-body">
+
+    <!--Title-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">نام</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
+          </div>
+          <input id="title" type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="contact.name">
+        </div>
+
+      </div>
+    </div>
+
+    <!--Email-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">ایمیل</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
+          </div>
+          <input id="email" type="text" name="email" class="form-control ltr" placeholder="ایمیل" [(ngModel)]="contact.email">
+        </div>
+
+      </div>
+    </div>
+
+    <!--Email-->
+    <div class="row ">
+      <label class="col-sm-2 col-form-label">تلفن</label>
+      <div class="col-sm-10">
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="align-bottom fa fa-phone"></i></span>
+          </div>
+          <input id="phone" type="text" name="phone" class="form-control ltr" placeholder="تلفن" [(ngModel)]="contact.phone">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-10">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" [(ngModel)]="addToContacts" id="defaultUnchecked">
+          <label class="custom-control-label" for="defaultUnchecked">به لیست مخاطبان اضافه شود.</label>
+        </div>
+      </div>
+
+    </div>
+
+  </ng-container>
+  <ng-container class="app-modal-footer">
+    <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+    <!--<button type="button" class="btn btn-default">Save</button>-->
+    <div class="text-right">
+      <button type="button" class="btn btn-default ml-2" (click)="onSubmit()">تایید <spinner #spinner [size]="'small'"></spinner></button>
+      <button type="button" class="btn btn-default " (click)="addAttendee.hide()">لغو</button>
+    </div>
+  </ng-container>
+</modal>

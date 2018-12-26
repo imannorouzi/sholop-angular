@@ -1,0 +1,92 @@
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+
+    <div class="modal-content">
+      <div class="modal-header ltr">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="">
+
+          <div class=" shadow-sm">
+
+            <div *ngIf="event">
+
+              <h5 class="text-center">{{event.title}}</h5>
+
+              <div class="panel text-right font-weight-bold mb-3">
+                <i class="fa fa-calendar ml-2"></i>
+                <span> {{dateService.greToPersian(event.pointedDate.date, true)}}  </span>
+                <span *ngIf="event.pointedDate.startTime"> از  {{utilService.convertTimeString(event.pointedDate.startTime)}}</span>
+                <span *ngIf="event.pointedDate.endTime"> تا  {{utilService.convertTimeString(event.pointedDate.endTime)}}</span>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-striped text-right">
+                  <thead>
+                  <tr class="font-small text-muted">
+                    <td></td>
+                    <td>نام</td>
+                    <td>ایمیل</td>
+                    <td>تلفن</td>
+                    <td>وضعیت</td>
+                  </tr>
+                  </thead>
+                  <tr class="col-md-6" *ngFor="let contact of event.attendees;">
+
+                    <td class="panel text-right contact-image-td">
+                      <img  class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+                    </td>
+                    <td>{{contact.name}}</td>
+                    <td>{{contact.email}}</td>
+                    <td>{{contact.phone}}</td>
+                    <td>{{getContactStatus(contact.id)}}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="text-right"><i class="fa fa-map-marker ml-2"></i> <span class="text-muted">{{event.location ? event.location.farsiAddress1 : ""}}</span></div>
+              <div class="h-100" id="map" #gmap style="min-height: 150px;" ></div>
+
+              <!--Dates-->
+              <div *ngIf="event.dates.length > 1">
+                <h4>جلسات مرتبط</h4>
+                <div class="panel text-right" *ngFor="let date of event.dates; let i=index;">
+                  <div *ngIf="i > 0">
+                    <i class="fa fa-calendar ml-2"></i>
+                    <span>  {{dateService.greToPersian(date.date, true)}}  </span>
+                    <span *ngIf="date.startTime"> از  {{utilService.convertTimeString(date.startTime)}}</span>
+                    <span *ngIf="date.endTime"> تا  {{utilService.convertTimeString(date.endTime)}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <span class="text-left"><small class="text-muted">{{utilService.getStatusString(event.status)}}</small></span>
+
+            </div>
+
+          </div>
+          <comments #comments [eventId]="event ? event.id : -1"></comments>
+
+        </div>
+      </div>
+
+      <div class="modal-footer ">
+        <div class="text-right w-100">
+          <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
+          <button class="btn btn-default ml-2" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> صفحه جلسه </button>
+          <button class="btn btn-default" (click)="hide()"> بستن </button>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+</div>

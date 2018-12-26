@@ -12,30 +12,35 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sholop.auth.JWTHelper;
 import com.sholop.auth.PasswordHash;
-import com.sholop.objects.User;
 import com.sholop.db.dao.*;
 import com.sholop.objects.*;
 import io.dropwizard.auth.Auth;
+import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 
 @Path("/")
@@ -43,12 +48,16 @@ import javax.ws.rs.core.Response;
 @Timed
 public class SholopRestController {
 
+    public static final String GOOGLE_USER_PASS = "googleRegisteredUser50505";
+    public static final String TEST_SERVER_ADDR = "http://localhost:8094";
+
     private final EventDao eventDao;
     private final LocationDao locationDao;
     private final SholopDateDao sholopDateDao;
     private final ContactDao contactDao;
     private final ContactEventDao contactEventDao;
     private final UserDao userDao;
+    private final CommentDao commentDao;
 
     @Inject
     public SholopRestController(EventDao eventDao,
@@ -56,13 +65,15 @@ public class SholopRestController {
                                 LocationDao locationDao,
                                 ContactDao contactDao,
                                 ContactEventDao contactEventDao,
-                                UserDao userDao) {
+                                UserDao userDao,
+                                CommentDao commentDao) {
         this.eventDao = eventDao;
         this.sholopDateDao = sholopDateDao;
         this.locationDao = locationDao;
         this.contactDao = contactDao;
         this.contactEventDao = contactEventDao;
         this.userDao = userDao;
+        this.commentDao = commentDao;
     }
 
     @POST
@@ -73,11 +84,10 @@ public class SholopRestController {
         try {
             JSONObject jsonUser = new JSONObject(jsonSchedule);
 
-//            User user = userDao.getUserByUsername(jsonUser.getString("username"));
-            User user = new User();
+            User user = userDao.getUserByUsername(jsonUser.getString("username"));
 
             Gson gson = new Gson();
-            if( true || PasswordHash.check(jsonUser.getString("password"), user.getPassword()) ){
+            if( PasswordHash.check(jsonUser.getString("password"), user.getPassword()) ){
                 user.setToken(JWTHelper.createAndSignToken(
                         jsonUser.getString("username"),
                         jsonUser.getString("password")));
@@ -85,7 +95,110 @@ public class SholopRestController {
                 return Response.ok(gson.toJson(new ResponseObject("OK", user)))
                         .build();
             }else{
-                return Response.ok(gson.toJson(new ResponseObject("FAIL", null))).build();
+                return Response.status(401).entity(gson.toJson(new ResponseObject("FAIL", null))).build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/authenticate-with-google")
+    public Response authenticateWithGoogle(String jsonSchedule){
+
+        Gson gson = new Gson();
+        try {
+            JSONObject jsonUser = new JSONObject(jsonSchedule);
+
+            User user = userDao.getUserByUsername(jsonUser.getString("username"));
+
+            if(user == null){
+                // User is not registered, so register him
+
+
+                User newUser = new User(jsonUser.getString("name"),
+                        jsonUser.getString("email"),
+                        PasswordHash.getSaltedHash(GOOGLE_USER_PASS),
+                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
+                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
+
+                if(newUser.getImageUrl() != null && !newUser.getImageUrl().isEmpty()){
+
+                    URL url = new URL(newUser.getImageUrl());
+                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+
+
+                    FileOutputStream fos = new FileOutputStream("./contents/images/users/" + newUser.getEmail()+ "_" + FilenameUtils.getName(url.getPath()));
+                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
+                    String relationalUrl = TEST_SERVER_ADDR + "/contents/images/users/" + newUser.getEmail()+ "_" +FilenameUtils.getName(url.getPath());
+                    newUser.setImageUrl(relationalUrl);
+                }
+
+                // To update the id
+                newUser = userDao.updateUser(newUser);
+
+
+                newUser.setToken(JWTHelper.createAndSignToken(
+                        jsonUser.getString("email"),
+                        GOOGLE_USER_PASS));
+                newUser.setPassword(GOOGLE_USER_PASS);
+
+                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
+                        .build();
+            }else {
+
+                user.setToken(JWTHelper.createAndSignToken(
+                        user.getUsername(),
+                        GOOGLE_USER_PASS));
+            }
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", user)))
+                    .build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/register")
+    public Response register(String jsonSchedule){
+
+        try {
+            JSONObject jsonUser = new JSONObject(jsonSchedule);
+
+            User user = userDao.getUserByUsername(jsonUser.getString("email"));
+
+            Gson gson = new Gson();
+            if( user == null ){
+
+                User newUser = new User(jsonUser.getString("name"),
+                        jsonUser.getString("email"),
+                        PasswordHash.getSaltedHash(jsonUser.getString("password")),
+                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
+                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
+
+                // To update the id
+                newUser = userDao.updateUser(newUser);
+
+                newUser.setToken(JWTHelper.createAndSignToken(
+                        jsonUser.getString("email"),
+                        jsonUser.getString("password")));
+                newUser.setPassword("");
+
+                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
+                        .build();
+            }else{
+                return Response.status(500).entity(gson.toJson(new ResponseObject("DUPLICATE", null))).build();
             }
 
         } catch (Exception e) {
@@ -109,9 +222,9 @@ public class SholopRestController {
             JSONObject jsonEvent = new JSONObject(jsonEventString);
 
             Files.copy(uploadedInputStream,
-                    Paths.get("./ui/src/assets/images/event/" + fileDetail.getFileName()),
+                    Paths.get("./contents/images/events/" + fileDetail.getFileName()),
                     StandardCopyOption.REPLACE_EXISTING);
-            String relationalUrl = "../assets/images/" + fileDetail.getFileName();
+            String relationalUrl = TEST_SERVER_ADDR + "/contents/images/events/" + fileDetail.getFileName();
 
             Event event = new Event(jsonEvent);
             if(event.getLocation().getId() == -1) {
@@ -156,10 +269,195 @@ public class SholopRestController {
         }
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/create-meeting")
+    public Response createMeeting(@Auth User user, String jsonMeetingString) throws JSONException, IOException {
+
+        Gson gson = new Gson();
+        int id = -1;
+        try {
+            JSONObject jsonEvent = new JSONObject(jsonMeetingString);
+
+            Event event = new Event(jsonEvent);
+            if(event.getLocation().getId() == -1) {
+                event.setVenueId(locationDao.insert(event.getLocation()));
+            }else{
+                event.setVenueId(event.getLocation().getId());
+            }
+
+
+            if(event.getId() > 0){
+                // It means user is editing this event
+                eventDao.update(event);
+                id = event.getId();
+
+                //delete previous dates and contacts
+                contactEventDao.deleteEventContacts(id);
+                sholopDateDao.deleteEventDates(id);
+            }else{
+
+                //create a link for the event
+                event.createLink();
+                event.setCreatedBy(user.getId());
+                id = eventDao.insert(event);
+                event.setId(id);
+            }
+
+            for( SholopDate date : event.getDates()){
+                sholopDateDao.insert(date, id);
+            }
+
+            for( Contact contact: event.getAttendees()){
+                ContactEvent contactEvent = new ContactEvent(contact.getId(), id, ContactEvent.STATUS.NOT_REPLIED.name());
+                contactEventDao.insert(contactEvent);
+            }
+
+
+            if(id == -1){
+                return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", null)))
+                        .build();
+            }
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/get-meetings")
+    public Response getMeetings(@Auth User user,
+                                @QueryParam("date") String dateString) throws JSONException {
+
+        Gson gson = new Gson();
+        try {
+
+//            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date date = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z").parse(dateString);
+
+            Date dbDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss").parse(dateString); // Parse without timezone for db
+
+            List<Event> events = eventDao.getEventsByType("MEETING", dbDate);
+            for(Event event : events){
+                List<SholopDate> dates = sholopDateDao.getDatesByEventId(event.getId());
+                event.setDates(dates);
+                for(SholopDate sd : dates){
+                    if(sd.getDate().equals(date)){
+                        event.setPointedDate(sd);
+                    }
+                }
+                event.setLocation(locationDao.getLocationById(event.getVenueId()));
+                List<ContactEvent> contactEvents = contactEventDao.getEventContactsByEventId(event.getId());
+
+                List<String> contactIds = new ArrayList<>();
+                for(ContactEvent contactEvent : contactEvents){
+                    contactIds.add(String.valueOf(contactEvent.getContactId()));
+                }
+                event.setContactEvents(contactEvents);
+                event.setAttendees(contactDao.getContactByContactIds(contactIds));
+            }
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", events))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/get-meeting")
+    public Response getMeeting(@Auth User user,
+                                @QueryParam("meetingId") String meetingId) throws JSONException {
+
+        Gson gson = new Gson();
+        try {
+
+
+            Event event = eventDao.getEventById("MEETING", Integer.parseInt(meetingId));
+            List<SholopDate> dates = sholopDateDao.getDatesByEventId(event.getId());
+            event.setDates(dates);
+            event.setLocation(locationDao.getLocationById(event.getVenueId()));
+            List<ContactEvent> contactEvents = contactEventDao.getEventContactsByEventId(event.getId());
+
+            List<String> contactIds = new ArrayList<>();
+            for(ContactEvent contactEvent : contactEvents){
+                contactIds.add(String.valueOf(contactEvent.getContactId()));
+            }
+            event.setContactEvents(contactEvents);
+            event.setAttendees(contactDao.getContactByContactIds(contactIds));
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @PermitAll
+    @Path("/create-comment")
+    public Response createComment(@Auth User user, String jsonCommentString) throws JSONException, IOException {
+
+        Gson gson = new Gson();
+        int id = -1;
+        try {
+            JSONObject jsonComment = new JSONObject(jsonCommentString);
+
+            Comment comment = new Comment(jsonComment);
+
+            comment.setUserId(user.getId());
+            comment.setId(commentDao.insert(comment));
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/get-comments")
+    public Response getComments(@Auth User user,
+                                @QueryParam("event_id") int eventId,
+                                @QueryParam("page") int page) throws JSONException {
+
+        Gson gson = new Gson();
+        try {
+
+
+            List<Comment> comments = commentDao.getCommentsByEventId(eventId, page);
+
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", comments))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/get-events")
-    public Response getEvents(/*@Auth User user, String userId*/) throws JSONException {
+    public Response getEvents(@Auth User user, String userId) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -183,12 +481,12 @@ public class SholopRestController {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/get-venues")
-    public Response getVenues(@Auth User user) throws JSONException {
+    public Response getVenues(@Auth User user, @QueryParam("hint") String hint) throws JSONException {
 
         Gson gson = new Gson();
         try {
 
-            List<Location> locations = locationDao.getAllLocations();
+            List<Location> locations = locationDao.getAllLocations(user.getId(), hint);
 
             return Response.ok(gson.toJson(new ResponseObject("OK", locations))).build();
 
@@ -201,15 +499,20 @@ public class SholopRestController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-//    @PermitAll
+    @PermitAll
     @Path("/get-contacts")
-    public Response getContacts(/*@Auth User user*/) throws JSONException {
+    public Response getContacts(@Auth User user, @QueryParam("hint") String hint) throws JSONException {
 
         Gson gson = new Gson();
         try {
 
             //TODO user ID !!!
-            List<Contact> contacts = contactDao.getContactByUserId(/*user.getId()*/1);
+            List<Contact> contacts = null;
+            if(hint == null || hint.isEmpty()){
+                contacts = contactDao.getContactByUserId(user.getId(), "");
+            }else{
+                contacts = contactDao.getContactByUserId(user.getId(), hint);
+            }
 
             return Response.ok(gson.toJson(new ResponseObject("OK", contacts))).build();
 
@@ -398,21 +701,18 @@ public class SholopRestController {
         return Response.ok(gson.toJson(new ResponseObject("OK", location))).build();
     }
 
-    @DELETE
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/delete-venue")
     public Response deleteVenue(@Auth User user,
-                                String venueJsonString) throws JSONException, IOException {
+                                String venueId) {
 
         Gson gson = new Gson();
-        Location location = null;
         try {
 
-            JSONObject jsonLocation = new JSONObject(venueJsonString);
-            location = new Location(jsonLocation);
 
-            locationDao.delete(location.getId(), user.getId());
+            locationDao.delete(Integer.parseInt(venueId), user.getId());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -420,41 +720,45 @@ public class SholopRestController {
                     .build();
         }
 
-        return Response.ok(gson.toJson(new ResponseObject("OK", location))).build();
+        return Response.ok(gson.toJson(new ResponseObject("OK", "Venue id " + venueId + " deleted."))).build();
     }
 
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    @PermitAll
+    @PermitAll
     @Path("/update-contact")
-    public Response updateContact(/*@Auth User user,*/
+    public Response updateContact(@Auth User user,
                                   @FormDataParam("file") InputStream uploadedInputStream,
                                   @FormDataParam("file") FormDataContentDisposition fileDetail,
                                   @FormDataParam("file") FormDataBodyPart body,
-                                  @FormDataParam("contact") String contactJsonString) throws JSONException, IOException {
+                                  @FormDataParam("contact") String contactJsonString,
+                                  @FormDataParam("filename") String filename) throws JSONException, IOException {
 
-        final String SRC_UPLOAD_PATH = "./ui/app/images/contact/";
 
         Gson gson = new Gson();
-        Contact contact = null;
+        Contact contact;
         try {
-
-            Files.copy(uploadedInputStream,
-                    Paths.get("./ui/src/assets/images/contacts/" + fileDetail.getFileName()),
-                    StandardCopyOption.REPLACE_EXISTING);
-            String relationalUrl = "../assets/images/contacts/" + fileDetail.getFileName();
-
             JSONObject jsonContact = new JSONObject(contactJsonString);
             contact = new Contact(jsonContact);
 
-            //TODO user id should be replaces
-            contact.setUserId(1/*user.getId()*/);
+            String relationalUrl = "";
+
+            if(filename != null) {
+                filename = filename.replaceAll("\\s+", "");
+
+                Files.copy(uploadedInputStream,
+                        Paths.get("./contents/images/contacts/" +  /*fileDetail.getFileName()*/ filename),
+                        StandardCopyOption.REPLACE_EXISTING);
+                relationalUrl = TEST_SERVER_ADDR + "/contents/images/contacts/" + filename;
+            }
+
+            contact.setUserId(user.getId());
             contact.setImageUrl(relationalUrl);
 
             if(contact.getId() != -1 )
                 contactDao.update(contact);
             else
-                contactDao.insert(contact);
+                contact.setId(contactDao.insert(contact));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -465,21 +769,17 @@ public class SholopRestController {
         return Response.ok(gson.toJson(new ResponseObject("OK", contact))).build();
     }
 
-    @DELETE
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/delete-contact")
     public Response deleteContact(@Auth User user,
-                                String contactJsonString) throws JSONException, IOException {
+                                String id){
 
         Gson gson = new Gson();
         Contact contact = null;
         try {
-
-            JSONObject jsonContact = new JSONObject(contactJsonString);
-            contact = new Contact(jsonContact);
-
-            contactDao.delete(contact.getId(), user.getId());
+            contactDao.delete(Integer.parseInt(id), user.getId());
 
         } catch (Exception e) {
             e.printStackTrace();

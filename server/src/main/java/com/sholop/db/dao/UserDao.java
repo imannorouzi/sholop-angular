@@ -2,10 +2,7 @@ package com.sholop.db.dao;
 
 import com.sholop.db.mapper.UserMapper;
 import com.sholop.objects.User;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.CreateSqlObject;
-import org.skife.jdbi.v2.sqlobject.SqlQuery;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
 
@@ -22,10 +19,20 @@ public abstract class UserDao implements Transactional<UserDao> {
     public User getUserByUsername(String username ){ return ttDao().getUserByUsername(username); }
 
     public User updateUser(User user){
-        ttDao().updateUser(user.getUsername(),
-                user.getName(),
-                user.getEmail());
+        if( user.getId() == -1){
+            int id = ttDao().insert(user.getUsername(),
+                    user.getEmail(),
+                    user.getName(),
+                    user.getPhone(),
+                    user.getImageUrl(),
+                    user.getPassword());
 
+            user.setId(id);
+        }else {
+            ttDao().updateUser(user.getUsername(),
+                    user.getName(),
+                    user.getEmail());
+        }
         return user;
     }
 
@@ -46,6 +53,17 @@ public abstract class UserDao implements Transactional<UserDao> {
         void updateUser(@Bind("username") String username,
                         @Bind("full_name") String name,
                         @Bind("email") String email);
+
+
+        @GetGeneratedKeys
+        @SqlUpdate("insert into sh_user (full_name, email, username, password, phone, image_url) values (:full_name, :email, :username, :password, :phone, :image_url)")
+        int insert(@Bind("username") String username,
+                        @Bind("email") String email,
+                        @Bind("full_name") String name,
+                        @Bind("phone") String phone,
+                        @Bind("image_url") String imageUrl,
+                        @Bind("password") String password);
+
 
         @SqlQuery("SELECT * FROM sh_user WHERE upper(username)=upper(:username)")
         User getUserByUsername(@Bind("username") String username);

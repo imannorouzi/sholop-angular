@@ -11,6 +11,7 @@
             <outputDirectory></outputDirectory>
             <filtered>false</filtered>
         </file>
+
         <file>
             <!--<source>target/${project.artifactId}-${project.version}.jar</source>-->
             <source>target/${project.artifactId}-${project.version}.jar</source>
@@ -20,6 +21,26 @@
             <filtered>false</filtered>
         </file>
     </files>
+
+    <fileSets>
+        <fileSet>
+            <directory>./target/app</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>app</outputDirectory>
+        </fileSet>
+
+
+        <fileSet>
+            <directory>../contents</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>contents</outputDirectory>
+        </fileSet>
+
+    </fileSets>
     <dependencySets>
         <dependencySet>
             <outputDirectory>lib</outputDirectory>

@@ -21,6 +21,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: io.dropwizard-bundles:dropwizard-configurable-assets-bundle:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-servlets:1.2.2" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: io.dropwizard.metrics:metrics-annotation:3.2.5" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.3" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:4.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
@@ -37,8 +42,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.8.7" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-joda:2.8.7" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.24" level="project" />
-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-validation:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-validator:5.3.4.Final" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
@@ -55,8 +58,6 @@
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.24" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.4.2.v20170220" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-metrics:1.1.0" level="project" />
-    <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-servlets:1.1.0" level="project" />
-    <orderEntry type="library" name="Maven: io.dropwizard.metrics:metrics-annotation:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard:dropwizard-jetty:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: io.dropwizard.metrics:metrics-jetty9:3.2.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-servlet:9.4.2.v20170220" level="project" />
@@ -137,5 +138,8 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.6" level="project" />
     <orderEntry type="library" name="Maven: com.jwt4j:jwt4j:0.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.dirkraft.dropwizard:dropwizard-file-assets:0.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.antlr:stringtemplate:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
   </component>
 </module>

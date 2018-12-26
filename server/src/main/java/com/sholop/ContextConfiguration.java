@@ -39,6 +39,7 @@ public class ContextConfiguration extends AbstractModule {
         bind(ContactDao.class).toInstance(jdbi.onDemand(ContactDao.class));
         bind(ContactEventDao.class).toInstance(jdbi.onDemand(ContactEventDao.class));
         bind(UserDao.class).toInstance(jdbi.onDemand(UserDao.class));
+        bind(CommentDao.class).toInstance(jdbi.onDemand(CommentDao.class));
 
 
 

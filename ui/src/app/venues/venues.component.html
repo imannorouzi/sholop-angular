@@ -1,0 +1,78 @@
+<div class="">
+
+  <div class="container mt-3 mb-3" >
+
+    <div class="card h-100 shadow">
+      <div class="card-body flex-parent">
+
+        <div class="row p-2">
+
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-primary w-100" >
+              <i class="fa fa-map"></i> مکان جدید
+            </button>
+            <!--<add-venue (onVenueAdded)="onVenueAdded($event)" #addNewVenue></add-venue>-->
+          </div>
+
+          <div class="col-md-10">
+
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
+              </div>
+              <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="form-control" placeholder="عنوان،‌ آدرس، ..." >
+            </div>
+            <small class="text-muted">برای جستجوی کلمه تایپ شده کلید اینتر را فشار دهید.</small>
+
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div *ngFor="let venue of venues; let index=index;" class="col-md-6 contact p-2 ">
+            <div class="contact-border">
+              <div class="row p-2 text-right">
+
+                <div class="col-md-4">
+                  <agm-map class="map" [latitude]="venue.latitude" [longitude]="venue.longitude" [scrollwheel]="true" [zoom]="15">
+                    <agm-marker [markerDraggable]="false" [latitude]="venue.latitude" [longitude]="venue.longitude"></agm-marker>
+                  </agm-map>
+                </div>
+
+                <div class="col-md-8">
+                  <p>{{venue.title}}</p>
+
+                  <div><span class="text-muted">{{venue.farsiAddress1}}</span> </div>
+                  <div><span class="text-muted">{{venue.farsiAddress2}}</span> </div>
+
+                  <div>
+                    <a href="#" class="ml-3">ویرایش</a>
+                    <a href="#" (click)="onDeleteVenue(venue.id, index, $event)">حذف</a>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center" *ngIf="venues.length === 0">
+          <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
+            <param name="class" value="look-around" />
+          </object>
+          <div class="text-muted">هیچی پیدا نکردم</div>
+        </div>
+
+      </div>
+
+      <div class="row justify-content-center">
+        <spinner [size]="'large'" #spinner></spinner>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+

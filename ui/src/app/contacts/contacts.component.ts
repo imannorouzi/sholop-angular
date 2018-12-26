@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {User} from "../user";
-import {first} from "rxjs/operators";
-import {UserService} from "../user.service";
+import {SpinnerComponent} from "../spinner/spinner.component";
 
 @Component({
   selector: 'app-contacts',
@@ -10,47 +9,75 @@ import {UserService} from "../user.service";
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
+  @ViewChild("spinner") spinner: SpinnerComponent;
 
   contacts: any[] = [];
 
   currentUser: User;
-  users: User[] = [];
+  searchString: string = '';
 
-  constructor(private dataService: DataService,
-              private userService: UserService) {
+  constructor(private dataService: DataService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
-    this.readContacts();
-    this.loadAllUsers();
+    this.readContacts('');
+    // this.loadAllUsers();
   }
 
-  readContacts(){
+  readContacts(hint: string){
 
-    this.dataService.getContacts(1).subscribe(
+    this.spinner.show();
+
+
+    this.dataService.getContacts(hint).subscribe(
       data => {
-        data.object.forEach( contact => {
-          this.contacts.push(contact);
-        });
+        if(data.msg === "OK") {
+
+          this.contacts = [];
+
+          data.object.forEach(contact => {
+            this.contacts.push(contact);
+          });
+        }
+
+        this.spinner.hide();
       },
       error1 => {
         console.log(error1);
+        this.spinner.hide();
       }
     )
   }
 
-  deleteUser(id: number) {
-    this.userService.delete(id).pipe(first()).subscribe(() => {
-      this.loadAllUsers()
-    });
+  deleteContact(id: number, index: number) {
+    this.dataService.deleteContact(id).subscribe(
+      data => {
+        this.contacts.splice(index, 1);
+      },
+      error1 => {
+        console.log(error1);
+        this.spinner.hide();
+      }
+    )
   }
 
-  private loadAllUsers() {
+  /*private loadAllUsers() {
     this.userService.getAll().pipe(first()).subscribe(users => {
       this.users = users;
     });
+  }*/
+
+  onContactAdded(contact){
+    this.contacts.push(contact);
   }
 
+  onDeleteUser(id: any, index: number, event) {
+    event.preventDefault();
+    this.deleteContact(id, index);
+  }
 
+  onKeyUp(event){
+    this.readContacts(this.searchString)
+  }
 }

@@ -1,8 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
-import {Venue} from "../venue";
 import {DataService} from "../data.service";
+import {SpinnerComponent} from "../spinner/spinner.component";
+import {AlertService} from "../alert.service";
+import {AuthenticationService} from "../authentication.service";
+import {ModalDirective} from "ngx-bootstrap";
 
 @Component({
   selector: 'add-contact',
@@ -10,17 +13,22 @@ import {DataService} from "../data.service";
   styleUrls: ['./add-contact.component.css']
 })
 export class AddContactComponent implements OnInit {
-  @ViewChild('addNewContact') modal: ModalComponent;
+  @ViewChild('childModal') public modal:ModalDirective;
   @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
   @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('spinner') spinner: SpinnerComponent;
+
+
+  @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
   contact = {
     name: '',
     email: '',
     phone: '',
     image: File,
-    id: -1
+    id: -1,
+    fileName: ''
   };
 
   submitting: boolean = false;
@@ -30,7 +38,9 @@ export class AddContactComponent implements OnInit {
   croppedWidth:number;
   croppedHeight:number;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+              private alertService: AlertService,
+              private authenticationService: AuthenticationService) {
     this.cropperSettings1 = new CropperSettings();
     this.cropperSettings1.width = 200;
     this.cropperSettings1.height = 200;
@@ -61,12 +71,29 @@ export class AddContactComponent implements OnInit {
     this.modal.show();
   }
 
+  hide(){
+    this.modal.hide();
+  }
+
+  reset(){
+    this.contact = {
+      name: '',
+      email: '',
+      phone: '',
+      image: null,
+      id: -1,
+      fileName: ''
+    };
+
+    this.cropper.reset();
+  }
+
   fileChanged($event){
     let file = $event.target.files[0];
     if(file){
       this.imageCropperModal.show();
       this.cropper.fileChangeListener($event);
-      this.contact.image = file;
+      this.contact.fileName = file.name;
     }
   }
 
@@ -81,21 +108,26 @@ export class AddContactComponent implements OnInit {
     return true;
   }
 
-  onSubmit(){
+  createContact(){
     if(this.validateForm()) {
 
-      this.submitting = true;
+      this.modal.hide();
+      this.contact['userId'] = this.authenticationService.getUser().id;
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
-          // console.log(value);
-          this.submitting = false;
-          this.modal.hide();
-          alert('slsl');
+          this.onContactAdded.emit(value.object);
         },
         (error:any) => {
           console.log(error);
-          this.submitting = false;
+          // this.spinner.hide();
+          this.modal.show();
+          this.alertService.error(error.toString())
         });
     }
+  }
+
+  onImageCropperModalOk() {
+    this.imageCropperModal.hide();
+    this.contact.image = this.data1.image
   }
 }

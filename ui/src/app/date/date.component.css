@@ -1,39 +1,13 @@
-.tiny-calendar{
-  border: 1px solid #eee;
-  padding: 10px;
-  text-align: center;
+#calendar {
   position: absolute;
-  z-index: 1;
+  width: 100%;
   background: white;
-}
-.today>.tiny-calendar-cell{
-  background: rgb(140,158,255);
-}
-.tiny-calendar-cell{
-  width:40px;
-  height:40px;
-  text-align: center;
-  border-radius:50%;
-  cursor: pointer;
-  line-height: 1;
-  padding: 8px;
-}
-.event-date{
-  position:relative;
-}
-.tiny-calendar-cell.selected{
-  font-weight:bold;
-  background:yellow;
+  z-index: 10;
+  right: 0;
 }
 
-.tiny-calendar-cell:hover{
-  background: rgb(245,0,87);
-  color: white;
+#calendar-container{
+  position: relative;
+  margin:0;
 }
 
-.tiny-calendar-gday{
-  font-size: 11px;
-}
-.tiny-calendar-jday{
-  font-size: 16px;
-}

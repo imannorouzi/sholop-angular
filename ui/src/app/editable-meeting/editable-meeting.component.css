@@ -1,0 +1,17 @@
+.contact-image{
+  width: 38px;
+  height: 38px;
+}
+
+.map{
+  height: 150px;
+}
+
+.contact-image{
+  width: 80px;
+  height: 80px;
+}
+
+.contact-border{
+  border: 1px solid #dde;
+}

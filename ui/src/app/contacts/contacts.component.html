@@ -1,56 +1,108 @@
 <div class="">
 
-  <h1>Hi {{currentUser.firstName}}!</h1>
-  <p>You're logged in with Angular 6!!</p>
-  <h3>All registered users:</h3>
-  <ul>
-    <li *ngFor="let user of users">
-      {{user.username}} ({{user.firstName}} {{user.lastName}})
-      - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
-    </li>
-  </ul>
-  <p><a [routerLink]="['/login']">Logout</a></p>
+  <div class="container mt-3 mb-3" >
 
-  <div class="container pt-5" >
+    <div class="card h-100 shadow">
+      <div class="card-body flex-parent">
 
-    <div class="m-3 text-right">
-      <button type="button" class="btn btn-primary" (click)="addNewContact.show()" >Add New Contact <i class="fa fa-user"></i></button>
-      <add-contact #addNewContact></add-contact>
-    </div>
+        <div class="row pb-2">
 
-    <div class="row justify-content-center">
-      <div class="col-md-3" *ngFor="let contact of contacts">
-        <div class="card">
-          <div class="card-body">
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-primary w-100" (click)="addNewContact.reset();addNewContact.show()" >
+              <i class="fa fa-user-plus"></i> مخاطب جدید
+            </button>
+            <add-contact (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
+          </div>
 
-            <!--address: ""-->
-            <!--created: "Oct 14, 2018 6:03:40 PM"-->
-            <!--createdBy: 0-->
-            <!--email: "atieh.ghazizadeh@gmail.com"-->
-            <!--id: 46-->
-            <!--modified: "Oct 2, 2018 12:00:00 AM"-->
-            <!--modifiedBy: 1-->
-            <!--name: "Iman Norouzi"-->
-            <!--phone: "0435072839"-->
-            <!--userId: 1-->
-            <!--imageUrl: 1-->
-            <!--valid: true-->
+          <div class="col-md-10">
 
-            <div class="row">
-              <div class="col-sm-6 m-2">
-                <img class="rounded-circle w-100" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
+              </div>
+              <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="form-control" placeholder="نام، ایمیل، ..." >
+            </div>
+
+          </div>
+
+        </div>
+
+        <!--address: ""-->
+        <!--created: "Oct 14, 2018 6:03:40 PM"-->
+        <!--createdBy: 0-->
+        <!--email: "atieh.ghazizadeh@gmail.com"-->
+        <!--id: 46-->
+        <!--modified: "Oct 2, 2018 12:00:00 AM"-->
+        <!--modifiedBy: 1-->
+        <!--name: "Iman Norouzi"-->
+        <!--phone: "0435072839"-->
+        <!--userId: 1-->
+        <!--imageUrl: 1-->
+        <!--valid: true-->
+
+
+        <!--<div class="table-responsive contacts-table container text-right">
+          <div class="table table-bordred table-striped w-100">
+
+            <thead>
+              <tr class="">
+                <th></th>
+                <th>نام</th>
+                <th>ایمیل</th>
+                <th>تلفن</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let contact of contacts; let index=index;">
+                <td><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></td>
+                <td >{{contact.name}}</td>
+                <td ><i class="fa fa-envelope"></i>  {{contact.email}}</td>
+                <td ><i class="fa fa-phone"></i>  {{contact.phone}}</td>
+                <td><a href="#">Edit</a></td>
+                <td><a href="#" (click)="onDeleteUser(contact.id, index, $event)">Delete</a></td>
+              </tr>
+
+            </tbody>
+          </div>
+        </div>-->
+
+        <div class="row">
+
+          <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact p-2 ">
+            <div class="contact-border">
+              <div class="row p-2 ">
+
+                <div class="col-md-4 text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
+
+                <div class="col-md-8 text-right">
+                  <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
+                  <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+                  <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+
+                  <div>
+                    <a href="#" class="ml-3">ویرایش</a>
+                    <a href="#" (click)="onDeleteUser(contact.id, index, $event)">حذف</a>
+                  </div>
+                </div>
+
               </div>
             </div>
-            <h5 class="card-title">{{contact.name}}</h5>
           </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item text-nowrap text-overflow"><i class="fa fa-envelope"></i>  {{contact.email}}</li>
-            <li class="list-group-item text-nowrap"><i class="fa fa-phone"></i>  {{contact.phone}}</li>
-          </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">Edit</a>
-            <a href="#" class="card-link">Delete</a>
-          </div>
+
+        </div>
+
+        <div class="text-center" *ngIf="contacts.length === 0">
+          <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
+            <param name="class" value="look-around" />
+          </object>
+          <div class="text-muted">هیچی پیدا نکردم</div>
+        </div>
+
+        <div class="row justify-content-center">
+          <spinner [size]="'large'" #spinner></spinner>
         </div>
       </div>
     </div>

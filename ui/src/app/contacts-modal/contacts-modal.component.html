@@ -1,30 +1,46 @@
 <!-- import contact Modal -->
 <modal #selectContacts
-       [modalTitle]="'Select Contacts'"
+       [modalTitle]="'دعوت مخاطبان'"
        [zIndex]="5"
        [width]="700"
        [maximizable]="true">
   <ng-container class="app-modal-body">
 
-    <a href="#" class="m-4" (click)="onImportClick()"><span class=""><i class="fa fa-list"></i> Select All</span></a>
+    <div class="container">
 
-    <ul class="list-group">
-      <li [class.selected]="contact.selected" class="list-group-item" *ngFor="let contact of contacts" (click)="contact.selected = !contact.selected">
-        <div class="row">
-        <!-- Image -->
-          <div class="col-md-1">
-            <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-          </div>
-          <div class="col-md-10">
-            <!--Name-->
-            <h5 class="mb-0">{{contact.name}}</h5>
-            <!--Email, Phone-->
-            <small class="text-muted"><i class="fa fa-envelope"></i> {{contact.email}}</small>
-            <small class="text-muted ml-3"><i class="fa fa-phone"></i> {{contact.phone}}</small>
-          </div>
+      <div class="row">
+        <div class="mb-1 mt-2">
+          <a href="#" class=""><span class=""><i class="fa fa-check"></i> انتخاب همه </span></a>
         </div>
-      </li>
-    </ul>
+      </div>
+
+      <div class="row p-2 border" *ngFor="let contact of contacts" (click)="contact.selected = !contact.selected">
+        <!-- Image -->
+        <div class="col-md-2">
+          <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+        </div>
+        <div class="col-md-9">
+          <!--Name-->
+          <h5 class="mb-0" [class.font-weight-bold]="contact.selected">{{contact.name}}</h5>
+          <!--Email, Phone-->
+          <small class="text-muted"><i class="fa fa-envelope"></i> {{contact.email}}</small>
+          <small class="text-muted ml-3"><i class="fa fa-phone"></i> {{contact.phone}}</small>
+        </div>
+
+        <div class="col-md-1">
+          <i *ngIf="contact.selected" class="fa fa-check font-x-large check-icon"></i>
+        </div>
+      </div>
+
+
+      <div class="text-center" *ngIf="contacts.length === 0">
+        <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
+          <param name="class" value="look-around" />
+        </object>
+        <div class="text-muted">هیچی پیدا نکردم</div>
+      </div>
+
+    </div>
 
 
 
@@ -33,8 +49,8 @@
     <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
     <!--<button type="button" class="btn btn-default">Save</button>-->
     <div class="text-right">
-      <button type="button" class="btn btn-default pull-left" (click)="selectContacts.hide()">Cancel</button>
-      <button type="button" class="btn btn-default" (click)="onSubmit()" >OK</button>
+      <button type="button" class="btn btn-default ml-2" (click)="onSubmit()" >تایید</button>
+      <button type="button" class="btn btn-default" (click)="selectContacts.hide()">لغو</button>
     </div>
   </ng-container>
 </modal>

@@ -1,6 +1,8 @@
-.text-overflow{
-  overflow: hidden;
+.contact-image{
+  width: 80px;
+  height: 80px;
 }
-.text-overflow:hover{
-  overflow: visible;
+
+.contact-border{
+  border: 1px solid #dde;
 }

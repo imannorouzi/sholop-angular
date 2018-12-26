@@ -5,15 +5,15 @@ package com.sholop.db.dao;
  * on 12/11/2017.
  */
 
+import com.sholop.db.mapper.ContactEventMapper;
 import com.sholop.db.mapper.ContactMapper;
 import com.sholop.objects.ContactEvent;
-import org.skife.jdbi.v2.sqlobject.Bind;
-import org.skife.jdbi.v2.sqlobject.CreateSqlObject;
-import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
-import org.skife.jdbi.v2.sqlobject.SqlUpdate;
+import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
+import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
 
+import java.util.List;
 
 public abstract class ContactEventDao implements Transactional<ContactEventDao> {
     @CreateSqlObject
@@ -38,7 +38,11 @@ public abstract class ContactEventDao implements Transactional<ContactEventDao> 
         ttDao().deleteEventContacts(id);
     }
 
-    @RegisterMapper(ContactMapper.class)
+    public List<ContactEvent> getEventContactsByEventId(int eventId) {
+        return ttDao().getEventContactsByEventId(eventId);
+    }
+
+    @RegisterMapper(ContactEventMapper.class)
     private interface Dao {
 
         @SqlUpdate("update sh_event_contact set status=:status WHERE id=:id")
@@ -58,5 +62,8 @@ public abstract class ContactEventDao implements Transactional<ContactEventDao> 
 
         @SqlUpdate("delete from sh_contact_event where event_id=:event_id")
         void deleteEventContacts(@Bind("event_id") int id);
+
+        @SqlQuery("select * from sh_contact_event where event_id=:event_id")
+        List<ContactEvent> getEventContactsByEventId(@Bind("event_id") int eventId);
     }
 }

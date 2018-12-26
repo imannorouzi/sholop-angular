@@ -6,7 +6,12 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import javax.swing.text.DateFormatter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Pooyan on 3/20/2018.
@@ -22,23 +27,33 @@ public class SholopDate {
 
     public SholopDate(int id,
                       int eventId,
-                      Date date,
+                      String date,
                       String dateString,
                       String startTime,
-                      String endTime){
+                      String endTime) throws ParseException {
         this.eventId = eventId;
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
 
         this.dateString = dateString;
-        this.date = date;
+
+//        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.s");
+//        this.date = dtf.parseDateTime(dateTime);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        this.date = dateFormat.parse(date);
     }
 
-    public SholopDate(JSONObject jo) throws JSONException {
+    public SholopDate(JSONObject jo) throws JSONException, ParseException {
 
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        date = dtf.parseDateTime(jo.getJSONObject("date").getString("today")).toDate();
+//        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//        date = dtf.parseDateTime(jo.getString("date")).toDateTime();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//        String strDate = dateFormat.format();
+        this.date = dateFormat.parse(jo.getString("date"));
 
         dateString = "";
 

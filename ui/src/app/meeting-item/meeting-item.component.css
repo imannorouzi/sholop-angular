@@ -1,0 +1,20 @@
+.contact-image:first-child{
+  margin-right: 0;
+}
+.contact-image{
+  width: 35px;
+  height: 35px;
+  margin-right: -12px;
+  /* padding: 5px; */
+}
+.meeting-item{
+  cursor: pointer;
+}
+
+.meeting-item:hover{
+  background: #f5f5f5;
+}
+
+.meeting-time{
+  font-size: 14px;
+}

@@ -1,0 +1,52 @@
+<div>
+  <div class="card meeting-item">
+
+    <div class="card-body">
+
+
+      <h5 class="card-title text-right row">
+        <div class="col-md-9" *ngIf="event.pointedDate.startTime">
+          <span class="meeting-time ml-3"><i class="fa fa-clock-o ml-2"></i>{{utilService.convertTimeString(event.pointedDate.startTime)}}</span>
+          <span class="meeting-title font-weight-bold">{{event.title}}</span>
+        </div>
+        <div class="col-md-9" *ngIf="!event.pointedDate.startTime">
+          <span class="meeting-time ml-3"><i class="fa fa-calendar ml-2"></i>{{dateService.greToPersian(event.pointedDate.date)}}</span>
+          <span class="meeting-title font-weight-bold">{{event.title}}</span>
+        </div>
+        <div class="col-md-3 text-left meeting-time">
+          {{utilService.getTimeDuration(event.pointedDate.startTime, event.pointedDate.endTime)}}
+        </div>
+      </h5>
+
+      <div class="row ">
+        <div class="col-md-6" >
+
+          <div class="panel text-right" >
+            <img *ngFor="let contact of event.attendees;let i=index;" class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+
+            <span>  {{attendeesString}}  </span>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-md-10 text-right">
+
+          <span class="">
+            <a [href]="'https://maps.google.com/?q='+ event.location.latitude +',' + event.location.longitude" target="_blank" (click)="$event.stopPropagation();">
+              <small class="text-muted"><i class="fa fa-map-marker"></i> {{event.location ? event.location.farsiAddress1 + ', ' +  event.location.farsiAddress2: ""}}</small>
+            </a>
+          </span>
+        </div>
+        <div class="col-md-2">
+          <span class="text-left"><small class="text-muted">{{utilService.getStatusString(event.status)}}</small></span>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>

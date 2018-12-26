@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { AfService } from '../providers/af.service';
 
 
 import {AlertService} from "../alert.service";
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService) {}
+    private alertService: AlertService,
+    public AfService: AfService) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -29,9 +31,13 @@ export class LoginComponent implements OnInit {
 
     // reset login status
     this.authenticationService.logout();
+    if(this.AfService.user) {
+      this.AfService.logout();
+    }
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+
   }
 
   // convenience getter for easy access to form fields
@@ -57,4 +63,10 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         });
   }
+
+  loginWithGoogle(){
+    this.AfService.logout();
+    this.AfService.loginWithGoogle();
+  }
+
 }

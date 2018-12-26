@@ -6,6 +6,7 @@ import com.amazonaws.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +30,8 @@ public class Event {
              boolean limitGuests,
              int maxGuests,
              boolean allowComments,
-             String imageUrl) {
+             String imageUrl,
+             String status) {
         this.id = id;
         this.venueId = venueId;
         this.title = title;
@@ -42,17 +44,22 @@ public class Event {
         this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKOWN :  EVENT_TYPE.valueOf(eventType);
         this.location = location;
         this.imageUrl = imageUrl;
+        this.status = status;
     }
 
-    enum EVENT_TYPE {UNKOWN, MEETING }
+    public enum EVENT_TYPE {UNKOWN, MEETING }
 
-    String title, description, link, tags, imageUrl;
+    String title, description, link, tags, imageUrl, status;
 
     Location location;
 
     List<SholopDate> dates;
+    SholopDate pointedDate;
     List<SholopImage> images;
     List<SholopAttachment> attachments;
+    List<ContactEvent> contactEvents;
+    List<Contact> attendees;
+
     SholopDate closeDate;
 
     // setting attributes
@@ -61,15 +68,15 @@ public class Event {
         limitGuests,
         allowComments;
 
-    int id, maxGuests, venueId, userId, registeredGuests;
+    int id, maxGuests, venueId, userId, createdBy, registeredGuests;
 
     EVENT_TYPE eventType;
 
-    public Event(JSONObject jo) throws JSONException {
+    public Event(JSONObject jo) throws JSONException, ParseException {
 
         this.setTitle(jo.getString("title"));
         this.setDescription(jo.has("description") ? jo.getString("description") : "");
-        this.setEventType(jo.has("event_type")? EVENT_TYPE.valueOf(jo.getString("event_type")) : EVENT_TYPE.MEETING);
+        this.setEventType(jo.has("eventType")? EVENT_TYPE.valueOf(jo.getString("eventType")) : EVENT_TYPE.MEETING);
         this.setLocation(new Location(jo.getJSONObject("venue")));
         this.setUserId(jo.getInt("userId"));
 
@@ -77,6 +84,12 @@ public class Event {
         this.dates = new ArrayList<>();
         for(int i=0; i<datesArray.length(); i++) {
             this.dates.add(new SholopDate(datesArray.getJSONObject(i)));
+        }
+
+        JSONArray contactsArray = jo.getJSONArray("contacts");
+        this.attendees = new ArrayList<>();
+        for(int i=0; i<contactsArray.length(); i++) {
+            this.attendees.add(new Contact(contactsArray.getJSONObject(i)));
         }
 
         this.setAllowComments(jo.has("allowComments") && jo.getBoolean("allowComments"));
@@ -254,5 +267,45 @@ public class Event {
 
     public void setAttachments(List<SholopAttachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public List<Contact> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(List<Contact> attendees) {
+        this.attendees = attendees;
+    }
+
+    public int getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(int createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public SholopDate getPointedDate() {
+        return pointedDate;
+    }
+
+    public void setPointedDate(SholopDate pointedDate) {
+        this.pointedDate = pointedDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<ContactEvent> getContactEvents() {
+        return contactEvents;
+    }
+
+    public void setContactEvents(List<ContactEvent> contactEvents) {
+        this.contactEvents = contactEvents;
     }
 }

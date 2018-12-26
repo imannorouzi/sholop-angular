@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class UserMapper implements ResultSetMapper<User>{
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(UserMapper.class);
+
     @Override
     public User map(int i, ResultSet rs, StatementContext sc) throws SQLException {
 
@@ -20,6 +21,7 @@ public class UserMapper implements ResultSetMapper<User>{
                 rs.getString("username").trim(),
                 rs.getString("password").trim(),
                 rs.getString("email").trim(),
+                rs.getString("image_url").trim(),
                 rs.getString("phone"),
                 rs.getString("roles"),
                 rs.getTimestamp("created"),

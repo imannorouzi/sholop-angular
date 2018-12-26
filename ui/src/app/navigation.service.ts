@@ -8,7 +8,7 @@ export class NavigationService {
 
   constructor(private router: Router) { }
 
-  navigate(url){
-    this.router.navigate([url]);
+  navigate(url, params = undefined){
+    this.router.navigate([url, params]);
   }
 }

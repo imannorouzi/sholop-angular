@@ -1,6 +1,15 @@
-<div>
-  <input type="text" [class]="inputClasses" [value]="selectedDate.farsiDate" (focus)="onFocus()" name="date" placeholder="Date" />
-  <table *ngIf="isShowing" class="tiny-calendar">
+<div clickOutside (clickOutside)="isShowing=false">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="align-bottom fa fa-calendar"></i></span>
+    </div>
+    <input type="text" [class]="inputClasses+ ' ltr'" [value]="dateService.greToPersian(selectedDate)" (focus)="onFocus()" name="date" placeholder="Date" />
+  </div>
+
+  <div id="calendar-container" class="form-group" *ngIf="isShowing"  >
+    <calendar id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
+  </div>
+  <!--<table *ngIf="isShowing" class="tiny-calendar">
     <tr>
       <th colspan="1"><i class="align-bottom fa fa-chevron-left"></i></th>
       <th colspan="5" class="text-center">
@@ -23,9 +32,9 @@
           *ngFor="let day of week">
         <div *ngIf="day" class="tiny-calendar-cell" ng-click="fixDate(parentIndex, day); $event.stopPropagation();">
           <div class="tiny-calendar-jday">{{day.day}}</div>
-          <!--<div class="tiny-calendar-gday english">{{day._d.getDate()}}</div>-->
+          &lt;!&ndash;<div class="tiny-calendar-gday english">{{day._d.getDate()}}</div>&ndash;&gt;
         </div>
       </td>
     </tr>
-  </table>
+  </table>-->
 </div>

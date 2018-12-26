@@ -1,0 +1,33 @@
+<div class="comments container pt-2 mt-2 pb-2 mb-2">
+
+  <div class="container">
+    <div (onSumbit)="postComment()" class="row ">
+      <!-- Image -->
+      <div class="col-md-1">
+        <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">
+      </div>
+      <div class="col-md-10">
+        <input type="text" class="form-control" [(ngModel)]="comment.text">
+      </div>
+      <button type="submit" class="form-control col-md-1 btn btn-outline-primary" (submit)="postComment()" (click)="postComment()"><i class="fa fa-comment"></i> </button>
+
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div *ngFor="let c of comments" class="row comment">
+      <div class="col-md-1">
+        <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">
+      </div>
+      <label class="col-form-label col-md-11 text-right">
+        {{c.text}}
+      </label>
+    </div>
+
+    <div class="row comment" *ngIf="!noMoreComments">
+      <a class="col-md-12 text-center" href="" (click)="readComments($event)">View more...</a>
+    </div>
+
+  </div>
+</div>

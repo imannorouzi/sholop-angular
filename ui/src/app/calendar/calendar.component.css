@@ -1,0 +1,33 @@
+.calendar-day{
+  cursor: pointer;
+}
+
+.calendar-day.selected{
+  background: #343a40;
+  color: white;
+}
+.calendar-day:hover{
+  background: #9d9d9d;
+  color: white;
+}
+
+
+td{
+  padding: 5px;
+}
+
+.holiday{
+  color: red;
+}
+
+.today{
+  border: 1px solid #ddd;
+}
+
+.calendar-table th{
+  font-size: 7px;
+}
+
+.calendar-gday{
+  font-size: 10px;
+}

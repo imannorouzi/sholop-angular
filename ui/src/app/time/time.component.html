@@ -1,0 +1,38 @@
+<div class="" clickOutside (clickOutside)="isHourShowing=false; isMinuteShowing=false;">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><i class="align-bottom fa fa-clock-o"></i></span>
+    </div>
+    <input #input
+           (change)="onTimeChanged()"
+      type="text" [class]="inputClasses + ' ltr'" autocomplete="false"
+           [value]="(hourString ? hourString : '-- ')+':'+(minuteString ? minuteString : ' --')"
+           (focus)="onFocus()" name="date"
+           [placeholder]="placeholder? placeholder : 'Time'" />
+  </div>
+
+
+
+    <div id="" class="times-container"  *ngIf="isMinuteShowing || isHourShowing" >
+      <div class="w-100">
+        <div class="text-center row times-table" #hoursColumn *ngIf="isHourShowing">
+          <div *ngFor="let hour of hours; let index=index"
+               [class]="hour.localeCompare('08')<0 || hour.localeCompare('20')>0  ? 'dark cell col-md-4 inside' : 'bright cell col-md-4 inside'"
+               (click)="onCellHourClick($event, index)" >
+            {{hour}}:00
+          </div>
+        </div>
+
+        <div class="text-center row times-table" #minutesColumn *ngIf="isMinuteShowing" >
+          <div *ngFor="let minute of minutes; let index=index"
+               [class]="hourString.localeCompare('08')<0 || hourString.localeCompare('20')>0  ? 'dark cell col-md-4 inside' : 'bright cell col-md-4 inside'"
+               (click)="onCellMinuteClick($event, index)">
+            {{hourString}}:{{minute}}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+</div>

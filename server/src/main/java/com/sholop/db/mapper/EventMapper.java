@@ -47,7 +47,8 @@ public class EventMapper implements ResultSetMapper<Event>{
                 rs.getBoolean("limit_guests"),
                 rs.getInt("max_guests"),
                 rs.getBoolean("allow_comments"),
-                rs.getString("image_url")
+                rs.getString("image_url"),
+                rs.getString("status")
         );
 
         return event;

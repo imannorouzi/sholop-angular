@@ -21,7 +21,7 @@ public class SchedulerAuthenticator implements Authenticator<String, User>{
     @Override
     public Optional<User> authenticate(String token) throws AuthenticationException {
 
-        /*DecodedJWT jwt = JWTHelper.verifyToken(token.replaceFirst("Bearer ", ""));
+        DecodedJWT jwt = JWTHelper.verifyToken(token.replaceFirst("Bearer ", ""));
         User u = userDao.getUserByUsername(jwt.getClaim("user").asString());
 
         try {
@@ -31,9 +31,7 @@ public class SchedulerAuthenticator implements Authenticator<String, User>{
         } catch (Exception e) {
             return Optional.empty();
         }
-        return Optional.empty();*/
-
-        return Optional.of(new User());
+        return Optional.empty();
     }
 
 }

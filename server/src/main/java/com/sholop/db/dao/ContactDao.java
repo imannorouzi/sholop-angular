@@ -10,6 +10,8 @@ import com.sholop.objects.Contact;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
+import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
+import org.skife.jdbi.v2.unstable.BindIn;
 
 import java.util.List;
 
@@ -21,7 +23,13 @@ public abstract class ContactDao implements Transactional<ContactDao> {
 
     public Contact getContactById(int id){ return ttDao().getContactById(id); }
 
-    public List<Contact> getContactByUserId(int userId){ return ttDao().getContactsByUserId(userId); }
+    public List<Contact> getContactByUserId(int userId, String hint){ return ttDao().getContactsByUserId(userId, hint); }
+
+
+    public List<Contact> getContactByContactIds(List<String> contactIds){
+        contactIds.add("94");
+        return ttDao().getContactsByContactIds(contactIds);
+    }
 
     public Contact update(Contact contact){
         ttDao().updateContact(contact.getName(),
@@ -51,6 +59,7 @@ public abstract class ContactDao implements Transactional<ContactDao> {
         ttDao().delete(contactId, userId);
     }
 
+    @UseStringTemplate3StatementLocator
     @RegisterMapper(ContactMapper.class)
     private interface Dao {
 
@@ -64,15 +73,15 @@ public abstract class ContactDao implements Transactional<ContactDao> {
                            @Bind("id") int id,
                            @Bind("user_id") int userId);
 
-        @SqlUpdate("update sh_contact set is_active = false where user_id=:user_id and id=:id")
+        @SqlUpdate("delete from sh_contact where user_id=:user_id and id=:id")
         void delete(
                 @Bind("id") int id, @Bind("user_id") int userId);
 
         @SqlQuery("SELECT * FROM as_users WHERE upper(username)=upper(:username)")
         Contact getContactById(@Bind("id") int id);
 
-        @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id")
-        List<Contact> getContactsByUserId(@Bind("user_id") int userId);
+        @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id and name like CONCAT('%', :hint, '%')")
+        List<Contact> getContactsByUserId(@Bind("user_id") int userId, @Bind("hint") String hint);
 
         @GetGeneratedKeys
         @SqlUpdate("insert into sh_contact (name, email, phone, address, image_url, valid, user_id)" +
@@ -84,5 +93,8 @@ public abstract class ContactDao implements Transactional<ContactDao> {
                    @Bind("image_url") String imageUrl,
                    @Bind("valid") boolean valid,
                    @Bind("user_id") int userId);
+
+        @SqlQuery("SELECT * FROM sh_contact WHERE id in(<contact_ids>)")
+        List<Contact> getContactsByContactIds(@BindIn("contact_ids") List<String> contactIds);
     }
 }

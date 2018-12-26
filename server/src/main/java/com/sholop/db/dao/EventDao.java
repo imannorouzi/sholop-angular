@@ -6,11 +6,13 @@ package com.sholop.db.dao;
 
 import com.sholop.db.mapper.EventMapper;
 import com.sholop.objects.Event;
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -53,7 +55,9 @@ public abstract class EventDao implements Transactional<EventDao> {
                 event.getMaxGuests(),
                 event.isAllowComments(),
                 event.getLink(),
-                event.getTags()
+                event.getTags(),
+                event.getEventType().name(),
+                event.getCreatedBy()
         );
     }
 
@@ -67,10 +71,24 @@ public abstract class EventDao implements Transactional<EventDao> {
         ttDao().updateImageUrl(id, url);
     }
 
+    public List<Event> getEventsByType(String eventType, Date date){
+        return ttDao().getEventsByType(eventType, date);
+    }
+
+    public Event getEventById(String eventType, int meetingId) {
+        return ttDao().getEventById(eventType, meetingId);
+    }
+
     @RegisterMapper(EventMapper.class)
     private interface Dao {
         @SqlQuery("SELECT * FROM sh_event WHERE 1=1 ORDER BY 1 ")
         List<Event> listAllEvents();
+
+        @SqlQuery("SELECT s.* FROM sh_event s inner join sh_event_date d on s.id=d.event_id WHERE d.date=:date and event_type=:type")
+        List<Event> getEventsByType(@Bind("type") String type, @Bind("date") Date date);
+
+        @SqlQuery("SELECT s.* FROM sh_event s inner join sh_event_date d on s.id=d.event_id WHERE s.id=:id and event_type=:type")
+        Event getEventById(@Bind("type") String type, @Bind("id") int id);
 
         @SqlUpdate("update sh_event set title=:title, description=:description, venue_id=:venue_id," +
                 " confirm_needed=:confirm_needed, join_via_link=:join_via_link, limit_guests=:limit_guests," +
@@ -89,14 +107,14 @@ public abstract class EventDao implements Transactional<EventDao> {
                 @Bind("id") int id,
                 @Bind("user_id") int userId,
                 @Bind("title") String title,
-                   @Bind("description") String description,
-                   @Bind("venue_id") int venueId,
-                   @Bind("confirm_needed") boolean confirmNeeded,
-                   @Bind("join_via_link") boolean allowJoinViaLink,
-                   @Bind("limit_guests") boolean limitGuests,
-                   @Bind("max_guests") int maxGuests,
-                   @Bind("allow_comments") boolean allowComments,
-                   @Bind("tags") String tags);
+                @Bind("description") String description,
+                @Bind("venue_id") int venueId,
+                @Bind("confirm_needed") boolean confirmNeeded,
+                @Bind("join_via_link") boolean allowJoinViaLink,
+                @Bind("limit_guests") boolean limitGuests,
+                @Bind("max_guests") int maxGuests,
+                @Bind("allow_comments") boolean allowComments,
+                @Bind("tags") String tags);
 
         @SqlQuery("SELECT * FROM as_users WHERE upper(username)=upper(:username)")
         Event getEventById(@Bind("id") int id);
@@ -110,8 +128,8 @@ public abstract class EventDao implements Transactional<EventDao> {
                             @Bind("password") String password);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_event (title, description, venue_id, user_id, confirm_needed, join_via_link, limit_guests, max_guests, allow_comments, link, tags)" +
-                " values(:title, :description, :venue_id, :user_id, :confirm_needed, :join_via_link, :limit_guests, :max_guests, :allow_comments, :link, :tags)")
+        @SqlUpdate("insert into sh_event (title, description, venue_id, user_id, confirm_needed, join_via_link, limit_guests, max_guests, allow_comments, link, tags, event_type, created_by)" +
+                " values(:title, :description, :venue_id, :user_id, :confirm_needed, :join_via_link, :limit_guests, :max_guests, :allow_comments, :link, :tags, :event_type, :created_by)")
         int insert(@Bind("title") String title,
                    @Bind("description") String description,
                    @Bind("venue_id") int venueId,
@@ -122,7 +140,9 @@ public abstract class EventDao implements Transactional<EventDao> {
                    @Bind("max_guests") int maxGuests,
                    @Bind("allow_comments") boolean allowComments,
                    @Bind("link") String link,
-                   @Bind("tags") String tags);
+                   @Bind("tags") String tags,
+                   @Bind("event_type") String eventType,
+                   @Bind("created_by") int createdBy);
 
         @SqlUpdate("update sh_event set image_url=:image_url WHERE id=:event_id")
         void updateImageUrl(@Bind("event_id") int id,

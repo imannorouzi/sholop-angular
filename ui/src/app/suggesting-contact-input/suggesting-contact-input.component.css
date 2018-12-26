@@ -1,0 +1,31 @@
+.contacts{
+  top: 100%;
+  right: 0;
+  width: 100%;
+  position: absolute;
+  border: 1px solid #9d9d9d;
+  background: white;
+  z-index: 10;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.contact:last-child{
+  border-bottom: none;
+}
+.contact:hover{
+  background: #E0E2E6;
+}
+.contact.selected{
+  background: #66afe9;
+  font-weight: bold;
+}
+.contact{
+  border-bottom: 1px solid #9d9d9d;
+  cursor: pointer;
+}
+
+.contact_name{
+  line-height: 2.5;
+  text-align: right;
+}

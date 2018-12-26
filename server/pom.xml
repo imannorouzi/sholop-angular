@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server</artifactId>
     <groupId>sholop</groupId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <name>server Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -12,6 +12,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>io.dropwizard-bundles</groupId>
+            <artifactId>dropwizard-configurable-assets-bundle</artifactId>
+            <version>1.2.2</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -107,6 +112,20 @@
             <version>0.1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.dirkraft.dropwizard</groupId>
+            <artifactId>dropwizard-file-assets</artifactId>
+            <version>0.0.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.antlr/stringtemplate -->
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>stringtemplate</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <finalName>server-${project.version}</finalName>
@@ -167,6 +186,8 @@
 
             <build>
                 <plugins>
+
+
                     <plugin>
                         <artifactId>maven-resources-plugin</artifactId>
                         <version>2.7</version>
@@ -178,7 +199,7 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>target/classes/assets</outputDirectory>
+                                    <outputDirectory>target/app</outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>../ui/dist</directory>
@@ -189,6 +210,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>

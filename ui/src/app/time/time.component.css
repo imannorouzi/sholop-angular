@@ -1,0 +1,43 @@
+
+.cell-text{
+  font-size: 13px;
+  cursor: pointer;
+  padding:5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cell{
+  /*border-radius: 3px;*/
+}
+
+.cell:hover{
+  cursor:pointer;
+  background: #ddd;
+  color:black;
+}
+
+.dark{
+  background: #282828;
+  color: white;
+}
+
+.bright{
+  color: #282828;
+  background: white;
+}
+
+.times-table{
+  position: absolute;
+  background: white;
+  z-index: 5;
+  margin: auto;
+  left: 0;
+  width: 100%;
+  border: 1px solid #eee;
+}
+
+.times-container{
+  position: relative;
+}

@@ -1,0 +1,20 @@
+.contact-image:first-child{
+  margin-left: 0;
+
+}
+
+.contact-image-td{
+  width: 50px;
+}
+.contact-image{
+  width: 25px;
+  height: 25px;
+}
+
+table td{
+  vertical-align: middle;
+}
+
+.map{
+  height: 200px;
+}

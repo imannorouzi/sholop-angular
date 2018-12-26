@@ -19,8 +19,8 @@ public abstract class LocationDao implements Transactional<LocationDao> {
     @CreateSqlObject
     abstract Dao ttDao();
 
-    public List<Location> getAllLocations(){
-        return ttDao().listAllLocations();
+    public List<Location> getAllLocations(int userId, String hint){
+        return ttDao().listAllLocations(userId, hint);
     }
 
     public Location getLocationById(int id){ return ttDao().getLocationById(id); }
@@ -58,8 +58,9 @@ public abstract class LocationDao implements Transactional<LocationDao> {
 
     @RegisterMapper(LocationMapper.class)
     private interface Dao {
-        @SqlQuery("SELECT * FROM sh_venue WHERE 1=1 ORDER BY 1 ")
-        List<Location> listAllLocations();
+        @SqlQuery("SELECT * FROM sh_venue WHERE 1=1 and user_id=:user_id and " +
+                "(title like CONCAT('%', :hint, '%') OR persian_address_1 like CONCAT('%', :hint, '%') OR persian_address_2 like CONCAT('%', :hint, '%')) ORDER BY 1 ")
+        List<Location> listAllLocations(@Bind("user_id") int userId, @Bind("hint") String hint);
 
         @SqlUpdate("update sh_venue set persian_address_1=:persian_address_1, persian_address_2=:persian_address_2, " +
                 " english_address=:english_address, title=:title, description=:description, latitude=:latitude, longitude=:longitude, user_id=:user_id  WHERE id=:id")

@@ -1,0 +1,73 @@
+<div class="container">
+
+  <div class="card shadow mt-3 mb-3">
+
+    <div class="card-body">
+
+      <div class="container" *ngIf="event">
+
+        <h5 class="text-right mt-2 mb-2">{{event.title}}
+            <small class="text-muted">({{utilService.getStatusString(event.status)}})</small>
+        </h5>
+
+        <!--Dates-->
+        <div class="mt-4 mb-4">
+          <div class="panel text-right" *ngFor="let date of event.dates; let i=index;">
+            <div>
+
+              <h5><i class="fa fa-calendar ml-2"></i> {{dateService.greToPersian(date.date, true)}}
+                <span class="text-muted" *ngIf="date.startTime"> از  {{utilService.convertTimeString(date.startTime)}}</span>
+                <span class="text-muted" *ngIf="date.endTime"> تا  {{utilService.convertTimeString(date.endTime)}}</span>
+              </h5>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-striped text-right">
+            <thead>
+            <tr class="font-small text-muted">
+              <td></td>
+              <td>نام</td>
+              <td>ایمیل</td>
+              <td>تلفن</td>
+              <td>وضعیت</td>
+            </tr>
+            </thead>
+            <tr class="col-md-6" *ngFor="let contact of event.attendees;">
+
+              <td class="panel text-right contact-image-td">
+                <img  class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+              </td>
+              <td>{{contact.name}}</td>
+              <td>{{contact.email}}</td>
+              <td>{{contact.phone}}</td>
+              <td>{{getContactStatus(contact.id)}}</td>
+            </tr>
+          </table>
+        </div>
+
+        <h5 class="text-right mt-2"><i class="fa fa-map-marker ml-2"></i>
+          <span class="">{{event.location ? event.location.farsiAddress1 : ""}}</span>
+          <span class="">{{event.location ? event.location.farsiAddress2 : ""}}</span>
+        </h5>
+        <agm-map class="map" [latitude]="event.location.latitude" [longitude]="event.location.longitude" [scrollwheel]="true" [zoom]="12">
+          <agm-marker [latitude]="event.location.latitude" [longitude]="event.location.longitude"></agm-marker>
+        </agm-map>
+
+        <comments #comments [eventId]="event ? event.id : -1"></comments>
+
+        <div class=" text-right">
+          <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <spinner [size]="'large'" #spinner></spinner>
+      </div>
+    </div>
+
+  </div>
+
+</div>
