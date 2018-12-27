@@ -13,15 +13,13 @@ import com.google.inject.Singleton;
 import com.sholop.auth.JWTHelper;
 import com.sholop.auth.PasswordHash;
 import com.sholop.db.dao.*;
+import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
@@ -40,7 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 
 @Path("/")
@@ -227,10 +224,10 @@ public class SholopRestController {
             String relationalUrl = TEST_SERVER_ADDR + "/contents/images/events/" + fileDetail.getFileName();
 
             Event event = new Event(jsonEvent);
-            if(event.getLocation().getId() == -1) {
-                event.setVenueId(locationDao.insert(event.getLocation()));
+            if(event.getVenue().getId() == -1) {
+                event.setVenueId(locationDao.insert(event.getVenue()));
             }else{
-                event.setVenueId(event.getLocation().getId());
+                event.setVenueId(event.getVenue().getId());
             }
 
 
@@ -281,10 +278,10 @@ public class SholopRestController {
             JSONObject jsonEvent = new JSONObject(jsonMeetingString);
 
             Event event = new Event(jsonEvent);
-            if(event.getLocation().getId() == -1) {
-                event.setVenueId(locationDao.insert(event.getLocation()));
+            if(event.getVenue().getId() == -1) {
+                event.setVenueId(locationDao.insert(event.getVenue()));
             }else{
-                event.setVenueId(event.getLocation().getId());
+                event.setVenueId(event.getVenue().getId());
             }
 
 
@@ -352,7 +349,7 @@ public class SholopRestController {
                         event.setPointedDate(sd);
                     }
                 }
-                event.setLocation(locationDao.getLocationById(event.getVenueId()));
+                event.setVenue(locationDao.getLocationById(event.getVenueId()));
                 List<ContactEvent> contactEvents = contactEventDao.getEventContactsByEventId(event.getId());
 
                 List<String> contactIds = new ArrayList<>();
@@ -385,7 +382,7 @@ public class SholopRestController {
             Event event = eventDao.getEventById("MEETING", Integer.parseInt(meetingId));
             List<SholopDate> dates = sholopDateDao.getDatesByEventId(event.getId());
             event.setDates(dates);
-            event.setLocation(locationDao.getLocationById(event.getVenueId()));
+            event.setVenue(locationDao.getLocationById(event.getVenueId()));
             List<ContactEvent> contactEvents = contactEventDao.getEventContactsByEventId(event.getId());
 
             List<String> contactIds = new ArrayList<>();
@@ -421,6 +418,29 @@ public class SholopRestController {
             comment.setId(commentDao.insert(comment));
 
             return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/contact-us")
+    public Response contactUs(String jsonCommentString) {
+
+        Gson gson = new Gson();
+        int id = -1;
+        try {
+            JSONObject jsonComment = new JSONObject(jsonCommentString);
+
+            ContactUsMessage cum = new ContactUsMessage(jsonComment);
+
+            MailUtils.sendMail();
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", "Recieved"))).build();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -465,7 +485,7 @@ public class SholopRestController {
             List<Event> events = eventDao.getAllEvents();
             for(Event event : events){
                 event.setDates(sholopDateDao.getDatesByEventId(event.getId()));
-                event.setLocation(locationDao.getLocationById(event.getVenueId()));
+                event.setVenue(locationDao.getLocationById(event.getVenueId()));
             }
 
             return Response.ok(gson.toJson(new ResponseObject("OK", events))).build();
@@ -750,10 +770,10 @@ public class SholopRestController {
                         Paths.get("./contents/images/contacts/" +  /*fileDetail.getFileName()*/ filename),
                         StandardCopyOption.REPLACE_EXISTING);
                 relationalUrl = TEST_SERVER_ADDR + "/contents/images/contacts/" + filename;
+                contact.setImageUrl(relationalUrl);
             }
 
             contact.setUserId(user.getId());
-            contact.setImageUrl(relationalUrl);
 
             if(contact.getId() != -1 )
                 contactDao.update(contact);

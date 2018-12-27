@@ -24,11 +24,11 @@ public class Location {
     }
 
     public Location(JSONObject jo) throws JSONException {
-        this.setFarsiAddress1(jo.getString("address1"));
-        this.setFarsiAddress2(jo.getString("address2"));
-        this.setEnglishAddress(jo.getString("address1"));
-        this.setLatitude(jo.getDouble("lat"));
-        this.setLongitude(jo.getDouble("lng"));
+        this.setFarsiAddress1(jo.getString("farsiAddress1"));
+        this.setFarsiAddress2(jo.getString("farsiAddress2"));
+        this.setEnglishAddress(jo.getString("farsiAddress1"));
+        this.setLatitude(jo.getDouble("latitude"));
+        this.setLongitude(jo.getDouble("longitude"));
 
         this.setTitle(jo.has("title") ? jo.getString("title") : jo.getString("farsiAddress1"));
         this.setDescription(jo.has("description") ? jo.getString("description") : "");

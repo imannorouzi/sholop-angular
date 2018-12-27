@@ -10,7 +10,7 @@ import {DateService} from "../date.service";
 export class DateComponent implements OnInit {
   @ViewChild('input') input: ElementRef;
 
-  selectedDate;
+  @Input() selectedDate;
 
   @Input() inputClasses: string = '';
   @Output() onDateSelected: EventEmitter<any> = new EventEmitter();
@@ -20,7 +20,7 @@ export class DateComponent implements OnInit {
   constructor(public dateService: DateService) { }
 
   ngOnInit() {
-    this.selectedDate = new Date();
+    // this.selectedDate = new Date();
   }
 
   onDaySelected(day) {

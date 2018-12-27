@@ -44,6 +44,10 @@ export class DateService {
     }
   }
 
+  stringToDate(dateString: string): Date{
+    return new Date(Date.parse(dateString));
+  }
+
   getMonthName(monthIndex: number): string{
     return monthNames[monthIndex];
   }

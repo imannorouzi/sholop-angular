@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {ModalDirective} from "ngx-bootstrap";
 
@@ -18,6 +18,17 @@ export class ContactsModalComponent implements OnInit {
 
   ngOnInit() {
     this.readContacts();
+  }
+
+  setSelected(list){
+
+    list.forEach( sc => {
+      this.contacts.forEach( contact => {
+        if(sc.id === contact.id){
+          contact.selected = true;
+        }
+      });
+    });
   }
 
   readContacts(){

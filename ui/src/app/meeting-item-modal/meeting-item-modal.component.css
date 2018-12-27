@@ -24,3 +24,7 @@
 table td{
   vertical-align: middle;
 }
+
+.map{
+  height: 150px;
+}

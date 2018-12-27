@@ -27,7 +27,6 @@ public abstract class ContactDao implements Transactional<ContactDao> {
 
 
     public List<Contact> getContactByContactIds(List<String> contactIds){
-        contactIds.add("94");
         return ttDao().getContactsByContactIds(contactIds);
     }
 

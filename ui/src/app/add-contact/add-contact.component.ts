@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../data.service";
@@ -22,10 +22,12 @@ export class AddContactComponent implements OnInit {
 
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
-  contact = {
+  @Input() index: number = -1;
+  @Input() contact = {
     name: '',
     email: '',
     phone: '',
+    imageUrl: '',
     image: File,
     id: -1,
     fileName: ''
@@ -75,11 +77,20 @@ export class AddContactComponent implements OnInit {
     this.modal.hide();
   }
 
+  setContact(contact, index){
+
+    contact = Object.assign({}, contact);
+
+    this.contact = contact;
+    this.index = index;
+  }
+
   reset(){
     this.contact = {
       name: '',
       email: '',
       phone: '',
+      imageUrl: null,
       image: null,
       id: -1,
       fileName: ''
@@ -113,6 +124,7 @@ export class AddContactComponent implements OnInit {
 
       this.modal.hide();
       this.contact['userId'] = this.authenticationService.getUser().id;
+
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
           this.onContactAdded.emit(value.object);
@@ -128,6 +140,7 @@ export class AddContactComponent implements OnInit {
 
   onImageCropperModalOk() {
     this.imageCropperModal.hide();
-    this.contact.image = this.data1.image
+    this.contact.image = this.data1.image;
+    this.contact.imageUrl = this.data1.image;
   }
 }

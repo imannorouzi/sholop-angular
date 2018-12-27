@@ -35,6 +35,13 @@ export class EditMeetingComponent implements OnInit {
       data => {
         if( data['msg'] === "OK"){
           this.event = data['object'];
+
+          /*let dates = [];
+          this.event.dates.forEach( d => {
+            dates.push({date: new Date(Date.parse(d.date)), startTime: d.startTime, endTime: d.endTime});
+          });
+
+          this.event.dates = dates;*/
         }
         this.loading = false;
       },

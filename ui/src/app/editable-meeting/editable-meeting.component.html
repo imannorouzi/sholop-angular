@@ -19,20 +19,23 @@
       <!--Times-->
       <div class="card mb-3 shadow">
         <div class="card-body">
-          <h5 class="card-title text-right">تاریخ ملاقات</h5>
-          <div class="form-group row " *ngFor="let time of event.times; let i = index" [attr.data-index]="i">
-            <div class="col-sm-4">
-              <date (onDateSelected)="onDateSelected(i, $event)" [inputClasses]="'form-control'"></date>
-            </div>
-            <div class="col-sm-3">
-              <time [inputClasses]="'form-control'" (onTimeSelected)="fromTimeChanged($event, i)"></time>
-            </div>
-            <div class="col-sm-3">
 
-              <time [inputClasses]="'form-control'" (onTimeSelected)="toTimeChanged($event, i)"></time>
+          <div class="form-group row " *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
+            <div class="col-sm-4">
+              <h5 class="card-title text-right">تاریخ ملاقات</h5>
+              <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
+            </div>
+            <div class="col-sm-3">
+              <div class="card-title text-right text-muted">از ساعت</div>
+              <time [inputClasses]="'form-control'" [timeString]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+            </div>
+            <div class="col-sm-3">
+              <div class="card-title text-right text-muted">تا ساعت</div>
+              <time [inputClasses]="'form-control'" [timeString]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
             </div>
             <div class="col-sm-2">
-              <button class="w-100 btn btn-outline-primary" [disabled]="event.times.length===1" (click)="removeDateTime($event, i)">
+              <h5 class="card-title text-right">&nbsp;</h5>
+              <button class="w-100 btn btn-outline-primary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
                 <i class="fa fa-close font-x-large"></i>
               </button>
             </div>
@@ -84,8 +87,8 @@
           <!--<div class="form-group">
             <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
           </div>-->
-          <agm-map class="map" [latitude]="latitude" [longitude]="longitude" [scrollwheel]="true" [zoom]="zoom">
-            <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
+            <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
           </agm-map>
 
           <p class="card-text"><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
@@ -113,7 +116,7 @@
 
             <div class="row">
 
-              <div *ngFor="let contact of event.contacts; let i=index;" class="col-md-6 contact p-2 ">
+              <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-6 contact p-2 ">
                 <div class="contact-border">
                   <div class="row p-2 ">
 
@@ -158,7 +161,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="align-bottom fa fa-smile-o"></i></span>
             </div>
-            <textarea rows="4" type="text" name="title" [(ngModel)]="event.welcomeMessage" class="form-control" placeholder="پیام خوشامد گویی"></textarea>
+            <textarea rows="4" type="text" name="welcome" [(ngModel)]="event.welcomeMessage" class="form-control" placeholder="پیام خوشامد گویی"></textarea>
           </div>
           <p class="card-text"><small class="text-muted">این متن به عنوان دعوت و خوشامدگویی برای میهمان ارسال می شود.</small></p>
         </div>

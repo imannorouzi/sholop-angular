@@ -5,11 +5,9 @@ import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Pooyan
@@ -42,7 +40,7 @@ public class Event {
         this.maxGuests = maxGuests;
         this.allowComments = allowComments;
         this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKOWN :  EVENT_TYPE.valueOf(eventType);
-        this.location = location;
+        this.venue = location;
         this.imageUrl = imageUrl;
         this.status = status;
     }
@@ -51,7 +49,7 @@ public class Event {
 
     String title, description, link, tags, imageUrl, status;
 
-    Location location;
+    Location venue;
 
     List<SholopDate> dates;
     SholopDate pointedDate;
@@ -77,16 +75,16 @@ public class Event {
         this.setTitle(jo.getString("title"));
         this.setDescription(jo.has("description") ? jo.getString("description") : "");
         this.setEventType(jo.has("eventType")? EVENT_TYPE.valueOf(jo.getString("eventType")) : EVENT_TYPE.MEETING);
-        this.setLocation(new Location(jo.getJSONObject("venue")));
+        this.setVenue(new Location(jo.getJSONObject("venue")));
         this.setUserId(jo.getInt("userId"));
 
-        JSONArray datesArray = jo.getJSONArray("times");
+        JSONArray datesArray = jo.getJSONArray("dates");
         this.dates = new ArrayList<>();
         for(int i=0; i<datesArray.length(); i++) {
             this.dates.add(new SholopDate(datesArray.getJSONObject(i)));
         }
 
-        JSONArray contactsArray = jo.getJSONArray("contacts");
+        JSONArray contactsArray = jo.getJSONArray("attendees");
         this.attendees = new ArrayList<>();
         for(int i=0; i<contactsArray.length(); i++) {
             this.attendees.add(new Contact(contactsArray.getJSONObject(i)));
@@ -137,12 +135,12 @@ public class Event {
         this.description = description;
     }
 
-    public Location getLocation() {
-        return location;
+    public Location getVenue() {
+        return venue;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setVenue(Location venue) {
+        this.venue = venue;
     }
 
     public List<SholopDate> getDates() {

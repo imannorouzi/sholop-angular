@@ -24,6 +24,8 @@ export class TimeComponent implements OnInit {
   hourString: string = "";
   minuteString: string = "";
 
+  @Input() timeString: string;
+
   constructor() { }
 
   ngOnInit() {
@@ -32,9 +34,13 @@ export class TimeComponent implements OnInit {
       this.hours.push( h<10 ? '0'+h : h.toString());
     }
 
-
     for(let m=0; m<12; m++){
       this.minutes.push( m<2 ? '0' + (m*5).toString() : (m*5).toString() );
+    }
+
+    if(this.timeString){
+      this.hourString = this.timeString.substring(0,2);
+      this.minuteString = this.timeString.substring(2);
     }
 
   }
@@ -54,7 +60,7 @@ export class TimeComponent implements OnInit {
     this.isMinuteShowing = false;
     this.minuteString = this.minutes[index];
 
-    this.onTimeSelected.emit(this.hourString+':' + this.minuteString);
+    this.onTimeSelected.emit(this.hourString + ':' + this.minuteString);
   }
 
   onTimeChanged(){

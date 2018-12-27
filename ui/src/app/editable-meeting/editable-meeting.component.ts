@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} 
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../data.service";
-import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
+import {ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
 import {NavigationService} from "../navigation.service";
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
@@ -10,6 +10,7 @@ import {AuthenticationService} from "../authentication.service";
 import {AlertService} from "../alert.service";
 import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../date.service";
+import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
 
 
 @Component({
@@ -23,7 +24,7 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   @ViewChild('address2') address2: ElementRef;
   @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
   @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
-  @ViewChild('contactsModal', undefined) contactsModal:ModalComponent;
+  @ViewChild('contactsModal', undefined) contactsModal: ContactsModalComponent;
   @ViewChild('venuesModal', undefined) venuesModal:ModalComponent;
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
@@ -39,34 +40,25 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
               private dateService: DateService){
   }
 
-  public latitude: number;
-  public longitude: number;
   public zoom: number;
 
   times : string[] = [];
 
-  venue : Venue = new Venue();
-  @Input() event = {
-    times: [],
-    contacts: [],
-    title: '',
-    venue: this.venue,
-    userId: -1,
-    welcomeMessage: "",
-    eventType: "MEETING",
-  };
+  @Input() event: any;
 
   submitting: boolean = false;
 
   ngOnInit() {
 
     //set google maps defaults
-    this.zoom = 4;
-    this.latitude = 18.5793;
-    this.longitude = 73.8143;
+    this.zoom = 12;
+    // this.latitude = 18.5793;
+    // this.longitude = 73.8143;
 
     //set current position
-    this.setCurrentPosition();
+    if(!this.event.venue || this.event.venue.id <= 0){
+      this.setCurrentPosition();
+    }
 
     //load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -84,8 +76,8 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
           }
 
           //set latitude, longitude and zoom
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
+          this.event.venue.latitude = place.geometry.location.lat();
+          this.event.venue.longitude = place.geometry.location.lng();
           this.zoom = 12;
         });
       });
@@ -98,15 +90,14 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.event.times.push(new DateTime());
-    // this.event.contacts.push({name: '', email: '', phone:''})
+    // this.event.times.push(new DateTime());
   }
 
   private setCurrentPosition() {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
+        this.event.venue.latitude = position.coords.latitude;
+        this.event.venue.longitude = position.coords.longitude;
         this.zoom = 12;
       });
     }
@@ -116,16 +107,16 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   }
 
   addDateTime(event) {
-    this.event.times.push(new DateTime());
+    this.event.dates.push(new DateTime());
     event.preventDefault();
   }
 
   onDateSelected(index, event){
-    this.event.times[index].setDate(event);
+    this.event.dates[index].setDate(event);
   }
 
   removeDateTime($event, index) {
-    this.event.times.splice(index, 1);
+    this.event.dates.splice(index, 1);
     event.preventDefault();
   }
 
@@ -135,16 +126,16 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
 
   onSubmit(){
     if(this.validateForm()) {
-      if (!this.event.venue) {
+      if (this.event.venue && this.event.venue.id === 0) {
         // this.event.userId = this.authenticationService.getUser().id;
         this.event.venue = new Venue(
           -1,
           "",
-          this.latitude,
-          this.longitude,
+          this.event.venue.latitude,
+          this.event.venue.longitude,
           this.searchInput.nativeElement.value,
           this.address2.nativeElement.value,
-          // this.map['mapUrl']
+          ''// this.map['mapUrl']
         );
       }
 
@@ -166,6 +157,7 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
 
   onImportClick(event) {
     this.contactsModal.show();
+    this.contactsModal.setSelected(this.event.attendees);
     event.preventDefault();
   }
   addContact(event) {
@@ -174,13 +166,20 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
     event.preventDefault();
   }
   removeContact($event, index) {
-    this.event.contacts.splice(index, 1);
+    this.event.attendees.splice(index, 1);
     event.preventDefault();
   }
 
   onContactsSelected(contacts) {
+
     contacts.forEach( contact => {
-      this.event.contacts.push(contact);
+      for(let i=0; i<this.event.attendees.length; i++){
+        if(this.event.attendees[i].id === contact.id){
+          this.event.attendees.splice(i, 1);
+          break;
+        }
+      }
+      this.event.attendees.push(contact);
     })
   }
 
@@ -192,21 +191,18 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
 
   onVenueSelected(venue: any) {
     this.event.venue = venue;
-    this.latitude = venue.latitude;
-    this.longitude = venue.longitude;
-
   }
 
   onAttendeeAdded(contact: any) {
-    this.event.contacts.push(contact);
+    this.event.attendees.push(contact);
   }
 
   fromTimeChanged(event, i) {
-    this.event.times[i].from = event;
+    this.event.dates[i].from = event;
   }
 
   toTimeChanged(event, i) {
-    this.event.times[i].to = event;
+    this.event.dates[i].to = event;
   }
 
   chairSelected(contact: any) {
@@ -214,12 +210,21 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   }
 
   markerMoved(e) {
-    const geocoder = new google.maps.Geocoder();
+
+    this.event.venue.latitude = e.coords.lat;
+    this.event.venue.longitude = e.coords.lng;
+
+    /*const geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': e.coords}, (res, status) => {
-      if (status === google.maps.GeocoderStatus.OK && res.length) { this.ngZone.run(() => this.setLocation(res[0])); }
-    })
+      if (status === google.maps.GeocoderStatus.OK && res.length) {
+        this.ngZone.run(() => this.setLocation(res[0]));
+      }
+    })*/
   }
 
-  setLocation(place) { this.latitude = place.geometry.location.lat(); this.longitude = place.geometry.location.lng(); }
+  setLocation(place) {
+    this.event.venue.latitude = place.geometry.location.lat();
+    this.event.venue.longitude = place.geometry.location.lng();
+  }
 
 }

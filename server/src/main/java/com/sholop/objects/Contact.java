@@ -58,6 +58,7 @@ public class Contact {
         this.valid = true;//jo.getBoolean("valid");
         this.address = jo.has("address") ? jo.getString("address") : "";
         this.userId = jo.has("userId") ? jo.getInt("userId") : 0;
+        this.imageUrl = jo.has("imageUrl") ? jo.getString("imageUrl") : "";
     }
 
     // this is for handling email contacts

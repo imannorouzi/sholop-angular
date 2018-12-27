@@ -13,11 +13,8 @@ import {NavigationService} from "../navigation.service";
 export class MeetingItemModalComponent implements OnInit, OnChanges {
   @ViewChild('childModal') public childModal:ModalDirective;
   @ViewChild("comments") comments: CommentsComponent;
-  @ViewChild('gmap') gmapElement: any;
 
   @Input() event: any;
-  map : google.maps.Map;
-  markers : google.maps.Marker[] = [];
 
 
   constructor(public dateService: DateService,
@@ -40,14 +37,7 @@ export class MeetingItemModalComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(this.event && changes.event.previousValue !== changes.event.currentValue){
 
-      setTimeout( () => {
-        let mapProp = {
-          center: new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude),
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-      }, 0);
+
 
     }
   }

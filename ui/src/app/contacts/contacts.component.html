@@ -83,14 +83,18 @@
                   <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
 
                   <div>
-                    <a href="#" class="ml-3">ویرایش</a>
+                    <a href="#" class="ml-3" (click)="onEditContact(contact, index)">ویرایش</a>
                     <a href="#" (click)="onDeleteUser(contact.id, index, $event)">حذف</a>
+
                   </div>
                 </div>
 
               </div>
             </div>
           </div>
+
+          <confirm #confirm [message]="'مخاطب حذف شود؟'" (confirmed)="deleteConfirmed($event)"></confirm>
+          <add-contact (onContactAdded)="onContactAdded($event)" #editContact></add-contact>
 
         </div>
 

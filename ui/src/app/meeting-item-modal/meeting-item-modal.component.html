@@ -50,8 +50,10 @@
                 </table>
               </div>
 
-              <div class="text-right"><i class="fa fa-map-marker ml-2"></i> <span class="text-muted">{{event.location ? event.location.farsiAddress1 : ""}}</span></div>
-              <div class="h-100" id="map" #gmap style="min-height: 150px;" ></div>
+              <div class="text-right"><i class="fa fa-map-marker ml-2"></i> <span class="text-muted">{{event.venue ? event.venue.farsiAddress1 : ""}}</span></div>
+              <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="false" [zoom]="12">
+                <agm-marker [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+              </agm-map>
 
               <!--Dates-->
               <div *ngIf="event.dates.length > 1">

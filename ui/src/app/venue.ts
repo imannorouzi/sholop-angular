@@ -1,8 +1,8 @@
 export class Venue {
   id: number = -1;
   title : string = '';
-  lat : number;
-  lng : number;
+  latitude : number;
+  longitude : number;
   farsiAddress1: string = '';
   farsiAddress2: string = '';
   mapUrl: string = '';
@@ -19,8 +19,8 @@ export class Venue {
 
     this.id = id;
     this.title = title;
-    this.lat = lat;
-    this.lng = lng;
+    this.latitude = lat;
+    this.longitude = lng;
     this.farsiAddress1 = address1;
     this.farsiAddress2 = address2;
     this.mapUrl = mapUrl;

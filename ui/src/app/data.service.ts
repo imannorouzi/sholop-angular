@@ -131,6 +131,17 @@ export class DataService {
     return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
   }
 
+  contactUs(message: { name: any; email: any; title: any; message: any }) {
+    let apiURL = serverUrl + "/contact-us";
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'text/json',
+      'Accept': 'application/json'
+    });
+
+    return this.http.post(`${apiURL}`, JSON.stringify(message), {headers: headers});
+  }
+
   dataURItoBlob(dataURI) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     let byteString;
@@ -154,5 +165,6 @@ export class DataService {
   dateToString(date: Date) {
     return [date.getDate(), (date.getMonth()+1), date.getFullYear()].join('/');
   }
+
 
 }

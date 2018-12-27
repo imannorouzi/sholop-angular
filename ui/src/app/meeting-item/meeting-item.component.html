@@ -35,8 +35,8 @@
         <div class="col-md-10 text-right">
 
           <span class="">
-            <a [href]="'https://maps.google.com/?q='+ event.location.latitude +',' + event.location.longitude" target="_blank" (click)="$event.stopPropagation();">
-              <small class="text-muted"><i class="fa fa-map-marker"></i> {{event.location ? event.location.farsiAddress1 + ', ' +  event.location.farsiAddress2: ""}}</small>
+            <a [href]="'https://maps.google.com/?q='+ event.venue.latitude +',' + event.venue.longitude" target="_blank" (click)="$event.stopPropagation();">
+              <small class="text-muted"><i class="fa fa-map-marker"></i> {{event.venue ? event.venue.farsiAddress1 + ', ' +  event.venue.farsiAddress2: ""}}</small>
             </a>
           </span>
         </div>
