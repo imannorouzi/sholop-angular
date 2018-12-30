@@ -6,9 +6,13 @@
         <tr>
           <th colspan="7">
                         <span class="btn-group">
-                          <a class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i></a>
-                        	<a class="btn active">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</a>
-                        	<a class="btn" (click)="getMonthMapArray(monthOffset+1)"><i class="fa fa-arrow-circle-left"></i></a>
+                          <a class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i> ماه قبل</a>
+                        	<a class="btn active">
+                            <div class="font-weight-bold">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</div>
+                            <div class="text-muted">{{dateService.getGreMonthName(today.gDate.getMonth())}} - {{dateService.getGreMonthName((today.gDate.getMonth()+1) % 12)}}</div>
+
+                          </a>
+                        	<a class="btn" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-arrow-circle-left"></i></a>
                         </span>
           </th>
         </tr>
@@ -29,7 +33,7 @@
 
                 *ngFor="let day of week;  let i = index;">
               <div *ngIf="day" class="calendar-cell">
-                <div class="calendar-jday" [class.holiday]="i%7===6">{{day.jDate.date}}</div>
+                <div class="calendar-jday font-weight-bold" [class.holiday]="i%7===6">{{day.jDate.date}}</div>
                 <div class="calendar-gday english_font" [class.holiday]="i%7===6">{{day.gDate.getDate()}}</div>
               </div>
             </td>

@@ -20,7 +20,7 @@ export class AfService {
 
     this.user.subscribe(
       u => {
-        console.log(u);
+        // console.log(u);
 
         if(!this.user || !u) return;
 

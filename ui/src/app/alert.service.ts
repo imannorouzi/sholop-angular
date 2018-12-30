@@ -27,7 +27,7 @@ export class AlertService {
     this.subject.next({ type: 'success', text: message });
 
     // Clear the alert
-    setTimeout(()=>{this.subject.next();}, 3000);
+    // setTimeout(()=>{this.subject.next();}, 3000);
   }
 
   error(message: string, keepAfterNavigationChange = false) {
@@ -35,7 +35,7 @@ export class AlertService {
     this.subject.next({ type: 'error', text: message });
 
     // Clear the alert
-    setTimeout(()=>{this.subject.next();}, 3000);
+    // setTimeout(()=>{this.subject.next();}, 3000);
   }
 
   getMessage(): Observable<any> {

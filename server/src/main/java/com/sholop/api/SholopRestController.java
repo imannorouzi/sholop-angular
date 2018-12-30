@@ -10,12 +10,15 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.sholop.Utils;
 import com.sholop.auth.JWTHelper;
 import com.sholop.auth.PasswordHash;
 import com.sholop.db.dao.*;
+import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import io.dropwizard.auth.Auth;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -25,6 +28,7 @@ import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,6 +40,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +51,6 @@ import java.util.List;
 public class SholopRestController {
 
     public static final String GOOGLE_USER_PASS = "googleRegisteredUser50505";
-    public static final String TEST_SERVER_ADDR = "http://localhost:8094";
 
     private final EventDao eventDao;
     private final LocationDao locationDao;
@@ -78,13 +82,13 @@ public class SholopRestController {
     @Path("/authenticate")
     public Response authenticate(String jsonSchedule){
 
+        Gson gson = new Gson();
         try {
             JSONObject jsonUser = new JSONObject(jsonSchedule);
 
             User user = userDao.getUserByUsername(jsonUser.getString("username"));
 
-            Gson gson = new Gson();
-            if( PasswordHash.check(jsonUser.getString("password"), user.getPassword()) ){
+            if( user != null &&  PasswordHash.check(jsonUser.getString("password"), user.getPassword()) ){
                 user.setToken(JWTHelper.createAndSignToken(
                         jsonUser.getString("username"),
                         jsonUser.getString("password")));
@@ -92,12 +96,13 @@ public class SholopRestController {
                 return Response.ok(gson.toJson(new ResponseObject("OK", user)))
                         .build();
             }else{
-                return Response.status(401).entity(gson.toJson(new ResponseObject("FAIL", null))).build();
+                return Response.ok(gson.toJson(new ResponseObject("INVALID_CREDENTIALS", null))).build();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(500)
+                    .entity(gson.toJson(new ResponseObject("Internal Error", 500)))
                     .build();
         }
     }
@@ -132,7 +137,7 @@ public class SholopRestController {
                     FileOutputStream fos = new FileOutputStream("./contents/images/users/" + newUser.getEmail()+ "_" + FilenameUtils.getName(url.getPath()));
                     fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 
-                    String relationalUrl = TEST_SERVER_ADDR + "/contents/images/users/" + newUser.getEmail()+ "_" +FilenameUtils.getName(url.getPath());
+                    String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/users/" + newUser.getEmail()+ "_" +FilenameUtils.getName(url.getPath());
                     newUser.setImageUrl(relationalUrl);
                 }
 
@@ -221,7 +226,7 @@ public class SholopRestController {
             Files.copy(uploadedInputStream,
                     Paths.get("./contents/images/events/" + fileDetail.getFileName()),
                     StandardCopyOption.REPLACE_EXISTING);
-            String relationalUrl = TEST_SERVER_ADDR + "/contents/images/events/" + fileDetail.getFileName();
+            String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/events/" + fileDetail.getFileName();
 
             Event event = new Event(jsonEvent);
             if(event.getVenue().getId() == -1) {
@@ -278,7 +283,9 @@ public class SholopRestController {
             JSONObject jsonEvent = new JSONObject(jsonMeetingString);
 
             Event event = new Event(jsonEvent);
-            if(event.getVenue().getId() == -1) {
+            if(event.getVenue().getId() <= 0) {
+                event.getVenue().setUserId(user.getId());
+                event.getVenue().downloadMap();
                 event.setVenueId(locationDao.insert(event.getVenue()));
             }else{
                 event.setVenueId(event.getVenue().getId());
@@ -302,14 +309,24 @@ public class SholopRestController {
                 event.setId(id);
             }
 
+            if(event.getChairId() <= 0){
+                event.setChairId(user.getId());
+            }
+
             for( SholopDate date : event.getDates()){
                 sholopDateDao.insert(date, id);
             }
 
+            List<ContactEvent> contactEvents = new ArrayList<>();
             for( Contact contact: event.getAttendees()){
                 ContactEvent contactEvent = new ContactEvent(contact.getId(), id, ContactEvent.STATUS.NOT_REPLIED.name());
+                contactEvent.generateQRCodeImage();
                 contactEventDao.insert(contactEvent);
+
+                contactEvents.add(contactEvent);
             }
+
+            event.setContactEvents(contactEvents);
 
 
             if(id == -1){
@@ -317,6 +334,9 @@ public class SholopRestController {
                         .build();
             }
 
+            event.setChair(userDao.getUserById(event.getChairId()));
+            event.setPointedDate(event.getDates().get(0));
+            MailUtils.sendMeetingCreatedMessages(event);
             return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
 
         } catch (Exception e) {
@@ -401,6 +421,52 @@ public class SholopRestController {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/get-meeting-by-uuid")
+    public Response getMeetingByUUID(
+                               @QueryParam("uuid") String uuid,
+                               @QueryParam("action") String action)  {
+
+        Gson gson = new Gson();
+        try {
+            ContactEvent contactEvent = contactEventDao.getEventContactByUUID(uuid);
+            if(action != null && !action.isEmpty()) {
+                contactEventDao.updateStatus(contactEvent.getId(), ContactEvent.STATUS.valueOf(action));
+                contactEvent.setStatus(ContactEvent.STATUS.valueOf(action));
+            }
+
+            Contact contact = contactDao.getContactById(contactEvent.getContactId());
+            Event event = eventDao.getEventById("MEETING", contactEvent.getEventId());
+
+            List<SholopDate> dates = sholopDateDao.getDatesByEventId(event.getId());
+            event.setDates(dates);
+            event.setVenue(locationDao.getLocationById(event.getVenueId()));
+            List<ContactEvent> contactEvents = contactEventDao.getEventContactsByEventId(event.getId());
+
+            List<String> contactIds = new ArrayList<>();
+            for(ContactEvent ce : contactEvents){
+                contactIds.add(String.valueOf(ce.getContactId()));
+            }
+            event.setContactEvents(contactEvents);
+            List<Contact> attendees = contactDao.getContactByContactIds(contactIds);
+            for(Contact at : attendees){
+                if(at.getId() == contact.getId()){
+                    at.setYou(true);
+                    break;
+                }
+            }
+            event.setAttendees(attendees);
+
+            return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -432,13 +498,23 @@ public class SholopRestController {
     public Response contactUs(String jsonCommentString) {
 
         Gson gson = new Gson();
-        int id = -1;
         try {
             JSONObject jsonComment = new JSONObject(jsonCommentString);
 
             ContactUsMessage cum = new ContactUsMessage(jsonComment);
 
-            MailUtils.sendMail();
+            MailMessage msg = new MailMessage();
+            msg.setSubject(cum.getTitle());
+            msg.setTo("iman.norouzy@gmail.com");
+            msg.setFrom(cum.getEmail());
+
+            String htmlString = FileUtils.readFileToString(new File("./server/src/main/templates/meeting/newMeeting.html"));
+            htmlString = htmlString.replace("$title", cum.getTitle());
+            htmlString = htmlString.replace("$message", cum.getMessage());
+
+
+            msg.setBody(htmlString);
+            MailUtils.sendMail(msg);
 
             return Response.ok(gson.toJson(new ResponseObject("OK", "Recieved"))).build();
 
@@ -769,7 +845,7 @@ public class SholopRestController {
                 Files.copy(uploadedInputStream,
                         Paths.get("./contents/images/contacts/" +  /*fileDetail.getFileName()*/ filename),
                         StandardCopyOption.REPLACE_EXISTING);
-                relationalUrl = TEST_SERVER_ADDR + "/contents/images/contacts/" + filename;
+                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/contacts/" + filename;
                 contact.setImageUrl(relationalUrl);
             }
 
@@ -787,6 +863,48 @@ public class SholopRestController {
         }
 
         return Response.ok(gson.toJson(new ResponseObject("OK", contact))).build();
+    }
+
+
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @PermitAll
+    @Path("/update-user")
+    public Response updateUser(@Auth User u,
+                                  @FormDataParam("file") InputStream uploadedInputStream,
+                                  @FormDataParam("file") FormDataContentDisposition fileDetail,
+                                  @FormDataParam("file") FormDataBodyPart body,
+                                  @FormDataParam("user") String userJsonString,
+                                  @FormDataParam("filename") String filename)  {
+
+
+        Gson gson = new Gson();
+        User user;
+        try {
+            JSONObject jsonContact = new JSONObject(userJsonString);
+            user = new User(jsonContact);
+
+            String relationalUrl;
+
+            if(filename != null) {
+                filename = filename.replaceAll("\\s+", "");
+
+                Files.copy(uploadedInputStream,
+                        Paths.get("./contents/images/users/" +  /*fileDetail.getFileName()*/ filename),
+                        StandardCopyOption.REPLACE_EXISTING);
+                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/users/" + filename;
+                user.setImageUrl(relationalUrl);
+            }
+
+            userDao.updateUser(user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+
+        return Response.ok(gson.toJson(new ResponseObject("OK", user))).build();
     }
 
     @POST

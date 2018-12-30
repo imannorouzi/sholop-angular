@@ -26,26 +26,17 @@
                 <span *ngIf="event.pointedDate.endTime"> تا  {{utilService.convertTimeString(event.pointedDate.endTime)}}</span>
               </div>
 
-              <div class="table-responsive">
+              <div class="table-responsive" *ngIf="event.attendees.length > 0">
                 <table class="table table-striped text-right">
-                  <thead>
-                  <tr class="font-small text-muted">
-                    <td></td>
-                    <td>نام</td>
-                    <td>ایمیل</td>
-                    <td>تلفن</td>
-                    <td>وضعیت</td>
-                  </tr>
-                  </thead>
                   <tr class="col-md-6" *ngFor="let contact of event.attendees;">
 
                     <td class="panel text-right contact-image-td">
                       <img  class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
                     </td>
                     <td>{{contact.name}}</td>
-                    <td>{{contact.email}}</td>
-                    <td>{{contact.phone}}</td>
-                    <td>{{getContactStatus(contact.id)}}</td>
+                    <!--<td>{{contact.email}}</td>-->
+                    <!--<td>{{contact.phone}}</td>-->
+                    <td [style.color]="contact.status.color"><i [class]="'fa ' + contact.status.class "></i> {{contact.status.text}}</td>
                   </tr>
                 </table>
               </div>
@@ -57,9 +48,9 @@
 
               <!--Dates-->
               <div *ngIf="event.dates.length > 1">
-                <h4>جلسات مرتبط</h4>
+                <h5 class="text-right mt-3">جلسات مرتبط</h5>
                 <div class="panel text-right" *ngFor="let date of event.dates; let i=index;">
-                  <div *ngIf="i > 0">
+                  <div *ngIf="!dateService.isEqual(date, event.pointedDate)">
                     <i class="fa fa-calendar ml-2"></i>
                     <span>  {{dateService.greToPersian(date.date, true)}}  </span>
                     <span *ngIf="date.startTime"> از  {{utilService.convertTimeString(date.startTime)}}</span>
@@ -72,8 +63,8 @@
 
             </div>
 
+            <comments #comments [eventId]="event ? event.id : -1"></comments>
           </div>
-          <comments #comments [eventId]="event ? event.id : -1"></comments>
 
         </div>
       </div>

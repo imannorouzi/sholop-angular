@@ -46,7 +46,7 @@ public class Contact {
     String name, phone, email, address, imageUrl;
     int id, userId, createdBy, modifiedBy;
 
-    boolean valid;
+    boolean valid, you;
 
     Timestamp created, modified;
 
@@ -57,7 +57,7 @@ public class Contact {
         this.phone = jo.getString("phone");
         this.valid = true;//jo.getBoolean("valid");
         this.address = jo.has("address") ? jo.getString("address") : "";
-        this.userId = jo.has("userId") ? jo.getInt("userId") : 0;
+        this.userId = jo.has("chairId") ? jo.getInt("chairId") : 0;
         this.imageUrl = jo.has("imageUrl") ? jo.getString("imageUrl") : "";
     }
 
@@ -162,5 +162,13 @@ public class Contact {
 
     public void setValid(boolean valid) {
         this.valid = valid;
+    }
+
+    public boolean isYou() {
+        return you;
+    }
+
+    public void setYou(boolean you) {
+        this.you = you;
     }
 }

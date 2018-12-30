@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {User} from "./user";
+import {environment} from "../environments/environment.prod";
 
-const serverUrl = "http://0.0.0.0:8094/api";
-// const serverUrl = "/api";
+const serverUrl = environment.serverUrl;
+
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,13 @@ export class DataService {
     let apiURL = serverUrl + "/get-meeting";
     return this.http.get(apiURL, {
       params: {meetingId: id}
+    });
+  }
+
+  getMeetingByUUID(uuid: any, action: string) {
+    let apiURL = serverUrl + "/get-meeting-by-uuid";
+    return this.http.get(apiURL, {
+      params: {uuid: uuid, action: action}
     });
   }
 
@@ -86,6 +95,24 @@ export class DataService {
     }
 
     formData.append("contact", JSON.stringify(contact));
+
+    let hdrs = new HttpHeaders();
+    hdrs.append("Content-Type", "multipart/form-data");
+    hdrs.append("Accept", "application/json");
+    return this.http.post(`${apiURL}`, formData, {headers: hdrs});
+  }
+
+  updateUser(user: User) {
+    let apiURL = serverUrl + "/update-user";
+
+    let formData:FormData = new FormData();
+    if(user.image ) {
+      formData.append('file', this.dataURItoBlob(user.image), user.fileName);
+      user.image = null;
+      formData.append("filename", user.fileName);
+    }
+
+    formData.append("user", JSON.stringify(user));
 
     let hdrs = new HttpHeaders();
     hdrs.append("Content-Type", "multipart/form-data");
@@ -165,6 +192,5 @@ export class DataService {
   dateToString(date: Date) {
     return [date.getDate(), (date.getMonth()+1), date.getFullYear()].join('/');
   }
-
 
 }

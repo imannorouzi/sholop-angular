@@ -56,6 +56,8 @@ import { MeetingComponent } from './meeting/meeting.component';
 import { CreateMeetingComponent } from './create-meeting/create-meeting.component';
 import { EditMeetingComponent } from './edit-meeting/edit-meeting.component';
 import { ConfirmComponent } from './confirm/confirm.component';
+import { ContactMeetingComponent } from './contact-meeting/contact-meeting.component';
+import { UserMeetingComponent } from './user-meeting/user-meeting.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +94,9 @@ import { ConfirmComponent } from './confirm/confirm.component';
     MeetingComponent,
     CreateMeetingComponent,
     EditMeetingComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    ContactMeetingComponent,
+    UserMeetingComponent
   ],
   imports: [
     BrowserModule,

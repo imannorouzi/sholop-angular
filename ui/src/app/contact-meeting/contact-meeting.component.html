@@ -1,0 +1,18 @@
+<meeting *ngIf="event && !loading"  [anonymous]="true" [event]="event"></meeting>
+
+<div class="card mb-3 shadow" *ngIf="loading">
+  <div class="card-body">
+    <div class="row justify-content-center">
+      <spinner [size]="'large'" [showing]="loading" #spinner></spinner>
+    </div>
+  </div>
+</div>
+
+<div class="text-center" *ngIf="!loading && !event">
+  <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
+    <param name="class" value="look-around" />
+  </object>
+  <div class="text-muted">یه مشکلی یه جایی هست</div>
+</div>
+
+

@@ -107,12 +107,20 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   }
 
   addDateTime(event) {
-    this.event.dates.push(new DateTime());
+    let d = new Date();
+
+    let date = new Date(d.getFullYear(),
+      d.getMonth(),
+      d.getDate()
+    );
+
+    this.event.dates.push({date: date, startTime: '0900', endTime: '1000'});
     event.preventDefault();
   }
 
   onDateSelected(index, event){
-    this.event.dates[index].setDate(event);
+    this.event.dates[index].date = event;
+    this.event.dates[index].dateString = this.dateService.greToPersian(event, true);
   }
 
   removeDateTime($event, index) {
@@ -144,9 +152,9 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
         (value:any) => {
           // console.log(value);
           this.submitting = false;
-          this.navigationService.navigate("/dashboard");
+          // this.navigationService.navigate("/dashboard");
 
-          this.alertService.success("Meeting created successfully.");
+          this.alertService.success("ملاقات با موفقیت ایجاد شد.");
         },
         (error:any) => {
           console.log(error);
@@ -198,11 +206,11 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   }
 
   fromTimeChanged(event, i) {
-    this.event.dates[i].from = event;
+    this.event.dates[i].startTime = event;
   }
 
   toTimeChanged(event, i) {
-    this.event.dates[i].to = event;
+    this.event.dates[i].endTime = event;
   }
 
   chairSelected(contact: any) {
@@ -225,6 +233,10 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   setLocation(place) {
     this.event.venue.latitude = place.geometry.location.lat();
     this.event.venue.longitude = place.geometry.location.lng();
+  }
+
+  goTo(url) {
+    this.navigationService.navigate(url);
   }
 
 }

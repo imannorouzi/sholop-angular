@@ -13,9 +13,9 @@
       <div class="modal-body">
 
         <div class="row justify-content-center">
-          <div class="col-sm-5 m-2 text-center">
-            <img class="rounded-circle w-100" (click)="onImageClick()" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-            <small class="text-muted ">کلیک کنید</small>
+          <div class="col-sm-12 m-2 text-center">
+            <img class="rounded-circle contact-image" (click)="onImageClick()" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+            <div><small class="text-muted ">کلیک کنید</small></div>
           </div>
         </div>
 
@@ -40,14 +40,17 @@
 
         <!--Name-->
         <div class="row ">
-          <label class="col-sm-3 col-form-label">نام</label>
+          <label class="col-sm-3 col-form-label text-right">نام</label>
           <div class="col-sm-9">
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
               </div>
-              <input id="title" type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="contact.name">
+              <input id="title" type="text" name="name" class="form-control"
+                     #nameField="ngModel" required
+                     [ngClass]="{ 'is-invalid': !nameField.valid && (nameField.touched || nameField.dirty || submitted) }"
+                     placeholder="نام کامل" [(ngModel)]="contact.name">
             </div>
 
           </div>
@@ -55,14 +58,17 @@
 
         <!--Email-->
         <div class="row ">
-          <label class="col-sm-3 col-form-label">ایمیل</label>
+          <label class="col-sm-3 col-form-label text-right">ایمیل</label>
           <div class="col-sm-9">
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
               </div>
-              <input id="email" type="text" name="email" class="form-control ltr" placeholder="ali@gmail.com" [(ngModel)]="contact.email">
+              <input id="email" type="text" name="email" class="form-control ltr"
+                     #emailField="ngModel" pattern="^\S*[@]\S*[.]\S*$" email required
+                     [ngClass]="{ 'is-invalid': !emailField.valid && (emailField.touched || emailField.dirty || submitted) }"
+                     placeholder="ali@gmail.com" [(ngModel)]="contact.email" [email]="true">
             </div>
 
           </div>
@@ -70,14 +76,17 @@
 
         <!--Phone-->
         <div class="row ">
-          <label class="col-sm-3 col-form-label">تلفن</label>
+          <label class="col-sm-3 col-form-label text-right">تلفن</label>
           <div class="col-sm-9">
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="align-bottom fa fa-phone"></i></span>
               </div>
-              <input id="phone" type="text" name="phone" class="form-control ltr" placeholder="0912XXXXXXXX" [(ngModel)]="contact.phone">
+              <input id="phone" type="text" name="phone" class="form-control ltr"
+                     #phoneField="ngModel" pattern="^[0-9]{7,13}$"
+                     [ngClass]="{ 'is-invalid': !phoneField.valid && (phoneField.touched || phoneField.dirty || submitted) }"
+                     placeholder="0912XXXXXXXX" [(ngModel)]="contact.phone">
             </div>
 
           </div>

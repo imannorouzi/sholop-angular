@@ -45,6 +45,13 @@ export class ContactsModalComponent implements OnInit {
     )
   }
 
+  selectAll(event){
+    event.preventDefault();
+    this.contacts.forEach( contact => {
+      contact.selected = true;
+    });
+  }
+
   show(){
     this.selectContacts.show();
   }

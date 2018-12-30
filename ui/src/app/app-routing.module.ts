@@ -12,16 +12,18 @@ import {RegisterComponent} from "./register/register.component";
 import {VenuesComponent} from "./venues/venues.component";
 import {ContactUsComponent} from "./contact-us/contact-us.component";
 import {ProfileComponent} from "./profile/profile.component";
-import {MeetingComponent} from "./meeting/meeting.component";
 import {CreateMeetingComponent} from "./create-meeting/create-meeting.component";
 import {EditMeetingComponent} from "./edit-meeting/edit-meeting.component";
+import {UserMeetingComponent} from "./user-meeting/user-meeting.component";
+import {ContactMeetingComponent} from "./contact-meeting/contact-meeting.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'create-event', component: CreateEventComponent },
   { path: 'create-meeting', component: CreateMeetingComponent, canActivate: [AuthGuard] },
   { path: 'edit-meeting/:id', component: EditMeetingComponent, canActivate: [AuthGuard] },
-  { path: 'meeting/:id', component: MeetingComponent, canActivate: [AuthGuard] },
+  { path: 'meeting/:id', component: UserMeetingComponent, canActivate: [AuthGuard] },
+  { path: 'contact-meeting/:uuid/:dateId/:action', component: ContactMeetingComponent},
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },

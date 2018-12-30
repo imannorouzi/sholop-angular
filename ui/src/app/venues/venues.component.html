@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="text-center" *ngIf="venues.length === 0">
+        <div class="text-center" *ngIf="!loading && venues.length === 0">
           <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
             <param name="class" value="look-around" />
           </object>
@@ -68,7 +68,7 @@
       </div>
 
       <div class="row justify-content-center">
-        <spinner [size]="'large'" #spinner></spinner>
+        <spinner [size]="'large'" #spinner [showing]="loading"></spinner>
       </div>
 
 

@@ -5,7 +5,7 @@
 
       <div class="row">
 
-        <div class="col-lg-4">
+        <div class="col-lg-5">
 
           <div class="row justify-content-center">
             <div class="col-sm-5 m-2 text-center">
@@ -33,24 +33,24 @@
 
           <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
 
-          <agm-map class="map" [latitude]="35.6892" [longitude]="51.3890" [scrollwheel]="true" [zoom]="12">
-            <agm-marker [latitude]="35.6892" [longitude]="51.3890"></agm-marker>
+          <agm-map class="map" [latitude]="user.latitude" [longitude]="user.longitude" [scrollwheel]="true" [zoom]="12">
+            <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="user.latitude" [longitude]="user.longitude"></agm-marker>
           </agm-map>
 
         </div>
 
 
-        <div class="col-lg-8 mb-lg-0 mb-4">
+        <div class="col-lg-7 mb-lg-0 mb-4">
 
           <div class="row ">
-            <label class="col-sm-2 col-form-label">نام</label>
+            <label class="col-sm-2 col-form-label text-right">نام</label>
             <div class="col-sm-10">
 
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
                 </div>
-                <input id="name" type="text" name="name" class="form-control" placeholder="نام کامل">
+                <input id="name" type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="user.name">
               </div>
 
             </div>
@@ -58,21 +58,21 @@
 
           <!--Email-->
           <div class="row ">
-            <label class="col-sm-2 col-form-label">ایمیل</label>
+            <label class="col-sm-2 col-form-label text-right">ایمیل</label>
             <div class="col-sm-10">
 
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
                 </div>
-                <input id="email" type="text" name="email" class="form-control ltr" placeholder="ali@gmail.com">
+                <input id="email" type="text" name="email" class="form-control ltr" readonly placeholder="ali@gmail.com" [(ngModel)]="user.username">
               </div>
 
             </div>
           </div>
 
           <div class="row ">
-            <label class="col-sm-2 col-form-label">تلفن</label>
+            <label class="col-sm-2 col-form-label text-right">تلفن</label>
             <div class="col-sm-10">
 
               <div class="input-group mb-3">
@@ -86,7 +86,7 @@
           </div>
 
           <div class="row">
-            <label class="col-sm-2 col-form-label">آدرس</label>
+            <label class="col-sm-2 col-form-label text-right">آدرس</label>
             <div class="col-sm-10">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -110,14 +110,16 @@
           </div>
 
           <div class="row ">
-            <label class="col-sm-2 col-form-label">درباره من</label>
+            <label class="col-sm-2 col-form-label text-right">درباره من</label>
             <div class="col-sm-10">
 
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="align-bottom fa fa-file-text"></i></span>
                 </div>
-                <textarea id="message" type="text" rows="6" name="email" class="form-control" placeholder="توضیحاتی برای آشنایی مخاطبانتان"></textarea>
+                <textarea id="message" type="text" rows="7" name="description"
+                          [(ngModel)]="user.description"
+                          class="form-control" placeholder="توضیحاتی برای آشنایی مخاطبانتان"></textarea>
               </div>
 
             </div>
@@ -127,7 +129,7 @@
           <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-10 text-right">
-              <button type="button" class="btn btn-primary ml-2" (click)="sendMessage()">دخیره</button>
+              <button type="button" class="btn btn-primary ml-2" (click)="updateUser()">دخیره</button>
             </div>
           </div>
 

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DateService} from "../date.service";
 import {CommentsComponent} from "../comments/comments.component";
 import {ModalDirective} from "ngx-bootstrap";
@@ -32,20 +32,24 @@ export class MeetingItemModalComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(this.event && changes.event.previousValue !== changes.event.currentValue){
 
-
+      this.event.attendees.forEach(att => {
+        att.status = this.getContactStatus(att.id);
+      });
 
     }
   }
 
 
-  getContactStatus(id: number) {
-    let contact = this.event.attendees.find(contact => { return contact.id === id} );
-    return this.utilService.getContactStatus(contact.status);
+  getContactStatus(id: number) : any {
+    let contactEvent = this.event.contactEvents.find(ce => { return ce.contactId === id} );
+    return this.utilService.getContactStatus(contactEvent.status);
   }
 
   goTo(url) {

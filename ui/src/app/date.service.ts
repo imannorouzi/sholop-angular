@@ -24,6 +24,21 @@ const monthNames: string[] = [
   "بهمن",
   "اسفند"];
 
+const greMonthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Aprl",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,6 +67,10 @@ export class DateService {
     return monthNames[monthIndex];
   }
 
+  getGreMonthName(monthIndex: number): string{
+    return greMonthNames[monthIndex];
+  }
+
   getSholopDate(gregorianDate = new Date()): any{
     let perDate = this.toPersian(gregorianDate);
 
@@ -61,7 +80,8 @@ export class DateService {
         date: perDate[0],
         month: perDate[1],
         year: perDate[2]
-      }
+      },
+      dateString: weekDayNames[(perDate[3]+1)%7] + "، " +perDate[0] + " " + monthNames[perDate[1]-1] + " " + perDate[2]
     };
 
     return retVal;
@@ -177,5 +197,11 @@ export class DateService {
     }
 
     return [day, Math.floor(month), year, weekDay];
+  }
+
+  isEqual(date1, date2): boolean{
+    if(!date1 || !date2) return false;
+
+    return date1.date === date2.date && date1.startTime === date2.startTime && date1.endTime === date2.endTime;
   }
 }

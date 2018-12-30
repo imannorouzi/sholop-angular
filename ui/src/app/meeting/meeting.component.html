@@ -43,7 +43,7 @@
               <td>{{contact.name}}</td>
               <td>{{contact.email}}</td>
               <td>{{contact.phone}}</td>
-              <td>{{getContactStatus(contact.id)}}</td>
+              <td [style.color]="contact.status.color"><i [class]="'fa ' + contact.status.class "></i> {{contact.status.text}}</td>
             </tr>
           </table>
         </div>
@@ -56,9 +56,9 @@
           <agm-marker [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
         </agm-map>
 
-        <comments #comments [eventId]="event ? event.id : -1"></comments>
+        <comments [anonymous]="anonymous" #comments [eventId]="event ? event.id : -1"></comments>
 
-        <div class=" text-right">
+        <div class=" text-right" *ngIf="!anonymous && event.chairId===currentUserId">
           <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
         </div>
       </div>

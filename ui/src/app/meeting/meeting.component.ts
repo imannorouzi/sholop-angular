@@ -1,11 +1,11 @@
-import {Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DateService} from "../date.service";
 import {CommentsComponent} from "../comments/comments.component";
 import {UtilService} from "../util.service";
 import {ActivatedRoute} from "@angular/router";
-import {SpinnerComponent} from "../spinner/spinner.component";
 import {DataService} from "../data.service";
 import {NavigationService} from "../navigation.service";
+import {AuthenticationService} from "../authentication.service";
 
 @Component({
   selector: 'meeting',
@@ -13,13 +13,13 @@ import {NavigationService} from "../navigation.service";
   styleUrls: ['./meeting.component.css']
 })
 export class MeetingComponent implements OnInit, OnChanges {
-  @ViewChild("spinner") spinner: SpinnerComponent;
   @ViewChild("comments") comments: CommentsComponent;
   @ViewChild('gmap') gmapElement: any;
 
-  event: any;
-  loading: boolean = false;
+  @Input() event: any;
+  @Input() anonymous: boolean;
   map : google.maps.Map;
+  currentUserId: number;
   markers : google.maps.Marker[] = [];
 
 
@@ -27,34 +27,17 @@ export class MeetingComponent implements OnInit, OnChanges {
               public utilService: UtilService,
               private route: ActivatedRoute,
               private dataService: DataService,
-              private navigationService: NavigationService) {
+              private navigationService: NavigationService,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
 
-    this.route.params.subscribe(params => {
-      this.readMeeting(params['id']);
+    this.event.attendees.forEach(att => {
+      att.status = this.getContactStatus(att.id);
     });
-  }
 
-  readMeeting(id){
-    this.loading = true;
-    this.spinner.show();
-
-    this.dataService.getMeeting(id).subscribe(
-      data => {
-        if( data['msg'] === "OK"){
-          this.event = data['object'];
-        }
-        this.spinner.hide();
-        this.loading = false;
-      },
-      error1 => {
-        console.log(error1);
-        this.spinner.hide();
-        this.loading = false;
-      }
-    )
+    this.currentUserId = this.authenticationService.getUser().id;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -73,9 +56,9 @@ export class MeetingComponent implements OnInit, OnChanges {
   }
 
 
-  getContactStatus(id: number) {
-    let contact = this.event.attendees.find(contact => { return contact.id === id} );
-    return this.utilService.getContactStatus(contact.status);
+  getContactStatus(id: number) : any {
+    let contactEvent = this.event.contactEvents.find(ce => { return ce.contactId === id} );
+    return this.utilService.getContactStatus(contactEvent.status);
   }
 
   goTo(url) {

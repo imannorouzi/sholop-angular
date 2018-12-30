@@ -12,6 +12,7 @@ export class VenuesComponent implements OnInit {
   @ViewChild("spinner") spinner: SpinnerComponent;
 
   venues: any[] = [];
+  loading: boolean = false;
 
   currentUser: User;
   searchString: string = '';
@@ -26,8 +27,7 @@ export class VenuesComponent implements OnInit {
 
   readVenues(hint: string){
 
-    this.spinner.show();
-
+    this.loading = true;
 
     this.dataService.getVenues(hint).subscribe(
       data => {
@@ -40,11 +40,11 @@ export class VenuesComponent implements OnInit {
           });
         }
 
-        this.spinner.hide();
+        this.loading = false;
       },
       error1 => {
         console.log(error1);
-        this.spinner.hide();
+        this.loading = false;
       }
     )
   }

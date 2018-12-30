@@ -22,7 +22,15 @@
         <div class="col-md-6" >
 
           <div class="panel text-right" >
-            <img *ngFor="let contact of event.attendees;let i=index;" class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+
+            <div class="contact-image-container" *ngFor="let contact of event.attendees;">
+
+              <img class="contact-image rounded-circle" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+
+              <!--<div class="rounded-circle contact-image text-center" [style.background]="utilService.getRandomColor()" *ngIf="!contact.imageUrl">
+                <span class=" font-weight-bold contact-letter">{{contact.name.substring(0,1)}}</span>
+              </div>-->
+            </div>
 
             <span>  {{attendeesString}}  </span>
           </div>

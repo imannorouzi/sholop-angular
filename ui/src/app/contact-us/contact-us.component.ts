@@ -54,7 +54,7 @@ export class ContactUsComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          console.log("sent")
+          this.alertService.success("پیام شما ارسال شد.")
         },
         error => {
           this.alertService.error(error);

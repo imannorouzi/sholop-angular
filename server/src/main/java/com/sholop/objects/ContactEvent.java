@@ -2,8 +2,20 @@ package com.sholop.objects;
 
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
+import com.sholop.Utils;
+import com.sholop.api.SholopRestController;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Pooyan on 12/11/2017.
@@ -11,7 +23,7 @@ import java.sql.Timestamp;
 
 public class ContactEvent {
 
-    public enum STATUS {ACCEPTED, IGNORED, NOT_REPLIED, REJECTED, REMOVED, TENTATIVE}
+    public enum STATUS {ATTENDING, NOT_ATTENDING, NOT_REPLIED, REJECTED, REMOVED, TENTATIVE}
 
     public ContactEvent(
              int id,
@@ -45,6 +57,7 @@ public class ContactEvent {
 
     int contactId, eventId, id, createdBy, modifiedBy;
     Timestamp created, modified;
+    String QRCodeUrl, uuid;
 
     STATUS status;
 
@@ -110,5 +123,37 @@ public class ContactEvent {
 
     public void setStatus(STATUS status) {
         this.status = status;
+    }
+
+    public String getQRCodeUrl() {
+        return QRCodeUrl;
+    }
+
+    public void setQRCodeUrl(String QRCordeUrl) {
+        this.QRCodeUrl = QRCordeUrl;
+    }
+
+    public void generateQRCodeImage()
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        String uuid = Utils.generateRandomString();
+        this.setUuid(uuid);
+        BitMatrix bitMatrix = qrCodeWriter.encode(uuid, BarcodeFormat.QR_CODE, 200, 200);
+
+        String filename = "/contents/images/events/QRCodes/contact" + (new Date()).toString().replaceAll(" ", "") + ".png";
+
+        Path path = FileSystems.getDefault().getPath("." + filename);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+
+        String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + filename;
+        this.setQRCodeUrl(relationalUrl);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

@@ -8,9 +8,14 @@
   color: white;
 }
 
-
-
 .check-icon{
   line-height: 2;
   color: darkolivegreen;
+}
+
+.contact:hover{
+  background: #E0E2E6;
+}
+.contact{
+  cursor: pointer;
 }

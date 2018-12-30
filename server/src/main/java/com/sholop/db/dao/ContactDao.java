@@ -76,7 +76,7 @@ public abstract class ContactDao implements Transactional<ContactDao> {
         void delete(
                 @Bind("id") int id, @Bind("user_id") int userId);
 
-        @SqlQuery("SELECT * FROM as_users WHERE upper(username)=upper(:username)")
+        @SqlQuery("SELECT * FROM sh_contact WHERE id=:id")
         Contact getContactById(@Bind("id") int id);
 
         @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id and name like CONCAT('%', :hint, '%')")

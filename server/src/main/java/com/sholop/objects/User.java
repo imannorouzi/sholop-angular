@@ -9,7 +9,6 @@ import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @XmlRootElement
 public class User implements Principal {
@@ -17,11 +16,13 @@ public class User implements Principal {
     private int id;
     private String name, username;
     private List<String> roles;
-    private String password, email, phone, address, imageUrl;
+    private String password, email, phone, farsiAddress1, farsiAddress2, description, imageUrl;
     private String token;
 
     private int createdBy, modifiedBy;
     Timestamp created, modified;
+    double latitude, longitude;
+
 
     public User(){}
 
@@ -49,6 +50,11 @@ public class User implements Principal {
                 String email,
                 String imageUrl,
                 String phone,
+                double latitude,
+                double longitude,
+                String address1,
+                String address2,
+                String description,
                 String roles,
                 Timestamp created,
                 int createdBy,
@@ -70,6 +76,12 @@ public class User implements Principal {
             }
         }
 
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.farsiAddress1 = address1;
+        this.farsiAddress2 = address2;
+        this.description = description;
+
         this.created = created;
         this.createdBy = createdBy;
         this.modified = modified;
@@ -82,6 +94,13 @@ public class User implements Principal {
         this.setName(jo.getString("name"));
         this.setEmail(jo.getString("email"));
         this.setPassword(jo.getString("password"));
+
+        this.setPhone(jo.has("phone") ? jo.getString("phone") : "");
+        this.setLatitude(jo.has("latitude") ? jo.getDouble("latitude") : 0);
+        this.setLongitude(jo.has("longitude") ? jo.getDouble("longitude") : 0);
+        this.setFarsiAddress1(jo.has("farsiAddress1") ? jo.getString("farsiAddress1") : "");
+        this.setFarsiAddress2(jo.has("farsiAddress2") ? jo.getString("farsiAddress2") : "");
+        this.setDescription(jo.has("welcomeMessage") ? jo.getString("welcomeMessage") : "");
         this.roles = new ArrayList<>();
         String[] rolesSplit = jo.getString("roles").split(",");
         for(String role : rolesSplit ){
@@ -157,14 +176,6 @@ public class User implements Principal {
         this.phone = phone;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public int getCreatedBy() {
         return createdBy;
     }
@@ -203,5 +214,45 @@ public class User implements Principal {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getFarsiAddress1() {
+        return farsiAddress1;
+    }
+
+    public void setFarsiAddress1(String farsiAddress1) {
+        this.farsiAddress1 = farsiAddress1;
+    }
+
+    public String getFarsiAddress2() {
+        return farsiAddress2;
+    }
+
+    public void setFarsiAddress2(String farsiAddress2) {
+        this.farsiAddress2 = farsiAddress2;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

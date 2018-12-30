@@ -1,12 +1,18 @@
-.contact-image:first-child{
+.contact-image-container:first-child{
   margin-right: 0;
 }
-.contact-image{
-  width: 35px;
-  height: 35px;
+.contact-image-container{
+  display: inline-block;
   margin-right: -12px;
+  color: white;
+  line-height: 3;
+}
+.contact-image{
+  width: 40px;
+  height: 40px;
   /* padding: 5px; */
 }
+
 .meeting-item{
   cursor: pointer;
 }

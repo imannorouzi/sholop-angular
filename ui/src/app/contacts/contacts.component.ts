@@ -4,6 +4,7 @@ import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {ConfirmComponent} from "../confirm/confirm.component";
 import {AddContactComponent} from "../add-contact/add-contact.component";
+import {UtilService} from "../util.service";
 
 @Component({
   selector: 'app-contacts',
@@ -16,11 +17,13 @@ export class ContactsComponent implements OnInit {
   @ViewChild("editContact") addContact: AddContactComponent;
 
   contacts: any[] = [];
+  loading: boolean = false;
 
   currentUser: User;
   searchString: string = '';
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService,
+              public utilService: UtilService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
@@ -31,8 +34,7 @@ export class ContactsComponent implements OnInit {
 
   readContacts(hint: string){
 
-    this.spinner.show();
-
+    this.loading = true;
 
     this.dataService.getContacts(hint).subscribe(
       data => {
@@ -45,11 +47,11 @@ export class ContactsComponent implements OnInit {
           });
         }
 
-        this.spinner.hide();
+        this.loading = false;
       },
       error1 => {
         console.log(error1);
-        this.spinner.hide();
+        this.loading = false;
       }
     )
   }

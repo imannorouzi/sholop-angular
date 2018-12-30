@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../data.service";
@@ -7,6 +7,8 @@ import {AlertService} from "../alert.service";
 import {AuthenticationService} from "../authentication.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {User} from "../user";
+import {MapsAPILoader} from "@agm/core";
+import {Venue} from "../venue";
 
 @Component({
   selector: 'profile',
@@ -18,21 +20,26 @@ export class ProfileComponent implements OnInit {
   @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('spinner') spinner: SpinnerComponent;
+  @ViewChild('searchBox') searchInput: ElementRef;
 
 
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
   user: User;
-  submitting: boolean = false;
+  submitted: boolean = false;
 
   data1:any;
   cropperSettings1:CropperSettings;
   croppedWidth:number;
   croppedHeight:number;
 
+  public zoom: number;
+
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private authenticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService,
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,) {
 
     this.user = authenticationService.getUser();
 
@@ -60,14 +67,48 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.user = this.authenticationService.getUser();
+
+    this.zoom = 12;
+    // this.latitude = 18.5793;
+    // this.longitude = 73.8143;
+
+    //set current position
+    if(this.user.latitude === 0 ){
+      this.setCurrentPosition();
+    }
+
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+        types: ["address"]
+      });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          //set latitude, longitude and zoom
+          this.user.latitude = place.geometry.location.lat();
+          this.user.longitude = place.geometry.location.lng();
+          this.zoom = 12;
+        });
+      });
+    });
   }
+
 
   fileChanged($event){
     let file = $event.target.files[0];
     if(file){
       this.imageCropperModal.show();
       this.cropper.fileChangeListener($event);
-      // this.user.fileName = file.name;
+      this.user.fileName = file.name;
     }
   }
 
@@ -82,8 +123,50 @@ export class ProfileComponent implements OnInit {
     return true;
   }
 
+  updateUser(){
+
+    this.submitted = true;
+    if(!this.validateForm()) return;
+
+    this.user.farsiAddress1 = this.searchInput.nativeElement.value;
+
+    this.dataService.updateUser(this.user).subscribe(
+      (data:any) => {
+        if (data && data.msg === "OK") {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          data.object.token = this.authenticationService.getUser().token;
+          localStorage.setItem('currentUser', JSON.stringify(data.object));
+          this.alertService.success("تغییرات ذخیره شد.");
+        }else{
+          this.alertService.error("لطفا دوباره تلاش کنید.")
+        }
+      },
+      (error:any) => {
+        console.log(error);
+        this.alertService.error(error.toString())
+      });
+  }
+
   onImageCropperModalOk() {
     this.imageCropperModal.hide();
-    // this.user.image = this.data1.image
+    this.user.image = this.data1.image;
+    this.user.imageUrl = this.data1.image;
+  }
+
+  markerMoved(e) {
+
+    this.user.latitude = e.coords.lat;
+    this.user.longitude = e.coords.lng;
+
+  }
+
+  private setCurrentPosition() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.user.latitude = position.coords.latitude;
+        this.user.longitude = position.coords.longitude;
+        this.zoom = 12;
+      });
+    }
   }
 }

@@ -10,24 +10,23 @@
 
       <div class="row">
         <div class="mb-1 mt-2">
-          <a href="#" class=""><span class=""><i class="fa fa-check"></i> انتخاب همه </span></a>
+          <a href="#" class="" (click)="selectAll($event)"><span class=""><i class="fa fa-check"></i> انتخاب همه </span></a>
         </div>
       </div>
 
-      <div class="row p-2 border" *ngFor="let contact of contacts" (click)="contact.selected = !contact.selected">
+      <div class="row p-2 border contact" *ngFor="let contact of contacts" (click)="contact.selected = !contact.selected">
         <!-- Image -->
-        <div class="col-md-2">
+        <div class="col">
           <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
         </div>
-        <div class="col-md-9">
+        <div class="col-7">
           <!--Name-->
           <h5 class="mb-0" [class.font-weight-bold]="contact.selected">{{contact.name}}</h5>
           <!--Email, Phone-->
           <small class="text-muted"><i class="fa fa-envelope"></i> {{contact.email}}</small>
           <small class="text-muted ml-3"><i class="fa fa-phone"></i> {{contact.phone}}</small>
         </div>
-
-        <div class="col-md-1">
+        <div class="col">
           <i *ngIf="contact.selected" class="fa fa-check font-x-large check-icon"></i>
         </div>
       </div>

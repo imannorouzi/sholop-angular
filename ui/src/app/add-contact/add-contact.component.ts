@@ -18,6 +18,9 @@ export class AddContactComponent implements OnInit {
   @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('spinner') spinner: SpinnerComponent;
+  @ViewChild('emailField') emailField: any;
+  @ViewChild('nameField') nameField: any;
+  @ViewChild('phoneField') phoneField: any;
 
 
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
@@ -33,7 +36,7 @@ export class AddContactComponent implements OnInit {
     fileName: ''
   };
 
-  submitting: boolean = false;
+  submitted: boolean = false;
 
   data1:any;
   cropperSettings1:CropperSettings;
@@ -116,11 +119,13 @@ export class AddContactComponent implements OnInit {
   }
 
   private validateForm() {
-    return true;
+    return this.nameField.valid && this.emailField.valid && this.phoneField.valid;
   }
 
   createContact(){
-    if(this.validateForm()) {
+
+    this.submitted = true;
+    if(!this.validateForm()) return;
 
       this.modal.hide();
       this.contact['userId'] = this.authenticationService.getUser().id;
@@ -135,7 +140,6 @@ export class AddContactComponent implements OnInit {
           this.modal.show();
           this.alertService.error(error.toString())
         });
-    }
   }
 
   onImageCropperModalOk() {

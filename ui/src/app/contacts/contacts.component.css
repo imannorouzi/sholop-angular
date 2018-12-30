@@ -1,6 +1,13 @@
 .contact-image{
   width: 80px;
   height: 80px;
+  font-size: 35px;
+  color: white;
+  display: table;
+}
+.contact-letter{
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .contact-border{

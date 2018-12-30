@@ -21,7 +21,7 @@ public class Event {
              int id,
              int venueId,
              String title,
-             String description,
+             String welcomeMessage,
              Location location,
              boolean confirmNeeded,
              boolean allowJoinViaLink,
@@ -29,11 +29,12 @@ public class Event {
              int maxGuests,
              boolean allowComments,
              String imageUrl,
-             String status) {
+             String status,
+             int chairId) {
         this.id = id;
         this.venueId = venueId;
         this.title = title;
-        this.description = description;
+        this.welcomeMessage = welcomeMessage;
         this.confirmNeeded = confirmNeeded;
         this.allowJoinViaLink = allowJoinViaLink;
         this.limitGuests = limitGuests;
@@ -43,14 +44,15 @@ public class Event {
         this.venue = location;
         this.imageUrl = imageUrl;
         this.status = status;
+        this.chairId = chairId;
     }
 
     public enum EVENT_TYPE {UNKOWN, MEETING }
 
-    String title, description, link, tags, imageUrl, status;
+    String title, welcomeMessage, link, tags, imageUrl, status;
 
     Location venue;
-
+    User chair;
     List<SholopDate> dates;
     SholopDate pointedDate;
     List<SholopImage> images;
@@ -66,17 +68,17 @@ public class Event {
         limitGuests,
         allowComments;
 
-    int id, maxGuests, venueId, userId, createdBy, registeredGuests;
+    int id, maxGuests, venueId, chairId, createdBy, registeredGuests;
 
     EVENT_TYPE eventType;
 
     public Event(JSONObject jo) throws JSONException, ParseException {
 
         this.setTitle(jo.getString("title"));
-        this.setDescription(jo.has("description") ? jo.getString("description") : "");
+        this.setWelcomeMessage(jo.has("welcomeMessage") ? jo.getString("welcomeMessage") : "");
         this.setEventType(jo.has("eventType")? EVENT_TYPE.valueOf(jo.getString("eventType")) : EVENT_TYPE.MEETING);
         this.setVenue(new Location(jo.getJSONObject("venue")));
-        this.setUserId(jo.getInt("userId"));
+        this.setChairId(jo.getInt("chairId"));
 
         JSONArray datesArray = jo.getJSONArray("dates");
         this.dates = new ArrayList<>();
@@ -95,6 +97,7 @@ public class Event {
         this.setLimitGuests(jo.has("limitGuests") && jo.getBoolean("limitGuests"));
         this.setConfirmNeeded(jo.has("confirmNeeded") && jo.getBoolean("confirmNeeded"));
         this.setMaxGuests(jo.has("maxGuests") ? jo.getInt("maxGuests") : 0);
+        this.setChairId(jo.has("chairId") ? jo.getInt("chairId") : 0);
 
         String tagString = "";
         if(jo.has("tags")) {
@@ -127,12 +130,12 @@ public class Event {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getWelcomeMessage() {
+        return welcomeMessage;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setWelcomeMessage(String welcomeMessage) {
+        this.welcomeMessage = welcomeMessage;
     }
 
     public Location getVenue() {
@@ -235,12 +238,12 @@ public class Event {
         this.tags = tags;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getChairId() {
+        return chairId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setChairId(int chairId) {
+        this.chairId = chairId;
     }
 
     public String getImageUrl() {
@@ -305,5 +308,13 @@ public class Event {
 
     public void setContactEvents(List<ContactEvent> contactEvents) {
         this.contactEvents = contactEvents;
+    }
+
+    public User getChair() {
+        return chair;
+    }
+
+    public void setChair(User chair) {
+        this.chair = chair;
     }
 }

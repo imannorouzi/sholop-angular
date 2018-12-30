@@ -43,12 +43,14 @@ public abstract class LocationDao implements Transactional<LocationDao> {
 
     public int insert(Location location){
         return ttDao().insert(
+                location.getUserId(),
                 location.getTitle(),
                 location.getFarsiAddress1(),
                 location.getFarsiAddress2(),
                 location.getEnglishAddress(),
                 location.getLatitude(),
-                location.getLongitude()
+                location.getLongitude(),
+                location.getMapUrl()
         );
     }
 
@@ -86,14 +88,16 @@ public abstract class LocationDao implements Transactional<LocationDao> {
         List<Location> getLocationsByUserId(@Bind("id") int id);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_venue (title, english_address, persian_address_1, persian_address_2, latitude, longitude)" +
-                " values(:title, :english_address, :persian_address_1, :persian_address_2, :latitude, :longitude)")
+        @SqlUpdate("insert into sh_venue (user_id, title, english_address, persian_address_1, persian_address_2, latitude, longitude, map_url)" +
+                " values(:user_id, :title, :english_address, :persian_address_1, :persian_address_2, :latitude, :longitude, :map_url)")
         int insert(
+                @Bind("user_id") int userId,
                 @Bind("title") String title,
                 @Bind("persian_address_1") String persianAddress1,
                 @Bind("persian_address_2") String persianAddress2,
                 @Bind("english_address") String englishAddress,
                 @Bind("latitude") double latitude,
-                @Bind("longitude") double longitude);
+                @Bind("longitude") double longitude,
+                @Bind("map_url") String mapUrl);
     }
 }

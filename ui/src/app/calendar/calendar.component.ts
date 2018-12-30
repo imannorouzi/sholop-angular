@@ -49,12 +49,12 @@ export class CalendarComponent implements OnInit {
     let daysToMove = 0;
     if(monthOffset < 0){
       while(counter != monthOffset){
-        daysToMove -= daysInMonth[(this.today.jDate.month + counter)%12];
+        daysToMove -= daysInMonth[(this.today.jDate.month + counter -1)%12];
         counter--;
       }
     }else{
       while(counter != monthOffset){
-        daysToMove += daysInMonth[(this.today.jDate.month + counter)%12];
+        daysToMove += daysInMonth[(this.today.jDate.month + counter -1)%12];
         counter++;
       }
     }
@@ -84,7 +84,7 @@ export class CalendarComponent implements OnInit {
       week.push(undefined);
     }
 
-    for(let d=1; d<= daysInMonth[this.month.currentMonth]; d++){
+    for(let d=1; d<= daysInMonth[this.month.currentMonth-1]; d++){
       if( week.length == 7 ){
         month.push((week));
         week = [];

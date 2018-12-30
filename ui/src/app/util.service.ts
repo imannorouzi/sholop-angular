@@ -46,14 +46,22 @@ export class UtilService {
   getContactStatus(status: string) {
     switch(status){
       case 'NOT_REPLIED':
-        return 'جواب نداده';
+        return {text:  'جواب نداده', color: 'gray', class: 'fa-question'};
       case 'ATTENDING':
-        return 'می آم';
+        return {text:  'میام', color: 'green', class: 'fa-check'};
       case 'NOT_ATTENDING':
-        return 'نمیام';
+        return {text:  'نمیام', color: 'red', class: 'fa-close'};
+      case 'TENTATIVE':
+        return {text:  'شاید', color: 'yellow', class: 'fa-exclamation'};
 
       default:
-        return 'نامشخص';
+        return {text:  'نامشخص', color: 'gray', class: ''};
     }
+  }
+
+  getRandomColor(){
+    let colors = ['red', 'green', 'blue', 'orange', 'yellow'];
+
+    return colors[Math.floor(Math.random() * colors.length)];
   }
 }

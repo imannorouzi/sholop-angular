@@ -58,6 +58,7 @@
             </div>
             <input type="text" class="form-control" id="location_1" size=80
                    [(ngModel)]="event.venue.farsiAddress1"
+                   autocomplete="off"
                    #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
           </div>
 
@@ -100,7 +101,7 @@
           <h5 class="card-title text-right">هماهنگ کننده ملاقات</h5>
 
           <div class="custom-control custom-checkbox text-right mb-2">
-            <input type="checkbox" class="custom-control-input" #imChair checked="checked" id="defaultUnchecked">
+            <input type="checkbox" class="custom-control-input" #imChair checked="checked" [(ngModel)]="event.chairId" id="defaultUnchecked">
             <label class="custom-control-label" for="defaultUnchecked">خودم</label>
           </div>
           <suggesting-contact-input (contactSelected)="chairSelected($event)" *ngIf="!imChair.checked"></suggesting-contact-input>
@@ -120,9 +121,9 @@
                 <div class="contact-border">
                   <div class="row p-2 ">
 
-                    <div class="col-md-4 text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
+                    <div class="col text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
 
-                    <div class="col-md-8 text-right">
+                    <div class="col-8 text-right">
                       <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
                       <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
                       <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
@@ -168,8 +169,8 @@
       </div>
 
       <div layout="row " class="text-right">
-        <button type="button" [disabled]="submitting" class="btn btn-outline-primary" (click)="onSubmit()" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
-        <button type="button" class="btn btn-outline-primary mr-2" >انصراف</button>
+        <button type="button" [disabled]="submitting" class="btn btn-primary" (click)="onSubmit()" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+        <button type="button" (click)="goTo('/dashboard')" class="btn btn-outline-primary mr-2" >انصراف</button>
       </div>
 
 

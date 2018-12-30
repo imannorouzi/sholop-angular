@@ -38,7 +38,7 @@ public class Comment {
 
     public Comment(JSONObject jo) throws JSONException {
         this.id = jo.has("id") && jo.getInt("id") != 0 ? jo.getInt("id") : -1;
-        this.userId = jo.has("userId") ? jo.getInt("userId") : -1;
+        this.userId = jo.has("chairId") ? jo.getInt("chairId") : -1;
         this.eventId = jo.has("eventId") ? jo.getInt("eventId") : -1;
         this.text = jo.has("text") ? jo.getString("text") : "";
         this.inReplyTo = jo.has("inReplyTo") ? jo.getInt("inReplyTo"): 0;

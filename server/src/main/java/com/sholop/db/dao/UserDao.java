@@ -18,6 +18,8 @@ public abstract class UserDao implements Transactional<UserDao> {
 
     public User getUserByUsername(String username ){ return ttDao().getUserByUsername(username); }
 
+    public User getUserById(int id ){ return ttDao().getUserById(id); }
+
     public User updateUser(User user){
         if( user.getId() == -1){
             int id = ttDao().insert(user.getUsername(),
@@ -31,7 +33,14 @@ public abstract class UserDao implements Transactional<UserDao> {
         }else {
             ttDao().updateUser(user.getUsername(),
                     user.getName(),
-                    user.getEmail());
+                    user.getEmail(),
+                    user.getPhone(),
+                    user.getFarsiAddress1(),
+                    user.getFarsiAddress2(),
+                    user.getLatitude(),
+                    user.getLongitude(),
+                    user.getDescription(),
+                    user.getImageUrl());
         }
         return user;
     }
@@ -46,13 +55,27 @@ public abstract class UserDao implements Transactional<UserDao> {
 
     @RegisterMapper(UserMapper.class)
     private interface Dao {
-        @SqlQuery("SELECT * FROM as_lines WHERE 1=1 ORDER BY 1 ")
+        @SqlQuery("SELECT * FROM sh_users WHERE 1=1 ORDER BY 1 ")
         List<User> listAllUsers();
 
-        @SqlUpdate("update sh_user set full_name=:full_name, email=:email WHERE username=:username")
+        @SqlUpdate("update sh_user set full_name=:full_name, email=:email, phone=:phone, " +
+                "persian_address_1=:persian_address_1, " +
+                "persian_address_2=:persian_address_2, " +
+                "latitude=:latitude, " +
+                "longitude=:longitude, " +
+                "description=:description, " +
+                "image_url=:image_url " +
+                "WHERE username=:username")
         void updateUser(@Bind("username") String username,
                         @Bind("full_name") String name,
-                        @Bind("email") String email);
+                        @Bind("email") String email,
+                        @Bind("phone") String phone,
+                        @Bind("persian_address_1") String farsiAddress1,
+                        @Bind("persian_address_2") String farsiAddress2,
+                        @Bind("latitude") double latitude,
+                        @Bind("longitude") double longitude,
+                        @Bind("description") String description,
+                        @Bind("image_url") String imageUrl);
 
 
         @GetGeneratedKeys
@@ -67,6 +90,9 @@ public abstract class UserDao implements Transactional<UserDao> {
 
         @SqlQuery("SELECT * FROM sh_user WHERE upper(username)=upper(:username)")
         User getUserByUsername(@Bind("username") String username);
+
+        @SqlQuery("SELECT * FROM sh_user WHERE id=:id")
+        User getUserById(@Bind("id") int id);
 
         @SqlUpdate("update sh_user set full_name=:name WHERE username=:username")
         void updateFullName(@Bind("username") String username,

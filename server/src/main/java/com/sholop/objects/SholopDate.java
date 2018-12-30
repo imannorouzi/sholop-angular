@@ -55,10 +55,10 @@ public class SholopDate {
 //        String strDate = dateFormat.format();
         this.date = dateFormat.parse(jo.getString("date"));
 
-        dateString = "";
+        this.dateString = jo.has("dateString") ? jo.getString("dateString") : "";
 
-        startTime = jo.getString("from");
-        endTime = jo.getString("to");
+        startTime = jo.getString("startTime");
+        endTime = jo.getString("endTime");
     }
 
     public Date getDate() {

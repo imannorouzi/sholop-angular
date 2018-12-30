@@ -14,7 +14,7 @@ export class CreateMeetingComponent implements OnInit {
     attendees: [],
     title: '',
     venue: new Venue(),
-    userId: -1,
+    chairId: -1,
     welcomeMessage: "",
     eventType: "MEETING",
   };
@@ -24,7 +24,14 @@ export class CreateMeetingComponent implements OnInit {
 
   ngOnInit() {
 
-    this.event.dates.push({date: this.dateService.getSholopDate().gDate, startTime: '0900', endTime: '1000'});
+    let d = new Date();
+
+    let date = new Date(d.getFullYear(),
+      d.getMonth(),
+      d.getDate()
+    );
+
+    this.event.dates.push({date: date, startTime: '0900', endTime: '1000', dateString: this.dateService.greToPersian(date, true)});
   }
 
 }

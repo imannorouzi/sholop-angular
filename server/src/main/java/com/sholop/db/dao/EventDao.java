@@ -6,12 +6,10 @@ package com.sholop.db.dao;
 
 import com.sholop.db.mapper.EventMapper;
 import com.sholop.objects.Event;
-import org.joda.time.DateTime;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +27,9 @@ public abstract class EventDao implements Transactional<EventDao> {
     public Event update(Event event){
         ttDao().update(
                 event.getId(),
-                event.getUserId(),
+                event.getChairId(),
                 event.getTitle(),
-                event.getDescription(),
+                event.getWelcomeMessage(),
                 event.getVenueId(),
                 event.isConfirmNeeded(),
                 event.isAllowJoinViaLink(),
@@ -46,9 +44,9 @@ public abstract class EventDao implements Transactional<EventDao> {
     public int insert(Event event){
         return ttDao().insert(
                 event.getTitle(),
-                event.getDescription(),
+                event.getWelcomeMessage(),
                 event.getVenueId(),
-                event.getUserId(),
+                event.getChairId(),
                 event.isConfirmNeeded(),
                 event.isAllowJoinViaLink(),
                 event.isLimitGuests(),
@@ -93,7 +91,7 @@ public abstract class EventDao implements Transactional<EventDao> {
         @SqlUpdate("update sh_event set title=:title, description=:description, venue_id=:venue_id," +
                 " confirm_needed=:confirm_needed, join_via_link=:join_via_link, limit_guests=:limit_guests," +
                 " max_guests=:max_guests, allow_comments=:allow_comments, tags=:tags " +
-                " where user_id=:user_id and id=:id")
+                " where chair_id=:chair_id and id=:id")
         int stepTwoUpdate(
                 @Bind("id") int id,
                 @Bind("image_url") String imageUrl,
@@ -102,10 +100,10 @@ public abstract class EventDao implements Transactional<EventDao> {
         @SqlUpdate("update sh_event set title=:title, description=:description, venue_id=:venue_id," +
                 " confirm_needed=:confirm_needed, join_via_link=:join_via_link, limit_guests=:limit_guests," +
                 " max_guests=:max_guests, allow_comments=:allow_comments, tags=:tags " +
-                " where user_id=:user_id and id=:id")
+                " where chair_id=:chair_id and id=:id")
         int update(
                 @Bind("id") int id,
-                @Bind("user_id") int userId,
+                @Bind("chair_id") int userId,
                 @Bind("title") String title,
                 @Bind("description") String description,
                 @Bind("venue_id") int venueId,
@@ -128,12 +126,12 @@ public abstract class EventDao implements Transactional<EventDao> {
                             @Bind("password") String password);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_event (title, description, venue_id, user_id, confirm_needed, join_via_link, limit_guests, max_guests, allow_comments, link, tags, event_type, created_by)" +
-                " values(:title, :description, :venue_id, :user_id, :confirm_needed, :join_via_link, :limit_guests, :max_guests, :allow_comments, :link, :tags, :event_type, :created_by)")
+        @SqlUpdate("insert into sh_event (title, description, venue_id, chair_id, confirm_needed, join_via_link, limit_guests, max_guests, allow_comments, link, tags, event_type, created_by)" +
+                " values(:title, :description, :venue_id, :chair_id, :confirm_needed, :join_via_link, :limit_guests, :max_guests, :allow_comments, :link, :tags, :event_type, :created_by)")
         int insert(@Bind("title") String title,
                    @Bind("description") String description,
                    @Bind("venue_id") int venueId,
-                   @Bind("user_id") int userId,
+                   @Bind("chair_id") int userId,
                    @Bind("confirm_needed") boolean confirmNeeded,
                    @Bind("join_via_link") boolean allowJoinViaLink,
                    @Bind("limit_guests") boolean limitGuests,
