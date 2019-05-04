@@ -4,13 +4,15 @@ import { map } from 'rxjs/operators';
 import {User} from "./user";
 import {AlertService} from "./alert.service";
 import {environment} from "../environments/environment.prod";
+import {SpinnerService} from "./spinner.service";
 
 const serverUrl = environment.serverUrl;
 
 @Injectable()
 export class AuthenticationService {
   constructor(private http: HttpClient,
-              private alertService: AlertService) { }
+              private alertService: AlertService,
+              private spinnerService: SpinnerService) { }
 
   login(username: string, password: string) {
     return this.http.post<any>( serverUrl+'/authenticate', { username: username, password: password })

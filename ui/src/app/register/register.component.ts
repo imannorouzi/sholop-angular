@@ -45,13 +45,18 @@ export class RegisterComponent implements OnInit {
       .subscribe(
         data => {
           if (data && data['msg'] === "OK" && data['object'].token) {
+
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            this.alertService.success('Registration successful', true);
+            this.alertService.success('ثبت نام شما با موفقیت انجام شد.', true);
             localStorage.setItem('currentUser', JSON.stringify(data['object']));
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
+
+          }else if(data['msg'] === 'DUPLICATE'){
+            this.alertService.error('این ایمیل قبلا ثبت نام کرده است.', true);
           }else{
-            this.alertService.error('Failed', true);
+            this.alertService.error('مشکلی به وجود آمد. لطفا دوباره تلاش کنید.', true);
           }
+          this.loading = false;
         },
         error => {
           this.alertService.error(error);

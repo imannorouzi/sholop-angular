@@ -1,8 +1,8 @@
 <meeting-item-modal #meetingModal [event]="selectedMeeting"></meeting-item-modal>
-
-<div class="container mt-3">
+<div class="flex-parent">
+  <div class="container mt-3 mb-3 grow">
   <div class="card h-100 shadow">
-    <div class="card-body flex-parent">
+    <div class="card-body ">
 
       <div class="row">
 
@@ -15,6 +15,13 @@
 
         <div class="col-md-9 meeting-container scroll">
 
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
+            </div>
+            <input id="search" type="text" name="search" class="form-control" placeholder="نام، ایمیل، ..." >
+          </div>
+
           <div class="mt-2 text-center sticky-top" *ngIf="selectedDate">
             <span class="date-title">
               <i class="fa fa-calendar ml-2"></i>
@@ -22,8 +29,8 @@
               </span>
           </div>
 
-          <meeting-item (click)="onMeetingClick(event)"
-            class="col-md-4 mt-2" *ngFor="let event of meetings" [event]="event">
+          <meeting-item (clicked)="onMeetingClick($event)"
+            class="mt-2" *ngFor="let event of meetings" [event]="event">
           </meeting-item>
 
           <div class="text-center" *ngIf="!loading && (!meetings || meetings.length === 0)">
@@ -39,4 +46,5 @@
 
     </div>
   </div>
+</div>
 </div>

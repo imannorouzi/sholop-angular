@@ -3,7 +3,7 @@
 }
 
 .calendar-day.selected{
-  background: #343a40;
+  background: #222;
   color: white;
 }
 .calendar-day:hover{
@@ -11,7 +11,42 @@
   color: white;
 }
 
+.meeting-count>.arrow{
+  content: '';
+  /* width: 20px; */
+  border-left: 10px solid #ff4e5f;
+  border-bottom: 5px solid transparent;
+  border-top: 5px solid transparent;
+  /* height: 20px; */
+  display: inline-block;
+  /* background: #000; */
+}
+.meeting-count>.content{
+  background: #ff4e5f;
+  color: white;
+  /*width: 15px;*/
+  padding: 5px 10px;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 3px;
 
+}
+.meeting-count{
+  display: none;
+  width: max-content;
+  z-index: 1000;
+  position: absolute;
+  bottom: 0px;
+  right: 100%;
+}
+
+.calendar-day:hover .meeting-count{
+  display: block;
+}
+
+.meeting-day{
+  background: darksalmon;
+}
 td{
   padding: 5px;
 }

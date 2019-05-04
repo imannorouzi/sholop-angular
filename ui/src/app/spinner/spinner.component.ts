@@ -9,6 +9,7 @@ export class SpinnerComponent implements OnInit {
 
   @Input() showing: boolean = false;
   @Input() size: string; // small, medium, large
+  @Input() color: string = 'dark'; // dark, light
 
   sizeClass: string = 'la-3x';
 

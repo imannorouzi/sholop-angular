@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
 import {DataService} from "../data.service";
 import {AlertService} from "../alert.service";
-import {ValueTransform} from "@angular/compiler-cli/src/transformers/metadata_cache";
 
 @Component({
   selector: 'app-contact-us',
@@ -16,6 +15,8 @@ export class ContactUsComponent implements OnInit {
   contactUsForm: FormGroup;
   submitted: boolean = false;
   loading: boolean = false;
+
+  view: number = 1;
 
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
@@ -62,4 +63,8 @@ export class ContactUsComponent implements OnInit {
         });
   }
 
+  changeView(event, viewNumber: number) {
+    event.preventDefault();
+    this.view = viewNumber;
+  }
 }

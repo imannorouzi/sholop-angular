@@ -22,6 +22,8 @@ public abstract class ContactEventDao implements Transactional<ContactEventDao> 
 
     public ContactEvent getEventContactByUUID(String uuid){ return ttDao().getEventContactByUUID(uuid); }
 
+    public ContactEvent getEventContactById(int id){ return ttDao().getEventContactById(id); }
+
     public int insert(ContactEvent contact){
         return ttDao().insert(
             contact.getContactId(),
@@ -52,6 +54,12 @@ public abstract class ContactEventDao implements Transactional<ContactEventDao> 
                 @Bind("id") int id,
                 @Bind("status") String status);
 
+        @SqlUpdate("update sh_contact_event set status=:status WHERE event_id=:event_id and contact_id=:contact_id")
+        void updateStatus(
+                @Bind("contact_id") int cotnactId,
+                @Bind("event_id") int eventId,
+                @Bind("status") String status);
+
         @GetGeneratedKeys
         @SqlUpdate("insert into sh_contact_event (contact_id, event_id, status, qr_code_url, uuid)" +
                 " values(:contact_id, :event_id, :status, :qr_code_url, :uuid)")
@@ -72,5 +80,8 @@ public abstract class ContactEventDao implements Transactional<ContactEventDao> 
 
         @SqlQuery("select * from sh_contact_event where uuid=:uuid")
         ContactEvent getEventContactByUUID(@Bind("uuid") String uuid);
+
+        @SqlQuery("select * from sh_contact_event where id=:id")
+        ContactEvent getEventContactById(@Bind("id") int id);
     }
 }

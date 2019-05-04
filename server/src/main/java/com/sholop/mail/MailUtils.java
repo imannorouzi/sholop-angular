@@ -4,6 +4,7 @@ import com.sholop.Utils;
 import com.sholop.objects.Contact;
 import com.sholop.objects.ContactEvent;
 import com.sholop.objects.Event;
+import com.sholop.objects.User;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -15,36 +16,34 @@ import javax.mail.internet.*;
 public class MailUtils {
 
     public static void sendMail(MailMessage msg){
-
         String to = msg.getTo();
-        String from = msg.getTo();
+        String from = "no-reply@sholop.com"; //msg.getTo();
 
+        String host = "localhost";//or IP address
 
-
-        from = "iman.norouzy@gmail.com";
+        //Get the session object
         Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
-        properties.setProperty("mail.smtp.port", "587");
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-        properties.setProperty("mail.smtp.tls.enable", "true");
-        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.host", host);
+        Session session = Session.getDefaultInstance(properties);
 
-        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+        /*****Comment below lines to enable email in server */
+        /*from = "iman.norouzy@gmail.com";
+        Properties prop = System.getProperties();
+        prop.setProperty("mail.smtp.host", "smtp.gmail.com");
+        prop.setProperty("mail.smtp.port", "587");
+        prop.setProperty("mail.smtp.starttls.enable", "true");
+        prop.setProperty("mail.smtp.tls.enable", "true");
+        prop.setProperty("mail.smtp.auth", "true");
+
+        Session session = Session.getDefaultInstance(prop, new Authenticator() {
 
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication("iman.norouzy@gmail.com", "solotar5042");
             }
 
-        });
+        });*/
 
-
-        /*String host = "localhost";//or IP address
-
-        //Get the session object
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        Session session = Session.getDefaultInstance(properties);*/
 
         try{
             MimeMessage message = new MimeMessage(session);
@@ -54,7 +53,7 @@ public class MailUtils {
             message.setContent(msg.getBody(),  "text/html;charset=utf-8");
 
             // Send message
-            Transport.send(message);
+//            Transport.send(message);
 
         }catch (MessagingException mex) {mex.printStackTrace();}
     }
@@ -118,6 +117,29 @@ public class MailUtils {
 
             htmlString = htmlString.replace("$qrUrl", Utils.WEBSITE_URL + ce.getQRCodeUrl());
 //            htmlString = htmlString.replace("$qrUrl", "http://185.173.104.77:8094/contents/qr.png");
+
+            msg.setBody(htmlString);
+            MailUtils.sendMail(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void sendRegisterMail(User user) {
+
+        try {
+
+            MailMessage msg = new MailMessage();
+            msg.setSubject("خیلی خوش اومدید");
+            msg.setTo(user.getEmail());
+            msg.setFrom("root@sholop.com");
+
+            String htmlString = FileUtils.readFileToString(new File("./contents/templates/register.html"));
+
+            htmlString = htmlString.replace("$logoUrl", Utils.getIconUrl("logo"));
+
+            htmlString = htmlString.replace("$name", user.getName());
 
             msg.setBody(htmlString);
             MailUtils.sendMail(msg);

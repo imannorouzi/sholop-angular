@@ -3,8 +3,6 @@ import {DateService} from "../date.service";
 import {UtilService} from "../util.service";
 import {ActivatedRoute} from "@angular/router";
 import {DataService} from "../data.service";
-import {NavigationService} from "../navigation.service";
-import {SpinnerComponent} from "../spinner/spinner.component";
 
 @Component({
   selector: 'app-user-meeting',

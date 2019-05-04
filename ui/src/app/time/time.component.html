@@ -1,38 +1,53 @@
-<div class="" clickOutside (clickOutside)="isHourShowing=false; isMinuteShowing=false;">
+<div class="" clickOutside (clickOutside)="isShowing=false;">
   <div class="input-group">
     <div class="input-group-prepend">
       <span class="input-group-text"><i class="align-bottom fa fa-clock-o"></i></span>
     </div>
     <input #input
            (change)="onTimeChanged()"
-      type="text" [class]="inputClasses + ' ltr'" autocomplete="false"
+           type="text" [class]="inputClasses + ' ltr'" autocomplete="false"
+           [autocomplete]="false"
            [value]="(hourString ? hourString : '-- ')+':'+(minuteString ? minuteString : ' --')"
            (focus)="onFocus()" name="date"
            [placeholder]="placeholder? placeholder : 'Time'" />
   </div>
 
+  <div class="form-group unselectable">
 
+    <div class="times-container ltr"   *ngIf="isShowing" >
+      <table class="w-100 text-center">
+        <tr *ngFor="let hour of dummyRows; let i=index;">
+          <td>
+            <span (click)="hourChange(true)" *ngIf="i===mainRow-1"><i class="fa fa-angle-up change-button font-x-large"></i></span>
+            <span (click)="hourChange(false)" *ngIf="i===mainRow+1"><i class="fa fa-angle-down change-button font-x-large"></i></span>
+          </td>
+          <td class="time-item hour-item" (wheel)="onHourScroll($event)"
+               (click)="hourClick(i)" [class.highlight]="i===mainRow">
+            <span>{{( hours[i]<10 ? '0' : '') + hours[i]}}</span>
+          </td>
 
-    <div id="" class="times-container"  *ngIf="isMinuteShowing || isHourShowing" >
-      <div class="w-100">
-        <div class="text-center row times-table" #hoursColumn *ngIf="isHourShowing">
-          <div *ngFor="let hour of hours; let index=index"
-               [class]="hour.localeCompare('08')<0 || hour.localeCompare('20')>0  ? 'dark cell col-md-4 inside' : 'bright cell col-md-4 inside'"
-               (click)="onCellHourClick($event, index)" >
-            {{hour}}:00
-          </div>
-        </div>
+          <td [class.highlight]="i===mainRow" class="time-item">
+            <span>{{i===mainRow ? ':' : ''}}</span>
+          </td>
 
-        <div class="text-center row times-table" #minutesColumn *ngIf="isMinuteShowing" >
-          <div *ngFor="let minute of minutes; let index=index"
-               [class]="hourString.localeCompare('08')<0 || hourString.localeCompare('20')>0  ? 'dark cell col-md-4 inside' : 'bright cell col-md-4 inside'"
-               (click)="onCellMinuteClick($event, index)">
-            {{hourString}}:{{minute}}
-          </div>
-        </div>
+          <td class="time-item minute-item" (wheel)="onMinuteScroll($event)"
+               (click)="minuteClick(i)" [class.highlight]="i===mainRow">
+            <span>{{(minutes[i]<10 ? '0' : '') + minutes[i]}}</span>
+          </td>
 
+          <td>
+            <span (click)="minuteChange(true)" *ngIf="i===mainRow-1"><i class="fa fa-angle-up change-button font-x-large"></i></span>
+            <span (click)="minuteChange(false)" *ngIf="i===mainRow+1"><i class="fa fa-angle-down change-button font-x-large"></i></span>
+          </td>
+        </tr>
+      </table>
+
+      <hr>
+      <div class="text-right">
+        <button class="btn btn-outline-primary mb-3 mr-3" (click)="isShowing=false">خوبه</button>
       </div>
 
-    </div>
+  </div>
 
+  </div>
 </div>

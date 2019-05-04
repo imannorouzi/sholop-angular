@@ -16,13 +16,14 @@ public class User implements Principal {
     private int id;
     private String name, username;
     private List<String> roles;
-    private String password, email, phone, farsiAddress1, farsiAddress2, description, imageUrl;
+    private String password, email, phone, farsiAddress1 = "", farsiAddress2 = "", description = "", imageUrl = "";
     private String token;
 
     private int createdBy, modifiedBy;
     Timestamp created, modified;
     double latitude, longitude;
 
+    String googlePassword;
 
     public User(){}
 
@@ -35,6 +36,8 @@ public class User implements Principal {
         this.password = password;
         this.id = -1;
         this.roles = null;
+        this.latitude = 35.6892;
+        this.longitude = 51.3890;
     }
 
     public User(String name, String password, List<String> roles) {
@@ -47,6 +50,7 @@ public class User implements Principal {
                 String name,
                 String username,
                 String password,
+                String googlePassword,
                 String email,
                 String imageUrl,
                 String phone,
@@ -68,6 +72,7 @@ public class User implements Principal {
         this.email = email;
         this.imageUrl = imageUrl;
         this.phone = phone;
+        this.googlePassword = googlePassword;
         this.roles = new ArrayList<>();
         if(roles != null) {
             String[] rolesSplit = roles.split(",");
@@ -254,5 +259,13 @@ public class User implements Principal {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getGooglePassword() {
+        return googlePassword;
+    }
+
+    public void setGooglePassword(String googlePassword) {
+        this.googlePassword = googlePassword;
     }
 }

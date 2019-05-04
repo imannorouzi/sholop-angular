@@ -1,5 +1,5 @@
 <!--<div class="container">-->
-<nav class="navbar navbar-light bg-white p-2 navbar-expand-lg text-right shadow mb-2" >
+<nav class="navbar navbar-light bg-white p-2 navbar-expand-lg text-right shadow" >
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -14,27 +14,27 @@
 
     <ul class="navbar-nav" *ngIf="authenticationService.isLoggedIn()">
 
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/dashboard']"><i class="fa fa-dashboard"></i> داشبورد</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/dashboard']"><!--<i class="fa fa-dashboard"></i>--> جلسات</a>
       </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="/create-event">Create Event</a>
       </li>-->
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/create-meeting']"><i class="fa fa-plus"></i> ایجاد ملاقات</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link colored-navbar-item" [routerLink]="['/create-meeting']"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/contacts']"><i class="fa fa-address-book"></i> مخاطب ها</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/contacts']"><!--<i class="fa fa-address-book"></i>--> مخاطب ها</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/venues']"><i class="fa fa-map-marker"></i> مکان ها</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/venues']"><!--<i class="fa fa-map-marker"></i>--> مکان ها</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/contact-us']"><i class="fa fa-envelope"></i> تماس با ما</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/contact-us']"><!--<i class="fa fa-envelope"></i>--> درباره ما</a>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown"  data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="false">
         <a class="nav-link dropdown-toggle" href="#" id="Download" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-android"></i>
+          <!--<i class="fa fa-android"></i>-->
           دانلود
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -46,21 +46,21 @@
 
     <ul class="navbar-nav" *ngIf="!authenticationService.isLoggedIn()">
 
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/home']"><i class="fa fa-home"></i> خانه</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/home']"><!--<i class="fa fa-home"></i>--> خانه</a>
       </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="/create-event">Create Event</a>
       </li>-->
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/create-meeting']"><i class="fa fa-plus"></i> ایجاد ملاقات</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/create-meeting']"  routerLinkActive="active"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/contact-us']"><i class="fa fa-envelope"></i> تماس با ما</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/contact-us']"><!--<i class="fa fa-envelope"></i>--> درباره ما</a>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown" *ngIf="false">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fa fa-android"></i>
+          <!--<i class="fa fa-android"></i>-->
           دانلود
         </a>
         <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
@@ -71,11 +71,11 @@
     </ul>
 
     <ul class="navbar-nav mr-auto ml-2" *ngIf="!authenticationService.isLoggedIn()">
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/login']"><i class="fa fa-sign-in"></i> ورود</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" [routerLink]="['/register']"><i class="fa fa-key"></i> ثبت نام</a>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link colored-navbar-item" [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام</a>
       </li>
     </ul>
 
@@ -88,8 +88,8 @@
         {{authenticationService.getUser().name}}
       </a>
       <div class="dropdown-menu right-0 position-absolute" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" [routerLink]="['/profile']"><i class="fa fa-user"></i> پروفایل من</a>
-        <a class="dropdown-item" [routerLink]="['/login']"><i class="fa fa-sign-out"></i> خروج</a>
+        <a class="dropdown-item" [routerLink]="['/profile']"><!--<i class="fa fa-user"></i>--> پروفایل من</a>
+        <a class="dropdown-item" [routerLink]="['/login']"><!--<i class="fa fa-sign-out"></i>--> خروج</a>
       </div>
     </li>
   </ul>

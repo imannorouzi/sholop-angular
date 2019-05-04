@@ -56,7 +56,7 @@
           <agm-marker [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
         </agm-map>
 
-        <comments [anonymous]="anonymous" #comments [eventId]="event ? event.id : -1"></comments>
+        <comments [anonymous]="anonymous" [uuid]="uuid" [guest]="guest" #comments [eventId]="event ? event.id : -1"></comments>
 
         <div class=" text-right" *ngIf="!anonymous && event.chairId===currentUserId">
           <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>

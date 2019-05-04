@@ -10,19 +10,21 @@ export class TimeComponent implements OnInit {
   @ViewChild("hoursColumn") hoursColumn: ElementRef;
   @ViewChild("input") input: ElementRef;
 
-  isHourShowing: boolean = false;
-  isMinuteShowing: boolean = false;
+  isShowing: boolean = false;
   @Input() inputClasses: string = '';
   @Input() placeholder: string = '-- : --';
 
 
   @Output() onTimeSelected: EventEmitter<any> = new EventEmitter();
 
-  hours: string[] = [];
-  minutes: string[] = [];
-
   hourString: string = "";
   minuteString: string = "";
+
+  mainRow: number = 5;
+
+  hours: any[] = [];
+  minutes: any[] = [];
+  dummyRows: any[] = [];
 
   @Input() timeString: string;
 
@@ -30,37 +32,89 @@ export class TimeComponent implements OnInit {
 
   ngOnInit() {
 
-    for(let h=0; h<24; h++) {
-      this.hours.push( h<10 ? '0'+h : h.toString());
-    }
-
-    for(let m=0; m<12; m++){
-      this.minutes.push( m<2 ? '0' + (m*5).toString() : (m*5).toString() );
-    }
 
     if(this.timeString){
       this.hourString = this.timeString.substring(0,2);
       this.minuteString = this.timeString.substring(2);
     }
 
+    this.dummyRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+    this.hours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 0];
+    this.minutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+
   }
 
   onFocus(){
-    this.isHourShowing = true;
-    this.isMinuteShowing = false;
+    this.isShowing = true;
   }
 
-  onCellHourClick($event, index) {
-    this.hourString = this.hours[index];
-    this.isHourShowing = false;
-    this.isMinuteShowing = true;
+  hourChange(increment: boolean = false){
+    if(increment)this.listUp(this.hours);
+    else this.listDown(this.hours);
   }
 
-  onCellMinuteClick($event, index) {
-    this.isMinuteShowing = false;
-    this.minuteString = this.minutes[index];
+  minuteChange(increment: boolean = false){
+    if(increment)this.listUp(this.minutes);
+    else this.listDown(this.minutes);
+  }
 
-    this.onTimeSelected.emit(this.hourString + ':' + this.minuteString);
+  listUp(list){
+    let e = list.pop();
+    list.unshift(e);
+
+    this.hourString = (this.hours[this.mainRow]<10 ? '0' : '') +this.hours[this.mainRow];
+    this.minuteString = (this.minutes[this.mainRow]<10 ? '0' : '') + this.minutes[this.mainRow];
+
+    this.onTimeSelected.emit(this.input.nativeElement.value);
+  }
+
+  listDown(list){
+    let e = list.shift();
+    list.push(e);
+
+    this.hourString = (this.hours[this.mainRow]<10 ? '0' : '') +this.hours[this.mainRow];
+    this.minuteString = (this.minutes[this.mainRow]<10 ? '0' : '') +this.minutes[this.mainRow];
+
+    this.onTimeSelected.emit(this.input.nativeElement.value);
+  }
+
+  onHourScroll($event) {
+    $event.preventDefault();
+    if($event.wheelDeltaY>0){
+      this.listUp(this.hours);
+    }else{
+      this.listDown(this.hours);
+    }
+  }
+
+  onMinuteScroll($event) {
+    $event.preventDefault();
+    if($event.wheelDeltaY>0){
+      this.listUp(this.minutes);
+    }else{
+      this.listDown(this.minutes)
+    }
+  }
+
+  hourClick(i) {
+    if(i<this.mainRow){
+      this.listUp(this.hours);
+      setTimeout( () =>{this.hourClick(i+1)}, 50);
+    }else if(i>this.mainRow){
+      this.listDown(this.hours);
+      setTimeout( () =>{this.hourClick(i-1)}, 50);
+    }
+  }
+
+  minuteClick(i) {
+    if(i<this.mainRow){
+      this.listUp(this.minutes);
+      setTimeout( () =>{this.minuteClick(i+1)}, 50);
+    }else if(i>this.mainRow){
+      this.listDown(this.minutes);
+      setTimeout( () =>{this.minuteClick(i-1)}, 50);
+    }
   }
 
   onTimeChanged(){

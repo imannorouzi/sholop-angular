@@ -25,7 +25,8 @@ public class SchedulerAuthenticator implements Authenticator<String, User>{
         User u = userDao.getUserByUsername(jwt.getClaim("user").asString());
 
         try {
-            if (u != null && PasswordHash.check(jwt.getClaim("password").asString(), u.getPassword())) {
+            if (u != null && (PasswordHash.check(jwt.getClaim("password").asString(), u.getPassword())
+                                || PasswordHash.check(jwt.getClaim("password").asString(), u.getGooglePassword()) )) {
                 return Optional.of(u);
             }
         } catch (Exception e) {

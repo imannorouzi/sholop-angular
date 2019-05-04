@@ -58,6 +58,11 @@ import { EditMeetingComponent } from './edit-meeting/edit-meeting.component';
 import { ConfirmComponent } from './confirm/confirm.component';
 import { ContactMeetingComponent } from './contact-meeting/contact-meeting.component';
 import { UserMeetingComponent } from './user-meeting/user-meeting.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { FaqComponent } from './faq/faq.component';
+import { ConditionsComponent } from './conditions/conditions.component';
+import { AboutUsComponent } from './about-us/about-us.component';
+import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +101,12 @@ import { UserMeetingComponent } from './user-meeting/user-meeting.component';
     EditMeetingComponent,
     ConfirmComponent,
     ContactMeetingComponent,
-    UserMeetingComponent
+    UserMeetingComponent,
+    PageNotFoundComponent,
+    FaqComponent,
+    ConditionsComponent,
+    AboutUsComponent,
+    SpinnerModalComponent
   ],
   imports: [
     BrowserModule,

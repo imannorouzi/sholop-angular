@@ -6,6 +6,7 @@ package com.sholop.db.dao;
 
 import com.sholop.db.mapper.EventMapper;
 import com.sholop.objects.Event;
+import com.sholop.objects.User;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
@@ -69,8 +70,8 @@ public abstract class EventDao implements Transactional<EventDao> {
         ttDao().updateImageUrl(id, url);
     }
 
-    public List<Event> getEventsByType(String eventType, Date date){
-        return ttDao().getEventsByType(eventType, date);
+    public List<Event> getEventsByType(String eventType, User user, Date date){
+        return ttDao().getEventsByType(eventType, user.getId(), user.getEmail(),  date);
     }
 
     public Event getEventById(String eventType, int meetingId) {
@@ -82,8 +83,13 @@ public abstract class EventDao implements Transactional<EventDao> {
         @SqlQuery("SELECT * FROM sh_event WHERE 1=1 ORDER BY 1 ")
         List<Event> listAllEvents();
 
-        @SqlQuery("SELECT s.* FROM sh_event s inner join sh_event_date d on s.id=d.event_id WHERE d.date=:date and event_type=:type")
-        List<Event> getEventsByType(@Bind("type") String type, @Bind("date") Date date);
+        @SqlQuery("SELECT distinct s.* FROM sh_event s " +
+                "inner join sh_event_date d on s.id=d.event_id " +
+                "inner join sh_contact_event ec on s.id=ec.event_id " +
+                "inner join sh_contact c on c.id=ec.contact_id " +
+                "WHERE d.date=:date and event_type=:type " +
+                "and (s.chair_id=:user_id or c.email=:email)")
+        List<Event> getEventsByType(@Bind("type") String type, @Bind("user_id") int userId, @Bind("email") String email, @Bind("date") Date date);
 
         @SqlQuery("SELECT s.* FROM sh_event s inner join sh_event_date d on s.id=d.event_id WHERE s.id=:id and event_type=:type")
         Event getEventById(@Bind("type") String type, @Bind("id") int id);

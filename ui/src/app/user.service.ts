@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { User} from "./user";
+import {environment} from "../environments/environment.prod";
 
-const serverUrl = "http://0.0.0.0:8094/api";
+const serverUrl = environment.serverUrl;
 
 @Injectable()
 export class UserService {

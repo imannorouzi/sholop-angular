@@ -3,6 +3,8 @@ import {AuthenticationService} from "../authentication.service";
 import {DataService} from "../data.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
+import {User} from "../user";
+import {AlertService} from "../alert.service";
 
 @Component({
   selector: 'comments',
@@ -16,7 +18,8 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
 
   constructor(private authenticationService: AuthenticationService,
               private dataService: DataService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private alertService: AlertService) { }
 
   @Input() eventId: number = 0;
   page: number = 0;
@@ -24,6 +27,10 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
   comments: any[] = [];
   loading: boolean = false;
   @Input() anonymous: boolean = false;
+  @Input() uuid: string = '';
+
+  @Input() guest: any;
+  user: User;
   noMoreComments: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -36,6 +43,10 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
     this.commentForm = this.formBuilder.group({
       comment: ['', [Validators.minLength(3), Validators.required]]
     });
+
+    if(!this.anonymous){
+      this.user = this.authenticationService.getUser();
+    }
   }
 
   ngAfterViewInit(){
@@ -54,7 +65,7 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
   readComments(event = undefined){
     if(event) event.preventDefault();
 
-    this.dataService.getComments(this.eventId, this.page++).subscribe(
+    this.dataService.getComments(this.eventId, this.page++, this.uuid).subscribe(
       data => {
         if(data && data.msg === "OK"){
           this.comments.push(...data.object);
@@ -89,7 +100,8 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
 
     let comment = {
       text: c,
-      eventId: this.eventId
+      eventId: this.eventId,
+      uuid: this.uuid
     };
 
     this.loading = true;
@@ -106,6 +118,21 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
       }, error =>{
         console.log(error);
         this.loading = false;
+      }
+    )
+  }
+
+  deleteComment(index: number) {
+    this.dataService.deleteComment(this.comments[index]).subscribe(
+      data => {
+        if(data['msg'] === 'OK'){
+          this.comments.splice(index, 1);
+        }else{
+          this.alertService.error("نظر شما پاک نشد. دوباره تلاش کنید.");
+        }
+      },
+      error1 => {
+        console.log(error1);
       }
     )
   }

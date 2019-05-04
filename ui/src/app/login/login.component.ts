@@ -7,6 +7,7 @@ import { AfService } from '../providers/af.service';
 
 import {AlertService} from "../alert.service";
 import {AuthenticationService} from "../authentication.service";
+import {SpinnerService} from "../spinner.service";
 
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    public AfService: AfService) {}
+    public AfService: AfService,
+    private spinnerService: SpinnerService) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -62,7 +64,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         },
         error => {
-          this.alertService.error(error);
+          this.alertService.error("مشکلی پیش آمده. دوباره تلاش کنید.");
           this.loading = false;
         });
   }

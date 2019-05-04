@@ -23,6 +23,9 @@ export class ContactMeetingComponent implements OnInit {
   uuid: string = '';
   dateEventId: string  = '';
   action: string = '';
+  guest: any;
+
+  style: any;
 
   ngOnInit() {
 
@@ -32,6 +35,7 @@ export class ContactMeetingComponent implements OnInit {
       this.uuid = params['uuid'];
       this.dateEventId = params['dateId'];
       this.action = params['action'];
+      this.style = this.utilService.getContactStatus(this.action);
 
       this.readMeeting();
     });
@@ -45,6 +49,12 @@ export class ContactMeetingComponent implements OnInit {
       data => {
         if( data['msg'] === "OK"){
           this.event = data['object'];
+
+          this.event.attendees.forEach(att =>{
+            if(att.you){
+              this.guest = att;
+            }
+          });
         }
         this.loading = false;
       },

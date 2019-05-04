@@ -18,7 +18,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
 
 @Priority(Priorities.AUTHENTICATION)
 public class TokenAuthFilter<P extends Principal> extends AuthFilter<String, P> {

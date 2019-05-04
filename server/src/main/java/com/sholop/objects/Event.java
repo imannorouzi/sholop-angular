@@ -60,6 +60,8 @@ public class Event {
     List<ContactEvent> contactEvents;
     List<Contact> attendees;
 
+    ContactEvent contactEvent;
+
     SholopDate closeDate;
 
     // setting attributes
@@ -316,5 +318,13 @@ public class Event {
 
     public void setChair(User chair) {
         this.chair = chair;
+    }
+
+    public ContactEvent getContactEvent() {
+        return contactEvent;
+    }
+
+    public void setContactEvent(ContactEvent contactEvent) {
+        this.contactEvent = contactEvent;
     }
 }

@@ -3,7 +3,6 @@ import {DataService} from "../data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {CalendarComponent} from "../calendar/calendar.component";
 import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
-import { ModalDirective } from 'ngx-bootstrap';
 import {DateService} from "../date.service";
 
 @Component({
@@ -18,6 +17,7 @@ export class DashboardComponent implements OnInit {
 
   meetings = [];
   loading = false;
+
 
   selectedMeeting = undefined;
 
@@ -69,4 +69,5 @@ export class DashboardComponent implements OnInit {
     this.meetingModal.show();
 
   }
+
 }

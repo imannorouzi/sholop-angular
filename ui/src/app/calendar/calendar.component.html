@@ -9,7 +9,10 @@
                           <a class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i> ماه قبل</a>
                         	<a class="btn active">
                             <div class="font-weight-bold">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</div>
-                            <div class="text-muted">{{dateService.getGreMonthName(today.gDate.getMonth())}} - {{dateService.getGreMonthName((today.gDate.getMonth()+1) % 12)}}</div>
+                            <div class="text-muted">
+                              {{dateService.getGreMonthName((today.gDate.getMonth()-1) % 12)}} -
+                              {{dateService.getGreMonthName(today.gDate.getMonth())}}
+                            </div>
 
                           </a>
                         	<a class="btn" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-arrow-circle-left"></i></a>
@@ -28,13 +31,21 @@
         </thead>
         <tbody>
           <tr *ngFor="let week of month.weeks; ">
-            <td (click)="onDaySelected(day.gDate)" [class.selected]="day && selectedDate===day.gDate" class="calendar-day"
+            <td (click)="onDaySelected(day.gDate)"
+                [class.meeting-day]="day && meetingMap[day.gDate.getDate()]>0"
+                [class.selected]="day && selectedDate===day.gDate" class="calendar-day position-relative"
                 [class.today]="monthOffset === 0 && day && (today.gDate.getDate()===day.gDate.getDate())"
-
                 *ngFor="let day of week;  let i = index;">
-              <div *ngIf="day" class="calendar-cell">
+              <div *ngIf="day" class="calendar-cell" >
                 <div class="calendar-jday font-weight-bold" [class.holiday]="i%7===6">{{day.jDate.date}}</div>
                 <div class="calendar-gday english_font" [class.holiday]="i%7===6">{{day.gDate.getDate()}}</div>
+
+              </div>
+              <div class="meeting-count position-absolute " *ngIf="day && meetingMap[day.gDate.getDate()]">
+                <div class="arrow"></div>
+                <div class="content">
+                  <i class="fa fa-coffee"></i> <span> {{meetingMap[day.gDate.getDate()]}} </span>
+                </div>
               </div>
             </td>
           </tr>

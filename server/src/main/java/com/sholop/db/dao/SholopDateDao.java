@@ -6,7 +6,9 @@ package com.sholop.db.dao;
 
 import com.sholop.Utils;
 import com.sholop.db.mapper.SholopDateMapper;
+import com.sholop.objects.Event;
 import com.sholop.objects.SholopDate;
+import com.sholop.objects.User;
 import org.skife.jdbi.v2.sqlobject.*;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.mixins.Transactional;
@@ -52,6 +54,10 @@ public abstract class SholopDateDao implements Transactional<SholopDateDao> {
         );
     }
 
+    public List<SholopDate> getEDatesByPeriod(String type, User user, Date dbStartDate, Date dbEndDate) {
+        return ttDao().getDatesByPeriod(type, user.getId(), user.getEmail(), dbStartDate, dbEndDate);
+    }
+
     public void deleteEventDates(int id) {
         ttDao().deleteEventDates(id);
     }
@@ -79,5 +85,20 @@ public abstract class SholopDateDao implements Transactional<SholopDateDao> {
 
         @SqlUpdate("delete from sh_event_date where event_id=:event_id")
         void deleteEventDates(@Bind("event_id") int id);
+
+        @SqlQuery("SELECT distinct d.* FROM sh_event s " +
+                "inner join sh_event_date d on s.id=d.event_id " +
+                "inner join sh_contact_event ec on s.id=ec.event_id " +
+                "inner join sh_contact c on c.id=ec.contact_id " +
+                "WHERE d.date between :start_date and :end_date " +
+                "and event_type=:type " +
+                "and (s.chair_id=:user_id or c.email=:email) ")
+        List<SholopDate> getDatesByPeriod(@Bind("type") String type,
+                                           @Bind("user_id") int userId,
+                                           @Bind("email") String email,
+                                           @Bind("start_date") Date startDate,
+                                           @Bind("end_date") Date endDate);
     }
+
+
 }

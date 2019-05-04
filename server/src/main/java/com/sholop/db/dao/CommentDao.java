@@ -29,6 +29,7 @@ public abstract class CommentDao implements Transactional<CommentDao> {
     public int insert(Comment comment){
         return ttDao().insert(
             comment.getUserId(),
+            comment.getContactId(),
                 comment.getEventId(),
                 comment.getText(),
                 comment.getInReplyTo(),
@@ -44,20 +45,19 @@ public abstract class CommentDao implements Transactional<CommentDao> {
     @RegisterMapper(CommentMapper.class)
     private interface Dao {
 
-
-
         @SqlUpdate("delete from sh_comment where user_id=:user_id and id=:id")
         void delete(
                 @Bind("id") int id, @Bind("user_id") int userId);
 
-        @SqlQuery("SELECT * FROM sh_comment c, sh_user u WHERE event_id=:event_id and " +
-                "u.id = c.user_id limit :offset, 5")
+        @SqlQuery("SELECT * FROM sh_comment c WHERE event_id=:event_id " +
+                "limit :offset, 5")
         List<Comment> getCommentsByEventId(@Bind("event_id") int eventId, @Bind("offset") int offset);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_comment (user_id, event_id, text, in_reply_to, status)" +
-                " values(:user_id, :event_id, :text, :in_reply_to, :status)")
+        @SqlUpdate("insert into sh_comment (user_id, event_id, contact_id, text, in_reply_to, status)" +
+                " values(:user_id, :event_id, :contact_id, :text, :in_reply_to, :status)")
         int insert(@Bind("user_id") int userId,
+                   @Bind("contact_id") int contactId,
                    @Bind("event_id") int eventId,
                    @Bind("text") String text,
                    @Bind("in_reply_to") int inReplyTo,

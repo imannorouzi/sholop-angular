@@ -139,23 +139,70 @@ export class DataService {
     return this.http.post(`${apiURL}`, JSON.stringify(event), {headers: headers});
   }
 
-  getComments(eventId, page):  Observable<any> {
-    let apiURL = serverUrl + "/get-comments";
+  getComments(eventId, page, uuid):  Observable<any> {
+    if(uuid){
+      // It is a guest user
+      let apiURL = serverUrl + "/get-comments-guest";
+      return this.http.get(apiURL, {
+        params: {event_id: eventId, page: page, uuid: uuid}
+      });
+    }else{
+      let apiURL = serverUrl + "/get-comments";
+      return this.http.get(apiURL, {
+        params: {event_id: eventId, page: page}
+      });
+    }
+
+  }
+
+  getDatesByPeriod(startDate, endDate):  Observable<any> {
+    let apiURL = serverUrl + "/get-meeting-dates";
     return this.http.get(apiURL, {
-      params: {event_id: eventId, page: page}
+      params: {startDate: startDate.toUTCString(), endDate: endDate.toUTCString()}
     });
+  }
+
+  deleteComment(comment: any) {
+    let apiURL = serverUrl + "/delete-comment";
+    let headers = new HttpHeaders({
+      'Content-Type': 'text/json',
+      'Accept': 'application/json'
+    });
+    return this.http.post(`${apiURL}`, comment.id, {headers: headers});
   }
 
   postComment(comment : any){
 
-    let apiURL = serverUrl + "/create-comment";
+    let apiURL;
 
     let headers = new HttpHeaders({
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
 
-    return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
+    if(comment.uuid){
+      //It is a guest
+      apiURL = serverUrl + "/create-comment-guest";
+      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
+    }else{
+      apiURL = serverUrl + "/create-comment";
+      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
+    }
+
+
+  }
+
+
+  updateContactStatus(contactEventId: number, status: string) {
+    let apiURL;
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'text/json',
+      'Accept': 'application/json'
+    });
+
+    apiURL = serverUrl + "/update-contact-status";
+    return this.http.post(`${apiURL}`, JSON.stringify({contactEventId: contactEventId, status: status}), {headers: headers});
   }
 
   contactUs(message: { name: any; email: any; title: any; message: any }) {
@@ -192,5 +239,4 @@ export class DataService {
   dateToString(date: Date) {
     return [date.getDate(), (date.getMonth()+1), date.getFullYear()].join('/');
   }
-
 }

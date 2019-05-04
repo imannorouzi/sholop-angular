@@ -11,4 +11,6 @@ export const environment = {
     },
   // serverUrl: '/api',
   serverUrl: "http://0.0.0.0:8094/api",
+  version: require('../../package.json').version
+
 };

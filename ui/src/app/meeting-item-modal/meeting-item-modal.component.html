@@ -28,6 +28,20 @@
 
               <div class="table-responsive" *ngIf="event.attendees.length > 0">
                 <table class="table table-striped text-right">
+                  <tr class="col-md-6" *ngIf="event.chair">
+
+                    <td class="panel text-right contact-image-td">
+                      <img  class="rounded-circle contact-image" [src]="event.chair.imageUrl ? event.chair.imageUrl : '../assets/images/user-placeholder.png'">
+                    </td>
+                    <td>
+                      <div>{{event.chair.name}}</div>
+                      <div class="text-muted">سازمان دهنده</div>
+                    </td>
+                    <!--<td>{{contact.email}}</td>-->
+                    <!--<td>{{contact.phone}}</td>-->
+                    <td></td>
+                  </tr>
+
                   <tr class="col-md-6" *ngFor="let contact of event.attendees;">
 
                     <td class="panel text-right contact-image-td">
@@ -71,9 +85,9 @@
 
       <div class="modal-footer ">
         <div class="text-right w-100">
-          <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
-          <button class="btn btn-default ml-2" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> صفحه جلسه </button>
-          <button class="btn btn-default" (click)="hide()"> بستن </button>
+          <button class="btn btn-primary ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
+          <button class="btn btn-outline-primary ml-2" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> صفحه جلسه </button>
+          <button class="btn btn-outline-primary" (click)="hide()"> بستن </button>
         </div>
       </div>
 

@@ -8,6 +8,7 @@
       </div>
       <div class="col-sm-9">
         <input type="text" formControlName="comment" class="form-control"
+               placeholder="نظرتان را بنویسید..."
                   [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" >
       </div>
 
@@ -21,13 +22,21 @@
 
   <div class="container">
 
-    <div *ngFor="let c of comments" class="row comment">
-      <div class="col-md-1 text-right">
-        <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">
-      </div>
-      <label class="col-form-label col-md-11 text-right">
-        {{c.text}}
-      </label>
+    <div *ngFor="let c of comments; let i=index;" class="comment">
+        <img class="rounded-circle contact-image pull-right" [src]="c.userImageUrl ? c.userImageUrl : '../assets/images/user-placeholder.png'">
+
+        <div class="col-11 text-right row">
+          <div class="col-10">
+
+            <div class="text-muted">{{c.userName}}</div>
+            <div>{{c.text}}</div>
+          </div>
+          <div class="col-2 text-left p-2">
+            <i class="fa fa-close delete-comment" *ngIf="(!anonymous && c.userId === user.id)" (click)="deleteComment(i)"></i>
+          </div>
+        </div>
+
+
     </div>
 
     <div class="row comment" *ngIf="!noMoreComments">

@@ -4,3 +4,9 @@
 .comment{
   border-bottom: 1px solid #ddd;
 }
+
+.delete-comment:hover{
+  background: gray;
+  color: white;
+  cursor: pointer;
+}

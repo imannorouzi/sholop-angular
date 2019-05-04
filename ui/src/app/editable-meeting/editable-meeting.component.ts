@@ -152,7 +152,7 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
         (value:any) => {
           // console.log(value);
           this.submitting = false;
-          // this.navigationService.navigate("/dashboard");
+          this.navigationService.navigate("/dashboard");
 
           this.alertService.success("ملاقات با موفقیت ایجاد شد.");
         },

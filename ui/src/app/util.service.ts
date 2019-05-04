@@ -52,7 +52,7 @@ export class UtilService {
       case 'NOT_ATTENDING':
         return {text:  'نمیام', color: 'red', class: 'fa-close'};
       case 'TENTATIVE':
-        return {text:  'شاید', color: 'yellow', class: 'fa-exclamation'};
+        return {text:  'شاید', color: 'orange', class: 'fa-exclamation'};
 
       default:
         return {text:  'نامشخص', color: 'gray', class: ''};

@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container flex-parent">
 
-  <div class="card mt-3 shadow">
+  <div class="card mt-3 shadow mb-3">
     <div class="card-body">
 
     <h2 class="card-title text-right">ورود</h2>
@@ -45,7 +45,7 @@
 
         <div class="col-md-2"></div>
         <div class="col-md-10">
-          <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">ورود <i class="fa fa-refresh fa-spin" *ngIf="loading"></i> </button>
+          <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">ورود <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i> </button>
           <button [disabled]="loading" type="button" class="btn btn-primary ml-2" (click)="loginWithGoogle()">ورود با گوگل <i class="fa fa-google"></i> </button>
           <a [routerLink]="['/register']" class="btn btn-link">ثبت نام</a>
           <a [routerLink]="['/forget-password']" class="btn btn-link pull-left">رمز عبور را فراموش کردم</a>

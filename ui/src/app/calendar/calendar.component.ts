@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DateService} from "../date.service";
+import {DataService} from "../data.service";
 
 const daysInMonth: number[] = [
   31,31,31,31,31,31,30,30,30,30,30,29
@@ -14,6 +15,7 @@ export class CalendarComponent implements OnInit {
 
   today;
   selectedDate;
+  meetingMap = {};
 
   monthOffset = 0;
 
@@ -31,7 +33,8 @@ export class CalendarComponent implements OnInit {
   @Input() inputClasses: string = '';
   @Output() onDateSelected: EventEmitter<any> = new EventEmitter();
 
-  constructor(public dateService: DateService) { }
+  constructor(public dateService: DateService,
+              private dataService: DataService) { }
 
   ngOnInit() {
     this.getMonthMapArray(0);
@@ -102,6 +105,33 @@ export class CalendarComponent implements OnInit {
     if( week.length > 0) month.push(week);
 
     this.month.weeks = month;
+    let lastWeek = this.month.weeks[this.month.weeks.length-1];
+    this.onMonthChanged({startDate: firstDayInCalendar, endDate: lastWeek[lastWeek.length-1]});
+
+
+  }
+
+  onMonthChanged(startEndDates: any){
+    this.meetingMap = {};
+    this.dataService.getDatesByPeriod(startEndDates.startDate.gDate, startEndDates.endDate.gDate).subscribe(
+      data => {
+        if(data.msg === "OK"){
+          data.object.forEach( sd =>{
+
+            let date = this.dateService.stringToDate(sd.date);
+            if(this.meetingMap[date.getDate()]){
+              this.meetingMap[date.getDate()] = this.meetingMap[date.getDate()] + 1;
+            }else{
+              this.meetingMap[date.getDate()] = 1;
+            }
+          });
+
+        }
+      },
+      error1 => {
+        console.log(error1);
+      }
+    )
   }
 
   onDaySelected(day) {

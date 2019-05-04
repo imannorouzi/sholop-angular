@@ -16,6 +16,7 @@ import {CreateMeetingComponent} from "./create-meeting/create-meeting.component"
 import {EditMeetingComponent} from "./edit-meeting/edit-meeting.component";
 import {UserMeetingComponent} from "./user-meeting/user-meeting.component";
 import {ContactMeetingComponent} from "./contact-meeting/contact-meeting.component";
+import {PageNotFoundComponent} from "./page-not-found/page-not-found.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -36,7 +37,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
 
   // otherwise redirect to home
-  { path: '**', redirectTo: '' }
+  { path: '**', component: PageNotFoundComponent  }
+  // { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

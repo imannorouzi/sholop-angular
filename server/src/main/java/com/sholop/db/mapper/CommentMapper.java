@@ -5,8 +5,11 @@ package com.sholop.db.mapper;
  */
 
 import com.google.inject.Inject;
+import com.sholop.db.dao.ContactDao;
+import com.sholop.db.dao.UserDao;
 import com.sholop.objects.Comment;
 import com.sholop.objects.Contact;
+import com.sholop.objects.User;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 import org.slf4j.LoggerFactory;
@@ -39,6 +42,7 @@ public class CommentMapper implements ResultSetMapper<Comment>{
         Comment comment = new Comment(
                 rs.getInt("id"),
                 rs.getInt("user_id"),
+                rs.getInt("contact_id"),
                 rs.getInt("event_id"),
                 rs.getString("text"),
                 rs.getInt("in_reply_to"),
@@ -46,9 +50,6 @@ public class CommentMapper implements ResultSetMapper<Comment>{
                 rs.getTimestamp("created"),
                 rs.getTimestamp("modified")
         );
-
-        comment.setUserName(rs.getString("full_name"));
-        comment.setUserImageUrl(rs.getString("image_url"));
 
         return comment;
     }

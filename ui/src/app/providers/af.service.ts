@@ -6,6 +6,7 @@ import {first} from "rxjs/operators";
 import {AuthenticationService} from "../authentication.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../alert.service";
+import {SpinnerService} from "../spinner.service";
 
 @Injectable()
 export class AfService {
@@ -14,7 +15,8 @@ export class AfService {
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
               private router: Router,
-              private alertService: AlertService)
+              private alertService: AlertService,
+              private spinnerService: SpinnerService)
   {
     this.user = afAuth.authState;
 
@@ -33,16 +35,18 @@ export class AfService {
           phone: u.phoneNumber
         };
 
+        this.spinnerService.changeState(true);
         this.authenticationService.loginWithGoogle(user)
           .pipe(first())
           .subscribe(
             data => {
               this.router.navigate([ this.route.snapshot.queryParams['returnUrl'] || '/dashboard']);
-
+              this.spinnerService.changeState(false);
               this.logout();
             },
             error => {
-              this.alertService.error(error);
+              this.spinnerService.changeState(false);
+              this.alertService.error("مشکلی پیش آمده. دوباره تلاش کنید.");
             });
 
       }, error => {

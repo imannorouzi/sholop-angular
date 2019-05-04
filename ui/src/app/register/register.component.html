@@ -63,7 +63,9 @@
               <div class="col-md-9 text-right">
                 <p class="card-text"><small class="text-muted">ثبت نام شما ملزم به قبول <a href=""> قوانین و مقررات شالاپ </a> است.</small></p>
 
-                  <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">ثبت نام <i class="fa fa-refresh fa-spin" *ngIf="loading"></i></button>
+                  <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">
+                    ثبت نام <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i>
+                  </button>
                   <button [disabled]="loading" type="button" class="btn btn-primary ml-2" (click)="loginWithGoogle()">ورود با گوگل <i class="fa fa-google"></i> </button>
                   <a [routerLink]="['/login']" class="btn btn-link">ورود</a>
               </div>

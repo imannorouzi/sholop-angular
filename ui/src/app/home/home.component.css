@@ -1,21 +1,26 @@
-.bg{
-    background-size:100%;
-    color:#696969;
-    background-image:url("/assets/images/h2.jpg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.bg .a{
-    transform: scale(0.6);
-    }
-#searchItem{
-    color:#696969;
-    }
-.h2{
-    color:#696969;
-}
-.bg-body{
-    background-color:WhiteSmoke;
+.bg-blue-light{
+  background: #f6f6fd;
 }
 
+.video-container{
+  height: 300px;
+  margin: 30px auto 10px auto;
+}
+
+
+.start-button:hover{
+  background: royalblue;
+  color: white;
+  
+}
+.start-button{
+  background: white;
+  color: gray;
+  border-radius: 4px;
+  border: 1px solid darkgray;
+  cursor: pointer;
+}
+
+.social-network-icon{
+  color: gray;
+}

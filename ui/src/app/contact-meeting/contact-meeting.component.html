@@ -1,4 +1,18 @@
-<meeting *ngIf="event && !loading"  [anonymous]="true" [event]="event"></meeting>
+<div class="card mb-3 shadow">
+  <div class="card-body row" >
+    <div class="col-sm-6  text-right">
+
+      <span class="mr-3">از پاسخ شما بسیار متشکریم.</span>
+    </div>
+    <div class="col-sm-6 text-left">
+      <i [class]="'fa ' + style.class" [style.color]="style.color"></i>
+      {{style.text}}
+    </div>
+
+  </div>
+</div>
+
+<meeting *ngIf="event && !loading"  [anonymous]="true" [uuid]="uuid" [guest]="guest" [event]="event"></meeting>
 
 <div class="card mb-3 shadow" *ngIf="loading">
   <div class="card-body">

@@ -27,7 +27,13 @@ public abstract class UserDao implements Transactional<UserDao> {
                     user.getName(),
                     user.getPhone(),
                     user.getImageUrl(),
-                    user.getPassword());
+                    user.getPassword(),
+                    user.getGooglePassword(),
+                    user.getFarsiAddress1(),
+                    user.getFarsiAddress2(),
+                    user.getLatitude(),
+                    user.getLongitude(),
+                    user.getDescription());
 
             user.setId(id);
         }else {
@@ -51,6 +57,10 @@ public abstract class UserDao implements Transactional<UserDao> {
 
     public void updateFullName(String username, String fullName){
         ttDao().updateFullName(username, fullName);
+    }
+
+    public void updateGooglePassword(int id, String googlePassword){
+        ttDao().updateGooglePassword(id, googlePassword);
     }
 
     @RegisterMapper(UserMapper.class)
@@ -79,13 +89,44 @@ public abstract class UserDao implements Transactional<UserDao> {
 
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_user (full_name, email, username, password, phone, image_url) values (:full_name, :email, :username, :password, :phone, :image_url)")
+        @SqlUpdate("insert into sh_user " +
+                "(full_name, " +
+                "email, " +
+                "username, " +
+                "password, " +
+                "google_password, " +
+                "phone, " +
+                "image_url," +
+                "persian_address_1," +
+                "persian_address_2," +
+                "latitude," +
+                "longitude," +
+                "description) " +
+                "values " +
+                "(:full_name, " +
+                ":email," +
+                ":username, " +
+                ":password, " +
+                ":google_password, " +
+                ":phone, " +
+                ":image_url," +
+                ":persian_address_1," +
+                ":persian_address_2," +
+                ":latitude," +
+                ":longitude," +
+                ":description)")
         int insert(@Bind("username") String username,
-                        @Bind("email") String email,
-                        @Bind("full_name") String name,
-                        @Bind("phone") String phone,
-                        @Bind("image_url") String imageUrl,
-                        @Bind("password") String password);
+                   @Bind("email") String email,
+                   @Bind("full_name") String name,
+                   @Bind("phone") String phone,
+                   @Bind("image_url") String imageUrl,
+                   @Bind("password") String password,
+                   @Bind("google_password") String googlePassword,
+                   @Bind("persian_address_1") String farsiAddress1,
+                   @Bind("persian_address_2") String farsiAddress2,
+                   @Bind("latitude") double latitude,
+                   @Bind("longitude") double longitude,
+                   @Bind("description") String description);
 
 
         @SqlQuery("SELECT * FROM sh_user WHERE upper(username)=upper(:username)")
@@ -101,5 +142,8 @@ public abstract class UserDao implements Transactional<UserDao> {
         @SqlUpdate("update sh_user set password=:password WHERE username=:username")
         void updatePassword(@Bind("username") String username,
                             @Bind("password") String password);
+
+        @SqlUpdate("update sh_user set google_password=:password WHERE id=:id")
+        void updateGooglePassword(@Bind("id") int id, @Bind("password") String googlePassword);
     }
 }

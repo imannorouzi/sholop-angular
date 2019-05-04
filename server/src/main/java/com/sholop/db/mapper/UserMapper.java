@@ -20,6 +20,7 @@ public class UserMapper implements ResultSetMapper<User>{
                 rs.getString("full_name").trim(),
                 rs.getString("username").trim(),
                 rs.getString("password").trim(),
+                rs.getString("google_password"),
                 rs.getString("email").trim(),
                 rs.getString("image_url").trim(),
                 rs.getString("phone"),

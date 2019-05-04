@@ -11,9 +11,11 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 public class Utils {
-    public static final String WEBSITE_URL = "http://185.173.104.77:8094";
     public static final String RELATIONAL_WEBSITE_URL = "http://localhost:8094";
+    public static final String WEBSITE_URL = "http://localhost:8094";
+
 //    public static final String RELATIONAL_WEBSITE_URL = "";
+//    public static final String WEBSITE_URL = "http://185.173.104.77:8094";
 
     public static Date readFromGMT(Date date) throws ParseException {
         String datePattern = "dd-MMM-yyyy, HH:mm:ss";
@@ -28,8 +30,7 @@ public class Utils {
     }
 
     public static String generateRandomString(){
-        String uuid = UUID.randomUUID().toString();
-        return uuid;
+        return UUID.randomUUID().toString();
     }
 
     public static CharSequence getIconUrl(String icon) {
@@ -57,7 +58,7 @@ public class Utils {
 
         return new StringBuilder()
                 .append(WEBSITE_URL)
-                .append("/contact-meeting")
+                .append("/#/contact-meeting")
                 .append("/").append(ce.getUuid())
                 .append("/").append(event.getPointedDate().getId()).toString();
     }

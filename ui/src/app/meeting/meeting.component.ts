@@ -18,6 +18,9 @@ export class MeetingComponent implements OnInit, OnChanges {
 
   @Input() event: any;
   @Input() anonymous: boolean;
+  @Input() uuid: string;
+  @Input() guest: any;
+
   map : google.maps.Map;
   currentUserId: number;
   markers : google.maps.Marker[] = [];
@@ -43,14 +46,6 @@ export class MeetingComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(this.event && changes.event.previousValue !== changes.event.currentValue){
 
-      setTimeout( () => {
-        let mapProp = {
-          center: new google.maps.LatLng(this.event.location.latitude, this.event.location.longitude),
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-      }, 0);
 
     }
   }

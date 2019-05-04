@@ -67,7 +67,8 @@ export class DateService {
     return monthNames[monthIndex];
   }
 
-  getGreMonthName(monthIndex: number): string{
+    getGreMonthName(monthIndex: number): string{
+    if(monthIndex < 0) monthIndex += 12;
     return greMonthNames[monthIndex];
   }
 

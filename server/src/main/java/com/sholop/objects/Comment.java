@@ -14,6 +14,7 @@ public class Comment {
     public Comment(
              int id,
              int userId,
+             int contactId,
              int eventId,
              String text,
              int inReplyTo,
@@ -24,6 +25,7 @@ public class Comment {
         this.id = id;
         this.userId = userId;
         this.eventId = eventId;
+        this.contactId = contactId;
         this.text = text;
         this.inReplyTo = inReplyTo;
         this.status = status;
@@ -32,13 +34,14 @@ public class Comment {
     }
 
     String text, status, userName, userImageUrl;
-    int id, userId, eventId, inReplyTo;
+    int id, userId, eventId, inReplyTo, contactId;
 
     Timestamp created, modified;
 
     public Comment(JSONObject jo) throws JSONException {
         this.id = jo.has("id") && jo.getInt("id") != 0 ? jo.getInt("id") : -1;
-        this.userId = jo.has("chairId") ? jo.getInt("chairId") : -1;
+        this.userId = jo.has("userId") ? jo.getInt("userId") : -1;
+        this.contactId = jo.has("contactId") ? jo.getInt("contactId") : -1;
         this.eventId = jo.has("eventId") ? jo.getInt("eventId") : -1;
         this.text = jo.has("text") ? jo.getString("text") : "";
         this.inReplyTo = jo.has("inReplyTo") ? jo.getInt("inReplyTo"): 0;
@@ -126,5 +129,13 @@ public class Comment {
 
     public void setUserImageUrl(String userImageUrl) {
         this.userImageUrl = userImageUrl;
+    }
+
+    public int getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(int contactId) {
+        this.contactId = contactId;
     }
 }

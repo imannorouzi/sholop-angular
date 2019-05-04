@@ -1,20 +1,32 @@
-<div>
+<div class="mb-3 shadow">
   <div class="card meeting-item">
 
     <div class="card-body">
 
 
       <h5 class="card-title text-right row">
-        <div class="col-md-9" *ngIf="event.pointedDate.startTime">
-          <span class="meeting-time ml-3"><i class="fa fa-clock-o ml-2"></i>{{utilService.convertTimeString(event.pointedDate.startTime)}}</span>
-          <span class="meeting-title font-weight-bold">{{event.title}}</span>
+        <div class="col-9" >
+          <span *ngIf="event.pointedDate.startTime" class="meeting-time">
+            <i class="fa fa-clock-o ml-2"></i>
+            <span>{{utilService.convertTimeString(event.pointedDate.startTime)}}</span>
+          </span>
+
+          <span *ngIf="!event.pointedDate.startTime" class="meeting-time">
+            <i class="fa fa-calendar ml-2"></i>
+            <span>{{dateService.greToPersian(event.pointedDate.date)}}</span>
+          </span>
+          <span class="meeting-title font-weight-bold mr-2">{{event.title}}</span>
+
+          <span *ngIf="event.contactEvent" class="" [style.color]="utilService.getContactStatus(event.contactEvent.status).color">
+            <i [class]="'mr-2 fa ' + utilService.getContactStatus(event.contactEvent.status).class"></i>
+          </span>
+          <span *ngIf="event.chairId===user.id" class="">
+            <i class="mr-1 fa fa-coffee" ></i>
+          </span>
         </div>
-        <div class="col-md-9" *ngIf="!event.pointedDate.startTime">
-          <span class="meeting-time ml-3"><i class="fa fa-calendar ml-2"></i>{{dateService.greToPersian(event.pointedDate.date)}}</span>
-          <span class="meeting-title font-weight-bold">{{event.title}}</span>
-        </div>
-        <div class="col-md-3 text-left meeting-time">
-          {{utilService.getTimeDuration(event.pointedDate.startTime, event.pointedDate.endTime)}}
+
+        <div class="col text-left meeting-time">
+          <span class="text-left"><small class="text-muted">{{utilService.getTimeDuration(event.pointedDate.startTime, event.pointedDate.endTime)}}</small></span>
         </div>
       </h5>
 
@@ -40,7 +52,7 @@
 
 
       <div class="row">
-        <div class="col-md-10 text-right">
+        <div class="col-md-9 text-right">
 
           <span class="">
             <a [href]="'https://maps.google.com/?q='+ event.venue.latitude +',' + event.venue.longitude" target="_blank" (click)="$event.stopPropagation();">
@@ -48,8 +60,22 @@
             </a>
           </span>
         </div>
-        <div class="col-md-2">
-          <span class="text-left"><small class="text-muted">{{utilService.getStatusString(event.status)}}</small></span>
+        <div class="col-md-3">
+          <!--<span class="text-left"><small class="text-muted">{{utilService.getStatusString(event.status)}}</small></span>-->
+          <a class="meeting-tool btn ml-1" (click)="onClicked($event, event)"><i class="fa fa-bars meeting-tool"></i></a>
+          <a [routerLink]="['/edit-meeting/' + event.id]" *ngIf="user.id === event.chairId" class="meeting-tool btn ml-1"><i class="fa fa-edit meeting-tool"></i></a>
+          <a class="meeting-tool dropdown-toggle btn" *ngIf="user.id !== event.chairId" data-toggle="dropdown" (click)="$event.stopPropagation" ></a>
+          <div class="dropdown-menu rtl">
+            <a class="dropdown-item text-right" (click)="updateAttendingStatus(event.contactEvent.id, 'ATTENDING')">
+              میام <i [style.color]="'green'" class="fa fa-check"></i>
+            </a>
+            <a class="dropdown-item text-right" (click)="updateAttendingStatus(event.contactEvent.id, 'NOT_ATTENDING')">
+              نمیام <i [style.color]="'red'" class="fa fa-close"></i>
+            </a>
+            <a class="dropdown-item text-right" (click)="updateAttendingStatus(event.contactEvent.id, 'TENTATIVE')">
+              شاید <i [style.color]="'orange'" class="fa fa-exclamation"></i>
+            </a>
+          </div>
         </div>
       </div>
 
