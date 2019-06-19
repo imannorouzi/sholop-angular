@@ -4,10 +4,6 @@ package com.sholop.db.mapper;
  * Created by Pooyan on 12/11/2017.
  */
 
-import com.google.inject.Inject;
-import com.sholop.db.dao.ContactEventDao;
-import com.sholop.db.dao.LocationDao;
-import com.sholop.db.dao.SholopDateDao;
 import com.sholop.objects.Event;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;

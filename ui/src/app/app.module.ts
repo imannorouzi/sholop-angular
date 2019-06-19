@@ -63,6 +63,7 @@ import { FaqComponent } from './faq/faq.component';
 import { ConditionsComponent } from './conditions/conditions.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
+import {AddVenueComponent} from "./add-venue/add-venue.component";
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
     FaqComponent,
     ConditionsComponent,
     AboutUsComponent,
-    SpinnerModalComponent
+    SpinnerModalComponent,
+    AddVenueComponent
   ],
   imports: [
     BrowserModule,

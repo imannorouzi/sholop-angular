@@ -303,37 +303,45 @@
      id="style28">
 
     .svg{
-      animation: fade-in 3s ease;
+      animation: walk-in .5s linear;
     }
 
-    @keyframes fade-in{
+    @keyframes walk-in{
       0%{
-        opacity: 0;
+        -webkit-transform: translate(100%,0);
+        -moz-transform: translate(100%,0);
+        -o-transform: translate(100%,0);
+        -ms-transform: translate(100%,0);
+        transform: translate(100%,0);
       }
       100%{
-        opacity: 1;
+        -webkit-transform: translate(0,0);
+        -moz-transform: translate(0,0);
+        -o-transform: translate(0,0);
+        -ms-transform: translate(0,0);
+        transform: translate(0,0);
       }
     }
 
     .eye{
-      animation: hideshow 10s ease infinite;
+      animation: hideshow 5s ease infinite;
       animation-delay: 4s;
     }
 
     @keyframes hideshow {
       5% {
-        -webkit-transform: translate(5,0);
-        -moz-transform: translate(5,0);
-        -o-transform: translate(5,0);
-        -ms-transform: translate(5,0);
-        transform: translate(5,0);
+        -webkit-transform: translate(0,0);
+        -moz-transform: translate(0,0);
+        -o-transform: translate(0,0);
+        -ms-transform: translate(0,0);
+        transform: translate(0,0);
       }
       15% {
-        -webkit-transform: translate(6%,0);
-        -moz-transform: translate(6%,0);
-        -o-transform: translate(6%,0);
-        -ms-transform: translate(6%,0);
-        transform: translate(6%,0);
+        -webkit-transform: translate(-6%,0);
+        -moz-transform: translate(-6%,0);
+        -o-transform: translate(-6%,0);
+        -ms-transform: translate(-6%,0);
+        transform: translate(-6%,0);
       }
       20% {
         -webkit-transform: translate(0,0);
@@ -392,7 +400,8 @@
 
 
     .left_leg{
-      animation: leftLeg 4s ease infinite;
+      animation: leftLeg .5s linear;
+    animation-iteration-count: 1;
     }
 
     @keyframes leftLeg {
@@ -430,7 +439,8 @@
     }
 
     .right_leg{
-      animation: rightLeg 4s ease infinite;
+      animation: rightLeg .5s linear;
+      animation-iteration-count: 1;
     }
 
     @keyframes rightLeg {

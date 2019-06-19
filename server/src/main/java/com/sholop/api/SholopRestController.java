@@ -11,15 +11,12 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sholop.Utils;
-import com.sholop.auth.JWTHelper;
-import com.sholop.auth.PasswordHash;
 import com.sholop.db.dao.*;
 import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import io.dropwizard.auth.Auth;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -29,12 +26,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -73,146 +66,6 @@ public class SholopRestController {
         this.contactEventDao = contactEventDao;
         this.userDao = userDao;
         this.commentDao = commentDao;
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/authenticate")
-    public Response authenticate(String jsonSchedule){
-
-        Gson gson = new Gson();
-        try {
-            JSONObject jsonUser = new JSONObject(jsonSchedule);
-
-            User user = userDao.getUserByUsername(jsonUser.getString("username"));
-
-            if( user != null &&  PasswordHash.check(jsonUser.getString("password"), user.getPassword()) ){
-                user.setToken(JWTHelper.createAndSignToken(
-                        jsonUser.getString("username"),
-                        jsonUser.getString("password")));
-
-                return Response.ok(gson.toJson(new ResponseObject("OK", user)))
-                        .build();
-            }else{
-                return Response.ok(gson.toJson(new ResponseObject("INVALID_CREDENTIALS", null))).build();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .entity(gson.toJson(new ResponseObject("Internal Error", 500)))
-                    .build();
-        }
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/authenticate-with-google")
-    public Response authenticateWithGoogle(String jsonSchedule){
-
-        Gson gson = new Gson();
-        try {
-            JSONObject jsonUser = new JSONObject(jsonSchedule);
-
-            User user = userDao.getUserByUsername(jsonUser.getString("username"));
-            String plainPassword = Utils.generateRandomString();
-
-            if(user == null){
-                // User is not registered, so register him
-
-
-                User newUser = new User(jsonUser.getString("name"),
-                        jsonUser.getString("email"),
-                        PasswordHash.getSaltedHash(plainPassword),
-                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
-                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
-
-                if(newUser.getImageUrl() != null && !newUser.getImageUrl().isEmpty()){
-
-                    URL url = new URL(newUser.getImageUrl());
-                    ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-
-
-                    FileOutputStream fos = new FileOutputStream("./contents/images/users/" + newUser.getEmail()+ "_" + FilenameUtils.getName(url.getPath()));
-                    fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-                    String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/users/" + newUser.getEmail()+ "_" +FilenameUtils.getName(url.getPath());
-                    newUser.setImageUrl(relationalUrl);
-                }
-
-                // To update the id
-                MailUtils.sendRegisterMail(newUser);
-                newUser.setGooglePassword(newUser.getPassword());
-                newUser = userDao.updateUser(newUser);
-
-
-                newUser.setToken(JWTHelper.createAndSignToken(
-                        jsonUser.getString("email"),
-                        plainPassword));
-                newUser.setPassword("");
-
-                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
-                        .build();
-            }else {
-
-//                user.setGooglePassword(plainPassword);
-                userDao.updateGooglePassword(user.getId(), PasswordHash.getSaltedHash(plainPassword));
-                user.setToken(JWTHelper.createAndSignToken(
-                        user.getUsername(),
-                        plainPassword));
-            }
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", user)))
-                    .build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
-
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/register")
-    public Response register(String jsonSchedule){
-
-        try {
-            JSONObject jsonUser = new JSONObject(jsonSchedule);
-
-            User user = userDao.getUserByUsername(jsonUser.getString("email"));
-
-            Gson gson = new Gson();
-            if( user == null ){
-
-                User newUser = new User(jsonUser.getString("name"),
-                        jsonUser.getString("email"),
-                        PasswordHash.getSaltedHash(jsonUser.getString("password")),
-                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
-                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
-
-                // To update the id
-                MailUtils.sendRegisterMail(newUser);
-                newUser = userDao.updateUser(newUser);
-
-                newUser.setToken(JWTHelper.createAndSignToken(
-                        jsonUser.getString("email"),
-                        jsonUser.getString("password")));
-                newUser.setPassword("");
-
-
-                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
-                        .build();
-            }else{
-                return Response.status(200).entity(gson.toJson(new ResponseObject("DUPLICATE", null))).build();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
     }
 
     @POST
@@ -520,28 +373,6 @@ public class SholopRestController {
         }
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/update-contact-status")
-    public Response updateContactStatus(@Auth User user, String objectString){
-
-        Gson gson = new Gson();
-        try {
-            JSONObject jsonObject = new JSONObject(objectString);
-
-            ContactEvent contactEvent = contactEventDao.getEventContactById(jsonObject.getInt("contactEventId"));
-            contactEvent.setStatus(ContactEvent.STATUS.valueOf(jsonObject.getString("status")));
-            contactEventDao.updateStatus( jsonObject.getInt("contactEventId"), contactEvent.getStatus() );
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", contactEvent))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -669,7 +500,7 @@ public class SholopRestController {
 
 
             List<Comment> comments = commentDao.getCommentsByEventId(eventId, page);
-            setCommentsAuthor(comments);
+            Utils.setCommentsAuthor(comments, userDao, contactDao);
 
             return Response.ok(gson.toJson(new ResponseObject("OK", comments))).build();
 
@@ -694,7 +525,7 @@ public class SholopRestController {
             ContactEvent contactEvent = contactEventDao.getEventContactByUUID(uuid);
             List<Comment> comments = commentDao.getCommentsByEventId(contactEvent.getEventId(), page);
 
-            setCommentsAuthor(comments);
+            Utils.setCommentsAuthor(comments, userDao, contactDao);
 
 
             return Response.ok(gson.toJson(new ResponseObject("OK", comments))).build();
@@ -750,32 +581,6 @@ public class SholopRestController {
         }
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/get-contacts")
-    public Response getContacts(@Auth User user, @QueryParam("hint") String hint) throws JSONException {
-
-        Gson gson = new Gson();
-        try {
-
-            //TODO user ID !!!
-            List<Contact> contacts = null;
-            if(hint == null || hint.isEmpty()){
-                contacts = contactDao.getContactByUserId(user.getId(), "");
-            }else{
-                contacts = contactDao.getContactByUserId(user.getId(), hint);
-            }
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", contacts))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
-
     @POST
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @PermitAll
@@ -823,7 +628,7 @@ public class SholopRestController {
         Gson gson = new Gson();
 
         try {
-            String url = saveFile(uploadedInputStream, fileDetail, body, "/images/event/album");
+            String url = Utils.saveFile(uploadedInputStream, fileDetail, body, "/images/event/album");
 
             return Response.ok(gson.toJson(new ResponseObject("OK", url)))
                     .build();
@@ -845,7 +650,7 @@ public class SholopRestController {
         Gson gson = new Gson();
 
         try {
-            String url = saveFile(uploadedInputStream, fileDetail, body, "/docs/event/attachments");
+            String url = Utils.saveFile(uploadedInputStream, fileDetail, body, "/docs/event/attachments");
 
             return Response.ok(gson.toJson(new ResponseObject("OK", url)))
                     .build();
@@ -941,9 +746,18 @@ public class SholopRestController {
         try {
 
             JSONObject jsonLocation = new JSONObject(venueJsonString);
-             location = new Location(jsonLocation);
+            location = new Location(jsonLocation);
 
-            locationDao.update(location);
+            location.setUserId(user.getId());
+            location.downloadMap();
+
+            if(location.getId() != -1){
+                locationDao.update(location);
+            }else{
+                location.setId(locationDao.insert(location));
+            }
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -963,10 +777,7 @@ public class SholopRestController {
 
         Gson gson = new Gson();
         try {
-
-
             locationDao.delete(Integer.parseInt(venueId), user.getId());
-
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(500)
@@ -976,94 +787,7 @@ public class SholopRestController {
         return Response.ok(gson.toJson(new ResponseObject("OK", "Venue id " + venueId + " deleted."))).build();
     }
 
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @PermitAll
-    @Path("/update-contact")
-    public Response updateContact(@Auth User user,
-                                  @FormDataParam("file") InputStream uploadedInputStream,
-                                  @FormDataParam("file") FormDataContentDisposition fileDetail,
-                                  @FormDataParam("file") FormDataBodyPart body,
-                                  @FormDataParam("contact") String contactJsonString,
-                                  @FormDataParam("filename") String filename) throws JSONException, IOException {
-
-
-        Gson gson = new Gson();
-        Contact contact;
-        try {
-            JSONObject jsonContact = new JSONObject(contactJsonString);
-            contact = new Contact(jsonContact);
-
-            String relationalUrl = "";
-
-            if(filename != null) {
-                filename = filename.replaceAll("\\s+", "");
-
-                Files.copy(uploadedInputStream,
-                        Paths.get("./contents/images/contacts/" +  /*fileDetail.getFileName()*/ filename),
-                        StandardCopyOption.REPLACE_EXISTING);
-                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/contacts/" + filename;
-                contact.setImageUrl(relationalUrl);
-            }
-
-            contact.setUserId(user.getId());
-
-            if(contact.getId() != -1 )
-                contactDao.update(contact);
-            else
-                contact.setId(contactDao.insert(contact));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-
-        return Response.ok(gson.toJson(new ResponseObject("OK", contact))).build();
-    }
-
-
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @PermitAll
-    @Path("/update-user")
-    public Response updateUser(@Auth User u,
-                                  @FormDataParam("file") InputStream uploadedInputStream,
-                                  @FormDataParam("file") FormDataContentDisposition fileDetail,
-                                  @FormDataParam("file") FormDataBodyPart body,
-                                  @FormDataParam("user") String userJsonString,
-                                  @FormDataParam("filename") String filename)  {
-
-
-        Gson gson = new Gson();
-        User user;
-        try {
-            JSONObject jsonContact = new JSONObject(userJsonString);
-            user = new User(jsonContact);
-
-            String relationalUrl;
-
-            if(filename != null) {
-                filename = filename.replaceAll("\\s+", "");
-
-                Files.copy(uploadedInputStream,
-                        Paths.get("./contents/images/users/" +  /*fileDetail.getFileName()*/ filename),
-                        StandardCopyOption.REPLACE_EXISTING);
-                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/users/" + filename;
-                user.setImageUrl(relationalUrl);
-            }
-
-            userDao.updateUser(user);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-
-        return Response.ok(gson.toJson(new ResponseObject("OK", user))).build();
-    }
-
+    /*
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
@@ -1083,39 +807,6 @@ public class SholopRestController {
         }
 
         return Response.ok(gson.toJson(new ResponseObject("OK", contact))).build();
-    }
+    }*/
 
-
-    public String saveFile(InputStream uploadedInputStream,
-                           FormDataContentDisposition fileDetail,
-                           FormDataBodyPart body,
-                           String relPath) throws IOException {
-
-        final String SRC_UPLOAD_PATH = "./ui/app" + relPath;
-
-        String uploadedFileName =  fileDetail.getFileName();
-        String uniqueUploadedFileName =  (uploadedFileName + "_"
-                + (new Date()).toString()).replace(" ", "").replace(":","")
-                + "." + body.getMediaType().getSubtype();
-
-        Files.copy(uploadedInputStream, Paths.get(SRC_UPLOAD_PATH + uniqueUploadedFileName),
-                StandardCopyOption.REPLACE_EXISTING);
-
-        return relPath + uniqueUploadedFileName;
-    }
-
-
-    private void setCommentsAuthor(List<Comment> comments) {
-        comments.forEach(comment -> {
-            if(comment.getUserId() > 0){
-                User u = userDao.getUserById(comment.getUserId());
-                comment.setUserName(u.getName());
-                comment.setUserImageUrl(u.getImageUrl());
-            }else if(comment.getContactId() > 0 ){
-                Contact contact = contactDao.getContactById(comment.getContactId());
-                comment.setUserName(contact.getName());
-                comment.setUserImageUrl(contact.getImageUrl());
-            }
-        });
-    }
 }

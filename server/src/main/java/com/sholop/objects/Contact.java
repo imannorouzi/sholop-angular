@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by Pooyan on 12/11/2017.
- */
-
 public class Contact {
 
     public Contact(
              int id,
+             String type,
              String name,
              String phone,
              String email,
@@ -35,6 +32,7 @@ public class Contact {
         this.email = "null".equals(email) ? "" : email;
         this.address = "null".equals(address) ? "" : address;
         this.imageUrl = "null".equals(imageUrl) ? "" : imageUrl;
+        this.contactType = "null".equals(type) ? CONTACT_TYPE.UNKNOWN : CONTACT_TYPE.valueOf(type);
         this.userId = userId;
         this.valid = valid;
         this.created = created;
@@ -43,8 +41,16 @@ public class Contact {
         this.modifiedBy = modifiedBy;
     }
 
+    /**
+     * Created by Pooyan on 12/11/2017.
+     */
+
+    public enum CONTACT_TYPE {EMPLOYEE, CONTACT, UNKNOWN}
+
     String name, phone, email, address, imageUrl;
     int id, userId, createdBy, modifiedBy;
+
+    CONTACT_TYPE contactType;
 
     boolean valid, you;
 
@@ -52,6 +58,8 @@ public class Contact {
 
     public Contact(JSONObject jo) throws JSONException {
         this.id = jo.has("id") && jo.getInt("id") != 0 ? jo.getInt("id") : -1;
+        this.contactType = jo.has("type") && !"".equals(jo.getString("type")) ?
+                CONTACT_TYPE.valueOf(jo.getString("type").toUpperCase()) : CONTACT_TYPE.UNKNOWN;
         this.name = jo.getString("name");
         this.email = jo.getString("email");
         this.phone = jo.getString("phone");
@@ -170,5 +178,13 @@ public class Contact {
 
     public void setYou(boolean you) {
         this.you = you;
+    }
+
+    public CONTACT_TYPE getContactType() {
+        return contactType;
+    }
+
+    public void setContactType(CONTACT_TYPE contactType) {
+        this.contactType = contactType;
     }
 }

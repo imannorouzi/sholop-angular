@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {ConfirmComponent} from "../confirm/confirm.component";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {UtilService} from "../util.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-contacts',
@@ -15,28 +16,35 @@ export class ContactsComponent implements OnInit {
   @ViewChild("spinner") spinner: SpinnerComponent;
   @ViewChild("confirm") confirm: ConfirmComponent;
   @ViewChild("editContact") addContact: AddContactComponent;
+  @ViewChild('fileInput') fileInput: ElementRef;
 
   contacts: any[] = [];
   loading: boolean = false;
 
   currentUser: User;
   searchString: string = '';
+  type: string = 'contact';
 
   constructor(private dataService: DataService,
-              public utilService: UtilService) {
+              public utilService: UtilService,
+              private route: ActivatedRoute,) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {
-    this.readContacts('');
+    // this.readContacts('');
     // this.loadAllUsers();
+    this.route.params.subscribe(params => {
+      this.type = params['type'];
+      this.readContacts('', params['type']);
+    });
   }
 
-  readContacts(hint: string){
+  readContacts(hint: string, type: string){
 
     this.loading = true;
 
-    this.dataService.getContacts(hint).subscribe(
+    this.dataService.getContacts(hint, type).subscribe(
       data => {
         if(data.msg === "OK") {
 
@@ -97,6 +105,17 @@ export class ContactsComponent implements OnInit {
   }
 
   onKeyUp(event){
-    this.readContacts(this.searchString)
+    this.readContacts(this.searchString, this.type)
+  }
+
+  onUploadFileClick(event) {
+    event.preventDefault();
+    this.fileInput.nativeElement.click();
+  }
+
+  fileChanged($event){
+    let file = $event.target.files[0];
+    if(file){
+    }
   }
 }

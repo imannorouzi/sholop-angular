@@ -23,7 +23,8 @@ public abstract class ContactDao implements Transactional<ContactDao> {
 
     public Contact getContactById(int id){ return ttDao().getContactById(id); }
 
-    public List<Contact> getContactByUserId(int userId, String hint){ return ttDao().getContactsByUserId(userId, hint); }
+    public List<Contact> getContactByUserId(int userId, String type, String hint){
+        return ttDao().getContactsByUserId(userId, type, hint); }
 
 
     public List<Contact> getContactByContactIds(List<String> contactIds){
@@ -44,7 +45,8 @@ public abstract class ContactDao implements Transactional<ContactDao> {
 
     public int insert(Contact contact){
         return ttDao().insert(
-            contact.getName(),
+                contact.getName(),
+                contact.getContactType().name(),
                 contact.getEmail(),
                 contact.getPhone(),
                 contact.getAddress(),
@@ -79,13 +81,16 @@ public abstract class ContactDao implements Transactional<ContactDao> {
         @SqlQuery("SELECT * FROM sh_contact WHERE id=:id")
         Contact getContactById(@Bind("id") int id);
 
-        @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id and name like CONCAT('%', :hint, '%')")
-        List<Contact> getContactsByUserId(@Bind("user_id") int userId, @Bind("hint") String hint);
+        @SqlQuery("SELECT * FROM sh_contact WHERE user_id=:user_id and type=:type and name like CONCAT('%', :hint, '%')")
+        List<Contact> getContactsByUserId(@Bind("user_id") int userId,
+                                          @Bind("type") String type,
+                                          @Bind("hint") String hint);
 
         @GetGeneratedKeys
-        @SqlUpdate("insert into sh_contact (name, email, phone, address, image_url, valid, user_id)" +
-                " values(:name, :email, :phone, :address, :image_url, :valid, :user_id)")
+        @SqlUpdate("insert into sh_contact (name, type, email, phone, address, image_url, valid, user_id)" +
+                " values(:name, :type, :email, :phone, :address, :image_url, :valid, :user_id)")
         int insert(@Bind("name") String name,
+                   @Bind("type") String contactType,
                    @Bind("email") String email,
                    @Bind("phone") String phone,
                    @Bind("address") String address,

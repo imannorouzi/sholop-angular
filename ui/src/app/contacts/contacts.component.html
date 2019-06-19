@@ -9,9 +9,9 @@
 
           <div class="col-md-2">
             <button type="button" class="btn btn-outline-primary w-100" (click)="addNewContact.reset();addNewContact.show()" >
-              <i class="fa fa-user-plus"></i> مخاطب جدید
+              <i class="fa fa-user-plus"></i>{{type==='contact' ? ' مخاطب جدید' : ' کارمند جدید'}}
             </button>
-            <add-contact (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
+            <add-contact [type]="type" (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
           </div>
 
           <div class="col-md-10">
@@ -20,58 +20,28 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
               </div>
-              <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="form-control" placeholder="نام، ایمیل، ..." >
+              <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="form-control" placeholder="نام، ایمیل ..." >
             </div>
 
           </div>
 
         </div>
 
-        <!--address: ""-->
-        <!--created: "Oct 14, 2018 6:03:40 PM"-->
-        <!--createdBy: 0-->
-        <!--email: "atieh.ghazizadeh@gmail.com"-->
-        <!--id: 46-->
-        <!--modified: "Oct 2, 2018 12:00:00 AM"-->
-        <!--modifiedBy: 1-->
-        <!--name: "Iman Norouzi"-->
-        <!--phone: "0435072839"-->
-        <!--userId: 1-->
-        <!--imageUrl: 1-->
-        <!--valid: true-->
-
-
-        <!--<div class="table-responsive contacts-table container text-right">
-          <div class="table table-bordred table-striped w-100">
-
-            <thead>
-              <tr class="">
-                <th></th>
-                <th>نام</th>
-                <th>ایمیل</th>
-                <th>تلفن</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr *ngFor="let contact of contacts; let index=index;">
-                <td><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></td>
-                <td >{{contact.name}}</td>
-                <td ><i class="fa fa-envelope"></i>  {{contact.email}}</td>
-                <td ><i class="fa fa-phone"></i>  {{contact.phone}}</td>
-                <td><a href="#">Edit</a></td>
-                <td><a href="#" (click)="onDeleteUser(contact.id, index, $event)">Delete</a></td>
-              </tr>
-
-            </tbody>
+        <div *ngIf="type === 'employee'" class="card text-right bg-light mb-3 ">
+          <div class="card-body">
+            <h5 class="card-title">آپلود لیست کارمندان</h5>
+            <p class="card-text">می‌توانید با دانلود <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> نام کارمندان خود را در آن وارد و با آپلود آن اطلاعات کارمندان خود را در شالاپ ثبت کنید.</p>
+            <div class="text-left">
+              <a href="" class="btn btn-primary" (click)="onUploadFileClick($event)">آپلود فایل</a>
+            </div>
           </div>
-        </div>-->
 
-        <div class="row">
+          <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" [hidden]="true">
+        </div>
 
-          <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact p-2 ">
+        <div class="row ">
+
+          <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact ">
             <div class="contact-border">
               <div class="row p-2 ">
 

@@ -53,7 +53,7 @@ public class MailUtils {
             message.setContent(msg.getBody(),  "text/html;charset=utf-8");
 
             // Send message
-//            Transport.send(message);
+            Transport.send(message);
 
         }catch (MessagingException mex) {mex.printStackTrace();}
     }
@@ -82,7 +82,7 @@ public class MailUtils {
 
             String htmlString = FileUtils.readFileToString(new File("./contents/templates/meeting/newMeetingContact.html"));
 
-            htmlString = htmlString.replace("$logoUrl", Utils.getIconUrl("logo"));
+            htmlString = htmlString.replace("$logoUrl", Utils.getIconUrl("logo").toString());
 
             htmlString = htmlString.replace("$acceptIconUrl", Utils.getIconUrl("accept"));
 //            htmlString = htmlString.replace("$acceptIconUrl", "http://185.173.104.77:8094/contents/correct-symbol.png");
@@ -103,6 +103,7 @@ public class MailUtils {
                     + Utils.formatTimeString(event.getPointedDate().getEndTime()) );
 
             htmlString = htmlString.replace("$name", contact.getName());
+            htmlString = htmlString.replace("$email", contact.getEmail());
             htmlString = htmlString.replace("$title", event.getTitle());
             htmlString = htmlString.replace("$welcomeMessage", event.getWelcomeMessage());
             htmlString = htmlString.replace("$chairName", event.getChair().getName());
@@ -120,7 +121,7 @@ public class MailUtils {
 
             msg.setBody(htmlString);
             MailUtils.sendMail(msg);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -11,6 +11,7 @@ import {AlertService} from "../alert.service";
 import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
+import {User} from "../user";
 
 
 @Component({
@@ -45,10 +46,13 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
   times : string[] = [];
 
   @Input() event: any;
+  user: any;
 
   submitting: boolean = false;
 
   ngOnInit() {
+
+    this.user = this.authenticationService.getUser();
 
     //set google maps defaults
     this.zoom = 12;
@@ -222,12 +226,12 @@ export class EditableMeetingComponent implements OnInit, AfterViewInit {
     this.event.venue.latitude = e.coords.lat;
     this.event.venue.longitude = e.coords.lng;
 
-    /*const geocoder = new google.maps.Geocoder();
+    const geocoder = new google.maps.Geocoder;
     geocoder.geocode({'location': e.coords}, (res, status) => {
       if (status === google.maps.GeocoderStatus.OK && res.length) {
-        this.ngZone.run(() => this.setLocation(res[0]));
+        this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
       }
-    })*/
+    })
   }
 
   setLocation(place) {

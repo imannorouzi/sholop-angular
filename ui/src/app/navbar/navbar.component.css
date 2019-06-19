@@ -27,6 +27,7 @@
 
 .dropdown-menu{
   z-index: 1050;
+  left: 0;
 }
 
 /*.navbar-light .navbar-nav .nav-link.colored-navbar-item:hover{

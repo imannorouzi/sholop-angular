@@ -10,14 +10,24 @@
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-horizontal">
 
             <div class="form-group row">
+              <label class="col-md-3 col-form-label text-right">ثبت نام به عنوان</label>
+              <div class="col-md-9 text-right btn-group btn-group-toggle ltr" data-toggle="type">
+                <label class="btn btn-outline-primary " [class.active]="registerForm.value.type==='PERSONAL'">
+                  <input type="radio" formControlName="type" class="form-control" checked value="PERSONAL"> شخص
+                </label>
+                <label class="btn btn-outline-primary" [class.active]="registerForm.value.type==='BUSINESS'">
+                  <input type="radio" formControlName="type" class="form-control" value="BUSINESS"> شرکت
+                </label>
+              </div>
+            </div>
+            <div class="form-group row">
               <label class="col-md-3 col-form-label text-right">نام</label>
-
               <div class="col-md-9">
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
                   </div>
-                  <input type="text" placeholder="نام کامل" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                  <input type="text" [placeholder]="f.type.value === 'business' ? 'نام شرکت' : 'نام'" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
                 </div>
                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
                 <div *ngIf="f.name.errors.required">باید اسمی داشته باشید.</div>
@@ -49,12 +59,19 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="align-bottom fa fa-key"></i></span>
                   </div>
-                  <input type="password" placeholder="یک کلمه عبور انتخاب کنید." formControlName="password" class="form-control ltr" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                  <input type="password" placeholder="یک کلمه عبور انتخاب کنید" formControlName="password" class="form-control ltr" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                 </div>
                 <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                 <div *ngIf="f.password.errors.required">انتخاب کلمه عبور الزامی است.</div>
                 <div *ngIf="f.password.errors.minlength">کلمه عبور حداقل باید ۶ کاراکتر باشد.</div>
               </div>
+              </div>
+            </div>
+
+            <div class="row form-group" *ngIf="registerForm.value.type==='business'">
+              <div class="col-md-3"></div>
+              <div class="col-md-9 text-right">
+                <p class="card-text">با ثبت‌نام به عنوان یک کسب‌وکار،‌ می‌توانید ملاقات‌های کارمندان شرکت را مدیریت کنید.</p>
               </div>
             </div>
 
@@ -66,7 +83,7 @@
                   <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">
                     ثبت نام <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i>
                   </button>
-                  <button [disabled]="loading" type="button" class="btn btn-primary ml-2" (click)="loginWithGoogle()">ورود با گوگل <i class="fa fa-google"></i> </button>
+                  <button [disabled]="loading" type="button" class="btn btn-primary ml-2" (click)="loginWithGoogle()">ثبت‌نام با گوگل <i class="fa fa-google"></i> </button>
                   <a [routerLink]="['/login']" class="btn btn-link">ورود</a>
               </div>
             </div>

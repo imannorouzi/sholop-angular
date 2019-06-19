@@ -19,16 +19,20 @@ public class User implements Principal {
     private String password, email, phone, farsiAddress1 = "", farsiAddress2 = "", description = "", imageUrl = "";
     private String token;
 
+    public enum USER_TYPE {PERSONAL, BUSINESS, UNKNOWN}
+
     private int createdBy, modifiedBy;
     Timestamp created, modified;
     double latitude, longitude;
 
+    USER_TYPE userType;
     String googlePassword;
 
     public User(){}
 
-    public User(String name, String email, String password, String imageUrl, String phone) {
+    public User(String name, String type, String email, String password, String imageUrl, String phone) {
         this.name = name;
+        this.userType = USER_TYPE.valueOf(type);
         this.username = email;
         this.email = email;
         this.imageUrl = imageUrl;
@@ -47,6 +51,7 @@ public class User implements Principal {
     }
 
     public User(int id,
+                String type,
                 String name,
                 String username,
                 String password,
@@ -66,6 +71,7 @@ public class User implements Principal {
                 int modifiedBy) {
 
         this.id = id;
+        this.userType = USER_TYPE.valueOf(type);
         this.name  = name;
         this.username = username;
         this.password = password;
@@ -100,6 +106,7 @@ public class User implements Principal {
         this.setEmail(jo.getString("email"));
         this.setPassword(jo.getString("password"));
 
+        this.setUserType(jo.has("type") ? USER_TYPE.valueOf(jo.getString("type")) : USER_TYPE.UNKNOWN);
         this.setPhone(jo.has("phone") ? jo.getString("phone") : "");
         this.setLatitude(jo.has("latitude") ? jo.getDouble("latitude") : 0);
         this.setLongitude(jo.has("longitude") ? jo.getDouble("longitude") : 0);
@@ -267,5 +274,13 @@ public class User implements Principal {
 
     public void setGooglePassword(String googlePassword) {
         this.googlePassword = googlePassword;
+    }
+
+    public USER_TYPE getUserType() {
+        return userType;
+    }
+
+    public void setUserType(USER_TYPE userType) {
+        this.userType = userType;
     }
 }

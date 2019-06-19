@@ -24,3 +24,81 @@
 .social-network-icon{
   color: gray;
 }
+
+
+.quote{
+  animation: fade-in 1s ease both;
+  opacity: 0;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  border-radius: 25px;
+}
+
+.image-container{
+  opacity: 0;
+}
+
+.tablet{
+  width: 30%;
+  right: 30%;
+  bottom: 20%;
+  -webkit-animation: slide-in-rotate 1s forwards;
+  -o-animation: slide-in-rotate 1s forwards;
+  animation: slide-in-rotate 1s forwards;
+  animation-delay: 2s;
+}
+
+.monitor{
+  right: 0;
+  bottom: 0;
+  -webkit-animation: slide-in 1s forwards;
+  -o-animation: slide-in 1s forwards;
+  animation: slide-in 1s forwards;
+  animation-delay: 2s;
+}
+
+.mobile{
+  width: 15%;
+  right: 20%;
+  bottom: 20%;
+  -webkit-animation: slide-in-rotate 1s forwards;
+  -o-animation: slide-in-rotate 1s forwards;
+  animation: slide-in-rotate 1s forwards;
+  animation-delay: 2s;
+}
+
+.row-1{
+  margin:0;
+}
+.row-2{
+  background: url("../../assets/images/home/row-2-bkg.jpg") ;
+  margin: 0;
+}
+@keyframes fade-in{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+
+
+@keyframes slide-in {
+  0% {
+    opacity: 0;transform: translateX(-100%); }
+  100% {
+    opacity: 1;transform: translateX(0); }
+}
+
+@keyframes slide-in-rotate {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(30deg);
+  }
+}

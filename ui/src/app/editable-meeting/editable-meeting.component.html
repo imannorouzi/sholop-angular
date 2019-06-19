@@ -96,15 +96,15 @@
         </div>
       </div>
 
-      <div class="card mb-3 shadow">
+      <div class="card mb-3 shadow" *ngIf="user.userType === 'BUSINESS'">
         <div class="card-body">
-          <h5 class="card-title text-right">هماهنگ کننده ملاقات</h5>
+          <h5 class="card-title text-right">میزبان ملاقات</h5>
 
-          <div class="custom-control custom-checkbox text-right mb-2">
-            <input type="checkbox" class="custom-control-input" #imChair checked="checked" [(ngModel)]="event.chairId" id="defaultUnchecked">
+          <div class="custom-control custom-checkbox text-right mb-2" *ngIf="false">
+            <input type="checkbox" class="custom-control-input" #imChair [(ngModel)]="event.chairId" id="defaultUnchecked">
             <label class="custom-control-label" for="defaultUnchecked">خودم</label>
           </div>
-          <suggesting-contact-input (contactSelected)="chairSelected($event)" *ngIf="!imChair.checked"></suggesting-contact-input>
+          <suggesting-contact-input (contactSelected)="chairSelected($event)"></suggesting-contact-input>
           <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
         </div>
       </div>

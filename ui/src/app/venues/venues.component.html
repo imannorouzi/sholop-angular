@@ -8,10 +8,10 @@
         <div class="row p-2">
 
           <div class="col-md-2">
-            <button type="button" class="btn btn-outline-primary w-100" >
+            <button type="button" (click)="addNewVenue.reset();addNewVenue.show()"  class="btn btn-outline-primary w-100" >
               <i class="fa fa-map"></i> مکان جدید
             </button>
-            <!--<add-venue (onVenueAdded)="onVenueAdded($event)" #addNewVenue></add-venue>-->
+            <add-venue (onVenueAdded)="onVenueAdded($event)" #addNewVenue></add-venue>
           </div>
 
           <div class="col-md-10">
@@ -47,7 +47,7 @@
                   <div><span class="text-muted">{{venue.farsiAddress2}}</span> </div>
 
                   <div>
-                    <a href="#" class="ml-3">ویرایش</a>
+                    <a href="#" (click)="onEditVenue(venue)" class="ml-3">ویرایش</a>
                     <a href="#" (click)="onDeleteVenue(venue.id, index, $event)">حذف</a>
                   </div>
                 </div>
@@ -56,6 +56,9 @@
 
             </div>
           </div>
+
+          <add-venue (onVenueAdded)="onVenueEdited($event)" #editVenue></add-venue>
+
         </div>
 
         <div class="text-center" *ngIf="!loading && venues.length === 0">

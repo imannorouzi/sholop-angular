@@ -27,7 +27,7 @@ const routes: Routes = [
   { path: 'contact-meeting/:uuid/:dateId/:action', component: ContactMeetingComponent},
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'list/:type', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'venues', component: VenuesComponent, canActivate: [AuthGuard] },
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },

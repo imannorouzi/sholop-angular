@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {User} from "./user";
 import {environment} from "../environments/environment.prod";
+import {Venue} from "./venue";
 
 const serverUrl = environment.serverUrl;
 
@@ -41,10 +42,10 @@ export class DataService {
     });
   }
 
-  getContacts( hint: string = ''):  Observable<any> {
+  getContacts( hint: string = '', type: string = 'contact'):  Observable<any> {
     let apiURL = serverUrl + "/get-contacts";
     return this.http.get(apiURL, {
-      params: {hint: hint}
+      params: {hint: hint, type: type.toLocaleUpperCase()}
     });
   }
 
@@ -62,6 +63,17 @@ export class DataService {
       'Accept': 'application/json'
     });
     return this.http.post(`${apiURL}`, id, {headers: headers});
+  }
+
+  updateVenue(venue: Venue) {
+    let apiURL = serverUrl + "/update-venue";
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
+    return this.http.post(`${apiURL}`, JSON.stringify(venue), {headers: headers});
+
   }
 
 

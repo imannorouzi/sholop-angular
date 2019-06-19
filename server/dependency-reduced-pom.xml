@@ -4,7 +4,7 @@
   <groupId>sholop</groupId>
   <artifactId>server</artifactId>
   <name>server Maven Webapp</name>
-  <version>0.0.2</version>
+  <version>0.0.4</version>
   <url>http://maven.apache.org</url>
   <build>
     <finalName>server-${project.version}</finalName>

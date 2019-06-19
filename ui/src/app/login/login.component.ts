@@ -9,7 +9,10 @@ import {AlertService} from "../alert.service";
 import {AuthenticationService} from "../authentication.service";
 import {SpinnerService} from "../spinner.service";
 
-@Component({templateUrl: 'login.component.html'})
+@Component({
+  selector: 'app-login',
+  templateUrl: 'login.component.html'
+})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
@@ -71,7 +74,7 @@ export class LoginComponent implements OnInit {
 
   loginWithGoogle(){
     this.AfService.logout();
-    this.AfService.loginWithGoogle();
+    this.AfService.loginWithGoogle('PERSONAL');
   }
 
 }

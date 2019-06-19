@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.sholop.api.ContactController;
 import com.sholop.api.SholopRestController;
+import com.sholop.api.UserController;
 import com.sholop.auth.SchedulerAuthenticator;
 import com.sholop.auth.SchedulerAuthorizer;
 import com.sholop.auth.TokenAuthFilter;
@@ -58,6 +60,8 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
 
         environment.jersey().register( injector.getInstance(MultiPartFeature.class));
         environment.jersey().register( injector.getInstance(SholopRestController.class));
+        environment.jersey().register( injector.getInstance(ContactController.class));
+        environment.jersey().register( injector.getInstance(UserController.class));
 
         environment.jersey().register(injector.getInstance(EventDao.class));
         environment.jersey().register(injector.getInstance(SholopDateDao.class));

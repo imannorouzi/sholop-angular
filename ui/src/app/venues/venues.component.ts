@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
+import {AddVenueComponent} from "../add-venue/add-venue.component";
 
 @Component({
   selector: 'app-venues',
@@ -10,9 +11,11 @@ import {SpinnerComponent} from "../spinner/spinner.component";
 })
 export class VenuesComponent implements OnInit {
   @ViewChild("spinner") spinner: SpinnerComponent;
+  @ViewChild("editVenue") editVenue: AddVenueComponent;
 
   venues: any[] = [];
   loading: boolean = false;
+  selectedVenue;
 
   currentUser: User;
   searchString: string = '';
@@ -71,6 +74,10 @@ export class VenuesComponent implements OnInit {
     this.venues.push(venue);
   }
 
+  onVenueEdited(venue){
+    // this.venues.push(venue);
+  }
+
   onDeleteVenue(id: any, index: number, event) {
     event.preventDefault();
     this.deleteVenue(id, index);
@@ -80,5 +87,10 @@ export class VenuesComponent implements OnInit {
     if(event.keyCode === 13) {
       this.readVenues(this.searchString)
     }
+  }
+
+  onEditVenue(venue: any) {
+    event.preventDefault();
+    this.editVenue.show(venue);
   }
 }

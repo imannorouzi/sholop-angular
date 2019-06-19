@@ -1,53 +1,113 @@
-<div class="container-fluid h-100">
+<div class="bg-light">
 
-  <div class="row h-100 bg-white">
 
-    <div class="col-md-3 bg-blue-light  ">
+  <!-- First row-->
+  <div class="row pb-3 row-1">
 
-      <div class="text-center h-100 flex-parent ">
+    <div class="col-md-2 ">
+
+      <div class="text-center flex-parent ">
         <div class="mt-5">
-          <object class="w-25 owl" type="image/svg+xml" data="../../assets/images/owl-blinking.svg">
+          <object class="w-100 owl" type="image/svg+xml" data="../../assets/images/owl-tie-walking.svg">
             <param name="class" value="look-around" />
           </object>
-        </div>
-
-
-        <h4>ابزاری برای تنظیم ملاقات</h4>
-        <h5 class="text-muted">اعتباری برای سازمان شما</h5>
-
-        <!--<p class="mt-3 grow">
-          <i class="fa fa-circle"></i> تنظیم ملاقات
-          <i class="fa fa-circle"></i> اطلاع رسانی<br>
-          <i class="fa fa-circle"></i> ارتباط با مخاطبان
-          <i class="fa fa-circle"></i> کنترل ورود و خروج میهمانان<br>
-          <i class="fa fa-circle"></i>  تحلیل های آماری از حضور مشتریان شما
-        </p>-->
-
-
-        <h5 class="text-center ltr mt-5 grow">
-          <a href="" class="ml-3 social-network-icon"><i class="fa fa-linkedin "></i></a>
-          <a href="" class="ml-3 social-network-icon"><i class="fa fa-google-plus"></i></a>
-          <a href="" class="ml-3 social-network-icon"><i class="fa fa-twitter"></i></a>
-        </h5>
-
-        <div class="text-muted mt-5 ltr">
-          <i class="fa fa-copyright ml-3 social-network-icon"></i>
-          Powered by
-          <a href="http://wiseaspect.co.uk">Wise Aspect Limited</a>
         </div>
 
       </div>
     </div>
 
-    <div class="col-md-9 bg-white text-center  flex-parent">
+    <div class="col-md-5 text-right flex-parent mt-5">
 
 
-      <button class="start-button p-2 shadow-sm mt-2 m-auto">با ما همراه شوید</button>
+      <div [ngStyle]="{animationDelay: ((i+3)/5)+'s'}" *ngFor="let qoute of quotes; let i=index"
+           class="shadow-sm card text-black bg-white mb-3 quote">
+        <div class="card-body">
+          <p class="card-text">
+            <i class="fa fa-info-circle"></i> {{qoute.text}}</p>
+        </div>
+      </div>
 
+    </div>
 
+    <div class="col-md-5 text-center p-5 position-relative">
+
+      <div class="position-relative h-100">
+
+        <div class="image-container monitor position-absolute h-100">
+          <img class="h-100" src="../../assets/images/home/monitor.png"/>
+        </div>
+
+        <div class="image-container tablet position-absolute">
+          <img class="w-100" src="../../assets/images/home/tablet.png"/>
+        </div>
+
+        <div class="image-container mobile position-absolute ">
+          <img class="w-100" src="../../assets/images/home/mobile.png"/>
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
+
+  <!-- Second ROW -->
+  <div class="row-2 pb-5 text-center position-relative">
+
+    <div class="w-100">
+      <object class="w-100 wave" type="image/svg+xml" data="../../assets/images/wave.svg">
+        <param name="fill" value="#f8f9fa" />
+      </object>
+    </div>
+
+    <div class="card-deck text-right  pr-5 pl-5">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
+          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Third Row-->
+  <div class="p-5 text-right">
+
+    <div class="card " >
+      <div class="card-body">
+        <h3 class="card-title">ثبت نام کنید</h3>
+        <div class="row">
+          <div class="col-md-9">
+            <p class="card-text">در اینجا باید بگیم که ثبت نام چقد راحته</p>
+          </div>
+          <div class="col-md-3 text-left">
+            <button class="btn btn-primary ">ثبت نام</button>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+
+  </div>
 </div>

@@ -30,6 +30,7 @@ public class ContactMapper implements ResultSetMapper<Contact>{
 
         Contact contact = new Contact(
                 rs.getInt("id"),
+                rs.getString("type"),
                 rs.getString("name"),
                 rs.getString("phone"),
                 rs.getString("email"),

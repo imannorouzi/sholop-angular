@@ -11,6 +11,9 @@ import {SpinnerService} from "../spinner.service";
 @Injectable()
 export class AfService {
   user: Observable<firebase.User>;
+
+  userType: string = 'PERSONAL';
+
   constructor(public afAuth: AngularFireAuth,
               private authenticationService: AuthenticationService,
               private route: ActivatedRoute,
@@ -27,6 +30,7 @@ export class AfService {
         if(!this.user || !u) return;
 
         let user = {
+          type: this.userType,
           name: u.displayName,
           username: u.email,
           email: u.email,
@@ -55,7 +59,9 @@ export class AfService {
     )
   }
 
-  loginWithGoogle(){
+  loginWithGoogle(userType){
+    this.userType = userType;
+
     const provider = new firebase.auth.GoogleAuthProvider();
     this.afAuth.auth.signInWithPopup(provider);
   }

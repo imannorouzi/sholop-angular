@@ -22,10 +22,10 @@ export class AddContactComponent implements OnInit {
   @ViewChild('nameField') nameField: any;
   @ViewChild('phoneField') phoneField: any;
 
-
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
   @Input() index: number = -1;
+  @Input() type: string = 'contact';
   @Input() contact = {
     name: '',
     email: '',
@@ -33,7 +33,8 @@ export class AddContactComponent implements OnInit {
     imageUrl: '',
     image: File,
     id: -1,
-    fileName: ''
+    fileName: '',
+    type: this.type
   };
 
   submitted: boolean = false;
@@ -96,7 +97,8 @@ export class AddContactComponent implements OnInit {
       imageUrl: null,
       image: null,
       id: -1,
-      fileName: ''
+      fileName: '',
+      type: this.type
     };
 
     this.cropper.reset();

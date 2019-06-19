@@ -23,6 +23,7 @@ public abstract class UserDao implements Transactional<UserDao> {
     public User updateUser(User user){
         if( user.getId() == -1){
             int id = ttDao().insert(user.getUsername(),
+                    user.getUserType().name(),
                     user.getEmail(),
                     user.getName(),
                     user.getPhone(),
@@ -38,6 +39,7 @@ public abstract class UserDao implements Transactional<UserDao> {
             user.setId(id);
         }else {
             ttDao().updateUser(user.getUsername(),
+                    user.getUserType().name(),
                     user.getName(),
                     user.getEmail(),
                     user.getPhone(),
@@ -68,7 +70,7 @@ public abstract class UserDao implements Transactional<UserDao> {
         @SqlQuery("SELECT * FROM sh_users WHERE 1=1 ORDER BY 1 ")
         List<User> listAllUsers();
 
-        @SqlUpdate("update sh_user set full_name=:full_name, email=:email, phone=:phone, " +
+        @SqlUpdate("update sh_user set full_name=:full_name, type=:type, email=:email, phone=:phone, " +
                 "persian_address_1=:persian_address_1, " +
                 "persian_address_2=:persian_address_2, " +
                 "latitude=:latitude, " +
@@ -77,6 +79,7 @@ public abstract class UserDao implements Transactional<UserDao> {
                 "image_url=:image_url " +
                 "WHERE username=:username")
         void updateUser(@Bind("username") String username,
+                        @Bind("type") String type,
                         @Bind("full_name") String name,
                         @Bind("email") String email,
                         @Bind("phone") String phone,
@@ -91,6 +94,7 @@ public abstract class UserDao implements Transactional<UserDao> {
         @GetGeneratedKeys
         @SqlUpdate("insert into sh_user " +
                 "(full_name, " +
+                "type, " +
                 "email, " +
                 "username, " +
                 "password, " +
@@ -104,6 +108,7 @@ public abstract class UserDao implements Transactional<UserDao> {
                 "description) " +
                 "values " +
                 "(:full_name, " +
+                ":type," +
                 ":email," +
                 ":username, " +
                 ":password, " +
@@ -116,6 +121,7 @@ public abstract class UserDao implements Transactional<UserDao> {
                 ":longitude," +
                 ":description)")
         int insert(@Bind("username") String username,
+                   @Bind("type") String type,
                    @Bind("email") String email,
                    @Bind("full_name") String name,
                    @Bind("phone") String phone,

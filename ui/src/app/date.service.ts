@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {parseDate} from "ngx-bootstrap";
 
 const weekDayNames: string[] =
   ["شنبه",

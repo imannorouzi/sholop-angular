@@ -61,7 +61,8 @@ public abstract class LocationDao implements Transactional<LocationDao> {
     @RegisterMapper(LocationMapper.class)
     private interface Dao {
         @SqlQuery("SELECT * FROM sh_venue WHERE 1=1 and user_id=:user_id and " +
-                "(title like CONCAT('%', :hint, '%') OR persian_address_1 like CONCAT('%', :hint, '%') OR persian_address_2 like CONCAT('%', :hint, '%')) ORDER BY 1 ")
+                "(title like CONCAT('%', :hint, '%') OR persian_address_1 like CONCAT('%', :hint, '%') " +
+                "OR persian_address_2 like CONCAT('%', :hint, '%')) and is_active=true ORDER BY 1 ")
         List<Location> listAllLocations(@Bind("user_id") int userId, @Bind("hint") String hint);
 
         @SqlUpdate("update sh_venue set persian_address_1=:persian_address_1, persian_address_2=:persian_address_2, " +
@@ -84,7 +85,7 @@ public abstract class LocationDao implements Transactional<LocationDao> {
         @SqlQuery("SELECT * FROM sh_venue WHERE id=:id")
         Location getLocationById(@Bind("id") int id);
 
-        @SqlQuery("SELECT * FROM sh_venue WHERE user_id=:id and is_active=true")
+        @SqlQuery("SELECT * FROM sh_venue WHERE user_id=:id")
         List<Location> getLocationsByUserId(@Bind("id") int id);
 
         @GetGeneratedKeys

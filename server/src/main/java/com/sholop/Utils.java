@@ -1,21 +1,30 @@
 package com.sholop;
 
-import com.sholop.objects.ContactEvent;
-import com.sholop.objects.Event;
+import com.sholop.db.dao.ContactDao;
+import com.sholop.db.dao.UserDao;
+import com.sholop.objects.*;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
 public class Utils {
-    public static final String RELATIONAL_WEBSITE_URL = "http://localhost:8094";
-    public static final String WEBSITE_URL = "http://localhost:8094";
+//    public static final String RELATIONAL_WEBSITE_URL = "http://localhost:8094";
+//    public static final String WEBSITE_URL = "http://localhost:8094";
 
-//    public static final String RELATIONAL_WEBSITE_URL = "";
-//    public static final String WEBSITE_URL = "http://185.173.104.77:8094";
+    public static final String RELATIONAL_WEBSITE_URL = "";
+    public static final String WEBSITE_URL = "http://185.173.104.77:8094";
 
     public static Date readFromGMT(Date date) throws ParseException {
         String datePattern = "dd-MMM-yyyy, HH:mm:ss";
@@ -61,5 +70,38 @@ public class Utils {
                 .append("/#/contact-meeting")
                 .append("/").append(ce.getUuid())
                 .append("/").append(event.getPointedDate().getId()).toString();
+    }
+
+    public static String saveFile(InputStream uploadedInputStream,
+                           FormDataContentDisposition fileDetail,
+                           FormDataBodyPart body,
+                           String relPath) throws IOException {
+
+        final String SRC_UPLOAD_PATH = "./ui/app" + relPath;
+
+        String uploadedFileName =  fileDetail.getFileName();
+        String uniqueUploadedFileName =  (uploadedFileName + "_"
+                + (new Date()).toString()).replace(" ", "").replace(":","")
+                + "." + body.getMediaType().getSubtype();
+
+        Files.copy(uploadedInputStream, Paths.get(SRC_UPLOAD_PATH + uniqueUploadedFileName),
+                StandardCopyOption.REPLACE_EXISTING);
+
+        return relPath + uniqueUploadedFileName;
+    }
+
+
+    public static void setCommentsAuthor(List<Comment> comments, UserDao userDao, ContactDao contactDao) {
+        comments.forEach(comment -> {
+            if(comment.getUserId() > 0){
+                User u = userDao.getUserById(comment.getUserId());
+                comment.setUserName(u.getName());
+                comment.setUserImageUrl(u.getImageUrl());
+            }else if(comment.getContactId() > 0 ){
+                Contact contact = contactDao.getContactById(comment.getContactId());
+                comment.setUserName(contact.getName());
+                comment.setUserImageUrl(contact.getImageUrl());
+            }
+        });
     }
 }
