@@ -1,38 +1,14 @@
 package com.sholop;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.github.dirkraft.dropwizard.fileassets.FileAssetsBundle;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.sholop.api.ContactController;
-import com.sholop.api.SholopRestController;
-import com.sholop.api.UserController;
-import com.sholop.auth.SchedulerAuthenticator;
-import com.sholop.auth.SchedulerAuthorizer;
-import com.sholop.auth.TokenAuthFilter;
-import com.sholop.objects.User;
-import com.sholop.db.dao.*;
-import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.auth.AuthDynamicFeature;
-import io.dropwizard.auth.AuthValueFactoryProvider;
-import io.dropwizard.bundles.assets.ConfiguredAssetsBundle;
-import io.dropwizard.forms.MultiPartBundle;
-import io.dropwizard.jdbi.DBIFactory;
-import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
-import org.skife.jdbi.v2.DBI;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import java.util.EnumSet;
+@SpringBootApplication
+@EnableConfigurationProperties(ApplicationConfiguration.class)
+public class Application {
 
-public class Application extends io.dropwizard.Application<ApplicationConfiguration> {
-
-    @Override
+    /*@Override
     public void initialize(Bootstrap<ApplicationConfiguration> bootstrap) {
 
         bootstrap.addBundle(new DBIExceptionsBundle());
@@ -71,12 +47,12 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
         environment.jersey().register(injector.getInstance(UserDao.class));
         environment.jersey().register(injector.getInstance(CommentDao.class));
 
-        /***************  security ******************/
-        /*environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()
+        *//***************  security ******************//*
+        *//*environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()
                 .setAuthenticator(new SchedulerAuthenticator(userDao))
                 .setAuthorizer(new SchedulerAuthorizer())
                 .setRealm("METRO-ANNOUNCE-SCHEDULER-REALM")
-                .buildAuthFilter()));*/
+                .buildAuthFilter()));*//*
 
         environment.jersey().register(new AuthDynamicFeature(
                 new TokenAuthFilter.Builder<User>()
@@ -89,11 +65,11 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-        /*environment.jersey().register(RolesAllowedDynamicFeature.class);
-        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));*/
+        *//*environment.jersey().register(RolesAllowedDynamicFeature.class);
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));*//*
 
 
-        /*Cross Origin Access*/
+        *//*Cross Origin Access*//*
         final FilterRegistration.Dynamic cors =
                 environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 
@@ -105,10 +81,12 @@ public class Application extends io.dropwizard.Application<ApplicationConfigurat
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
-    }
+    }*/
 
     public static void main(String[] args) throws Exception {
-        new Application().run(args);
+//        new Application().run(args);
+
+        SpringApplication.run(Application.class, args);
     }
 
 }

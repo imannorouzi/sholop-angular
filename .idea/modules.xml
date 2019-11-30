@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SpringBootServer/src/main/main.iml" filepath="$PROJECT_DIR$/SpringBootServer/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sholop-angular.iml" filepath="$PROJECT_DIR$/sholop-angular.iml" />
+    </modules>
+  </component>
+</project>

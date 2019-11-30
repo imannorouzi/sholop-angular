@@ -3,13 +3,17 @@ package com.sholop.objects;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Pooyan on 12/11/2017.
  */
 
+@Entity(name = "sh_comment")
 public class Comment {
+
+    public Comment(){}
 
     public Comment(
              int id,
@@ -33,8 +37,17 @@ public class Comment {
         this.modified = modified;
     }
 
-    String text, status, userName, userImageUrl;
-    int id, userId, eventId, inReplyTo, contactId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+
+    String text, status;
+    @Transient
+    String userImageUrl, userName;
+    @Column(name = "user_id") Integer userId;
+    @Column(name = "event_id") Integer eventId;
+    @Column(name = "in_reply_to") Integer inReplyTo;
+    @Column(name = "contact_id") Integer contactId;
 
     Timestamp created, modified;
 
@@ -67,7 +80,7 @@ public class Comment {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -75,7 +88,7 @@ public class Comment {
         this.id = id;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
@@ -83,15 +96,15 @@ public class Comment {
         this.userId = userId;
     }
 
-    public int getEventId() {
-        return eventId;
-    }
-
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 
-    public int getInReplyTo() {
+    public Integer getEventId() {
+        return eventId;
+    }
+
+    public Integer getInReplyTo() {
         return inReplyTo;
     }
 
@@ -115,27 +128,29 @@ public class Comment {
         this.modified = modified;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getUserImageUrl() {
         return userImageUrl;
     }
 
+    @Transient
     public void setUserImageUrl(String userImageUrl) {
         this.userImageUrl = userImageUrl;
     }
 
-    public int getContactId() {
+    public Integer getContactId() {
         return contactId;
     }
 
-    public void setContactId(int contactId) {
+    public void setContactId(Integer contactId) {
         this.contactId = contactId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    @Transient
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

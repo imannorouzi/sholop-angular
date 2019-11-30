@@ -1,49 +1,76 @@
 package com.sholop;
 
-import io.dropwizard.Configuration;
-import io.dropwizard.bundles.assets.AssetsBundleConfiguration;
-import io.dropwizard.bundles.assets.AssetsConfiguration;
-import io.dropwizard.db.DataSourceFactory;
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.Resource;
+@ConfigurationProperties(prefix = "app")
+public class ApplicationConfiguration{
+    private String name;
+    private String description;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-class ApplicationConfiguration extends Configuration implements AssetsBundleConfiguration {
-
-    @Valid
-    @NotNull
-    @JsonProperty("app")
-    private AssetsConfiguration app = AssetsConfiguration.builder().build();
-
-
-    @Valid
-    @NotNull
-    @JsonProperty("database")
-    private DataSourceFactory database = new DataSourceFactory();
-
-    public void setDatabase(DataSourceFactory factory) {
-        this.database = factory;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public DataSourceFactory getDataSourceFactory() {
-        return database;
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @NotNull
-    public DataSourceFactory getDatabase() {
-        return database;
-    }
+    public class Security {
 
-    @NotNull
-    public AssetsConfiguration getAapp() {
-        return app;
-    }
+        private JwtProperties jwt;
 
-    public void setApp(@NotNull AssetsConfiguration app) {
-        this.app = app;
-    }
+        public JwtProperties getJwt() {
+            return jwt;
+        }
 
-    @Override
-    public AssetsConfiguration getAssetsConfiguration() { return app; }
+        public void setJwt(JwtProperties jwt) {
+            this.jwt = jwt;
+        }
+
+        public class JwtProperties {
+
+            private Resource keyStore;
+            private String keyStorePassword;
+            private String keyPairAlias;
+            private String keyPairPassword;
+
+            public Resource getKeyStore() {
+                return keyStore;
+            }
+
+            public void setKeyStore(Resource keyStore) {
+                this.keyStore = keyStore;
+            }
+
+            public String getKeyStorePassword() {
+                return keyStorePassword;
+            }
+
+            public void setKeyStorePassword(String keyStorePassword) {
+                this.keyStorePassword = keyStorePassword;
+            }
+
+            public String getKeyPairAlias() {
+                return keyPairAlias;
+            }
+
+            public void setKeyPairAlias(String keyPairAlias) {
+                this.keyPairAlias = keyPairAlias;
+            }
+
+            public String getKeyPairPassword() {
+                return keyPairPassword;
+            }
+
+            public void setKeyPairPassword(String keyPairPassword) {
+                this.keyPairPassword = keyPairPassword;
+            }
+        }
+    }
 }

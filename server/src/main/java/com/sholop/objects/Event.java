@@ -5,6 +5,7 @@ import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.persistence.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,10 @@ import java.util.List;
  * Created by Pooyan
  * on 12/11/2017.
  */
-
+@Entity(name = "sh_event")
 public class Event {
+
+    public Event(){}
 
     public Event(
              String eventType,
@@ -40,7 +43,7 @@ public class Event {
         this.limitGuests = limitGuests;
         this.maxGuests = maxGuests;
         this.allowComments = allowComments;
-        this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKOWN :  EVENT_TYPE.valueOf(eventType);
+        this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKOWN.name() :  (eventType);
         this.venue = location;
         this.imageUrl = imageUrl;
         this.status = status;
@@ -49,36 +52,67 @@ public class Event {
 
     public enum EVENT_TYPE {UNKOWN, MEETING }
 
-    String title, welcomeMessage, link, tags, imageUrl, status;
+    String title, link, tags, status;
 
+    @Column(name = "description")
+    String welcomeMessage;
+    @Column(name = "image_url")
+    String imageUrl;
+
+    @Transient
     Location venue;
+    @Transient
     User chair;
+    @Transient
     List<SholopDate> dates;
+    @Transient
     SholopDate pointedDate;
+    @Transient
     List<SholopImage> images;
+    @Transient
     List<SholopAttachment> attachments;
+    @Transient
     List<ContactEvent> contactEvents;
+    @Transient
     List<Contact> attendees;
-
+    @Transient
     ContactEvent contactEvent;
-
+    @Transient
     SholopDate closeDate;
 
     // setting attributes
-    boolean confirmNeeded,
-        allowJoinViaLink,
-        limitGuests,
-        allowComments;
+    @Column(name = "confirm_needed")
+    Boolean confirmNeeded;
+    @Column(name = "join_via_link")
+    Boolean allowJoinViaLink;
+    @Column(name = "limit_guests")
+    Boolean limitGuests;
+    @Column(name = "allow_comments")
+    Boolean allowComments;
 
-    int id, maxGuests, venueId, chairId, createdBy, registeredGuests;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
 
-    EVENT_TYPE eventType;
+    @Column(name = "max_guests")
+    Integer maxGuests;
+    @Column(name = "venue_id")
+    Integer venueId;
+    @Column(name = "chair_id")
+    Integer chairId;
+    @Column(name = "created_by")
+    Integer createdBy;
+    @Transient
+    Integer registeredGuests;
+
+    @Column(name = "event_type")
+    String eventType;
 
     public Event(JSONObject jo) throws JSONException, ParseException {
 
         this.setTitle(jo.getString("title"));
         this.setWelcomeMessage(jo.has("welcomeMessage") ? jo.getString("welcomeMessage") : "");
-        this.setEventType(jo.has("eventType")? EVENT_TYPE.valueOf(jo.getString("eventType")) : EVENT_TYPE.MEETING);
+        this.setEventType(jo.has("eventType")? jo.getString("eventType") : EVENT_TYPE.MEETING.name());
         this.setVenue(new Location(jo.getJSONObject("venue")));
         this.setChairId(jo.getInt("chairId"));
 
@@ -196,11 +230,11 @@ public class Event {
         this.maxGuests = maxGuests;
     }
 
-    public EVENT_TYPE getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EVENT_TYPE eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 

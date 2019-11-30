@@ -3,16 +3,15 @@ package com.sholop.objects;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.sholop.Utils;
-import com.sholop.api.SholopRestController;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
-import javax.ws.rs.WebApplicationException;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.xml.ws.Response;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,9 +20,18 @@ import java.util.Date;
 /**
  * Created by Pooyan on 12/11/2017.
  */
+@Entity(name = "sh_venue")
 public class Location {
 
-    int id, userId;
+    public Location(){
+
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+
+    Integer userId;
     String farsiAddress1, farsiAddress2, englishAddress, title, description, mapUrl;
 
     double latitude, longitude;

@@ -2,32 +2,40 @@ package com.sholop.objects;
 
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import javax.swing.text.DateFormatter;
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Created by Pooyan on 3/20/2018.
  */
+
+@Entity(name = "sh_event_date")
 public class SholopDate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
 
-    int id, eventId;
+    @Column(name = "event_id")
+    Integer eventId;
 
-    Date date;
+    Timestamp date;
+    @Column(name = "date_string")
     String dateString;
 
-    String startTime, endTime;
+    @Column(name = "start_time_string")
+    String startTime;
+    @Column(name = "end_time_string")
+    String endTime;
+
+    public SholopDate(){}
 
     public SholopDate(int id,
                       int eventId,
-                      String date,
+                      Timestamp date,
                       String dateString,
                       String startTime,
                       String endTime) throws ParseException {
@@ -38,22 +46,14 @@ public class SholopDate {
 
         this.dateString = dateString;
 
-//        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.s");
-//        this.date = dtf.parseDateTime(dateTime);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        this.date = dateFormat.parse(date);
+        this.date = date;
     }
 
     public SholopDate(JSONObject jo) throws JSONException, ParseException {
 
-//        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//        date = dtf.parseDateTime(jo.getString("date")).toDateTime();
-
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //        String strDate = dateFormat.format();
-        this.date = dateFormat.parse(jo.getString("date"));
+        this.date = new Timestamp((dateFormat.parse(jo.getString("date"))).getTime());
 
         this.dateString = jo.has("dateString") ? jo.getString("dateString") : "";
 
@@ -61,11 +61,11 @@ public class SholopDate {
         endTime = jo.getString("endTime");
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 
@@ -101,11 +101,11 @@ public class SholopDate {
         this.id = id;
     }
 
-    public int getEventId() {
+    public Integer getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
 }

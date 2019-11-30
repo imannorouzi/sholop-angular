@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="target">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SpringBootServer/target/multiModalPids-0.10-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SpringBootServer/target/multiModalPids-0.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SpringBootServer/target/multiModalPids-0.10-distribution.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

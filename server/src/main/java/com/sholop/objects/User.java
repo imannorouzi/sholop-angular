@@ -3,32 +3,42 @@ package com.sholop.objects;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement
+@Entity(name = "sh_user")
 public class User implements Principal {
 
-    private int id;
-    private String name, username;
-    private List<String> roles;
-    private String password, email, phone, farsiAddress1 = "", farsiAddress2 = "", description = "", imageUrl = "";
-    private String token;
+    public User(){}
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
+
+
+    @Column(name = "full_name") private String name;
+    private String username;
+    @Transient private List<String> roles;
+    private String password, email, phone, description = "";
+    @Column(name = "persian_address_1") String farsiAddress1 = "";
+    @Column(name = "persian_address_2") String farsiAddress2 = "";
+    @Column(name = "image_url") String imageUrl = "";
+    @Transient private String token;
 
     public enum USER_TYPE {PERSONAL, BUSINESS, UNKNOWN}
 
-    private int createdBy, modifiedBy;
+    @Column(name = "created_by") private Integer createdBy;
+    @Column(name = "modified_by") private Integer modifiedBy;
     Timestamp created, modified;
-    double latitude, longitude;
+    Double latitude, longitude;
 
+    @Transient
     USER_TYPE userType;
-    String googlePassword;
-
-    public User(){}
+    @Column(name = "google_password") String googlePassword;
 
     public User(String name, String type, String email, String password, String imageUrl, String phone) {
         this.name = name;
@@ -188,7 +198,7 @@ public class User implements Principal {
         this.phone = phone;
     }
 
-    public int getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
@@ -196,7 +206,7 @@ public class User implements Principal {
         this.createdBy = createdBy;
     }
 
-    public int getModifiedBy() {
+    public Integer getModifiedBy() {
         return modifiedBy;
     }
 
@@ -252,7 +262,7 @@ public class User implements Principal {
         this.description = description;
     }
 
-    public double getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -260,7 +270,7 @@ public class User implements Principal {
         this.latitude = latitude;
     }
 
-    public double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 

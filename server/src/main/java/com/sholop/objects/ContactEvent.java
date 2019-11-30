@@ -1,16 +1,13 @@
 package com.sholop.objects;
 
-import com.amazonaws.util.json.JSONException;
-import com.amazonaws.util.json.JSONObject;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.sholop.Utils;
-import com.sholop.api.SholopRestController;
 
-import java.io.FileOutputStream;
+import javax.persistence.*;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -21,9 +18,16 @@ import java.util.Date;
  * Created by Pooyan on 12/11/2017.
  */
 
+@Entity(name = "sh_contact_event")
 public class ContactEvent {
 
+    public ContactEvent(){}
+
     public enum STATUS {ATTENDING, NOT_ATTENDING, NOT_REPLIED, REJECTED, REMOVED, TENTATIVE}
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
 
     public ContactEvent(
              int id,
@@ -55,10 +59,16 @@ public class ContactEvent {
         this.status = STATUS.valueOf(status);
     }
 
-    int contactId, eventId, id, createdBy, modifiedBy;
+    @Column(name = "contact_id") Integer contactId;
+    @Column(name = "event_id") Integer eventId;
+    @Column(name = "created_by") Integer createdBy;
+    @Column(name = "modified_by") Integer modifiedBy;
     Timestamp created, modified;
-    String QRCodeUrl, uuid;
+    @Column(name = "qr_code_url") String QRCodeUrl;
 
+    private String uuid;
+
+    @Transient
     STATUS status;
 
     public int getContactId() {

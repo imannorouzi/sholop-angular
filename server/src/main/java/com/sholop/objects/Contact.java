@@ -1,15 +1,15 @@
 package com.sholop.objects;
 
-import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
+@Entity(name = "sh_contact")
 public class Contact {
+
+    public Contact(){}
 
     public Contact(
              int id,
@@ -20,7 +20,7 @@ public class Contact {
              String address,
              String imageUrl,
              int userId,
-             boolean valid,
+             int valid,
              Timestamp created,
              int createdBy,
              Timestamp modified,
@@ -47,12 +47,34 @@ public class Contact {
 
     public enum CONTACT_TYPE {EMPLOYEE, CONTACT, UNKNOWN}
 
-    String name, phone, email, address, imageUrl;
-    int id, userId, createdBy, modifiedBy;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    int id;
 
+    @Column(name = "user_id")
+    Integer userId;
+
+    @Transient
     CONTACT_TYPE contactType;
+    @Transient
+    boolean you;
 
-    boolean valid, you;
+    @Column(name="valid")
+    private int valid;
+
+    @Column(name="is_active")
+    private int active;
+
+    @Column(name = "created_by")
+    private Integer createdBy;
+
+    @Column(name = "modified_by")
+    private Integer modifiedBy;
+
+    private String name, email, phone, address;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     Timestamp created, modified;
 
@@ -63,7 +85,7 @@ public class Contact {
         this.name = jo.getString("name");
         this.email = jo.getString("email");
         this.phone = jo.getString("phone");
-        this.valid = true;//jo.getBoolean("valid");
+        this.valid = 1;//jo.getBoolean("valid");
         this.address = jo.has("address") ? jo.getString("address") : "";
         this.userId = jo.has("chairId") ? jo.getInt("chairId") : 0;
         this.imageUrl = jo.has("imageUrl") ? jo.getString("imageUrl") : "";
@@ -71,7 +93,7 @@ public class Contact {
 
     // this is for handling email contacts
     public Contact(String email) {
-        this.valid = false;
+        this.valid = 0;
         this.email = email;
         this.id = -1;
     }
@@ -132,19 +154,19 @@ public class Contact {
         this.userId = userId;
     }
 
-    public int getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(int createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
     }
 
-    public int getModifiedBy() {
+    public Integer getModifiedBy() {
         return modifiedBy;
     }
 
-    public void setModifiedBy(int modifiedBy) {
+    public void setModifiedBy(Integer modifiedBy) {
         this.modifiedBy = modifiedBy;
     }
 
@@ -164,11 +186,11 @@ public class Contact {
         this.modified = modified;
     }
 
-    public boolean isValid() {
+    public int isValid() {
         return valid;
     }
 
-    public void setValid(boolean valid) {
+    public void setValid(int valid) {
         this.valid = valid;
     }
 

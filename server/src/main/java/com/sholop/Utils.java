@@ -1,21 +1,12 @@
 package com.sholop;
 
-import com.sholop.db.dao.ContactDao;
-import com.sholop.db.dao.UserDao;
-import com.sholop.objects.*;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import com.sholop.objects.ContactEvent;
+import com.sholop.objects.Event;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -72,7 +63,7 @@ public class Utils {
                 .append("/").append(event.getPointedDate().getId()).toString();
     }
 
-    public static String saveFile(InputStream uploadedInputStream,
+    /*public static String saveFile(InputStream uploadedInputStream,
                            FormDataContentDisposition fileDetail,
                            FormDataBodyPart body,
                            String relPath) throws IOException {
@@ -103,5 +94,5 @@ public class Utils {
                 comment.setUserImageUrl(contact.getImageUrl());
             }
         });
-    }
+    }*/
 }
