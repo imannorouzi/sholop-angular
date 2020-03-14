@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import {AlertService} from "../alert.service";
 import {UserService} from "../user.service";
 import {AfService} from "../providers/af.service";
+import {NavigationService} from "../navigation.service";
 
 @Component({templateUrl: 'register.component.html'})
 export class RegisterComponent implements OnInit {
@@ -18,7 +19,8 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private alertService: AlertService,
-    private afService: AfService) { }
+    private afService: AfService,
+    private navigationService: NavigationService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -41,7 +43,10 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.userService.register(this.registerForm.value)
+
+    this.navigationService.navigate("/meetings");
+
+    /*this.userService.register(this.registerForm.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -62,7 +67,7 @@ export class RegisterComponent implements OnInit {
         error => {
           this.alertService.error(error);
           this.loading = false;
-        });
+        });*/
   }
 
 

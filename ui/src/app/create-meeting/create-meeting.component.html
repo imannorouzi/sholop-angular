@@ -1,1 +1,180 @@
-<editable-meeting [event]="event"></editable-meeting>
+<div class="pt-lg-5 pb-lg-5 mt-3 mb-3">
+  <div class="container" >
+
+    <form class="" >
+
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+          <h5 class="card-title text-right">عنوان</h5>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="align-bottom fa fa-list"></i></span>
+            </div>
+            <input id="title" type="text" name="title" class="form-control" placeholder="عنوان ملاقات" [(ngModel)]="event.title">
+          </div>
+          <p class="card-text"><small class="text-muted">عنوان کوتاهی در مورد موضوع جلسه</small></p>
+        </div>
+      </div>
+
+      <!--Times-->
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+
+          <div class="form-group row " *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
+            <div class="col-sm-4">
+              <h5 class="card-title text-right">تاریخ ملاقات</h5>
+              <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
+            </div>
+            <div class="col-sm-3">
+              <div class="card-title text-right text-muted">از ساعت</div>
+              <time [inputClasses]="'form-control'" [timeString]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+            </div>
+            <div class="col-sm-3">
+              <div class="card-title text-right text-muted">تا ساعت</div>
+              <time [inputClasses]="'form-control'" [timeString]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
+            </div>
+            <div class="col-sm-2">
+              <h5 class="card-title text-right">&nbsp;</h5>
+              <button class="w-100 btn btn-outline-primary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
+                <i class="fa fa-close font-x-large"></i>
+              </button>
+            </div>
+          </div>
+          <div class=" row ">
+            <div class="col-sm-10 text-right">
+              <a href="#" (click)="addDateTime($event)"><span class=""><i class="fa fa-plus"></i> اضافه کردن تاریخ</span></a>
+            </div>
+          </div>
+          <p class="card-text"><small class="text-muted">تاریخ(ها)‌ و ساعات جلسه</small></p>
+        </div>
+      </div>
+
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+          <h5 class="card-title text-right">محل ملاقات</h5>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
+            </div>
+            <input type="text" class="form-control" id="location_1" size=80
+                   [(ngModel)]="event.venue.farsiAddress1"
+                   autocomplete="off"
+                   #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
+            </div>
+            <input type="text" class="form-control" id="location_2" size=80
+                   [(ngModel)]="event.venue.farsiAddress2"
+                   #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد" /> <!--on-place-changed="vm.placeChanged()"-->
+          </div>
+
+          <div class=" row mb-2">
+            <div class="col-sm-10 text-right">
+              <a class="" href="#" (click)="onVenueImportClick($event)"><span class=""><i class="fa fa-check"></i>انتخاب از مکان های قبلی</span></a>
+              <venues-modal (onSelected)="onVenueSelected($event)" #venuesModal ></venues-modal>
+            </div>
+          </div>
+
+          <!--map-->
+          <!--<div class="row form-group">
+            <div class="col-sm-12" >
+              <div class="h-100" id="map" #gmap style="min-height: 150px;" ></div>
+            </div>
+          </div>-->
+
+          <!--<div class="form-group">
+            <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" class="form-control" #search [formControl]="searchControl">
+          </div>-->
+          <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
+            <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+          </agm-map>
+
+          <p class="card-text"><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
+        </div>
+      </div>
+
+      <div class="card mb-3 shadow" *ngIf="user.userType === 'BUSINESS'">
+        <div class="card-body">
+          <h5 class="card-title text-right">میزبان ملاقات</h5>
+
+          <div class="custom-control custom-checkbox text-right mb-2" *ngIf="false">
+            <input type="checkbox" class="custom-control-input" #imChair [(ngModel)]="event.chairId" id="defaultUnchecked">
+            <label class="custom-control-label" for="defaultUnchecked">خودم</label>
+          </div>
+          <suggesting-contact-input (contactSelected)="chairSelected($event)"></suggesting-contact-input>
+          <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
+        </div>
+      </div>
+
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+          <h5 class="card-title text-right">میهمانان</h5>
+
+          <div class="flex-parent">
+
+            <div class="row">
+
+              <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-6 contact p-2 ">
+                <div class="contact-border">
+                  <div class="row p-2 ">
+
+                    <div class="col text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
+
+                    <div class="col-8 text-right">
+                      <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
+                      <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+                      <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+
+                      <div>
+                        <a href="#" (click)="removeContact($event, i)">حذف</a>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <hr>
+          <div class=" row ">
+            <div class="col-sm-10 text-right">
+              <a href="#" (click)="addContact($event)"><span class=""><i class="fa fa-plus"></i> اضافه کردن میهمان</span></a>
+              <add-attendee (onContactAdded)="onAttendeeAdded($event);" #addAttendee></add-attendee>
+              <a class="mr-4" href="#" (click)="onImportClick($event)"><span class=""><i class="fa fa-check"></i> انتخاب مخاطبان از لیست</span></a>
+              <contacts-modal (onSelected)="onContactsSelected($event)" #contactsModal ></contacts-modal>
+            </div>
+          </div>
+
+          <p class="card-text"><small class="text-muted">افراد شرکت کننده در ملاقات</small></p>
+        </div>
+
+      </div>
+
+      <div class="card mb-3 shadow">
+        <div class="card-body">
+          <h5 class="card-title text-right">متن دعوت</h5>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="align-bottom fa fa-smile-o"></i></span>
+            </div>
+            <textarea rows="4" type="text" name="welcome" [(ngModel)]="event.welcomeMessage" class="form-control" placeholder="پیام خوشامد گویی"></textarea>
+          </div>
+          <p class="card-text"><small class="text-muted">این متن به عنوان دعوت و خوشامدگویی برای میهمان ارسال می شود.</small></p>
+        </div>
+      </div>
+
+      <div layout="row " class="text-right">
+        <button type="button" [disabled]="submitting" class="btn btn-primary" (click)="onSubmit()" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+        <button type="button" (click)="goTo('/dashboard')" class="btn btn-outline-primary mr-2" >انصراف</button>
+      </div>
+
+
+    </form>
+
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {DataService} from "../data.service";
+import {NavigationService} from "../navigation.service";
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,8 @@ export class HomeComponent implements OnInit {
     {text: "مدیر پروژه ی عزیز لطفا در مورد اینکه اینجا چی بنویسیم تصمیم بگیر"},
   ];
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService,
+              private navigationService: NavigationService) { }
 
   ngOnInit() {
 
@@ -40,4 +42,7 @@ export class HomeComponent implements OnInit {
     )
   }
 
+  registerClicked($event: MouseEvent) {
+    this.navigationService.navigate("/register");
+  }
 }

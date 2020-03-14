@@ -23,7 +23,7 @@
            class="shadow-sm card text-black bg-white mb-3 quote">
         <div class="card-body">
           <p class="card-text">
-            <i class="fa fa-info-circle"></i> {{qoute.text}}</p>
+            <i class="fa fa-info-circle"></i> </p>
         </div>
       </div>
 
@@ -31,21 +31,6 @@
 
     <div class="col-md-5 text-center p-5 position-relative">
 
-      <div class="position-relative h-100">
-
-        <div class="image-container monitor position-absolute h-100">
-          <img class="h-100" src="../../assets/images/home/monitor.png"/>
-        </div>
-
-        <div class="image-container tablet position-absolute">
-          <img class="w-100" src="../../assets/images/home/tablet.png"/>
-        </div>
-
-        <div class="image-container mobile position-absolute ">
-          <img class="w-100" src="../../assets/images/home/mobile.png"/>
-        </div>
-
-      </div>
 
     </div>
 
@@ -53,39 +38,6 @@
 
 
   <!-- Second ROW -->
-  <div class="row-2 pb-5 text-center position-relative">
-
-    <div class="w-100">
-      <object class="w-100 wave" type="image/svg+xml" data="../../assets/images/wave.svg">
-        <param name="fill" value="#f8f9fa" />
-      </object>
-    </div>
-
-    <div class="card-deck text-right  pr-5 pl-5">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
-          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fa fa-info-circle"></i> Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-        </div>
-      </div>
-    </div>
-
-  </div>
 
 
   <!-- Third Row-->
@@ -99,7 +51,7 @@
             <p class="card-text">در اینجا باید بگیم که ثبت نام چقد راحته</p>
           </div>
           <div class="col-md-3 text-left">
-            <button class="btn btn-primary ">ثبت نام</button>
+            <button class="btn btn-primary " (click)="registerClicked($event)">ثبت نام</button>
           </div>
         </div>
 

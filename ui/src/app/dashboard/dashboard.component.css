@@ -1,18 +1,18 @@
-.date-title{
-  /*background: #ff4e5f;*/
-  padding: 5px 15px;
-  /*border-radius: 13px;*/
-  /*margin-bottom: 10px;*/
+.date-title-container{
+  margin-bottom: 10px;
   /*color: white;*/
-  /*line-height: 3;*/
+  line-height: 3;
+}
+
+.date-title{
+  border: 1px solid #212529;
+  border-radius: 25px;
+  padding: 5px 15px;
 }
 
 .owl{
   max-height: 250px;
 }
-
-.title-border{
-  height: 5px;
-  border-radius: 10px;
-  background: radial-gradient(ellipse at top, #eee, transparent);
+.meeting-container{
+  background:  #343a40;
 }

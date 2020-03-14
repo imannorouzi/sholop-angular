@@ -15,14 +15,15 @@
 
 @font-face {
   font-family: yekan;
-  src: url(./assets/fonts/Yekan.eot);
-  src: url(./assets/fonts/Yekan.eot?#iefix) format('embedded-opentype'),
-  url(./assets/fonts/Yekan.woff) format('woff'),
-  url(./assets/fonts/Yekan.ttf) format('truetype'),
-  url(./assets/fonts/Yekan.svg#BYekan) format('svg');
+  src: url(./assets/fonts/BYekan.ttf);
   font-weight: normal;
   font-style: normal
-
+}
+@font-face {
+  font-family: yekan;
+  src: url(./assets/fonts/BYekanBold.ttf);
+  font-weight: bold;
+  font-style: normal;
 }
 
 *{
@@ -42,7 +43,10 @@ html{
 }
 
 .app-container{
-  background-color: #f6f6f7;
+  background: rgb(34,34,34);
+  background: linear-gradient(180deg, rgba(34,34,34,1) 0%, rgba(34,34,34,1) 52%, rgba(0,0,0,1) 100%);
+  color: #eee;
+  font-size: 15px;
 }
 .flex-parent {
   height: 100%;
@@ -132,4 +136,51 @@ table.table  td{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.no-style {
+  all: initial;
+}
+
+
+::-webkit-scrollbar
+{
+  width: 5px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(133, 133, 133, 0.51);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.fa{
+  line-height: inherit;
+}
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal::before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }

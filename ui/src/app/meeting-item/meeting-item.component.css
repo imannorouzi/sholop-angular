@@ -3,9 +3,8 @@
 }
 .contact-image-container{
   display: inline-block;
-  margin-right: -12px;
+  margin-right: -20px;
   color: white;
-  line-height: 3;
 }
 .contact-image{
   width: 40px;
@@ -13,32 +12,40 @@
   /* padding: 5px; */
 }
 
-/*
+.meeting-item:hover{
+  background: #161a1e;
+}
 .meeting-item{
   cursor: pointer;
-}
 
-.meeting-item:hover{
-  background: #f5f5f5;
-}
-*/
+  font-size: 16px;
+  background: #212529;
 
-.meeting-time{
-  font-size: 14px;
+  line-height: 2;
+  border-radius: 40px;
+  padding: 5px 15px;
 }
-
 
 .meeting-tool:hover{
-  color: blue;
-  background: white;
+  color: white;
 }
 .meeting-tool{
   cursor: pointer;
   /* color: dimgrey; */
-  border: 1px solid #eee;
   color: gray;
+  border-radius: 50%;
 }
 
 .dropdown-item{
   cursor: pointer;
 }
+
+.meeting-time .fa{
+  font-size: 20px;
+}
+
+.meeting-item.DONE,
+.meeting-item.CANCELLED{
+  opacity: .4;
+}
+

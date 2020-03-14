@@ -1,33 +1,44 @@
 <meeting-item-modal #meetingModal [event]="selectedMeeting"></meeting-item-modal>
 <div class="flex-parent">
   <div class="container mt-3 mb-3 grow">
-    <div class="card h-100 shadow">
-      <div class="card-body ">
+    <div class="card h-100 meeting-container ">
+      <div class="card-body  ">
 
         <div class="row">
 
           <!--calendar-->
-          <div class="col-md-4">
+          <!--<div class="col-md-4">
             <div class="sticky-top mt-2">
               <calendar #calendar (onDateSelected)="onDateChanged($event)"></calendar>
             </div>
-          </div>
+          </div>-->
 
-          <div class="col-md-8 meeting-container scroll">
+          <div class="col-md-12 scroll">
 
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
+            <div class="row">
+
+              <div class="col-md-4">
+                <div class="sticky-top mt-2">
+                  <calendar #calendar [mode]="'inline'" (onDateSelected)="onDateChanged($event)"></calendar>
+                </div>
               </div>
-              <input id="search" type="text" name="search" class="form-control" placeholder="نام، ایمیل، ..." >
+
+              <div class="col-md-8">
+                <iconed-input [icon]="'fa-search'" [placeholder]="'جستجو با ایمیل، نام و ... '">
+
+                </iconed-input>
+              </div>
+
             </div>
 
+
             <div class="mt-2 text-center sticky-top" *ngIf="selectedDate">
-              <span class="date-title">
-                <i class="fa fa-calendar ml-2"></i>
+              <div class="date-title-container">
+              <div class="date-title shadow d-inline">
+                <i class=" fa fa-calendar ml-2"></i>
                 {{dateService.greToPersian(selectedDate, true)}}
-              </span>
-              <div class="title-border w-100"></div>
+              </div>
+              </div>
             </div>
 
             <meeting-item (clicked)="onMeetingClick($event)"

@@ -64,6 +64,7 @@ import { ConditionsComponent } from './conditions/conditions.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
 import {AddVenueComponent} from "./add-venue/add-venue.component";
+import { IconedInputComponent } from './iconed-input/iconed-input.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,8 @@ import {AddVenueComponent} from "./add-venue/add-venue.component";
     ConditionsComponent,
     AboutUsComponent,
     SpinnerModalComponent,
-    AddVenueComponent
+    AddVenueComponent,
+    IconedInputComponent
   ],
   imports: [
     BrowserModule,

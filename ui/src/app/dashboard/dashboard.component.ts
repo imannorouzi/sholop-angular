@@ -4,6 +4,7 @@ import {SpinnerComponent} from "../spinner/spinner.component";
 import {CalendarComponent} from "../calendar/calendar.component";
 import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
 import {DateService} from "../date.service";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,6 @@ export class DashboardComponent implements OnInit {
 
   meetings = [];
   loading = false;
-
 
   selectedMeeting = undefined;
 
@@ -58,7 +58,9 @@ export class DashboardComponent implements OnInit {
   }
 
   onDateChanged(date: any) {
-    this.readMeetings(date);
+    // this.readMeetings(date);
+
+    this.readDummyMeetings(date);
 
     this.selectedDate = date;
   }
@@ -70,4 +72,15 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  private readDummyMeetings(date: any) {
+    this.loading = true;
+    this.spinner.show();
+
+    setTimeout( () => {
+      this.loading = false;
+      this.spinner.hide();
+      this.meetings = DummyData.MEETINGS;
+    }, 1500);
+
+  }
 }

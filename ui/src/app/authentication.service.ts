@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import {User} from "./user";
 import {AlertService} from "./alert.service";
 import {environment} from "../environments/environment.prod";
+import {DummyData} from "./dummyData";
 
 const serverUrl = environment.serverUrl;
 
@@ -58,6 +59,7 @@ export class AuthenticationService {
   }
 
   getUser(): User{
-    return JSON.parse(localStorage.getItem('currentUser'));
+    // return JSON.parse(localStorage.getItem('currentUser'));
+    return DummyData.USER;
   }
 }

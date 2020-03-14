@@ -19,7 +19,7 @@
                         </span>
           </th>
         </tr>
-        <tr>
+        <tr *ngIf="mode==='full'">
           <th>شنبه</th>
           <th>یکشنبه</th>
           <th>دوشنبه</th>
@@ -29,7 +29,7 @@
           <th>جمعه</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="mode==='full'">
           <tr *ngFor="let week of month.weeks; ">
             <td (click)="onDaySelected(day.gDate)"
                 [class.meeting-day]="day && meetingMap[day.gDate.getDate()]>0"
