@@ -13,14 +13,14 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./add-contact.component.css']
 })
 export class AddContactComponent implements OnInit {
-  @ViewChild('childModal') public modal:ModalDirective;
-  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
-  @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('spinner') spinner: SpinnerComponent;
-  @ViewChild('emailField') emailField: any;
-  @ViewChild('nameField') nameField: any;
-  @ViewChild('phoneField') phoneField: any;
+  @ViewChild('childModal', {static: true}) public modal:ModalDirective;
+  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
+  @ViewChild('emailField', {static: true}) emailField: any;
+  @ViewChild('nameField', {static: true}) nameField: any;
+  @ViewChild('phoneField', {static: true}) phoneField: any;
 
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 

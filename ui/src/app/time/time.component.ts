@@ -6,9 +6,9 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
   styleUrls: ['./time.component.css']
 })
 export class TimeComponent implements OnInit {
-  @ViewChild("minutesColumn") minutesColumn: ElementRef;
-  @ViewChild("hoursColumn") hoursColumn: ElementRef;
-  @ViewChild("input") input: ElementRef;
+  @ViewChild("minutesColumn", {static: true}) minutesColumn: ElementRef;
+  @ViewChild("hoursColumn", {static: true}) hoursColumn: ElementRef;
+  @ViewChild("input", {static: true}) input: ElementRef;
 
   isShowing: boolean = false;
   @Input() inputClasses: string = '';

@@ -8,7 +8,7 @@ import {DataService} from "../data.service";
   styleUrls: ['./suggesting-contact-input.component.css']
 })
 export class SuggestingContactInputComponent implements OnInit {
-  @ViewChild("spinner") spinner: SpinnerComponent;
+  @ViewChild("spinner", {static: true}) spinner: SpinnerComponent;
 
   contacts: any[] = [];
   inputValue: string = '';

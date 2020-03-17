@@ -10,8 +10,8 @@ import {AddVenueComponent} from "../add-venue/add-venue.component";
   styleUrls: ['./venues.component.css']
 })
 export class VenuesComponent implements OnInit {
-  @ViewChild("spinner") spinner: SpinnerComponent;
-  @ViewChild("editVenue") editVenue: AddVenueComponent;
+  @ViewChild("spinner", {static: true}) spinner: SpinnerComponent;
+  @ViewChild("editVenue", {static: true}) editVenue: AddVenueComponent;
 
   venues: any[] = [];
   loading: boolean = false;

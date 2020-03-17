@@ -14,8 +14,8 @@ import {AuthenticationService} from "../authentication.service";
   styleUrls: ['./add-attendee.component.css']
 })
 export class AddAttendeeComponent implements OnInit {
-  @ViewChild('addAttendee') modal: ModalComponent;
-  @ViewChild('spinner') spinner: SpinnerComponent;
+  @ViewChild('addAttendee', {static: true}) modal: ModalComponent;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
 
   addToContacts: boolean = true;
 

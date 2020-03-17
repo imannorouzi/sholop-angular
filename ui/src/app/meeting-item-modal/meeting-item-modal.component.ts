@@ -11,8 +11,8 @@ import {NavigationService} from "../navigation.service";
   styleUrls: ['./meeting-item-modal.component.css']
 })
 export class MeetingItemModalComponent implements OnInit, OnChanges {
-  @ViewChild('childModal') public childModal:ModalDirective;
-  @ViewChild("comments") comments: CommentsComponent;
+  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild("comments", {static: true}) comments: CommentsComponent;
 
   @Input() event: any;
 

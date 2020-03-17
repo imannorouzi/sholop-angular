@@ -19,14 +19,14 @@ import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component
 })
 export class CreateMeetingComponent implements OnInit {
 
-  @ViewChild('searchBox') searchInput: ElementRef;
-  @ViewChild('address2') address2: ElementRef;
-  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
-  @ViewChild('contactsModal', undefined) contactsModal: ContactsModalComponent;
-  @ViewChild('venuesModal', undefined) venuesModal:ModalComponent;
-  @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
+  @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
+  @ViewChild('address2', {static: true}) address2: ElementRef;
+  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('contactsModal', {static: true}) contactsModal: ContactsModalComponent;
+  @ViewChild('venuesModal', {static: true}) venuesModal:ModalComponent;
+  @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
+  @ViewChild('addAttendee', {static: true}) addAttendee: AddAttendeeComponent;
 
   name:string;
 

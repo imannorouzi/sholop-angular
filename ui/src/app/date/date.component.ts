@@ -8,7 +8,7 @@ import {DateService} from "../date.service";
   styleUrls: ['./date.component.css']
 })
 export class DateComponent implements OnInit {
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('input', {static: true}) input: ElementRef;
 
   @Input() selectedDate;
 

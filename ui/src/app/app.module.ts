@@ -9,7 +9,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { EventCardComponent } from './event-card/event-card.component';
-import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
 import { HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { ImageCropperModule } from 'ng2-img-cropper';
@@ -116,7 +115,6 @@ import { IconedInputComponent } from './iconed-input/iconed-input.component';
     BrowserModule,
     AppRoutingModule,
     CommonModule,
-    AngularFontAwesomeModule,
     HttpClientModule,
     FormsModule,
     BrowserModule,

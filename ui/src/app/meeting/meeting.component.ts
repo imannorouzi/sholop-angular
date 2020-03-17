@@ -13,8 +13,8 @@ import {AuthenticationService} from "../authentication.service";
   styleUrls: ['./meeting.component.css']
 })
 export class MeetingComponent implements OnInit, OnChanges {
-  @ViewChild("comments") comments: CommentsComponent;
-  @ViewChild('gmap') gmapElement: any;
+  @ViewChild("comments", {static: true}) comments: CommentsComponent;
+  @ViewChild('gmap', {static: true}) gmapElement: any;
 
   @Input() event: any;
   @Input() anonymous: boolean;

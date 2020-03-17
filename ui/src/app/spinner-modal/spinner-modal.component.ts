@@ -9,7 +9,7 @@ import {SpinnerService} from "../spinner.service";
   styleUrls: ['./spinner-modal.component.css']
 })
 export class SpinnerModalComponent implements OnInit, OnDestroy {
-  @ViewChild('childModal') public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
 
   private subscription: Subscription;
 

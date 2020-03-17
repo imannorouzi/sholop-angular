@@ -8,7 +8,7 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./contacts-modal.component.css']
 })
 export class ContactsModalComponent implements OnInit {
-  @ViewChild('selectContacts') public selectContacts:ModalDirective;
+  @ViewChild('selectContacts', {static: true}) public selectContacts:ModalDirective;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
 

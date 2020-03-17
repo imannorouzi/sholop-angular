@@ -15,10 +15,10 @@ import {MapsAPILoader} from "@agm/core";
   styleUrls: ['./add-venue.component.css']
 })
 export class AddVenueComponent implements OnInit {
-  @ViewChild('childModal') public modal:ModalDirective;
-  @ViewChild('spinner') spinner: SpinnerComponent;
-  @ViewChild('searchBox') searchInput: ElementRef;
-  @ViewChild('address2') address2: ElementRef;
+  @ViewChild('childModal', {static: true}) public modal:ModalDirective;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
+  @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
+  @ViewChild('address2', {static: true}) address2: ElementRef;
 
   @Output() onVenueAdded: EventEmitter<any> = new EventEmitter();
 

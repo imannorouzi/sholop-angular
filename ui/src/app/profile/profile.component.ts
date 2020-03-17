@@ -16,11 +16,11 @@ import {Venue} from "../venue";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
-  @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('spinner') spinner: SpinnerComponent;
-  @ViewChild('searchBox') searchInput: ElementRef;
+  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
+  @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
 
 
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();

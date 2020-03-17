@@ -13,10 +13,10 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  @ViewChild("spinner") spinner: SpinnerComponent;
-  @ViewChild("confirm") confirm: ConfirmComponent;
-  @ViewChild("editContact") addContact: AddContactComponent;
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild("spinner", {static: true}) spinner: SpinnerComponent;
+  @ViewChild("confirm", {static: true}) confirm: ConfirmComponent;
+  @ViewChild("editContact", {static: true}) addContact: AddContactComponent;
+  @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
 
   contacts: any[] = [];
   loading: boolean = false;

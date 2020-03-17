@@ -12,9 +12,9 @@ import {DummyData} from "../dummyData";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  @ViewChild('spinner') spinner: SpinnerComponent;
-  @ViewChild('calendar') calendar: CalendarComponent;
-  @ViewChild('meetingModal') meetingModal: MeetingItemModalComponent;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
+  @ViewChild('calendar', {static: true}) calendar: CalendarComponent;
+  @ViewChild('meetingModal', {static: true}) meetingModal: MeetingItemModalComponent;
 
   meetings = [];
   loading = false;
