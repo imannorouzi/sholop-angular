@@ -49,7 +49,12 @@ export class MeetingItemModalComponent implements OnInit, OnChanges {
 
   getContactStatus(id: number) : any {
     let contactEvent = this.event.contactEvents.find(ce => { return ce.contactId === id} );
-    return this.utilService.getContactStatus(contactEvent.status);
+    let status = '';
+    if(contactEvent){
+      status = contactEvent.status;
+    }
+
+    return this.utilService.getContactStatus(status);
   }
 
   goTo(url) {

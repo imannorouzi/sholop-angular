@@ -8,3 +8,8 @@
 .edit-step-button{
   cursor: pointer;
 }
+
+.modal-dialog{
+  overflow-x: hidden;
+  overflow-y: auto;
+}

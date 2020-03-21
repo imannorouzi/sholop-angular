@@ -1,10 +1,25 @@
-<div class="container position-relative">
+<div [class]="'container position-relative ' + mode">
   <div class="row">
     <div class="span12 w-100">
-      <table class="calendar-table table-condensed w-100 text-center">
-        <thead>
-        <tr>
-          <th colspan="7">
+
+      <div class="flexbox-parent-row" *ngIf="mode==='inline'">
+        <div><button class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i> ماه قبل</button></div>
+        <div class="text-center calendar-title flexbox-item-grow">
+          <div class="font-weight-bold">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</div>
+          <div class="text-muted">
+            {{dateService.getGreMonthName((today.gDate.getMonth()-1) % 12)}} -
+            {{dateService.getGreMonthName(today.gDate.getMonth())}}
+          </div>
+
+        </div>
+        <div><button class="btn" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-arrow-circle-left"></i></button></div>
+      </div>
+
+      <div class="calendar-container">
+        <table class="calendar-table table-condensed w-100 text-center" >
+          <thead >
+          <tr *ngIf="mode==='full'">
+            <th colspan="7">
                         <span class="btn-group">
                           <a class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i> ماه قبل</a>
                         	<a class="btn active">
@@ -17,19 +32,19 @@
                           </a>
                         	<a class="btn" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-arrow-circle-left"></i></a>
                         </span>
-          </th>
-        </tr>
-        <tr *ngIf="mode==='full'">
-          <th>شنبه</th>
-          <th>یکشنبه</th>
-          <th>دوشنبه</th>
-          <th>سه شنبه</th>
-          <th>چهارشنبه</th>
-          <th>پنجشنبه</th>
-          <th>جمعه</th>
-        </tr>
-        </thead>
-        <tbody *ngIf="mode==='full'">
+            </th>
+          </tr>
+          <tr >
+            <th>شنبه</th>
+            <th>یکشنبه</th>
+            <th>دوشنبه</th>
+            <th>سه شنبه</th>
+            <th>چهارشنبه</th>
+            <th>پنجشنبه</th>
+            <th>جمعه</th>
+          </tr>
+          </thead>
+          <tbody class="calendar-content">
           <tr *ngFor="let week of month.weeks; ">
             <td (click)="onDaySelected(day.gDate)"
                 [class.meeting-day]="day && meetingMap[day.gDate.getDate()]>0"
@@ -49,8 +64,9 @@
               </div>
             </td>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

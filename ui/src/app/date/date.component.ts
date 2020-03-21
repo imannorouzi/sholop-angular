@@ -40,4 +40,8 @@ export class DateComponent implements OnInit {
   getValue(){
     return this.input.nativeElement.value;
   }
+
+  clickOutside(value: boolean = false) {
+    this.isShowing = value;
+  }
 }

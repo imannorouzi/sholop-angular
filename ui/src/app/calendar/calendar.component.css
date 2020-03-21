@@ -1,12 +1,21 @@
-.calendar-day{
-  cursor: pointer;
+.calendar-title{
+  color: #212529;
 }
 
-.calendar-day.selected{
+.calendar-cell{
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  color: #212529;
+}
+
+.calendar-day.selected .calendar-cell{
   background: #222;
   color: white;
 }
-.calendar-day:hover{
+.calendar-cell:hover{
   background: #9d9d9d;
   color: white;
 }
@@ -48,21 +57,50 @@
   background: darksalmon;
 }
 td{
-  padding: 5px;
+  padding: 0 5px;
 }
 
 .holiday{
   color: red;
 }
 
-.today{
-  border: 1px solid #ddd;
+.today .calendar-cell{
+  border-color: #ddd;
 }
 
 .calendar-table th{
   font-size: 7px;
+  padding-top: 5px;
 }
 
 .calendar-gday{
   font-size: 10px;
+}
+
+.inline .calendar-container{
+  display: none;
+}
+
+.calendar-container{
+  width: fit-content;
+  background: #f7f7f7;
+  border: 1px solid #09164d;
+  border-radius: 5px;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+
+.inline:hover .calendar-container{
+  display: block;
+  animation: fade-in .2s ease both;
+}
+@keyframes fade-in{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
 }

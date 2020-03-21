@@ -64,6 +64,8 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
 import {AddVenueComponent} from "./add-venue/add-venue.component";
 import { IconedInputComponent } from './iconed-input/iconed-input.component';
+import { SwitchButtonComponent } from './switch-button/switch-button.component';
+import { CreateMeetingModalComponent } from './create-meeting-modal/create-meeting-modal.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +111,9 @@ import { IconedInputComponent } from './iconed-input/iconed-input.component';
     AboutUsComponent,
     SpinnerModalComponent,
     AddVenueComponent,
-    IconedInputComponent
+    IconedInputComponent,
+    SwitchButtonComponent,
+    CreateMeetingModalComponent
   ],
   imports: [
     BrowserModule,

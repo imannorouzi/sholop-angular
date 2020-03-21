@@ -27,11 +27,11 @@
             </div>
             <div class="col-sm-3">
               <div class="card-title text-right text-muted">از ساعت</div>
-              <time [inputClasses]="'form-control'" [timeString]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+              <time [inputClasses]="'form-control'" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
             </div>
             <div class="col-sm-3">
               <div class="card-title text-right text-muted">تا ساعت</div>
-              <time [inputClasses]="'form-control'" [timeString]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
+              <time [inputClasses]="'form-control'" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
             </div>
             <div class="col-sm-2">
               <h5 class="card-title text-right">&nbsp;</h5>

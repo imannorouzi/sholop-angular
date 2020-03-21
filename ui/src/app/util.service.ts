@@ -68,13 +68,13 @@ export class UtilService {
   getEventStatus(status: string){
     switch(status){
       case 'DONE':
-        return {text:  'انجام شده', color: '#3c652d', class: 'fa-question'};
+        return {text:  'انجام شده', color: '#0b170b', class: 'fa-question'};
       case 'GOING_ON':
-        return {text:  'در حال انجام', color: '#3c652d', class: 'fa-check'};
+        return {text:  'در حال انجام', color: '#0b170b', class: 'fa-check'};
       case 'GETTING_LATE':
-        return {text:  'کمی دیر', color: '#a4a02c', class: 'fa-close'};
+        return {text:  'کمی دیر', color: '#3d3911', class: 'fa-close'};
       case 'LATE':
-        return {text:  'دیر', color: '#351b1b', class: 'fa-exclamation'};
+        return {text:  'دیر', color: '#281414', class: 'fa-exclamation'};
       case 'CANCELLED':
         return {text:  'لغو شده', color: '', class: 'fa-exclamation'};
       case 'TO_BE':

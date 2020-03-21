@@ -39,19 +39,16 @@ export class DashboardComponent implements OnInit {
   readMeetings(date){
     this.meetings = [];
     this.loading = true;
-    this.spinner.show();
 
     this.dataService.getMeetings(date).subscribe(
       data => {
         data.object.forEach( event => {
           this.meetings.push(event);
         });
-        this.spinner.hide();
         this.loading = false;
       },
       error1 => {
         console.log(error1);
-        this.spinner.hide();
         this.loading = false;
       }
     )
@@ -60,6 +57,7 @@ export class DashboardComponent implements OnInit {
   onDateChanged(date: any) {
     // this.readMeetings(date);
 
+    this.meetings = [];
     this.readDummyMeetings(date);
 
     this.selectedDate = date;
@@ -74,11 +72,9 @@ export class DashboardComponent implements OnInit {
 
   private readDummyMeetings(date: any) {
     this.loading = true;
-    this.spinner.show();
 
     setTimeout( () => {
       this.loading = false;
-      this.spinner.hide();
       this.meetings = DummyData.MEETINGS;
     }, 1500);
 

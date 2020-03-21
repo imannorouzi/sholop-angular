@@ -45,6 +45,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "DONE"
     },
     {
@@ -98,6 +102,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "DONE"
     },
     {
@@ -131,6 +139,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "GOING_ON"
     },
     {
@@ -164,6 +176,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "CANCELLED"
     },
     {
@@ -197,6 +213,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "LATE"
     },
     {
@@ -230,6 +250,10 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "GETTING_LATE"
     },
     {
@@ -263,9 +287,16 @@ export class DummyData{
       chairId: -1,
       welcomeMessage: "این هم سلام سلامتی",
       eventType: "MEETING",
+      contactEvents: [{
+        contactId: 1,
+        status: ''
+      }],
       status: "TO_BE"
     }
   ];
+
+
+
   static USER: any = {
     id: 1,
     username: "demouser",
@@ -278,6 +309,20 @@ export class DummyData{
     farsiAddress1: "تهران خیابان اول",
     farsiAddress2: "",
     description: "یک انسان بسیار پاکیزه",
-  }
+  };
+
+
+  static COMMENTS: any[] = [
+    {
+      userImageUrl: '../assets/images/dummy/contact-7.png',
+      text: 'واقعا این کار بیخودیه که هی میای اینجا رو چک میکنی و میبینی که خبری نیست و هی برمیگردی دوباره',
+      userName: 'گاوچرون'
+    },
+    {
+      userImageUrl: '../assets/images/dummy/contact-6.png',
+      text: 'من یکی از بزرگترین آرزوهام اینه که یه روزی گاوچرون بشم :)',
+      userName: 'خرچرون'
+    }
+  ]
 }
 

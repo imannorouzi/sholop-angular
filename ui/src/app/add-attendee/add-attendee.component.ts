@@ -64,7 +64,7 @@ export class AddAttendeeComponent implements OnInit {
 
     this.modal.hide();
 
-    if(this.addToContacts) {
+    if(false && this.addToContacts) {
       this.contact['userId'] = this.authenticationService.getUser().id;
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
@@ -72,7 +72,6 @@ export class AddAttendeeComponent implements OnInit {
         },
         (error:any) => {
           console.log(error);
-          // this.spinner.hide();
           this.modal.show();
           this.alertService.error(error.toString())
         });

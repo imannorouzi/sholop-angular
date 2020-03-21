@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthenticationService} from "../authentication.service";
+import {CommonService} from "../common.service";
 
 @Component({
   selector: 'app-navbar',
@@ -8,11 +9,13 @@ import {AuthenticationService} from "../authentication.service";
 })
 export class NavbarComponent implements OnInit {
 
+  @Input() theme: string;
   currentUser : any = undefined;
   authenticationService: AuthenticationService;
 
 
-  constructor(private as: AuthenticationService) {
+  constructor(private as: AuthenticationService,
+              private commonService: CommonService) {
     this.authenticationService = as;
   }
 
@@ -20,4 +23,9 @@ export class NavbarComponent implements OnInit {
     this.currentUser = localStorage.getItem('currentUser');
   }
 
+  themeChanged(switchValue: any) {
+    // 0 means light, 1 means dark
+
+    this.commonService.themeChanged.next(switchValue === 0 ? 'light' : 'dark');
+  }
 }

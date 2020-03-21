@@ -1,11 +1,7 @@
-<!--<nav>
-  <a routerLink="/dashboard">Dashboard</a>
-  <a routerLink="/create">Create Event</a>
-</nav>-->
+<div [class]="'flex-parent rtl h-100 app-container ' + theme">
+  <create-meeting-modal #createMeetingModal></create-meeting-modal>
 
-<div class="flex-parent rtl h-100 app-container">
-
-  <app-navbar></app-navbar>
+  <app-navbar [theme]="theme"></app-navbar>
   <alert></alert>
   <spinner-modal></spinner-modal>
 
@@ -15,6 +11,6 @@
       <router-outlet></router-outlet>
     </div>
 
-    <sholop-footer class="">I'm footer</sholop-footer>
+    <sholop-footer class=""></sholop-footer>
   </div>
 </div>

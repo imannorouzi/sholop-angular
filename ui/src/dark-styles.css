@@ -1,0 +1,153 @@
+.dark.app-container .modal-dialog{
+  background: #333;
+}
+.dark.app-container ::-webkit-scrollbar-track
+{
+  background: rgba(255,255,255, 0.1);
+}
+
+.dark.app-container ::-webkit-scrollbar-thumb
+{
+  background: rgba(133, 133, 133, 0.51);
+}
+
+.dark.app-container .btn{
+  color: #ddd;
+}
+
+.dark.app-container .card{
+  background: #343a40;
+}
+
+.dark.app-container .table{
+  color: inherit;
+}
+
+.dark.app-container button {
+  border: 1px solid #6d6d6d;
+  background: #4a4a4a;
+  color: #ffffff;
+}
+
+.dark.app-container .table td, .table th {
+  border-top: 1px solid #555;
+}
+/***** switch button ******/
+.dark.app-container .switch-frame{
+  border-color: #eee;
+}
+
+.dark.app-container .switch{
+  background: #66afe9;
+}
+
+.dark.app-container .switch-frame:hover{
+  background: #343a40;
+}
+
+.dark.app-container .fa{
+  color: white;
+}
+
+
+/****** Dashboard ********/
+.dark.app-container .date-title{
+  border: 1px solid #212529;
+  color: #eee;
+}
+.dark.app-container .meeting-container{
+  background:  #212529;
+  border: 1px solid #444;
+}
+
+
+/******* iconed-input ********/
+.dark.app-container .iconed-input .frame{
+  border: 1px solid #333;
+  background: #222222;
+}
+
+.dark.app-container .iconed-input input{
+  background: transparent;
+  color: #ddd;
+}
+
+/******* meeting-item ********/
+.dark.app-container .contact-image-container{
+  color: white;
+}
+.dark.app-container .meeting-item:hover{
+  background: #161a1e;
+}
+.dark.app-container .meeting-item{
+  color: #ddd;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+.dark.app-container .meeting-tool:hover{
+  color: white;
+}
+.dark.app-container .meeting-tool{
+  color: gray;
+}
+.dark.app-container .meeting-item:hover{
+  -webkit-box-shadow: 3px 3px 10px 3px #111;
+  box-shadow: 3px 3px 10px 3px #111;
+}
+
+
+/******** calendar ******/
+.dark.app-container .calendar-title{
+  color: #eee;
+}
+
+.dark.app-container .calendar .calendar-day.selected .calendar-cell{
+  background: #444444;
+  color: white;
+}
+
+.dark.app-container .calendar-cell{
+  color: #eeeeee;
+}
+.dark.app-container .calendar-cell:hover{
+  background: #9d9d9d;
+  color: white;
+}
+
+.dark.app-container .meeting-count>.arrow{
+  border-left: 10px solid #ff4e5f;
+}
+.dark.app-container .meeting-count>.content{
+  background: #ff4e5f;
+  color: white;
+
+}
+.dark.app-container .meeting-day{
+  background: darksalmon;
+}
+.dark.app-container .holiday{
+  color: red;
+}
+
+.dark.app-container .today .calendar-cell{
+  border-color: #ddd;
+}
+.dark.app-container .calendar-container{
+  background: #161a1e;
+  border: 1px solid #444;
+}
+
+/****** modal */
+.dark.app-container .modal-content{
+  background-color: #343a40;
+}
+
+/***** meeting-item ******/
+.dark.app-container .more-comments{
+  background: #212529;
+}
+
+
+/****** comments ******/
+.dark.app-container .comment:not(:last-of-type){
+  border-bottom: 1px solid #555;
+}

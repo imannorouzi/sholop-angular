@@ -1,10 +1,11 @@
 <meeting-item-modal #meetingModal [event]="selectedMeeting"></meeting-item-modal>
+
 <div class="flex-parent">
   <div class="container mt-3 mb-3 grow">
     <div class="card h-100 meeting-container ">
-      <div class="card-body  ">
+      <div class="card-body  h-100">
 
-        <div class="row">
+        <div class="row h-100">
 
           <!--calendar-->
           <!--<div class="col-md-4">
@@ -18,21 +19,25 @@
             <div class="row">
 
               <div class="col-md-4">
-                <div class="sticky-top mt-2">
+                <div class="">
                   <calendar #calendar [mode]="'inline'" (onDateSelected)="onDateChanged($event)"></calendar>
                 </div>
               </div>
 
               <div class="col-md-8">
-                <iconed-input [icon]="'fa-search'" [placeholder]="'جستجو با ایمیل، نام و ... '">
-
-                </iconed-input>
+                <div class="iconed-input">
+                  <div class="frame flexbox-parent-row">
+                    <i class=" ml-3 icon fa fa-search"></i>
+                    <input type="text" class="flexbox-item-grow"
+                              placeholder='جستجو با ایمیل، نام و ... '/>
+                  </div>
+                </div>
               </div>
 
             </div>
 
 
-            <div class="mt-2 text-center sticky-top" *ngIf="selectedDate">
+            <div class="mt-2 text-center sticky" *ngIf="selectedDate">
               <div class="date-title-container">
               <div class="date-title shadow d-inline">
                 <i class=" fa fa-calendar ml-2"></i>
@@ -51,7 +56,7 @@
               </object>
             </div>
 
-            <spinner #spinner></spinner>
+            <spinner [showing]="loading" #spinner></spinner>
           </div>
         </div>
 

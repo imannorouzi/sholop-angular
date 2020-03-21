@@ -22,8 +22,9 @@
   background: #212529;
 
   line-height: 2;
-  border-radius: 40px;
+  border-radius: 5px;
   padding: 5px 15px;
+  color: #161a1e;
 }
 
 .meeting-tool:hover{
@@ -49,3 +50,28 @@
   opacity: .4;
 }
 
+.meeting-item.DONE{background: rgba(0, 77, 0, 0.05)}
+.meeting-item.CANCELLED{background: rgba(128, 128, 128, 0.1)}
+.meeting-item.TO_BE{background: rgba(0, 77, 0, 0.05)}
+.meeting-item.GETTING_LATE{background: rgba(154, 205, 50, 0.05)}
+.meeting-item.LATE{background: rgba(255, 255, 0, 0.05)}
+.meeting-item.GOING_ON{background: rgba(0, 77, 0, 0.05)}
+
+.meeting-item:hover{
+  animation: meeting-item-hover .05s ease both;
+  -webkit-box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+
+  opacity: 1!important;
+}
+@keyframes meeting-item-hover {
+  0% {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  100% {
+    margin-left: -.5%;
+    margin-right: -.5%;
+  }
+}

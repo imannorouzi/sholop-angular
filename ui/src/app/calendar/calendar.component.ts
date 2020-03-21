@@ -9,7 +9,8 @@ const daysInMonth: number[] = [
 @Component({
   selector: 'calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+  styleUrls: ['./calendar.component.css'],
+  host: {'class': 'calendar'}
 })
 export class CalendarComponent implements OnInit {
 
@@ -108,11 +109,10 @@ export class CalendarComponent implements OnInit {
     this.month.weeks = month;
     let lastWeek = this.month.weeks[this.month.weeks.length-1];
     this.onMonthChanged({startDate: firstDayInCalendar, endDate: lastWeek[lastWeek.length-1]});
-
-
   }
 
   onMonthChanged(startEndDates: any){
+    return;
     this.meetingMap = {};
     this.dataService.getDatesByPeriod(startEndDates.startDate.gDate, startEndDates.endDate.gDate).subscribe(
       data => {

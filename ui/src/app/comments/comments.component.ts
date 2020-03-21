@@ -5,6 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
 import {User} from "../user";
 import {AlertService} from "../alert.service";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'comments',
@@ -59,7 +60,7 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
     this.comments = [];
 
 
-    this.readComments();
+    this.readDummyComments();
   }
 
   readComments(event = undefined){
@@ -81,6 +82,16 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
       }
     )
   }
+
+  readDummyComments(event = undefined){
+    this.loading = true;
+
+    setTimeout( () => {
+      this.loading = false;
+      this.comments = DummyData.COMMENTS;
+    }, 100);
+  }
+
 
   onSubmit() {
     this.submitted = true;

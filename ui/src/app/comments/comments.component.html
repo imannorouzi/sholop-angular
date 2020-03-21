@@ -1,46 +1,37 @@
 <div class="comments pt-2 mt-2 pb-2 mb-2">
 
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="container">
-    <div class="row pt-3">
-      <!-- Image -->
-      <div class="col-sm-1 text-right">
-        <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">
-      </div>
-      <div class="col-sm-9">
-        <input type="text" formControlName="comment" class="form-control"
-               placeholder="نظرتان را بنویسید..."
-                  [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" >
-      </div>
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="">
 
-      <div class="col-sm-2">
-        <button type="submit" class="form-control btn btn-outline-primary">
-          <i class="fa fa-comment"></i> ارسال
-        </button>
+    <div class="iconed-input input-action flexbox-parent-row">
+      <div class="frame flexbox-parent-row flexbox-item-grow">
+        <i class=" ml-3 icon fa fa-comment"></i>
+
+        <textarea class="" rows="3"
+               placeholder="نظرتان را بنویسید..."
+                  [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" ></textarea>
+
       </div>
+      <button type="submit" class="iconed-input-action">ارسال</button>
     </div>
   </form>
 
-  <div class="container">
+  <div class="">
 
-    <div *ngFor="let c of comments; let i=index;" class="comment">
-        <img class="rounded-circle contact-image pull-right" [src]="c.userImageUrl ? c.userImageUrl : '../assets/images/user-placeholder.png'">
+    <div *ngFor="let c of comments; let i=index;" class="comment flexbox-parent-row">
+      <img class="rounded-circle contact-image ml-2" [src]="c.userImageUrl ? c.userImageUrl : '../assets/images/user-placeholder.png'">
 
-        <div class="col-11 text-right row">
-          <div class="col-10">
 
-            <div class="text-muted">{{c.userName}}</div>
-            <div>{{c.text}}</div>
-          </div>
-          <div class="col-2 text-left p-2">
-            <i class="fa fa-close delete-comment" *ngIf="(!anonymous && c.userId === user.id)" (click)="deleteComment(i)"></i>
-          </div>
-        </div>
-
+      <div class="flexbox-item-grow ml-2 mr-2 text-right comment-content">
+        <span class="text-muted">{{c.userName}} </span>
+        <span class="mr-2">{{c.text}} </span>
+        <span class="comment-time">14:23</span>
+      </div>
+      <i class="fa fa-close delete-comment" *ngIf="(!anonymous && c.userId === user.id)" (click)="deleteComment(i)"></i>
 
     </div>
 
-    <div class="row comment" *ngIf="!noMoreComments">
-      <a class="col-md-12 text-center" href="" (click)="readComments($event)">نظرات بیشتر...</a>
+    <div class="more-comments" *ngIf="!noMoreComments">
+      <div class="text-center" (click)="readComments($event)"> نظرات بیشتر  <i class="fa fa-angle-down mr-2"></i></div>
     </div>
 
   </div>

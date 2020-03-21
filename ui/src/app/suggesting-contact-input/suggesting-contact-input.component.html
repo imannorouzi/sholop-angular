@@ -1,9 +1,8 @@
-<div class="position-relative">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="align-bottom fa fa-hospital-o"></i></span>
-    </div>
-    <input id="chair" (blur)="blur()" (focus)="show=true" (keyup)="onKeyUp($event)" type="text" name="title" class="form-control" placeholder="نام مخاطب" [(ngModel)]="inputValue">
+<div class="position-relative iconed-input">
+  <div class="frame flexbox-parent-row">
+    <i class=" ml-3 icon fa fa-map-marker"></i>
+    <input type="text" class="flexbox-item-grow"
+           id="chair" (blur)="blur()" (focus)="show=true" (keyup)="onKeyUp($event)" name="title" placeholder="نام مخاطب" [(ngModel)]="inputValue">
   </div>
 
   <div class="contacts " *ngIf="show">

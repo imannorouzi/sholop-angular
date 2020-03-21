@@ -1,5 +1,6 @@
+
 <!--<div class="container">-->
-<nav class="navbar navbar-light bg-transparent p-2 navbar-expand-lg text-right" >
+<nav class="navbar navbar-light p-2 navbar-expand-lg text-right" >
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -17,9 +18,6 @@
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" [routerLink]="['/dashboard']"><!--<i class="fa fa-dashboard"></i>--> جلسات</a>
       </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="/create-event">Create Event</a>
-      </li>-->
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link colored-navbar-item" [routerLink]="['/create-meeting']"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
       </li>
@@ -50,14 +48,36 @@
     <ul class="navbar-nav" *ngIf="!authenticationService.isLoggedIn()">
 
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/home']"><!--<i class="fa fa-home"></i>--> خانه</a>
+        <a class="nav-link" [routerLink]="['/dashboard']"><i class="navbar-icon fa fa-dashboard"></i> </a>
       </li>
       <!--<li class="nav-item">
         <a class="nav-link" href="/create-event">Create Event</a>
       </li>-->
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/create-meeting']"  routerLinkActive="active"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
+        <a class="nav-link add-item" (click)="commonService.createMeeting.next()"  routerLinkActive="active"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
       </li>
+    </ul>
+
+    <!-- Left hand side menus-->
+
+    <ul class="navbar-nav mr-auto ml-2" *ngIf="!authenticationService.isLoggedIn()">
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <app-switch-button [leftIcon]="'fa-moon-o'"
+                           [rightIcon]="'fa-sun-o'"
+                           [defaultValue]="theme === 'light' ? 0 : 1"
+                           (switchChanged)="this.themeChanged($event)"></app-switch-button>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav mr-auto ml-2" *ngIf="authenticationService.isLoggedIn()">
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link" [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
+      </li>
+      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link colored-navbar-item" [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام</a>
+      </li>
+
+
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
         <a class="nav-link" [routerLink]="['/contact-us']"><!--<i class="fa fa-envelope"></i>--> درباره ما</a>
       </li>
@@ -70,15 +90,6 @@
           <a class="dropdown-item" href="#">Android</a>
           <a class="dropdown-item" href="#">iOS</a>
         </div>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav mr-auto ml-2" *ngIf="!authenticationService.isLoggedIn()">
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link colored-navbar-item" [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام</a>
       </li>
     </ul>
 

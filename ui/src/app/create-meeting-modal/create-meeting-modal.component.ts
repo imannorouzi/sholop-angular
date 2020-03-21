@@ -11,13 +11,14 @@ import {AlertService} from "../alert.service";
 import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
+import {ModalDirective} from "ngx-bootstrap";
 
 @Component({
-  selector: 'create-meeting',
-  templateUrl: './create-meeting.component.html',
-  styleUrls: ['./create-meeting.component.css']
+  selector: 'create-meeting-modal',
+  templateUrl: './create-meeting-modal.component.html',
+  styleUrls: ['./create-meeting-modal.component.css']
 })
-export class CreateMeetingComponent implements OnInit {
+export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
 
   @ViewChild('searchBox', {static: false}) searchInput: ElementRef;
   @ViewChild('address2', {static: false}) address2: ElementRef;
@@ -28,9 +29,10 @@ export class CreateMeetingComponent implements OnInit {
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('addAttendee', {static: false}) addAttendee: AddAttendeeComponent;
 
+
+  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+
   name:string;
-  step: number =0;
-  editingStep: number = -1;
 
   constructor(private dataService : DataService,
               private navigationService: NavigationService,
@@ -59,6 +61,7 @@ export class CreateMeetingComponent implements OnInit {
   user: any;
 
   submitting: boolean = false;
+  focusElement: string = '';
 
   ngOnInit() {
 
@@ -66,20 +69,53 @@ export class CreateMeetingComponent implements OnInit {
 
     //set google maps defaults
     this.zoom = 12;
-    // this.latitude = 18.5793;
-    // this.longitude = 73.8143;
-    //set current position
-    if(!this.event.venue || this.event.venue.id <= 0){
-      this.setCurrentPosition();
-    }
+
 
     for(let h=0; h<24; h++){
       for(let m=0; m<12; m++){
         this.times.push(( h<10? '0'+h : h)+":"+( m<2 ? '0' + (m*5) : (m*5) ) );
       }
     }
+  }
 
-    // this.event.times.push(new DateTime());
+
+  show(){
+    this.childModal.show();
+
+    setTimeout( () => {
+      //load Places Autocomplete
+      this.mapsAPILoader.load().then(() => {
+        let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+          types: ["address"]
+        });
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            //get the place result
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+            //verify result
+            if (place.geometry === undefined || place.geometry === null) {
+              return;
+            }
+
+            //set latitude, longitude and zoom
+            this.event.venue.latitude = place.geometry.location.lat();
+            this.event.venue.longitude = place.geometry.location.lng();
+            this.zoom = 12;
+          });
+        });
+      });
+
+      //set current position
+      if (!this.event.venue || this.event.venue.id <= 0) {
+        this.setCurrentPosition();
+      }
+    }, 10);
+
+  }
+
+  hide(){
+    this.childModal.hide();
   }
 
   private setCurrentPosition() {
@@ -228,45 +264,4 @@ export class CreateMeetingComponent implements OnInit {
     this.navigationService.navigate(url);
   }
 
-  next() {
-    if(this.editingStep !== -1){
-      this.editingStep = -1;
-      return;
-    }
-
-    this.step++;
-
-    if(this.step === 2){
-
-      setTimeout( () => {
-        //load Places Autocomplete
-        this.mapsAPILoader.load().then(() => {
-          let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
-            types: ["address"]
-          });
-          autocomplete.addListener("place_changed", () => {
-            this.ngZone.run(() => {
-              //get the place result
-              let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-              //verify result
-              if (place.geometry === undefined || place.geometry === null) {
-                return;
-              }
-
-              //set latitude, longitude and zoom
-              this.event.venue.latitude = place.geometry.location.lat();
-              this.event.venue.longitude = place.geometry.location.lng();
-              this.zoom = 12;
-            });
-          });
-        });
-      }, 10);
-
-    }
-  }
-
-  back() {
-    this.step--;
-  }
 }

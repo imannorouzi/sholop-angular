@@ -2,14 +2,22 @@
   color:grey;
 }
 .navbar.navbar-expand-lg a:hover{
-  color:white;
+  color:#111111;
+}
+.navbar.navbar-expand-lg a.add-item:hover{
+  background: #343a40;
+  color: #9d9d9d;
 }
 .navbar.navbar-expand-lg{
-  background-color: #E0E2E6;
+  background-color: whitesmoke;
 }
 
 .navbar{
   padding: 0;
+  border-bottom: #444;
+}
+.navbar-nav{
+  line-height: 1;
 }
 
 
@@ -27,6 +35,19 @@
 .dropdown-menu{
   z-index: 1050;
   left: 0;
+}
+
+
+.add-item{
+  border: 1px solid;
+  border-radius: 3px;
+  line-height: 1.5;
+  padding: 5px 20px;
+}
+
+.navbar-icon{
+  font-size: 25px;
+  margin-left: 10px;
 }
 
 /*.navbar-light .navbar-nav .nav-link.colored-navbar-item:hover{

@@ -204,4 +204,12 @@ export class DateService {
 
     return date1.date === date2.date && date1.startTime === date2.startTime && date1.endTime === date2.endTime;
   }
+
+  getTimeString(date: Date): string{
+    if(date){
+      return date.getHours() + ':' + (date.getMinutes()<10 ? '0' : '') + date.getMinutes();
+    }
+
+    return '';
+  }
 }
