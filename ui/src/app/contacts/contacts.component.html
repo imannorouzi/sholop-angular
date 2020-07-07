@@ -1,93 +1,86 @@
-<div class="flex-parent">
+<div class="h-100 overflow-auto p-3">
 
-  <div class="container mt-3 mb-3 grow" >
+    <div class="flexbox-parent-row pb-2">
+      <div class="ml-2">
+        <button type="button" class="btn secondary w-100" (click)="addNewContact.reset();addNewContact.show()" >
+          <i class="fa fa-user-plus"></i>{{type==='contact' ? ' مخاطب جدید' : ' کارمند جدید'}}
+        </button>
+        <add-contact [type]="type" (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
+      </div>
+      <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="نام، ایمیل ..." >
+    </div>
 
-    <div class="card h-100 shadow">
-      <div class="card-body flex-parent">
-
-        <div class="row pb-2">
-
-          <div class="col-md-2">
-            <button type="button" class="btn btn-outline-primary w-100" (click)="addNewContact.reset();addNewContact.show()" >
-              <i class="fa fa-user-plus"></i>{{type==='contact' ? ' مخاطب جدید' : ' کارمند جدید'}}
-            </button>
-            <add-contact [type]="type" (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
-          </div>
-
-          <div class="col-md-10">
-
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="align-bottom fa fa-search"></i></span>
-              </div>
-              <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="form-control" placeholder="نام، ایمیل ..." >
-            </div>
-
-          </div>
-
-        </div>
-
-        <div *ngIf="type === 'employee'" class="card text-right bg-light mb-3 ">
-          <div class="card-body">
-            <h5 class="card-title">آپلود لیست کارمندان</h5>
-            <p class="card-text">می‌توانید با دانلود <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> نام کارمندان خود را در آن وارد و با آپلود آن اطلاعات کارمندان خود را در شالاپ ثبت کنید.</p>
-            <div class="text-left">
-              <a href="" class="btn btn-primary" (click)="onUploadFileClick($event)">آپلود فایل</a>
-            </div>
-          </div>
-
-          <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" [hidden]="true">
-        </div>
-
-        <div class="row ">
-
-          <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact ">
-            <div class="contact-border">
-              <div class="row p-2 ">
-
-
-                <div class="col text-right">
-
-                  <!--<div class="rounded-circle contact-image text-center" [style.background]="utilService.getRandomColor()" *ngIf="!contact.imageUrl">
-                    <span class=" font-weight-bold contact-letter">{{contact.name.substring(0,1)}}</span>
-                  </div>-->
-
-                  <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-                </div>
-
-                <div class="col-8 text-right">
-                  <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
-                  <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
-                  <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
-
-                  <div>
-                    <a href="#" class="ml-3" (click)="onEditContact(contact, index)">ویرایش</a>
-                    <a href="#" (click)="onDeleteUser(contact.id, index, $event)">حذف</a>
-
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <confirm #confirm [message]="'مخاطب حذف شود؟'" (confirmed)="deleteConfirmed($event)"></confirm>
-          <add-contact (onContactAdded)="onContactAdded($event)" #editContact></add-contact>
-
-        </div>
-
-        <div class="text-center" *ngIf="!loading && contacts.length === 0">
-          <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
-            <param name="class" value="look-around" />
-          </object>
-          <div class="text-muted">هیچی پیدا نکردم</div>
-        </div>
-
-        <div class="row justify-content-center">
-          <spinner [size]="'large'" #spinner [showing]="loading"></spinner>
+    <div *ngIf="type === 'employee'" class="card text-right bg-light mb-3 ">
+      <div class="card-body">
+        <h5 class="card-title">آپلود لیست کارمندان</h5>
+        <p class="card-text">می‌توانید با دانلود <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> نام کارمندان خود را در آن وارد و با آپلود آن اطلاعات کارمندان خود را در شالاپ ثبت کنید.</p>
+        <div class="text-left">
+          <button href="" class="primary" (click)="onUploadFileClick($event)">آپلود فایل</button>
         </div>
       </div>
+
+      <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" [hidden]="true">
     </div>
-  </div>
+
+    <div class="row ">
+
+      <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact ">
+        <div class="contact-frame">
+          <div class="row p-2 ">
+
+
+            <div class="col text-right">
+
+              <!--<div class="rounded-circle contact-image text-center" [style.background]="commonService.getRandomColor()" *ngIf="!contact.imageUrl">
+                <span class=" font-weight-bold contact-letter">{{contact.name.substring(0,1)}}</span>
+              </div>-->
+
+              <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+            </div>
+
+            <div class="col-8 text-right">
+              <div class="font-noraml font-weight-bold" >
+                <i class="role-icon fa fa-briefcase" *ngIf="contact.role==='owner'"></i>
+                <i class="role-icon fa fa-handshake-o" *ngIf="contact.role==='reception'"></i>
+                <i class="role-icon fa fa-user" *ngIf="contact.role==='user'"></i>
+                {{contact.name}}
+              </div>
+              <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+              <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+
+              <div>
+                <a href="#" class="ml-3" (click)="onEditContact(contact, index)">ویرایش </a>
+                <a href="#" (click)="onDeleteUser(contact.id, index, $event)">حذف </a>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <confirm #confirm [title]="'مخاطب حذف شود؟'" (confirmed)="deleteConfirmed($event)">
+        <div class="contact-frame" *ngIf="deletingContact">
+          <div class="flexbox-parent-row deleting-contact">
+            <img class="rounded-circle contact-image-small" [src]="deletingContact.imageUrl ? deletingContact.imageUrl : '../assets/images/user-placeholder.png'">
+            <span class="flexbox-item-grow pr-2">{{deletingContact.name}}</span>
+          </div>
+        </div>
+      </confirm>
+
+      <add-contact (onContactAdded)="onContactAdded($event)" #editContact></add-contact>
+
+    </div>
+
+    <div class="text-center" *ngIf="!loading && contacts.length === 0">
+      <object class="w-25" type="image/svg+xml" data="../../assets/images/owl-old/owl.svg">
+        <param name="class" value="look-around" />
+      </object>
+      <div class="text-muted">هیچی پیدا نکردم</div>
+    </div>
+
+    <div class="row justify-content-center">
+      <spinner [size]="'large'" #spinner [showing]="loading"></spinner>
+    </div>
 
 </div>

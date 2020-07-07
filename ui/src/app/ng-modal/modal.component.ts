@@ -13,6 +13,7 @@ export class ModalComponent implements OnInit, AfterViewChecked {
   @Input() modalTitle: string;
   @Input() width: any;
   @Input() zIndex: number;
+  @Input() size: string = 'lg'; // sm, md, lg
   @Input() minWidth: number = 260;
   @Input() minHeight: number = 200;
   @Input() scrollTop: boolean = true;
@@ -21,12 +22,13 @@ export class ModalComponent implements OnInit, AfterViewChecked {
   @Input() styleClass: string;
 
   @Output() close: EventEmitter<boolean> = new EventEmitter();
+  @Output() isShown: EventEmitter<boolean> = new EventEmitter();
   @Output() resize: EventEmitter<number> = new EventEmitter();
 
-  @ViewChild('modalRoot') modalRoot: ElementRef;
-  @ViewChild('modalBody') modalBody: ElementRef;
-  @ViewChild('modalHeader') modalHeader: ElementRef;
-  @ViewChild('modalFooter') modalFooter: ElementRef;
+  @ViewChild('modalRoot', {static: true}) modalRoot: ElementRef;
+  @ViewChild('modalBody', {static: true}) modalBody: ElementRef;
+  @ViewChild('modalHeader', {static: true}) modalHeader: ElementRef;
+  @ViewChild('modalFooter', {static: true}) modalFooter: ElementRef;
 
   @HostBinding('class')
   get cssClass(): string {
@@ -69,6 +71,7 @@ export class ModalComponent implements OnInit, AfterViewChecked {
       this.center();
       this.executePostDisplayActions = false;
     }
+
   }
 
   addEventListeners() {
@@ -115,6 +118,7 @@ export class ModalComponent implements OnInit, AfterViewChecked {
       if (this.scrollTop) {
         this.modalBody.nativeElement.scrollTop = 0;
       }
+      this.isShown.emit();
     }, 1);
     this.addEventListeners();
   }

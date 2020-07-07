@@ -1,15 +1,16 @@
-<div class="container">
+<!--
+<div class="container   d-table h-100">
 
-  <div class="card mt-3 shadow">
-    <div class="card-body">
+  <div class="d-table-cell register-content">
 
-      <h2 class="card-title text-right ">ثبت نام</h2>
-      <div class="row">
+    <div class="bg-white p-4 text-center">
+      <img src="../assets/images/Sholop-Logo.png" class="rounded mb-5" alt width="150">
+      <div class=" row">
 
-        <div class="col-md-7">
+        <div class="col-md-12">
           <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form-horizontal">
 
-            <div class="form-group row">
+            <div class="form-group row" *ngIf="false">
               <label class="col-md-3 col-form-label text-right">ثبت نام به عنوان</label>
               <div class="col-md-9 text-right btn-group btn-group-toggle ltr" data-toggle="type">
                 <label class="btn btn-outline-primary " [class.active]="registerForm.value.type==='PERSONAL'">
@@ -30,8 +31,8 @@
                   <input type="text" [placeholder]="f.type.value === 'business' ? 'نام شرکت' : 'نام'" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
                 </div>
                 <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                <div *ngIf="f.name.errors.required">باید اسمی داشته باشید.</div>
-              </div>
+                  <div *ngIf="f.name.errors.required">باید اسمی داشته باشید.</div>
+                </div>
               </div>
             </div>
 
@@ -46,8 +47,8 @@
                   <input type="text" placeholder="ایمیل" formControlName="email" class="form-control ltr" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
                 </div>
                 <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-                <div *ngIf="f.email.errors.required">ایمیل خود را وارد کنید.</div>
-              </div>
+                  <div *ngIf="f.email.errors.required">ایمیل خود را وارد کنید.</div>
+                </div>
               </div>
             </div>
 
@@ -62,9 +63,9 @@
                   <input type="password" placeholder="یک کلمه عبور انتخاب کنید" formControlName="password" class="form-control ltr" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                 </div>
                 <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                <div *ngIf="f.password.errors.required">انتخاب کلمه عبور الزامی است.</div>
-                <div *ngIf="f.password.errors.minlength">کلمه عبور حداقل باید ۶ کاراکتر باشد.</div>
-              </div>
+                  <div *ngIf="f.password.errors.required">انتخاب کلمه عبور الزامی است.</div>
+                  <div *ngIf="f.password.errors.minlength">کلمه عبور حداقل باید ۶ کاراکتر باشد.</div>
+                </div>
               </div>
             </div>
 
@@ -78,13 +79,13 @@
             <div class="row form-group">
               <div class="col-md-3"></div>
               <div class="col-md-9 text-right">
-                <p class="card-text"><small class="text-muted">ثبت نام شما ملزم به قبول <a href=""> قوانین و مقررات شالاپ </a> است.</small></p>
+                <p class="card-text"><small class="text-muted">ثبت نام شما ملزم به قبول <a routerLink="/conditions"> قوانین شالاپ </a> است.</small></p>
 
-                  <button [disabled]="loading" type="submit" class="btn btn-primary ml-2">
-                    ثبت نام <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i>
-                  </button>
-                  <button [disabled]="loading" type="button" class="btn btn-primary ml-2" (click)="loginWithGoogle()">ثبت‌نام با گوگل <i class="fa fa-google"></i> </button>
-                  <a [routerLink]="['/login']" class="btn btn-link">ورود</a>
+                <button [disabled]="loading" type="submit" class="btn primary ml-2">
+                  ثبت نام <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i>
+                </button>
+                <button [disabled]="loading" type="button" class="btn primary ml-2" (click)="loginWithGoogle()">ثبت‌نام با گوگل <i class="fa fa-google"></i> </button>
+                <a [routerLink]="['/login']" class="btn btn-link">ورود</a>
               </div>
             </div>
 
@@ -92,20 +93,90 @@
           </form>
         </div>
 
-        <div class="col-md-5 text-right">
-
-          <h4>شالاپ به چه دردی می خورد؟</h4>
-
-          <ul class="text-muted">
-            <li>ابزاری برای خوشامدگویی به میهمانان شما</li>
-            <li>خودکار کردن خیلی از کارهای زمانبر</li>
-            <li>تنظیم سریع و ساده ی جلسات</li>
-            <li>پذیرش جذاب و آسان میهمانان</li>
-            <li>بهبود تاثیرگذاری اولیه بر میهمانان شما</li>
-          </ul>
-        </div>
       </div>
-
     </div>
+  </div>
+</div>
+-->
+
+<div class="row h-100 overflow-auto bg-white">
+
+  <div class="col-md-6 login-form-bg">
+    <div class=" text-right w-100 d-table h-100">
+      <div class="d-table-cell p-5  register-content">
+
+        <div class="text-center"><img src="../assets/images/Sholop-Logo.png" class="rounded mb-5" alt width="200"></div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="">
+
+          <div class="form-group row" *ngIf="false">
+            <label class="col-md-3 col-form-label text-right">ثبت نام به عنوان</label>
+            <div class="col-md-9 text-right btn-group btn-group-toggle ltr" data-toggle="type">
+              <label class="btn btn-outline-primary " [class.active]="registerForm.value.type==='PERSONAL'">
+                <input type="radio" formControlName="type" class="form-control" checked value="PERSONAL"> شخص
+              </label>
+              <label class="btn btn-outline-primary" [class.active]="registerForm.value.type==='BUSINESS'">
+                <input type="radio" formControlName="type" class="form-control" value="BUSINESS"> شرکت
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class=" col-form-label text-right">نام کامل</label>
+            <input type="text" [placeholder]="f.type.value === 'business' ? 'نام شرکت' : 'نام'" formControlName="name" class="" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">باید اسمی داشته باشید.</div>
+            </div>
+          </div>
+
+          <div class="">
+            <label class=" col-form-label text-right">ایمیل</label>
+
+              <input type="text" placeholder="ایمیل" formControlName="email" class=" ltr" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+              <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">ایمیل خود را وارد کنید.</div>
+              </div>
+          </div>
+
+          <div class="">
+            <label class="col-form-label text-right">کلمه عبور</label>
+
+            <input type="password" placeholder="یک کلمه عبور انتخاب کنید" formControlName="password" class="ltr" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+
+              <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">انتخاب کلمه عبور الزامی است.</div>
+                <div *ngIf="f.password.errors.minlength">کلمه عبور حداقل باید ۶ کاراکتر باشد.</div>
+              </div>
+          </div>
+
+          <div class="row form-group" *ngIf="registerForm.value.type==='business'">
+            <div class="col-md-3"></div>
+            <div class="col-md-9 text-right">
+              <p class="card-text">با ثبت‌نام به عنوان یک کسب‌وکار،‌ می‌توانید ملاقات‌های کارمندان شرکت را مدیریت کنید.</p>
+            </div>
+          </div>
+
+          <p class="card-text"><small class="text-muted">ثبت نام شما ملزم به قبول <a routerLink="/conditions"> قوانین شالاپ </a> است.</small></p>
+
+          <div class="">
+
+
+              <button [disabled]="loading" type="submit" class="w-100 primary mb-2">
+                ثبت نام <i class="fa fa-refresh fa-spin mr-2" *ngIf="loading"></i>
+              </button>
+              <button *ngIf="false" [disabled]="loading" type="button" class="w-100 primary mb-3" (click)="loginWithGoogle()">ثبت‌نام با گوگل <i class="fa fa-google"></i> </button>
+          </div>
+
+        </form>
+
+        <div class="text-center"><a [routerLink]="['/login']" class="btn btn-link">اگر حساب کاربری دارید، از این جا وارد شوید.</a></div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 register-cover">
+    <div class="text-center "><img src="../assets/images/home/login-cover.png" class="" width="100%" alt></div>
   </div>
 </div>

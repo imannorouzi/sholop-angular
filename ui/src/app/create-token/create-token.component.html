@@ -1,0 +1,130 @@
+<div class="h-100 overflow-auto " >
+
+  <div class="text-right bg-white p-3">
+
+    <!-- dates -->
+    <div class="row">
+      <div class="col-md-6 "  >
+        <div class="box">
+          <label class="font-weight-bold">اعتبار اجازه ورود</label>
+          <div class="frame flexbox-parent-row">
+            <i class=" ml-3 icon fa fa-clock-o"></i>
+            <select class="flexbox-item-grow">
+              <option value="0">انتخاب کنید</option>
+              <option value="1">تا آخر امروز</option>
+              <option value="2">دو روز</option>
+              <option value="3">سه روز</option>
+              <option value="7">یک هفته</option>
+              <option value="30">یک ماه</option>
+              <option value="-1">همیشه</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-6 text-left"  >
+        <div class="box">
+          <label class="font-weight-bold">&nbsp;</label>
+          <div class="custom-control custom-checkbox p-2">
+            <input type="checkbox" class="custom-control-input" [(ngModel)]="event.oneTime" id="oneTime">
+            <label class="custom-control-label" for="oneTime">مجوز یک بار مصرف است</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+
+      <div class="">
+        <label class="font-weight-bold">محل ملاقات</label>
+        <div class="frame flexbox-parent-row" *ngIf="false">
+          <i class=" ml-3 icon fa fa-map-marker"></i>
+          <select class="flexbox-item-grow">
+            <option value="0">انتخاب کنید</option>
+            <option value="1">ساختمان شماره یک</option>
+            <option value="2">ساختمان شماره دو</option>
+            <option value="3">ساختمان شماره سه</option>
+          </select>
+        </div>
+
+        <div class="frame flexbox-parent-row">
+          <i class=" ml-3 icon fa fa-map-marker"></i>
+          <input type="text" class="flexbox-item-grow" size=80
+                 [(ngModel)]="event.venue.farsiAddress1"
+                 autocomplete="off"
+                 #searchBox name="address_1" placeholder="شهر،‌ خیابان">
+          <i class="mr-3 icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i>
+
+        </div>
+
+        <div class="frame flexbox-parent-row">
+          <i class=" ml-3 icon fa fa-map-marker"></i>
+          <input type="text" class="flexbox-item-grow"
+                 [(ngModel)]="event.venue.farsiAddress2"
+                 #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد">
+        </div>
+
+        <venues-modal (onSelected)="onVenueSelected($event)" #venuesModal ></venues-modal>
+      </div>
+
+      <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
+        <agm-marker [markerDraggable]="false"  [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+      </agm-map>
+
+    </div>
+
+    <!-- guests -->
+    <div class="box">
+
+      <div>
+
+        <label class="font-weight-bold">میهمانان</label>
+        <div class="frame flexbox-parent-row">
+          <i class=" ml-3 icon fa fa-map-marker"></i>
+          <input type="text" class="flexbox-item-grow "  placeholder="نام، آدرس ایمیل، ... ">
+          <i class="mr-3 input-button fa fa-user-plus" (click)="addContact($event)"></i>
+          <i class="mr-3 input-button fa fa-address-book" (click)="onImportClick($event)"></i>
+        </div>
+      </div>
+
+      <div >
+        <div class="row">
+
+          <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-6 contact p-2 ">
+            <div class="contact-border">
+              <div class="row p-2 ">
+
+                <div class="col text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
+
+                <div class="col-8 text-right">
+                  <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
+                  <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+                  <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+
+                  <div>
+                    <a href="#" (click)="removeContact($event, i)">حذف</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <add-attendee (onContactAdded)="onAttendeeAdded($event);" #addAttendee></add-attendee>
+      <contacts-modal (onSelected)="onContactsSelected($event)" #contactsModal ></contacts-modal>
+
+    </div>
+
+    <!-- buttons -->
+    <div class="text-right">
+      <button type="button" [disabled]="submitting" class="primary " (click)="onSubmit()">صدور اجازه ورود<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+    </div>
+  </div>
+
+
+</div>

@@ -1,101 +1,73 @@
-<!--<div class="container">-->
-<nav class="navbar navbar-light bg-transparent p-2 navbar-expand-lg text-right" >
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-light navbar-expand-lg text-right" >
+  <button class="navbar-toggler secondary" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <ul class="navbar-nav">
-    <li class="nav-item ml-3">
-      <img src="../assets/images/Sholop-Logo.png" [routerLink]="['/home']" class="rounded mb-2" alt width="60" height="25">
+    <li class="nav-item dropdown ml-3">
+      <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
+         aria-haspopup="true" aria-expanded="false">
+        <img src="../assets/images/Sholop-Logo-White.png" class="rounded mb-2" alt width="80">
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <li>
+          <a class="dropdown-item" routerLink="/about-us">
+            <i class="fa fa-info"></i>
+            <span>درباره ما</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/conditions">
+            <i class="fa fa-gavel"></i>
+            <span>قوانین سایت</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/faq">
+            <i class="fa fa-question"></i>
+            <span>سؤالات متداول</span>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/contact-us">
+            <i class="fa fa-envelope"></i>
+            <span>تماس با ما</span>
+          </a>
+        </li>
+      </ul>
     </li>
   </ul>
 
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
 
-    <ul class="navbar-nav" *ngIf="authenticationService.isLoggedIn()">
-
+    <ul class="navbar-nav">
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/dashboard']"><!--<i class="fa fa-dashboard"></i>--> جلسات</a>
-      </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="/create-event">Create Event</a>
-      </li>-->
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link colored-navbar-item" [routerLink]="['/create-meeting']"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/list/employee']"><!--<i class="fa fa-address-book"></i>--> کارمندان</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/list/contact']"><!--<i class="fa fa-address-book"></i>--> مخاطب‌ها</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/venues']"><!--<i class="fa fa-map-marker"></i>--> مکان‌ها</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/contact-us']"><!--<i class="fa fa-envelope"></i>--> درباره ما</a>
-      </li>
-      <li class="nav-item dropdown"  data-toggle="collapse" data-target=".navbar-collapse.show" *ngIf="false">
-        <a class="nav-link dropdown-toggle" href="#" id="Download" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <!--<i class="fa fa-android"></i>-->
-          دانلود
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Android</a>
-          <a class="dropdown-item" href="#">iOS</a>
-        </div>
+        <a class="nav-link" [routerLink]="[authService.isLoggedIn() ? '/meetings' : '/home']"><i class="navbar-icon fa fa-home"></i> </a>
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="!authenticationService.isLoggedIn()">
+    <!-- Left hand side menus-->
 
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/home']"><!--<i class="fa fa-home"></i>--> خانه</a>
-      </li>
-      <!--<li class="nav-item">
-        <a class="nav-link" href="/create-event">Create Event</a>
-      </li>-->
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/create-meeting']"  routerLinkActive="active"><!--<i class="fa fa-black-tie"></i>--> ایجاد ملاقات</a>
+    <ul class="navbar-nav mr-auto ml-2" *ngIf="!authService.isLoggedIn()">
+      <li class="nav-item "  data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link " [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
       </li>
       <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/contact-us']"><!--<i class="fa fa-envelope"></i>--> درباره ما</a>
-      </li>
-      <li class="nav-item dropdown" *ngIf="false">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <!--<i class="fa fa-android"></i>-->
-          دانلود
-        </a>
-        <div class="dropdown-menu " aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Android</a>
-          <a class="dropdown-item" href="#">iOS</a>
-        </div>
+        <a class="nav-link  " [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام کنید</a>
       </li>
     </ul>
 
-    <ul class="navbar-nav mr-auto ml-2" *ngIf="!authenticationService.isLoggedIn()">
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
+    <ul class="navbar-nav mr-auto ml-2" *ngIf="authService.isLoggedIn()">
+      <li class="nav-item" *ngIf="false" [routerLink]="['/login']" data-toggle="collapse" data-target=".navbar-collapse.show">
+        <a class="nav-link colored-navbar-item" ><i class="fa fa-bell navbar-icon"></i></a>
       </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link colored-navbar-item" [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام</a>
+      <li class="nav-item"  data-toggle="collapse"data-target=".navbar-collapse.show">
+        <a class="nav-link "  [routerLink]="['/login']" ><i class="fa fa-power-off navbar-icon"></i></a>
       </li>
     </ul>
 
   </div>
 
-  <ul class="navbar-nav mr-auto ltr" *ngIf="authenticationService.isLoggedIn()">
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="rounded-circle contact-image" [src]="authenticationService.getUser().imageUrl ? authenticationService.getUser().imageUrl : '../assets/images/user-placeholder.png'">
-        {{authenticationService.getUser().name}}
-      </a>
-      <div class="dropdown-menu right-0 position-absolute" aria-labelledby="navbarDropdownMenuLink">
-        <a class="dropdown-item" [routerLink]="['/profile']"><!--<i class="fa fa-user"></i>--> پروفایل من</a>
-        <a class="dropdown-item" [routerLink]="['/login']"><!--<i class="fa fa-sign-out"></i>--> خروج</a>
-      </div>
-    </li>
-  </ul>
 
 </nav>
 

@@ -1,0 +1,20 @@
+<token-item-modal #tokenModal [event]="selectedToken"></token-item-modal>
+<div class=" h-100 overflow-auto token-container p-3 ">
+  <input type="text" class="mb-2 search-input"
+         placeholder='جستجو با ایمیل، نام و ... '/>
+
+  <div class="text-center" *ngIf="!loading && (!tokens || tokens.length === 0)">
+    <object class="w-25 owl" type="image/svg+xml" data="../../assets/images/owl-old/owl.svg">
+      <param name="class" value="look-around" />
+    </object>
+  </div>
+
+  <spinner [showing]="loading" #spinner></spinner>
+
+  <div class="token-item" *ngFor="let event of tokens" >
+    <token-item (clicked)="onTokenClick($event)"
+                class="mt-2" [event]="event">
+    </token-item>
+  </div>
+</div>
+

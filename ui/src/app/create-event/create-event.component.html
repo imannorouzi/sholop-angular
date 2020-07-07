@@ -18,7 +18,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="align-bottom fa fa-list"></i></span>
                   </div>
-                  <input id="title" type="text" name="title" class="form-control" placeholder="Title" [(ngModel)]="event.title">
+                  <input type="text" name="title" class="form-control" placeholder="Title" [(ngModel)]="event.title">
                 </div>
 
               </div>
@@ -54,7 +54,7 @@
                 <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
                 <!--<button type="button" class="btn btn-default">Save</button>-->
                 <div class="text-right">
-                  <button type="button" class="btn btn-default" (click)="imageCropperModal.hide()">OK</button>
+                  <button type="button" class="btn primary" (click)="imageCropperModal.hide()">OK</button>
                 </div>
               </ng-container>
             </modal>
@@ -78,7 +78,7 @@
                 </select>
               </div>
               <div class="col-sm-2">
-                <button class="w-100 btn btn-outline-primary" [disabled]="event.times.length===1" (click)="removeDateTime($event, i)"><i class="fa fa-times"></i></button>
+                <button class="w-100 btn secondary" [disabled]="event.times.length===1" (click)="removeDateTime($event, i)"><i class="fa fa-times"></i></button>
               </div>
             </div>
             <div class="form-group row ">
@@ -99,7 +99,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="location_1" size=80
+                  <input type="text" class="form-control" size=80
                          ng-model="event.venue.farsiAddress1"
                          #searchBox name="title" placeholder="Addresss 1" />
                 </div>
@@ -114,7 +114,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="location_2" size=80
+                  <input type="text" class="form-control" :size=80
                          ng-model="event.venue.farsiAddress1"
                          #address2  name="title" placeholder="Addresss 2" />
                   <!--on-place-changed="vm.placeChanged()"-->
@@ -127,8 +127,8 @@
             <div class="flex-grow-1"></div>
 
             <div layout="row" class="">
-              <button type="button" [disabled]="submitting" class="btn btn-primary pull-right" (click)="onSubmit()" >OK <i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
-              <button type="button" class="btn btn-primary" >Cancel</button>
+              <button type="button" [disabled]="submitting" class="btn primary pull-right" (click)="onSubmit()" >OK <i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+              <button type="button" class="btn secondary" >Cancel</button>
             </div>
 
           </div>

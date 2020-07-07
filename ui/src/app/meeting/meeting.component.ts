@@ -1,11 +1,11 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
+import {DateService} from "../utils/date.service";
 import {CommentsComponent} from "../comments/comments.component";
-import {UtilService} from "../util.service";
 import {ActivatedRoute} from "@angular/router";
-import {DataService} from "../data.service";
-import {NavigationService} from "../navigation.service";
-import {AuthenticationService} from "../authentication.service";
+import {DataService} from "../utils/data.service";
+import {NavigationService} from "../utils/navigation.service";
+import {CommonService} from "../utils/common.service";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'meeting',
@@ -13,8 +13,8 @@ import {AuthenticationService} from "../authentication.service";
   styleUrls: ['./meeting.component.css']
 })
 export class MeetingComponent implements OnInit, OnChanges {
-  @ViewChild("comments") comments: CommentsComponent;
-  @ViewChild('gmap') gmapElement: any;
+  @ViewChild("comments", {static: true}) comments: CommentsComponent;
+  @ViewChild('gmap', {static: true}) gmapElement: any;
 
   @Input() event: any;
   @Input() anonymous: boolean;
@@ -22,16 +22,16 @@ export class MeetingComponent implements OnInit, OnChanges {
   @Input() guest: any;
 
   map : google.maps.Map;
-  currentUserId: number;
+  currentUserId: string;
   markers : google.maps.Marker[] = [];
 
 
   constructor(public dateService: DateService,
-              public utilService: UtilService,
+              public commonService: CommonService,
               private route: ActivatedRoute,
               private dataService: DataService,
               private navigationService: NavigationService,
-              private authenticationService: AuthenticationService) {
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class MeetingComponent implements OnInit, OnChanges {
       att.status = this.getContactStatus(att.id);
     });
 
-    this.currentUserId = this.authenticationService.getUser().id;
+    this.currentUserId = this.authService.userId;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -53,7 +53,7 @@ export class MeetingComponent implements OnInit, OnChanges {
 
   getContactStatus(id: number) : any {
     let contactEvent = this.event.contactEvents.find(ce => { return ce.contactId === id} );
-    return this.utilService.getContactStatus(contactEvent.status);
+    return this.commonService.getContactStatus(contactEvent.status);
   }
 
   goTo(url) {

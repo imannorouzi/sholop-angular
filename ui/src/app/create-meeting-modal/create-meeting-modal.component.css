@@ -1,0 +1,37 @@
+.map-container{
+  display: none;
+}
+.step-location .map-container{
+  animation: fade-in 1s ease both;
+  display: block;
+}
+
+.map{
+  height: 100px;
+}
+
+.edit-step-button:hover{
+  color: burlywood;
+}
+.edit-step-button{
+  cursor: pointer;
+}
+
+.modal-dialog{
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+label{
+  display: none;
+}
+
+.tip{
+  display: none;
+}
+.step-welcome .welcome .tip,
+.step-location .location .tip,
+.step-dates .dates .tip,
+.step-title .title .tip{
+  display: block;
+}

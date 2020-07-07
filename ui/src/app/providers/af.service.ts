@@ -3,10 +3,10 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable} from 'rxjs';
 import * as firebase from 'firebase/app';
 import {first} from "rxjs/operators";
-import {AuthenticationService} from "../authentication.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../alert.service";
-import {SpinnerService} from "../spinner.service";
+import {SpinnerService} from "../utils/spinner.service";
+import {AuthService} from "../utils/auth.service";
 
 @Injectable()
 export class AfService {
@@ -15,7 +15,7 @@ export class AfService {
   userType: string = 'PERSONAL';
 
   constructor(public afAuth: AngularFireAuth,
-              private authenticationService: AuthenticationService,
+              private authService: AuthService,
               private route: ActivatedRoute,
               private router: Router,
               private alertService: AlertService,
@@ -40,11 +40,11 @@ export class AfService {
         };
 
         this.spinnerService.changeState(true);
-        this.authenticationService.loginWithGoogle(user)
+        this.authService.loginWithGoogle(user)
           .pipe(first())
           .subscribe(
             data => {
-              this.router.navigate([ this.route.snapshot.queryParams['returnUrl'] || '/dashboard']);
+              this.router.navigate([ this.route.snapshot.queryParams['returnUrl'] || '/meetings']);
               this.spinnerService.changeState(false);
               this.logout();
             },

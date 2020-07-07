@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {ModalDirective} from "ngx-bootstrap";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'contacts-modal',
@@ -8,16 +9,17 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./contacts-modal.component.css']
 })
 export class ContactsModalComponent implements OnInit {
-  @ViewChild('selectContacts') public selectContacts:ModalDirective;
+  @ViewChild('selectContacts', {static: true}) public selectContacts:ModalDirective;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
 
   contacts: any[] = [];
+  loading: boolean = false;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    this.readContacts();
+    this.readDummyContacts();
   }
 
   setSelected(list){
@@ -29,6 +31,16 @@ export class ContactsModalComponent implements OnInit {
         }
       });
     });
+  }
+
+  private readDummyContacts() {
+    this.loading = true;
+
+    setTimeout( () => {
+      this.loading = false;
+      this.contacts = DummyData.CONTACTS;
+    }, 1500);
+
   }
 
   readContacts(){

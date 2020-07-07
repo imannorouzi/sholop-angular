@@ -3,7 +3,7 @@
      [ngStyle]="{'display': (visible && backdrop) ? 'block' : 'none'}">
 </div>
 
-<div class="ui-modal" tabindex="-1" role="dialog"
+<div [class]="'ui-modal ' + size" tabindex="-1" role="dialog"
      #modalRoot
      [ngStyle]="{'display': visible ? 'block' : 'none'}"
      [style.width.px]="width"
@@ -27,8 +27,8 @@
           <!--<svg *ngIf="maximized" class="ui-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="28" height="32" viewBox="0 0 28 32">
             <path fill="currentColor" d="M27.9 3.75h-18.8c-0.4 0-0.75 0.35-0.75 0.75v4.3c0 0.1 0 0.2 0.050 0.3h-4.2c-0.55 0-1 0.45-1 1v17.4c0 0.55 0.45 1 1 1h17.65c0.55 0 1-0.45 1-1v-3.7c0.050 0 0.1 0.050 0.2 0.050h4.9c0.4 0 0.75-0.35 0.75-0.75v-18.6c-0.050-0.4-0.4-0.75-0.8-0.75zM5.2 26.5v-12.95c0.050 0 0.1 0 0.15 0h15.4c0.050 0 0.1 0 0.15 0v12.95h-15.7zM27.15 22.35h-4.15c-0.050 0-0.15 0-0.2 0.050v-12.3c0-0.55-0.45-1-1-1h-12c0.050-0.1 0.050-0.2 0.050-0.3v-3.55h17.3v17.1z"></path>
           </svg>-->
-          <i *ngIf="maximized" class="modal-icon ml-2 fa fa-window-maximize"></i>
-          <i *ngIf="!maximized" class="modal-icon ml-2 fa fa-window-restore"></i>
+          <i *ngIf="maximized" class="modal-icon fa fa-window-maximize"></i>
+          <i *ngIf="!maximized" class="modal-icon fa fa-window-restore"></i>
 
           <!--<svg *ngIf="!maximized" class="ui-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" width="28" height="32" viewBox="0 0 28 32">
             <path fill="currentColor" d="M27.55 3.9h-22.6c-0.55 0-1 0.45-1 1v22.3c0 0.55 0.45 1 1 1h22.55c0.55 0 1-0.45 1-1v-22.3c0.050-0.55-0.4-1-0.95-1zM5.95 26.15v-18h20.55v18h-20.55z"></path>
@@ -37,8 +37,8 @@
 
     </div>
 
-    <div class="ui-titlebar">
-      <span class="" *ngIf="modalTitle">{{modalTitle}}</span>
+    <div class="ui-titlebar ltr">
+      <span class="text-left" *ngIf="modalTitle">{{modalTitle}}</span>
       <ng-content select=".app-modal-header"></ng-content>
     </div>
 
@@ -47,6 +47,7 @@
   <div class="ui-modal-body" #modalBody>
     <ng-content select=".app-modal-body"></ng-content>
   </div>
+  <hr>
   <div class="ui-modal-footer" #modalFooter>
     <ng-content select=".app-modal-footer"></ng-content>
   </div>

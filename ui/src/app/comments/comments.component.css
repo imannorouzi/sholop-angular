@@ -1,12 +1,43 @@
 .comments{
-  background: #f5f5f5;
 }
 .comment{
+  padding: 5px 0;
+  font-size: 12px;
+}
+.comment:not(:last-of-type){
   border-bottom: 1px solid #ddd;
 }
-
+.comment-time{
+  font-size: 10px;
+  /* border: 1px solid #ddd; */
+  box-sizing: border-box;
+  /* border-radius: 3px; */
+  padding: 0 3px;
+  /* background: #adb5bd; */
+  color: black;
+  font-weight: 900;
+  margin-right: 6px;
+}
+.comment-content{
+  padding-top: 10px;
+}
 .delete-comment:hover{
   background: gray;
   color: white;
   cursor: pointer;
+}
+
+.more-comments:hover{
+}
+.more-comments{
+  cursor: pointer;
+}
+.comment-textarea{
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.send-comment{
+  height: auto;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }

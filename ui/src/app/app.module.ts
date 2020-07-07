@@ -5,11 +5,10 @@ import { CommonModule, HashLocationStrategy, LocationStrategy} from '@angular/co
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CreateEventComponent } from './create-event/create-event.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { MeetingsComponent } from './meetings/meetings.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
 import { EventCardComponent } from './event-card/event-card.component';
-import { AngularFontAwesomeModule } from "angular-font-awesome";
 import { DateComponent} from "./date/date.component";
 import { HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { ImageCropperModule } from 'ng2-img-cropper';
@@ -24,20 +23,18 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptor} from "./error-interceptor.service";
 import { JwtInterceptor} from "./jwt-interceptor.service";
-import { UserService} from "./user.service";
-import { AuthenticationService} from "./authentication.service";
+import { UserService} from "./utils/user.service";
 import { AlertService} from "./alert.service";
-import { AuthGuard} from "./auth-guard.service";
+import { AuthGuard} from "./utils/auth-guard.service";
 import { CalendarComponent } from './calendar/calendar.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AddAttendeeComponent} from "./add-attendee/add-attendee.component";
-import { ClickOutsideDirective } from './click-outside.directive';
 import { TimeComponent } from './time/time.component';
 import {MeetingItemComponent} from "./meeting-item/meeting-item.component";
-import {DateService} from "./date.service";
+import {DateService} from "./utils/date.service";
 import {MeetingItemModalComponent} from "./meeting-item-modal/meeting-item-modal.component";
 import { CommentsComponent } from './comments/comments.component';
-import {ModalModule} from "ngx-bootstrap";
+import {ModalModule, TooltipModule} from "ngx-bootstrap";
 import { SuggestingContactInputComponent } from './suggesting-contact-input/suggesting-contact-input.component';
 import {AgmCoreModule} from "@agm/core";
 import { VenuesModalComponent } from './venues-modal/venues-modal.component';
@@ -46,7 +43,7 @@ import {environment} from "../environments/environment.prod";
 
 
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule,AngularFireDatabase} from 'angularfire2/database';
+import { AngularFireDatabaseModule} from 'angularfire2/database';
 import {AfService} from "./providers/af.service";
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { FooterComponent } from './footer/footer.component';
@@ -65,12 +62,27 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
 import {AddVenueComponent} from "./add-venue/add-venue.component";
 import { IconedInputComponent } from './iconed-input/iconed-input.component';
+import { SwitchButtonComponent } from './switch-button/switch-button.component';
+import { CreateMeetingModalComponent } from './create-meeting-modal/create-meeting-modal.component';
+import {ClickOutsideDirective} from "./utils/click-outside.directive";
+import {AuthService} from "./utils/auth.service";
+import {LocalStorageService} from "./utils/local-storage.service";
+import {GlobalDataService} from "./utils/global-data.service";
+import {CreateTokenComponent} from "./create-token/create-token.component";
+import {TokensComponent} from "./tokens/tokens.component";
+import {TokenItemComponent} from "./token-item/token-item.component";
+import {TokenItemModalComponent} from "./token-item-modal/token-item-modal.component";
+import {ReceptionItemModalComponent} from "./reception-item-modal/reception-item-modal.component";
+import {ReceptionComponent} from "./reception/reception.component";
+import {ReceptionService} from "./reception/reception.service";
+import { SlidingTextComponent } from './sliding-text/sliding-text.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CreateEventComponent,
-    DashboardComponent,
+    MeetingsComponent,
     NavbarComponent,
     HomeComponent,
     EventCardComponent,
@@ -110,13 +122,22 @@ import { IconedInputComponent } from './iconed-input/iconed-input.component';
     AboutUsComponent,
     SpinnerModalComponent,
     AddVenueComponent,
-    IconedInputComponent
+    IconedInputComponent,
+    SwitchButtonComponent,
+    CreateMeetingModalComponent,
+    CreateTokenComponent,
+    TokensComponent,
+    TokenItemComponent,
+    TokenItemModalComponent,
+    ReceptionItemModalComponent,
+    ReceptionComponent,
+    SlidingTextComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
-    AngularFontAwesomeModule,
     HttpClientModule,
     FormsModule,
     BrowserModule,
@@ -131,7 +152,8 @@ import { IconedInputComponent } from './iconed-input/iconed-input.component';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    TooltipModule
   ],
   exports: [
   ],
@@ -140,12 +162,15 @@ import { IconedInputComponent } from './iconed-input/iconed-input.component';
     HttpClientModule,
     AuthGuard,
     AlertService,
-    AuthenticationService,
     UserService,
     DateService,
+    AuthService,
+    LocalStorageService,
+    GlobalDataService,
+    ReceptionService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: LocationStrategy, useClass: HashLocationStrategy},
+    // { provide: LocationStrategy, useClass: HashLocationStrategy},
   ],
   bootstrap: [AppComponent]
 })

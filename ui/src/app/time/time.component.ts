@@ -6,9 +6,9 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} f
   styleUrls: ['./time.component.css']
 })
 export class TimeComponent implements OnInit {
-  @ViewChild("minutesColumn") minutesColumn: ElementRef;
-  @ViewChild("hoursColumn") hoursColumn: ElementRef;
-  @ViewChild("input") input: ElementRef;
+  @ViewChild("minutesColumn", {static: true}) minutesColumn: ElementRef;
+  @ViewChild("hoursColumn", {static: true}) hoursColumn: ElementRef;
+  @ViewChild("input", {static: true}) input: ElementRef;
 
   isShowing: boolean = false;
   @Input() inputClasses: string = '';
@@ -26,16 +26,16 @@ export class TimeComponent implements OnInit {
   minutes: any[] = [];
   dummyRows: any[] = [];
 
-  @Input() timeString: string;
+  @Input() date: Date;
 
   constructor() { }
 
   ngOnInit() {
 
 
-    if(this.timeString){
-      this.hourString = this.timeString.substring(0,2);
-      this.minuteString = this.timeString.substring(2);
+    if(this.date){
+      this.hourString = (this.date.getHours()<10 ? '0' : '') + this.date.getHours().toString();
+      this.minuteString = (this.date.getMinutes()<10 ? '0' : '') + this.date.getMinutes().toString();
     }
 
     this.dummyRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -66,7 +66,7 @@ export class TimeComponent implements OnInit {
     this.hourString = (this.hours[this.mainRow]<10 ? '0' : '') +this.hours[this.mainRow];
     this.minuteString = (this.minutes[this.mainRow]<10 ? '0' : '') + this.minutes[this.mainRow];
 
-    this.onTimeSelected.emit(this.input.nativeElement.value);
+    this.onTimeChanged();
   }
 
   listDown(list){
@@ -76,7 +76,7 @@ export class TimeComponent implements OnInit {
     this.hourString = (this.hours[this.mainRow]<10 ? '0' : '') +this.hours[this.mainRow];
     this.minuteString = (this.minutes[this.mainRow]<10 ? '0' : '') +this.minutes[this.mainRow];
 
-    this.onTimeSelected.emit(this.input.nativeElement.value);
+    this.onTimeChanged();
   }
 
   onHourScroll($event) {
@@ -118,6 +118,17 @@ export class TimeComponent implements OnInit {
   }
 
   onTimeChanged(){
-    this.onTimeSelected.emit(this.input.nativeElement.value);
+
+    let stringValue = this.input.nativeElement.value;
+    let date = new Date();
+
+    date.setHours(Number(this.hourString));
+    date.setMinutes(Number(this.minuteString));
+
+    this.onTimeSelected.emit(date);
+  }
+
+  clickOutside(value: boolean = false) {
+    this.isShowing = value;
   }
 }

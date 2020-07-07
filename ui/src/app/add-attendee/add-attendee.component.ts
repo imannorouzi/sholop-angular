@@ -1,12 +1,9 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component,  EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../ng-modal/modal.component";
-import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
-import {Venue} from "../venue";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
-import {UserService} from "../user.service";
-import {AuthenticationService} from "../authentication.service";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'add-attendee',
@@ -14,8 +11,8 @@ import {AuthenticationService} from "../authentication.service";
   styleUrls: ['./add-attendee.component.css']
 })
 export class AddAttendeeComponent implements OnInit {
-  @ViewChild('addAttendee') modal: ModalComponent;
-  @ViewChild('spinner') spinner: SpinnerComponent;
+  @ViewChild('addAttendee', {static: true}) modal: ModalComponent;
+  @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
 
   addToContacts: boolean = true;
 
@@ -34,7 +31,7 @@ export class AddAttendeeComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private authenticationService: AuthenticationService) {
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -64,15 +61,14 @@ export class AddAttendeeComponent implements OnInit {
 
     this.modal.hide();
 
-    if(this.addToContacts) {
-      this.contact['userId'] = this.authenticationService.getUser().id;
+    if(false && this.addToContacts) {
+      this.contact['userId'] = this.authService.userId;
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
           this.onContactAdded.emit(value.object);
         },
         (error:any) => {
           console.log(error);
-          // this.spinner.hide();
           this.modal.show();
           this.alertService.error(error.toString())
         });

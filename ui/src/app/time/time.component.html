@@ -1,20 +1,18 @@
-<div class="" clickOutside (clickOutside)="isShowing=false;">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="align-bottom fa fa-clock-o"></i></span>
-    </div>
-    <input #input
-           (change)="onTimeChanged()"
-           type="text" [class]="inputClasses + ' ltr'" autocomplete="false"
+<div class="iconed-input" click-zone (clickOutside)="clickOutside($event)">
+
+  <div class="frame flexbox-parent-row">
+    <i class=" ml-3 icon fa fa-clock-o"></i>
+    <input #input (change)="onTimeChanged()"
+           type="text" [class]="inputClasses + ' flexbox-item-grow ltr'" autocomplete="false"
            [autocomplete]="false"
            [value]="(hourString ? hourString : '-- ')+':'+(minuteString ? minuteString : ' --')"
            (focus)="onFocus()" name="date"
-           [placeholder]="placeholder? placeholder : 'Time'" />
+           [placeholder]="placeholder? placeholder : 'Time'" >
   </div>
 
-  <div class="form-group unselectable">
+  <div class="unselectable"   *ngIf="isShowing" >
 
-    <div class="times-container ltr"   *ngIf="isShowing" >
+    <div class="times-container ltr" >
       <table class="w-100 text-center">
         <tr *ngFor="let hour of dummyRows; let i=index;">
           <td>
@@ -42,10 +40,10 @@
         </tr>
       </table>
 
-      <hr>
+      <!--<hr>
       <div class="text-right">
         <button class="btn btn-outline-primary mb-3 mr-3" (click)="isShowing=false">خوبه</button>
-      </div>
+      </div>-->
 
   </div>
 

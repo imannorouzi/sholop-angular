@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 
 import {AlertService} from "../alert.service";
-import {UserService} from "../user.service";
+import {UserService} from "../utils/user.service";
 import {AfService} from "../providers/af.service";
-import {NavigationService} from "../navigation.service";
+import {NavigationService} from "../utils/navigation.service";
+import {AuthService} from "../utils/auth.service";
 
-@Component({templateUrl: 'register.component.html'})
+@Component({templateUrl: 'register.component.html',
+  styleUrls: ['register.component.css']})
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   loading = false;
@@ -19,10 +20,18 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private alertService: AlertService,
-    private afService: AfService,
-    private navigationService: NavigationService) { }
+    private navigationService: NavigationService,
+    private authService: AuthService,
+    private afService: AfService) { }
 
   ngOnInit() {
+
+    // reset login status
+    this.authService.logout();
+    if(this.afService.user) {
+      this.afService.logout();
+    }
+
     this.registerForm = this.formBuilder.group({
       type: ['PERSONAL', Validators.required],
       name: ['', Validators.required],
@@ -55,7 +64,7 @@ export class RegisterComponent implements OnInit {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             this.alertService.success('ثبت نام شما با موفقیت انجام شد.', true);
             localStorage.setItem('currentUser', JSON.stringify(data['object']));
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/meetings']);
 
           }else if(data['msg'] === 'DUPLICATE'){
             this.alertService.error('این ایمیل قبلا ثبت نام کرده است.', true);

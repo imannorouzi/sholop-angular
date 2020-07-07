@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
-import {} from '@types/googlemaps';
+import {} from 'googlemaps';
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
-import { DataService } from "../data.service";
+import { DataService } from "../utils/data.service";
 import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
-import {NavigationService} from "../navigation.service";
+import {NavigationService} from "../utils/navigation.service";
 
 
 @Component({
@@ -14,12 +14,12 @@ import {NavigationService} from "../navigation.service";
   styleUrls: ['./create-event.component.css']
 })
 export class CreateEventComponent implements OnInit, AfterViewInit {
-  @ViewChild('gmap') gmapElement: any;
-  @ViewChild('searchBox') searchInput: ElementRef;
-  @ViewChild('address2') address2: ElementRef;
-  @ViewChild('cropper', undefined) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', undefined) imageCropperModal:ModalComponent;
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('gmap', {static: true}) gmapElement: any;
+  @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
+  @ViewChild('address2', {static: true}) address2: ElementRef;
+  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
 
   name:string;
   data1:any;

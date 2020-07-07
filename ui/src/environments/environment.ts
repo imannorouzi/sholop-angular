@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  VERSION: require('../../package.json').version,
   firebase:
     {
       apiKey: "AIzaSyDPxrXEXL44MTWY5ZOhm55Z9EucFkS0Rg0",
@@ -12,7 +13,8 @@ export const environment = {
       projectId: "sholop-1526521509022",
       storageBucket: "sholop-1526521509022.appspot.com",
       messagingSenderId: "635253433511"
-    }
+    },
+  baseUrl: ''
 };
 
 /*

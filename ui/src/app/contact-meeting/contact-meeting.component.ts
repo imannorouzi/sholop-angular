@@ -1,9 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
-import {UtilService} from "../util.service";
+import {Component, OnInit} from '@angular/core';
+import {DateService} from "../utils/date.service";
 import {ActivatedRoute} from "@angular/router";
-import {DataService} from "../data.service";
-import {SpinnerComponent} from "../spinner/spinner.component";
+import {DataService} from "../utils/data.service";
+import {CommonService} from "../utils/common.service";
 
 @Component({
   selector: 'app-contact-meeting',
@@ -13,7 +12,7 @@ import {SpinnerComponent} from "../spinner/spinner.component";
 export class ContactMeetingComponent implements OnInit {
 
   constructor(public dateService: DateService,
-              public utilService: UtilService,
+              public commonService: CommonService,
               private route: ActivatedRoute,
               private dataService: DataService) { }
 
@@ -35,7 +34,7 @@ export class ContactMeetingComponent implements OnInit {
       this.uuid = params['uuid'];
       this.dateEventId = params['dateId'];
       this.action = params['action'];
-      this.style = this.utilService.getContactStatus(this.action);
+      this.style = this.commonService.getContactStatus(this.action);
 
       this.readMeeting();
     });

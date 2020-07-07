@@ -7,10 +7,11 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./confirm.component.css']
 })
 export class ConfirmComponent implements OnInit {
-  @ViewChild('childModal') public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
 
   @Input() object: any;
-  @Input() message: any = "آیا مطمئنید؟";
+  @Input() message: any = "";
+  @Input() title: any = "";
   @Output() confirmed: EventEmitter<any> = new EventEmitter();
 
 

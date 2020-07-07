@@ -24,6 +24,8 @@
             ],
             "styles": [
               "src/styles.css",
+              "src/dark-styles.css",
+              "src/theme.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": [
@@ -77,7 +79,9 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/theme.css",
+              "src/dark-styles.css"
             ],
             "scripts": [],
             "assets": [

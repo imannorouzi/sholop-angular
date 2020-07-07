@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {SpinnerComponent} from "../spinner/spinner.component";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'suggesting-contact-input',
@@ -8,11 +9,11 @@ import {DataService} from "../data.service";
   styleUrls: ['./suggesting-contact-input.component.css']
 })
 export class SuggestingContactInputComponent implements OnInit {
-  @ViewChild("spinner") spinner: SpinnerComponent;
+  @ViewChild("spinner", {static: true}) spinner: SpinnerComponent;
 
   contacts: any[] = [];
   inputValue: string = '';
-  show: boolean = false;
+  showing: boolean = false;
   loading: boolean = false;
 
   selectedIndex = -1;
@@ -24,8 +25,16 @@ export class SuggestingContactInputComponent implements OnInit {
   ngOnInit() {
   }
 
-  blur(){
+  hide(){
+    this.showing = false;
+  }
 
+  show(){
+    this.showing = true;
+  }
+
+  setDisplay(value: boolean = false){
+    this.showing = value;
   }
 
   onKeyUp(event: KeyboardEvent){
@@ -44,10 +53,21 @@ export class SuggestingContactInputComponent implements OnInit {
         break;
 
       default:
-        this.show = true;
-        this.readContacts();
+        this.showing = true;
+        this.readDummyContacts();
     }
     event.preventDefault();
+  }
+
+
+  private readDummyContacts() {
+    this.loading = true;
+
+    setTimeout( () => {
+      this.loading = false;
+      this.contacts = DummyData.CONTACTS;
+    }, 1500);
+
   }
 
   readContacts(){
@@ -69,7 +89,7 @@ export class SuggestingContactInputComponent implements OnInit {
   }
 
   onContactSelected(contact: any) {
-    this.show = false;
+    this.showing = false;
     this.inputValue = contact.name;
     this.contactSelected.emit(contact);
   }

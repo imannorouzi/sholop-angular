@@ -1,12 +1,26 @@
-.calendar-day{
-  cursor: pointer;
+.container{
+/*
+  min-width: 300px;*/
 }
 
-.calendar-day.selected{
+.calendar-title{
+  color: #212529;
+}
+
+.calendar-cell{
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  color: #212529;
+}
+
+.calendar-day.selected .calendar-cell{
   background: #222;
   color: white;
 }
-.calendar-day:hover{
+.calendar-cell:hover{
   background: #9d9d9d;
   color: white;
 }
@@ -48,21 +62,48 @@
   background: darksalmon;
 }
 td{
-  padding: 5px;
+  padding: 0 5px;
 }
 
 .holiday{
   color: red;
 }
 
-.today{
-  border: 1px solid #ddd;
+.today .calendar-cell{
+  border-color: #ddd;
 }
 
 .calendar-table th{
   font-size: 7px;
+  padding-top: 5px;
 }
 
 .calendar-gday{
   font-size: 10px;
+}
+
+.inline .calendar-container{
+  display: none;
+}
+
+.calendar-container{
+  /*width: fit-content;*/
+  width: 100%;
+  z-index: 20;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  padding: 10px;
+
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background: #f5f7fa;
+  -webkit-transition: opacity .3s linear;
+  transition: opacity .3s linear;
+}
+
+.inline:hover .calendar-container{
+  display: block;
+  animation: fade-in .2s ease both;
 }

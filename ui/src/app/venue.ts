@@ -13,7 +13,7 @@ export class Venue {
     title: string = '',
     lat: number = 18.5793,
     lng: number = 73.8143,
-    address1: string = '',
+    address1: string = 'تهران، در دوم، کدپستی ۲',
     address2: string = '',
     mapUrl: string = ''){
 

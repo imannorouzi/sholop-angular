@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
+import {DateService} from "../utils/date.service";
 
 
 @Component({
@@ -8,7 +8,7 @@ import {DateService} from "../date.service";
   styleUrls: ['./date.component.css']
 })
 export class DateComponent implements OnInit {
-  @ViewChild('input') input: ElementRef;
+  @ViewChild('input', {static: true}) input: ElementRef;
 
   @Input() selectedDate;
 
@@ -39,5 +39,9 @@ export class DateComponent implements OnInit {
 
   getValue(){
     return this.input.nativeElement.value;
+  }
+
+  clickOutside(value: boolean = false) {
+    this.isShowing = value;
   }
 }

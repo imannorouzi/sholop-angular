@@ -18,4 +18,6 @@
 }
 .contact{
   cursor: pointer;
+  background: #f5f7fa;
+  margin-bottom: 10px;
 }

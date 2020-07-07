@@ -1,30 +1,34 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {DateService} from "../utils/date.service";
 import {CommentsComponent} from "../comments/comments.component";
 import {ModalDirective} from "ngx-bootstrap";
-import {UtilService} from "../util.service";
-import {NavigationService} from "../navigation.service";
+import {NavigationService} from "../utils/navigation.service";
+import {CommonService} from "../utils/common.service";
+import {ReceptionService} from "../reception/reception.service";
 
 @Component({
   selector: 'meeting-item-modal',
   templateUrl: './meeting-item-modal.component.html',
   styleUrls: ['./meeting-item-modal.component.css']
 })
-export class MeetingItemModalComponent implements OnInit, OnChanges {
-  @ViewChild('childModal') public childModal:ModalDirective;
-  @ViewChild("comments") comments: CommentsComponent;
-
+export class MeetingItemModalComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild("comments", {static: true}) comments: CommentsComponent;
   @Input() event: any;
 
-
   constructor(public dateService: DateService,
-              public utilService: UtilService,
+              public commonService: CommonService,
+              public receptionService: ReceptionService,
               private navigationService: NavigationService) {
+  }
+
+
+  ngAfterViewInit(): void {
+    // this.comments.reset();
   }
 
   show(){
     this.childModal.show();
-
   }
 
   hide(){
@@ -32,7 +36,6 @@ export class MeetingItemModalComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
 
   }
 
@@ -42,17 +45,26 @@ export class MeetingItemModalComponent implements OnInit, OnChanges {
       this.event.attendees.forEach(att => {
         att.status = this.getContactStatus(att.id);
       });
-
     }
   }
 
 
   getContactStatus(id: number) : any {
     let contactEvent = this.event.contactEvents.find(ce => { return ce.contactId === id} );
-    return this.utilService.getContactStatus(contactEvent.status);
+    let status = '';
+    if(contactEvent){
+      status = contactEvent.status;
+    }
+
+    return this.commonService.getContactStatus(status);
   }
 
   goTo(url) {
     this.navigationService.navigate(url, this.event.id);
+  }
+
+  reception(contact: any) {
+    this.receptionService.receptionItemClick.next({event: this.event, contact: contact});
+    this.hide();
   }
 }

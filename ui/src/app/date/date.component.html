@@ -1,40 +1,11 @@
-<div clickOutside (clickOutside)="isShowing=false">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text"><i class="align-bottom fa fa-calendar"></i></span>
-    </div>
-    <input type="text" [class]="inputClasses+ ' ltr'" [value]="dateService.greToPersian(selectedDate)" (focus)="onFocus()" name="date" placeholder="Date" />
+<div class="iconed-input" click-zone (clickOutside)="clickOutside($event)">
+
+  <div class="frame flexbox-parent-row">
+    <i class=" ml-3 icon fa fa-calendar"></i>
+    <input class="flexbox-item-grow" type="text" [value]="dateService.greToPersian(selectedDate)" (focus)="onFocus()" name="date" [placeholder]="dateService.greToPersian(selectedDate)" >
   </div>
 
   <div id="calendar-container" class="form-group" *ngIf="isShowing"  >
     <calendar id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
   </div>
-  <!--<table *ngIf="isShowing" class="tiny-calendar">
-    <tr>
-      <th colspan="1"><i class="align-bottom fa fa-chevron-left"></i></th>
-      <th colspan="5" class="text-center">
-        <div>{{today.strMonth}} {{today.year}}</div>
-      </th>
-      <th colspan="1"><i class="align-bottom fa fa-chevron-right"></i></th>
-    </tr>
-
-    <tr>
-      <th>شنبه</th>
-      <th>یکشنبه</th>
-      <th>دوشنبه</th>
-      <th>سه شنبه</th>
-      <th>چهارشنبه</th>
-      <th>پنجشنبه</th>
-      <th>جمعه</th>
-    </tr>
-    <tr *ngFor="let week of month.weeks ">
-      <td class="tiny-calendar-day" (click)="onDaySelected(day)" [class.today]="day && (today.day===day.day && today.month===day.month && today.year==day.year)"
-          *ngFor="let day of week">
-        <div *ngIf="day" class="tiny-calendar-cell" ng-click="fixDate(parentIndex, day); $event.stopPropagation();">
-          <div class="tiny-calendar-jday">{{day.day}}</div>
-          &lt;!&ndash;<div class="tiny-calendar-gday english">{{day._d.getDate()}}</div>&ndash;&gt;
-        </div>
-      </td>
-    </tr>
-  </table>-->
 </div>

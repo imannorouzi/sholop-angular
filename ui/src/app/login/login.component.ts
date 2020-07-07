@@ -6,12 +6,15 @@ import { AfService } from '../providers/af.service';
 
 
 import {AlertService} from "../alert.service";
-import {AuthenticationService} from "../authentication.service";
-import {SpinnerService} from "../spinner.service";
+import {SpinnerService} from "../utils/spinner.service";
+import { of} from "rxjs";
+import {AuthService} from "../utils/auth.service";
+import {LocalStorageService} from "../utils/local-storage.service";
 
 @Component({
   selector: 'app-login',
-  templateUrl: 'login.component.html'
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.css']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -23,9 +26,10 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService,
     private alertService: AlertService,
     public AfService: AfService,
+    private authService: AuthService,
+    private localStorageService: LocalStorageService,
     private spinnerService: SpinnerService) {}
 
   ngOnInit() {
@@ -35,34 +39,50 @@ export class LoginComponent implements OnInit {
     });
 
     // reset login status
-    this.authenticationService.logout();
+    this.authService.logout();
     if(this.AfService.user) {
       this.AfService.logout();
     }
 
     // get return url from route parameters or default to '/'
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/meetings';
 
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  onSubmit(isGuest = false) {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.loginForm.invalid) {
+    if (this.loginForm.invalid && !isGuest) {
       return;
     }
 
+    let guest = {
+      userId: 'Guest',
+      jsonWebToken: '123',
+      name: 'کاربر میهمان',
+      department: 'OCMS',
+      role: 'normal'
+    };
+
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    (isGuest ?
+      of(guest)
+      :
+      this.authService.loginWithServer(this.f.username.value, this.f.password.value))
       .pipe(first())
       .subscribe(
         data => {
           if(data){
-            this.router.navigate([this.returnUrl]);
+            if(this.localStorageService.checkIn(data.userId)) {
+              this.authService.login(data);
+              this.router.navigate([this.authService.redirectUrl]);
+
+              this.authService.loggedIn.next();
+            }
           }
           this.loading = false;
         },

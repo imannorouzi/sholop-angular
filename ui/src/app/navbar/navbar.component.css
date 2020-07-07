@@ -1,15 +1,23 @@
 .navbar.navbar-expand-lg a{
-  color:grey;
+  color: #fff;
 }
 .navbar.navbar-expand-lg a:hover{
-  color:white;
+  color:#111111;
+}
+.navbar.navbar-expand-lg a.add-item:hover{
+  background: #343a40;
+  /*color: #9d9d9d;*/
 }
 .navbar.navbar-expand-lg{
-  background-color: #E0E2E6;
+  background-color: #0070ba;
 }
 
 .navbar{
   padding: 0;
+  border-bottom: #444;
+}
+.navbar-nav{
+  line-height: 1;
 }
 
 
@@ -24,9 +32,17 @@
 }
 
 
-.dropdown-menu{
-  z-index: 1050;
-  left: 0;
+
+.add-item{
+  border: 1px solid;
+  border-radius: 3px;
+  line-height: 1.5;
+  padding: 5px 20px;
+}
+
+.navbar-icon{
+  font-size: 25px;
+  margin-left: 10px;
 }
 
 /*.navbar-light .navbar-nav .nav-link.colored-navbar-item:hover{
@@ -47,3 +63,73 @@
   -o-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
   transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
 }*/
+
+.dropdown-menu .fa{
+  width: 25px;
+  text-align: center;
+  font-size: 20px;
+  margin-left: 15px;
+}
+.navbar.navbar-expand-lg .dropdown-menu a{
+  color: #3a3f48;
+}
+
+.dropdown-menu{
+  font-size: 15px;
+  text-align: right;
+  color: #0070ba;
+
+  width: fit-content;
+
+  z-index: 1050;
+  right: 0;
+
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background: #f5f7fa;
+  -webkit-transition: opacity .3s linear;
+  transition: opacity .3s linear;
+}
+
+.dropdown-item{
+  padding: 10px 20px;
+}
+
+.dropdown-toggle::after {
+  margin-right: 10px;
+  vertical-align: -1px;
+  margin-left: 0;
+  content: "";
+  font-size: 15px;
+}
+
+.nav-item .nav-item-bordered:hover{
+  animation: .6s bgFadeIn 0s forwards;
+}
+.nav-item a.nav-item-bordered{
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 6px 25px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+.nav-item a.nav-item-filled{
+  background-color: #ddd;
+  color: #0070ba;
+}
+
+.navbar-nav .dropdown-menu {
+  position: absolute;
+  float: none;
+  left: 0;
+}
+
+@keyframes bgFadeIn {
+  0% {
+    background-color: #ddd;
+  }
+  100% {
+    background-color: #f5f7fa;
+  }
+}
