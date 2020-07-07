@@ -1,0 +1,39 @@
+.receptions{
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 2000;
+}
+.reception:hover{
+  background: #e3eaf5;
+}
+.reception{
+  cursor: pointer;
+  width: 377px;
+  background: #f5f7fa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  margin-bottom: 10px;
+}
+
+.contact-image{
+  width: 70px;
+  height: 70px;
+}
+
+.contact{
+  line-height: 3;
+}
+
+.contact-name{
+  font-size: 24px;
+}
+
+.remove-icon:hover{
+  color: #0070ba;
+}
+.remove-icon{
+  padding: 3px;
+  cursor: pointer;
+}

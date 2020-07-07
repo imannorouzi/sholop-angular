@@ -1,0 +1,23 @@
+<div  class="receptions">
+
+  <div class="reception p-2" *ngFor="let item of receptions; let i=index;" (click)="receptionClicked(item, i)">
+
+    <div *ngIf="item && item.contact">
+      <i class="fa fa-remove pull-right remove-icon" (click)="removeReception(item, i)"></i>
+      <div class="row contact">
+        <div class="col text-right">
+          <img class="rounded-circle contact-image" [src]="item.contact.imageUrl ? item.contact.imageUrl : '../assets/images/user-placeholder.png'">
+        </div>
+
+        <div class="col-8 text-right">
+          <div class="contact-name" >
+            {{item.contact.name}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+

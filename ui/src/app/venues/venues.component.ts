@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AddVenueComponent} from "../add-venue/add-venue.component";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'app-venues',
@@ -24,7 +25,8 @@ export class VenuesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.readVenues('');
+    // this.readVenues('');
+    this.readDummyVenues();
     // this.loadAllUsers();
   }
 
@@ -50,6 +52,16 @@ export class VenuesComponent implements OnInit {
         this.loading = false;
       }
     )
+  }
+
+  private readDummyVenues() {
+    this.loading = true;
+
+    setTimeout( () => {
+      this.loading = false;
+      this.venues = DummyData.VENUES;
+    }, 1500);
+
   }
 
   deleteVenue(id: number, index: number) {

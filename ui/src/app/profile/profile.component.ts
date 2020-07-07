@@ -1,14 +1,12 @@
 import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
-import {AuthenticationService} from "../authentication.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {User} from "../user";
 import {MapsAPILoader} from "@agm/core";
-import {Venue} from "../venue";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'profile',
@@ -37,11 +35,11 @@ export class ProfileComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private authenticationService: AuthenticationService,
+              private authService: AuthService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,) {
 
-    this.user = authenticationService.getUser();
+    this.user = authService.getCurrentUser();
 
     this.cropperSettings1 = new CropperSettings();
     this.cropperSettings1.width = 200;
@@ -67,11 +65,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.authenticationService.getUser();
+    this.user = this.authService.getCurrentUser();
 
     this.zoom = 12;
-    // this.latitude = 18.5793;
-    // this.longitude = 73.8143;
 
     //set current position
     if(this.user.latitude === 0 ){
@@ -134,7 +130,7 @@ export class ProfileComponent implements OnInit {
       (data:any) => {
         if (data && data.msg === "OK") {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          data.object.token = this.authenticationService.getUser().token;
+          data.object.token = this.authService.getCurrentUser().token;
           localStorage.setItem('currentUser', JSON.stringify(data.object));
           this.alertService.success("تغییرات ذخیره شد.");
         }else{

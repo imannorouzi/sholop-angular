@@ -1,0 +1,90 @@
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div class="modal-header ">
+        <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="text-left">پذیرش</span>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="" *ngIf="item">
+
+          <div *ngIf="item.contact">
+            <div class="row p-2 ">
+
+
+              <div class="col text-right">
+                <img class="rounded-circle main-contact-image" [src]="item.contact.imageUrl ? item.contact.imageUrl : '../assets/images/user-placeholder.png'">
+              </div>
+
+              <div class="col-8 text-right">
+                <div class="font-noraml font-weight-bold" >
+                  <i class="role-icon fa fa-briefcase" *ngIf="item.contact.role==='owner'"></i>
+                  <i class="role-icon fa fa-handshake-o" *ngIf="item.contact.role==='reception'"></i>
+                  <i class="role-icon fa fa-user" *ngIf="item.contact.role==='user'"></i>
+                  {{item.contact.name}}
+                </div>
+                <div class="text-muted"><i class="fa fa-envelope"></i>  {{item.contact.email}}</div>
+                <div class="text-muted"><i class="fa fa-phone"></i>  {{item.contact.phone}}</div>
+              </div>
+
+            </div>
+          </div>
+
+          <hr>
+
+          <div *ngIf="item.event">
+
+            <h5 class="text-center">{{item.event.title}}</h5>
+
+            <div class="panel text-center font-weight-bold mb-3">
+              <i class="fa fa-calendar ml-2"></i>
+              <span> {{dateService.greToPersian(item.event.pointedDate.date, true)}}  </span>
+              <span *ngIf="item.event.pointedDate.startTime"> از  {{commonService.convertTimeString(item.event.pointedDate.startTime)}}</span>
+              <span *ngIf="item.event.pointedDate.endTime"> تا  {{commonService.convertTimeString(item.event.pointedDate.endTime)}}</span>
+            </div>
+
+            <hr>
+
+            <div class="table-responsive" *ngIf="item.event.attendees.length > 0">
+              <table class="table table-striped text-right">
+                <tr class="" *ngIf="item.event.chair">
+
+                  <td class="panel text-right contact-image-td">
+                    <img  class="rounded-circle contact-image" [src]="item.event.chair.imageUrl ? item.event.chair.imageUrl : '../assets/images/user-placeholder.png'">
+                  </td>
+                  <td>
+                    <div>{{item.event.chair.name}}</div>
+                    <div class="text-muted">میزبان</div>
+                  </td>
+                  <td>{{item.event.chair.phone}}</td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer ">
+      <div class="text-right w-100">
+        <button class="btn ml-2 primary" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> پرینت کارت </button>
+        <button class="btn secondary " (click)="hide()"> بستن </button>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

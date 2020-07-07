@@ -1,14 +1,14 @@
-<div class="mb-3">
-  <div [class]="'card meeting-item  ' + event.status" (click)="onClicked($event, event)">
+<div class="">
+  <div [class]="'meeting-item  ' + event.status" (click)="onClicked($event, event)">
 
     <div class="p-2">
 
       <div class="row ">
 
-        <div class="col-2 meeting-time text-right" >
+        <div class="col-sm-2 meeting-time text-right" >
           <span *ngIf="event.pointedDate.startTime" class="meeting-time">
             <i class="fa fa-clock-o ml-3"></i>
-            <span>{{utilService.convertTimeString(event.pointedDate.startTime)}}</span>
+            <span>{{commonService.convertTimeString(event.pointedDate.startTime)}}</span>
           </span>
 
           <span *ngIf="!event.pointedDate.startTime" class="meeting-time">
@@ -16,15 +16,15 @@
             <span>{{dateService.greToPersian(event.pointedDate.date)}}</span>
           </span>
 
-          <span *ngIf="event.contactEvent" class="" [style.color]="utilService.getContactStatus(event.contactEvent.status).color">
-            <i [class]="'mr-2 fa ' + utilService.getContactStatus(event.contactEvent.status).class"></i>
+          <span *ngIf="event.contactEvent" class="" [style.color]="commonService.getContactStatus(event.contactEvent.status).color">
+            <i [class]="'mr-2 fa ' + commonService.getContactStatus(event.contactEvent.status).class"></i>
           </span>
           <span *ngIf="event.chairId===user.id" class="">
             <i class="mr-1 fa fa-coffee" ></i>
           </span>
         </div>
 
-        <div class="col-md-4" >
+        <div class="col-sm-4" >
 
           <div class="panel text-right" >
 
@@ -37,18 +37,18 @@
 
         </div>
 
-        <div class="col-md-4 text-right">
+        <div class="col-sm-4 text-right">
           <span class="meeting-title font-weight-bold mr-2">{{event.title}}</span>
         </div>
 
-        <div [class]="'col-md-2 '">
-          {{utilService.getEventStatus(event.status).text}}
+        <div [class]="'col-sm-2 '">
+          {{commonService.getEventStatus(event.status).text}}
         </div>
       </div>
 
       <div *ngIf="false">
 
-        <!--<span class="text-left"><small class="text-muted">{{utilService.getStatusString(event.status)}}</small></span>-->
+        <!--<span class="text-left"><small class="text-muted">{{commonService.getStatusString(event.status)}}</small></span>-->
         <a [routerLink]="['/edit-meeting/' + event.id]" *ngIf="user.id === event.chairId" class="meeting-tool btn ml-1"><i class="fa fa-edit meeting-tool"></i></a>
         <a class="meeting-tool shadow dropdown-toggle btn" *ngIf="user.id !== event.chairId" data-toggle="dropdown" (click)="$event.stopPropagation" ></a>
         <div class="dropdown-menu rtl">
@@ -66,7 +66,7 @@
 
         <h5 class="card-title text-right row">
           <div class="col text-left meeting-time">
-            <span class="text-left"><small class="text-muted">{{utilService.getTimeDuration(event.pointedDate.startTime, event.pointedDate.endTime)}}</small></span>
+            <span class="text-left"><small class="text-muted">{{commonService.getTimeDuration(event.pointedDate.startTime, event.pointedDate.endTime)}}</small></span>
           </div>
         </h5>
 

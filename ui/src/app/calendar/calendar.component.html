@@ -3,7 +3,7 @@
     <div class="span12 w-100">
 
       <div class="flexbox-parent-row" *ngIf="mode==='inline'">
-        <div><button class="btn" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-arrow-circle-right"></i> ماه قبل</button></div>
+        <div><button class="secondary" (click)="getMonthMapArray(monthOffset-1)"><i class="fa fa-angle-right ml1"></i> ماه قبل</button></div>
         <div class="text-center calendar-title flexbox-item-grow">
           <div class="font-weight-bold">{{dateService.getMonthName(month.currentMonth-1)}} {{month.currentYear}}</div>
           <div class="text-muted">
@@ -12,7 +12,7 @@
           </div>
 
         </div>
-        <div><button class="btn" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-arrow-circle-left"></i></button></div>
+        <div><button class="secondary" (click)="getMonthMapArray(monthOffset+1)">ماه بعد <i class="fa fa-angle-left mr-1"></i></button></div>
       </div>
 
       <div class="calendar-container">
@@ -38,7 +38,7 @@
             <th>شنبه</th>
             <th>یکشنبه</th>
             <th>دوشنبه</th>
-            <th>سه شنبه</th>
+            <th>سه‌شنبه</th>
             <th>چهارشنبه</th>
             <th>پنجشنبه</th>
             <th>جمعه</th>

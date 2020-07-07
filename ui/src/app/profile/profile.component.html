@@ -1,144 +1,80 @@
-<section class="my-5 container">
+<div class="overflow-auto h-100 p-3">
 
-  <div class="card">
-    <div class="card-body">
+  <div class="bg-white p-5">
+    <div class="text-center justify-content-center">
+      <div class="w-25 m-auto text-center">
+        <img class="rounded-circle w-100" (click)="onImageClick()" [src]="user.imageUrl ? user.imageUrl : '../assets/images/user-placeholder.png'">
+        <small class="text-muted ">برای انتخاب عکس کلیک کنید</small>
+      </div>
 
-      <div class="row">
-
-        <div class="col-lg-5">
-
-          <div class="row justify-content-center">
-            <div class="col-sm-5 m-2 text-center">
-              <img class="rounded-circle w-100" (click)="onImageClick()" [src]="user.imageUrl ? user.imageUrl : '../assets/images/user-placeholder.png'">
-              <small class="text-muted ">برای انتخاب عکس کلیک کنید</small>
-            </div>
+      <!-- Image Modal -->
+      <modal #imageCropperModal
+             [modalTitle]="'Edit Image Size'"
+             [zIndex]="6"
+             [maximizable]="true">
+        <ng-container class="app-modal-body">
+          <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" ></img-cropper>
+        </ng-container>
+        <ng-container class="app-modal-footer">
+          <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
+          <!--<button type="button" class="btn btn-default">Save</button>-->
+          <div class="text-right">
+            <button type="button" class="btn primary" (click)="onImageCropperModalOk()">خوبه</button>
           </div>
+        </ng-container>
+      </modal>
 
-          <!-- Image Modal -->
-          <modal #imageCropperModal
-                 [modalTitle]="'Edit Image Size'"
-                 [zIndex]="6"
-                 [maximizable]="true">
-            <ng-container class="app-modal-body">
-              <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" ></img-cropper>
-            </ng-container>
-            <ng-container class="app-modal-footer">
-              <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
-              <!--<button type="button" class="btn btn-default">Save</button>-->
-              <div class="text-right">
-                <button type="button" class="btn btn-default" (click)="onImageCropperModalOk()">خوبه</button>
-              </div>
-            </ng-container>
-          </modal>
+      <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
 
-          <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+    </div>
 
-          <agm-map class="map" [latitude]="user.latitude" [longitude]="user.longitude" [scrollwheel]="true" [zoom]="12">
-            <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="user.latitude" [longitude]="user.longitude"></agm-marker>
-          </agm-map>
+    <div class="">
 
-        </div>
+      <div class="">
+        <label class=" col-form-label text-right">نام</label>
+        <input id="name" type="text" name="name" class="" placeholder="نام کامل" [(ngModel)]="user.name">
+      </div>
 
+      <!--Email-->
+      <div class="">
+        <label class="col-form-label text-right">ایمیل</label>
+        <input type="text" name="email" class=" ltr" readonly placeholder="ali@gmail.com" [(ngModel)]="user.username">
+      </div>
 
-        <div class="col-lg-7 mb-lg-0 mb-4">
+      <div class="">
+        <label class="col-form-label text-right">تلفن</label>
+        <input type="text" name="phone" class="ltr" placeholder="0912XXXXXXXX" [(ngModel)]="user.phone">
+      </div>
 
-          <div class="row ">
-            <label class="col-sm-2 col-form-label text-right">نام</label>
-            <div class="col-sm-10">
+      <div class="">
+        <label class=" col-form-label text-right">آدرس</label>
+            <input type="text" class="mb-2" size=80
+                   [(ngModel)]="user.farsiAddress1"
+                   #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
 
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
-                </div>
-                <input id="name" type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="user.name">
-              </div>
+            <input type="text" class="mb-2" :size=80
+                   [(ngModel)]="user.farsiAddress2"
+                   #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد" /> <!--on-place-changed="vm.placeChanged()"-->
 
-            </div>
+          <div class="mb-3">
+            <agm-map class="map" [latitude]="user.latitude" [longitude]="user.longitude" [scrollwheel]="true" [zoom]="12">
+              <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="user.latitude" [longitude]="user.longitude"></agm-marker>
+            </agm-map>
           </div>
-
-          <!--Email-->
-          <div class="row ">
-            <label class="col-sm-2 col-form-label text-right">ایمیل</label>
-            <div class="col-sm-10">
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
-                </div>
-                <input id="email" type="text" name="email" class="form-control ltr" readonly placeholder="ali@gmail.com" [(ngModel)]="user.username">
-              </div>
-
-            </div>
-          </div>
-
-          <div class="row ">
-            <label class="col-sm-2 col-form-label text-right">تلفن</label>
-            <div class="col-sm-10">
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-phone"></i></span>
-                </div>
-                <input id="phone" type="text" name="phone" class="form-control ltr" placeholder="0912XXXXXXXX" [(ngModel)]="user.phone">
-              </div>
-
-            </div>
-          </div>
-
-          <div class="row">
-            <label class="col-sm-2 col-form-label text-right">آدرس</label>
-            <div class="col-sm-10">
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
-                </div>
-                <input type="text" class="form-control" id="location_1" size=80
-                       [(ngModel)]="user.farsiAddress1"
-                       #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
-              </div>
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
-                </div>
-                <input type="text" class="form-control" id="location_2" size=80
-                       [(ngModel)]="user.farsiAddress2"
-                       #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد" /> <!--on-place-changed="vm.placeChanged()"-->
-              </div>
-
-            </div>
-          </div>
-
-          <div class="row ">
-            <label class="col-sm-2 col-form-label text-right">درباره من</label>
-            <div class="col-sm-10">
-
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="align-bottom fa fa-file-text"></i></span>
-                </div>
-                <textarea id="message" type="text" rows="7" name="description"
-                          [(ngModel)]="user.description"
-                          class="form-control" placeholder="توضیحاتی برای آشنایی مخاطبانتان"></textarea>
-              </div>
-
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-10 text-right">
-              <button type="button" class="btn btn-primary ml-2" (click)="updateUser()">دخیره</button>
-            </div>
-          </div>
-
-        </div>
 
       </div>
+
+      <div class=" ">
+        <label class="col-sm-2 col-form-label text-right">درباره من</label>
+            <textarea id="message" type="text" rows="7" name="description"
+                      [(ngModel)]="user.description"
+                      class="" placeholder="توضیحاتی برای آشنایی مخاطبانتان"></textarea>
+      </div>
+
+
+      <button type="button" class="btn primary ml-2" (click)="updateUser()">دخیره</button>
 
     </div>
   </div>
 
-
-</section>
+</div>

@@ -1,3 +1,157 @@
-<h1 class="text-center mt-5">
-  نمیدونم اینجا چی بذارم :|
-</h1>
+<reception-item-modal></reception-item-modal>
+<app-reception></app-reception>
+
+<div [class]="(authService.isLoggedIn() ? 'container' : '' ) + ' home h-100 '" id="home">
+
+  <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'toggled' : '')" #pageWrapper>
+
+    <a id="show-sidebar" class="btn btn-sm btn-dark"
+       *ngIf="authService.isLoggedIn()"
+       [routerLink]=""
+       (click)="pageWrapper.classList.add('toggled')">
+      <i class="fa fa-bars nav-icon active"></i>
+    </a>
+
+    <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
+      <div class="sidebar-content">
+        <div class="sidebar-brand text-left">
+          <a *ngIf="false">
+            <img id="icon" src="assets/images/Sholop-Logo.png" alt=""/>
+          </a>
+          <div id="close-sidebar"  (click)="pageWrapper.classList.remove('toggled')">
+            <i class="fa fa-angle-right nav-icon active "></i>
+          </div>
+        </div>
+        <div class="sidebar-header" >
+          <div class="user-pic">
+            <img class="img-responsive img-rounded" src="/assets/images/dummy/contact-3.png"
+                 alt="User picture">
+          </div>
+          <div class="user-info">
+          <span class="user-name">
+            <strong>{{authService.username}}</strong>
+          </span>
+            <span class="user-role">{{authService.getRoleString()}}</span>
+            <span class="user-status">
+            <i class="fa fa-circle"></i>
+            <span>Online</span>
+          </span>
+          </div>
+
+          <div class="input-group ">
+            <button class="form-control mt-3 primary" routerLink="/create-meeting" >ایجاد ملاقات</button>
+          </div>
+
+          <div class="input-group ">
+            <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
+          </div>
+        </div>
+
+        <!-- sidebar-header  -->
+        <div class="sidebar-search" *ngIf="false">
+          <div>
+            <div class="input-group">
+              <input type="text" class="form-control search-menu" placeholder="جسنجو...">
+              <div class="input-group-append">
+              <span class="input-group-text">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="sidebar-menu">
+          <ul>
+            <li class="sidebar-dropdown" [class]="(currentPath === '/meetings' ? 'selected' : '')" [routerLink]="'/meetings'">
+              <a [routerLink]="">
+                <i class="fa fa-users"></i>
+                <span>جلسات</span>
+              </a>
+            </li>
+            <li class="sidebar-dropdown" [class]="(currentPath === '/tokens' ? 'selected' : '')" [routerLink]="'/tokens'">
+              <a [routerLink]="">
+                <i class="fa fa-id-card"></i>
+                <span>مجوزهای ورود</span>
+              </a>
+            </li>
+
+            <li #employeesMenu class="sidebar-dropdown"
+                [class]="'sidebar-dropdown ' + (currentPath === '/contacts/employee' ? ' active selected' : (currentPath.startsWith('/contacts/employee/') ? ' active sub-selected' : ''))">
+              <a (click)="employeesMenu.classList.toggle('active')" [routerLink]="'/contacts/employee'">
+                <i class="fa fa-sitemap"></i>
+                <span>لیست کارمندان</span>
+              </a>
+              <div class="sidebar-submenu ">
+                <ul>
+                  <li [class]="(currentPath === '/contacts/employee/owner' ? 'selected' : '')">
+                    <a [routerLink]="'/contacts/employee/owner'"><i class="fa fa-briefcase"></i> مدیر سایت</a>
+                  </li>
+                  <li [class]="(currentPath === '/contacts/employee/reception' ? 'selected' : '')">
+                    <a [routerLink]="'/contacts/employee/reception'"><i class="fa fa-handshake-o"></i>پذیرش</a>
+                  </li>
+                  <li [class]="(currentPath === '/contacts/employee/user' ? 'selected' : '')">
+                    <a [routerLink]="'/contacts/employee/user'"><i class="fa fa-user"></i>کاربر</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="sidebar-dropdown" [class]="(currentPath === '/contacts/contact' ? 'selected' : '')" [routerLink]="'/contacts/contact'">
+              <a [routerLink]="">
+                <i class="fa fa-address-book"></i>
+                <span>لیست مخاطبان</span>
+              </a>
+            </li>
+
+            <li class="sidebar-dropdown" [class]="(currentPath === '/venues' ? 'selected' : '')" [routerLink]="'/venues'">
+              <a [routerLink]="">
+                <i class="fa fa-map-marker"></i>
+                <span>مکان‌های جلسات</span>
+              </a>
+            </li>
+
+            <li class="sidebar-dropdown" *ngIf="false" [class]="(currentPath === '/messages' ? 'selected' : '')" [routerLink]="'/messages'">
+              <a [routerLink]="">
+                <i class="fa fa-inbox"></i>
+                <span>پیام‌ها</span>
+                <span class="badge badge-pill badge-danger">3</span>
+              </a>
+            </li>
+
+
+            <li class="sidebar-dropdown" [class]="(currentPath === '/settings' ? 'selected' : '')" [routerLink]="'/settings'">
+              <a [routerLink]="">
+                <i class="fa fa-wrench"></i>
+                <span>تنظیمات</span>
+              </a>
+            </li>
+
+
+          </ul>
+        </div>
+        <!-- sidebar-menu  -->
+      </div>
+      <!-- sidebar-content  -->
+    </nav>
+
+    <main class="page-content flexbox-item-grow ">
+
+      <div class="flexbox-parent">
+        <div *ngIf="authService.isLoggedIn()" class="text-left nav-ribbon ">
+          <i [class]="'nav-icon fa ' + (navigationService.isHome() ? 'active fa-arrow-left' : ' fa-home' )"  (click)="navigationService.goToHome()"></i>
+        </div>
+        <div class="flexbox-item-grow">
+          <div class="h-100">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ModalDirective} from "ngx-bootstrap";
 import {Subscription} from "rxjs";
-import {SpinnerService} from "../spinner.service";
+import {SpinnerService} from "../utils/spinner.service";
 
 @Component({
   selector: 'spinner-modal',

@@ -1,11 +1,11 @@
-<div class="position-relative iconed-input">
+<div class="position-relative ">
   <div class="frame flexbox-parent-row">
-    <i class=" ml-3 icon fa fa-map-marker"></i>
+    <i class="ml-3 icon fa fa-coffee"></i>
     <input type="text" class="flexbox-item-grow"
-           id="chair" (blur)="blur()" (focus)="show=true" (keyup)="onKeyUp($event)" name="title" placeholder="نام مخاطب" [(ngModel)]="inputValue">
+           (blur)="hide()" (focus)="showing=true" (keyup)="onKeyUp($event)" name="title" placeholder="نام مخاطب" [(ngModel)]="inputValue">
   </div>
 
-  <div class="contacts " *ngIf="show">
+  <div class="contacts " *ngIf="showing">
     <div *ngFor="let c of contacts; let i = index;" [class.selected]="selectedIndex===i" (click)="onContactSelected(c)" class="row contact p-1 ml-2 mr-2">
       <div class="col-md-1">
         <img class="rounded-circle contact-image" [src]="'../assets/images/user-placeholder.png'">

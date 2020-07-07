@@ -1,0 +1,10 @@
+.map{
+  height: 100px;
+}
+
+.edit-step-button:hover{
+  color: burlywood;
+}
+.edit-step-button{
+  cursor: pointer;
+}

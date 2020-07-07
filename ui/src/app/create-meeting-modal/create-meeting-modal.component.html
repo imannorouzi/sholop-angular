@@ -1,46 +1,51 @@
 <div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog flexbox-parent">
+  <div class="modal-dialog">
 
     <div class="modal-content">
     <div class="modal-header ltr">
-      <button type="button" class="close pull-right" aria-label="Close" (click)="hide()">
+      <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
     <div class="modal-body">
 
-      <div class="rtl text-right" >
+      <div [class]="'rtl text-right ' + focusElement" >
 
           <!-- title -->
-          <div class="iconed-input">
+          <div  click-zone (clickOutside)="focusChanged($event ? 'step-title' : undefined)" class="title iconed-input">
 
             <label class="font-weight-bold">عنوان ملاقات</label>
+            <small class="text-muted tip">عنوان ملاقات، مثلا مصاحبه ...</small>
             <div class="frame flexbox-parent-row">
-              <i class=" ml-3 icon fa fa-tag"></i>
-              <input class="flexbox-item-grow" type="text" name="input" placeholder="مصاحبه برای پست مهندس کامپیوتر" [(ngModel)]="event.title">
+              <i class="ml-3 icon fa fa-tag"></i>
+              <input class="flexbox-item-grow" type="text" name="input" autocomplete="off" placeholder="مصاحبه برای پست مهندس کامپیوتر" [(ngModel)]="event.title">
             </div>
             <hr>
           </div>
 
           <!-- dates -->
-          <div>
+          <div  click-zone (clickOutside)="focusChanged( $event ? 'step-dates' : undefined)" class="dates">
             <div class="row " *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
               <div class="col-sm-4">
                 <label class="font-weight-bold" *ngIf="i===0" >تاریخ ملاقات</label>
+                <small class="tip text-muted" *ngIf="i===0" >تاریخ ملاقات</small>
                 <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
               </div>
               <div class="col-sm-3">
                 <label class="" *ngIf="i===0">از ساعت</label>
+                <small class="text-muted tip" *ngIf="i===0">از ساعت</small>
                 <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
               </div>
               <div class="col-sm-3">
                 <label class="" *ngIf="i===0">تا ساعت</label>
+                <small class="tip text-muted" *ngIf="i===0">تا ساعت</small>
                 <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
               </div>
               <div class="col-sm-2">
-                <h5 class="card-title text-right" *ngIf="i===0">&nbsp;</h5>
-                <button class="w-100" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
+                <label class="card-title text-right" *ngIf="i===0">&nbsp;</label>
+                <small class="tip" *ngIf="i===0">&nbsp;</small>
+                <button class="w-100 secondary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
@@ -54,13 +59,14 @@
           </div>
 
           <!-- location -->
-          <div click-zone (clickInside)="$event ? focusElement = 'location' : ''">
+          <div click-zone (clickOutside)="focusChanged($event ? 'step-location' : undefined)" class="location">
 
             <label class="font-weight-bold">محل ملاقات</label>
+            <small class="text-muted tip">با استفاده از نشانگر، می‌توانید مکان دقیق را مشخص کنید.</small>
             <div class="iconed-input" >
               <div class="frame flexbox-parent-row">
                 <i class=" ml-3 icon fa fa-map-marker"></i>
-                <input type="text" class="flexbox-item-grow" id="location_1"
+                <input type="text" class="flexbox-item-grow"
                        [(ngModel)]="event.venue.farsiAddress1"
                        autocomplete="off"
                        #searchBox name="address_1" placeholder="شهر،‌ خیابان">
@@ -72,43 +78,44 @@
 
               <div class="frame flexbox-parent-row">
                 <i class=" ml-3 icon fa fa-map-marker"></i>
-                <input type="text" class="flexbox-item-grow" id="location_2" size=80
+                <input type="text" class="flexbox-item-grow" :size=80
                        [(ngModel)]="event.venue.farsiAddress2"
                        #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد">
               </div>
               <venues-modal (onSelected)="onVenueSelected($event)" #venuesModal ></venues-modal>
             </div>
 
-            <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
-              <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
-            </agm-map>
+            <div class="map-container">
+              <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
+                <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+              </agm-map>
 
-            <p class="card-text" ><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
+            </div>
+
             <hr>
           </div>
 
           <!-- host-->
-
-          <div class="" >
+          <div class="host"  click-zone (clickOutside)="focusChanged($event ? 'step-host' : undefined) && suggestingContact.setDisplay(!$event)" >
             <label class="font-weight-bold">میزبان ملاقات</label>
 
             <div class="custom-control custom-checkbox text-right mb-2" *ngIf="false">
               <input type="checkbox" class="custom-control-input" #imChair [(ngModel)]="event.chairId" id="defaultUnchecked">
               <label class="custom-control-label" for="defaultUnchecked">خودم</label>
             </div>
-            <suggesting-contact-input (contactSelected)="chairSelected($event)"></suggesting-contact-input>
+            <suggesting-contact-input #suggestingContact (contactSelected)="chairSelected($event)"></suggesting-contact-input>
             <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
             <hr>
           </div>
 
           <!-- guests -->
-          <div class="iconed-input">
+          <div class="guest iconed-input"  click-zone (clickOutside)="focusChanged($event ? 'step-guest' : undefined)">
 
             <div >
               <label class="font-weight-bold">میهمانان</label>
               <div class="frame flexbox-parent-row">
-                <i class=" ml-3 icon fa fa-map-marker"></i>
-                <input type="text" class="flexbox-item-grow "  placeholder="نام، آدرس ایمیل، ... ">
+                <i class= "ml-3 icon fa fa-users"></i>
+                <input type="text" class="flexbox-item-grow " autocomplete="off" placeholder="نام، آدرس ایمیل، ... ">
                 <i class="mr-3 input-button fa fa-user-plus" (click)="addContact($event)"></i>
                 <i class="mr-3 input-button fa fa-address-book" (click)="onImportClick($event)"></i>
               </div>
@@ -146,14 +153,14 @@
           </div>
 
           <!-- welcome msg-->
-          <div class="iconed-input">
+          <div class="welcome"  click-zone (clickOutside)="focusChanged($event ? 'step-welcome' : undefined)">
 
             <label class="font-weight-bold">متن دعوت</label>
+            <small class="tip text-muted">این متن به عنوان دعوت و خوشامدگویی برای میهمان ارسال می شود.</small>
             <div class="frame flexbox-parent-row">
               <i class="ml-3 icon fa fa-smile-o"></i>
-              <textarea rows="4" type="text" name="welcome" [(ngModel)]="event.welcomeMessage" class="flexbox-item-grow" placeholder="پیام خوشامد گویی"></textarea>
+              <textarea rows="2" type="text" name="welcome" [(ngModel)]="event.welcomeMessage" class="flexbox-item-grow" placeholder="پیام خوشامد گویی"></textarea>
             </div>
-            <p class="card-text"><small class="text-muted">این متن به عنوان دعوت و خوشامدگویی برای میهمان ارسال می شود.</small></p>
           </div>
 
           <!-- buttons -->
@@ -163,7 +170,7 @@
     </div>
 
     <div class="modal-footer text-right w-100">
-          <button type="button" [disabled]="submitting" class=" " > <i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+          <button type="button" [disabled]="submitting" class="primary" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
       </div>
     </div>
 

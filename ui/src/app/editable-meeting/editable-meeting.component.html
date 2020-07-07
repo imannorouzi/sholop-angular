@@ -10,7 +10,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="align-bottom fa fa-list"></i></span>
             </div>
-            <input id="title" type="text" name="title" class="form-control" placeholder="عنوان ملاقات" [(ngModel)]="event.title">
+            <input type="text" name="title" class="form-control" placeholder="عنوان ملاقات" [(ngModel)]="event.title">
           </div>
           <p class="card-text"><small class="text-muted">عنوان کوتاهی در مورد موضوع جلسه</small></p>
         </div>
@@ -35,7 +35,7 @@
             </div>
             <div class="col-sm-2">
               <h5 class="card-title text-right">&nbsp;</h5>
-              <button class="w-100 btn btn-outline-primary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
+              <button class="w-100 btn secondary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
                 <i class="fa fa-close font-x-large"></i>
               </button>
             </div>
@@ -56,7 +56,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
             </div>
-            <input type="text" class="form-control" id="location_1" size=80
+            <input type="text" class="form-control" size=80
                    [(ngModel)]="event.venue.farsiAddress1"
                    autocomplete="off"
                    #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
@@ -66,7 +66,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text"><i class="align-bottom fa fa-map-marker"></i></span>
             </div>
-            <input type="text" class="form-control" id="location_2" size=80
+            <input type="text" class="form-control" :size=80
                    [(ngModel)]="event.venue.farsiAddress2"
                    #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد" /> <!--on-place-changed="vm.placeChanged()"-->
           </div>
@@ -169,8 +169,8 @@
       </div>
 
       <div layout="row " class="text-right">
-        <button type="button" [disabled]="submitting" class="btn btn-primary" (click)="onSubmit()" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
-        <button type="button" (click)="goTo('/dashboard')" class="btn btn-outline-primary mr-2" >انصراف</button>
+        <button type="button" [disabled]="submitting" class="btn primary" (click)="onSubmit()" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
+        <button type="button" (click)="goTo('/meetings')" class="btn secondary mr-2" >انصراف</button>
       </div>
 
 

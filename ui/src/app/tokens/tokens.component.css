@@ -1,0 +1,25 @@
+.date-title-container{
+  margin-bottom: 10px;
+  background: rgb(255,255,255);
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+}
+
+.date-title{
+  padding: 5px 15px;
+  background: transparent;
+}
+
+.owl{
+  max-height: 250px;
+
+}
+.token-container{
+}
+
+.token-item:not(:last-child) {
+  border-bottom: 1px dotted #9da3a6;
+}
+
+.search-input{
+  font-size: 17px;
+}

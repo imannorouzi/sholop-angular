@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AuthenticationService} from "../authentication.service";
-import {CommonService} from "../common.service";
+import {CommonService} from "../utils/common.service";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'app-navbar',
@@ -11,12 +11,10 @@ export class NavbarComponent implements OnInit {
 
   @Input() theme: string;
   currentUser : any = undefined;
-  authenticationService: AuthenticationService;
 
 
-  constructor(private as: AuthenticationService,
+  constructor(public authService: AuthService,
               private commonService: CommonService) {
-    this.authenticationService = as;
   }
 
   ngOnInit() {

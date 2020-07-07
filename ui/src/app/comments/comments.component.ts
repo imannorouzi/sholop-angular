@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {AuthenticationService} from "../authentication.service";
-import {DataService} from "../data.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {first} from "rxjs/operators";
+import {DataService} from "../utils/data.service";
+import {FormBuilder,  FormGroup, Validators} from "@angular/forms";
 import {User} from "../user";
 import {AlertService} from "../alert.service";
 import {DummyData} from "../dummyData";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'comments',
@@ -16,8 +15,9 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
 
   commentForm: FormGroup;
   submitted: boolean = false;
+  rows: number = 1;
 
-  constructor(private authenticationService: AuthenticationService,
+  constructor(private authService: AuthService,
               private dataService: DataService,
               private formBuilder: FormBuilder,
               private alertService: AlertService) { }
@@ -36,7 +36,7 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.eventId.currentValue !== changes.eventId.previousValue){
-      this.reset();
+      // this.reset();
     }
   }
 
@@ -45,13 +45,11 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
       comment: ['', [Validators.minLength(3), Validators.required]]
     });
 
-    if(!this.anonymous){
-      this.user = this.authenticationService.getUser();
-    }
+    this.user = this.authService.getCurrentUser();
   }
 
   ngAfterViewInit(){
-    // this.reset();
+    this.reset();
   }
 
   reset(){

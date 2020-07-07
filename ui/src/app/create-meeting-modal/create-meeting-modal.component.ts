@@ -1,17 +1,17 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
-import { DataService } from "../data.service";
+import { DataService } from "../utils/data.service";
 import {ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
-import {NavigationService} from "../navigation.service";
+import {NavigationService} from "../utils/navigation.service";
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
-import {AuthenticationService} from "../authentication.service";
 import {AlertService} from "../alert.service";
 import {MapsAPILoader} from "@agm/core";
-import {DateService} from "../date.service";
+import {DateService} from "../utils/date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
 import {ModalDirective} from "ngx-bootstrap";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'create-meeting-modal',
@@ -36,7 +36,7 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
 
   constructor(private dataService : DataService,
               private navigationService: NavigationService,
-              private authenticationService: AuthenticationService,
+              private authService: AuthService,
               private alertService: AlertService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
@@ -65,7 +65,7 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
 
   ngOnInit() {
 
-    this.user = this.authenticationService.getUser();
+    this.user = this.authService.getCurrentUser();
 
     //set google maps defaults
     this.zoom = 12;
@@ -159,7 +159,7 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
   onSubmit(){
     if(this.validateForm()) {
       if (this.event.venue && this.event.venue.id === 0) {
-        // this.event.userId = this.authenticationService.getUser().id;
+        // this.event.userId = this.authService.getUser().id;
         this.event.venue = new Venue(
           -1,
           "",
@@ -176,7 +176,7 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
         (value:any) => {
           // console.log(value);
           this.submitting = false;
-          this.navigationService.navigate("/dashboard");
+          this.navigationService.navigate("/meetings");
 
           this.alertService.success("ملاقات با موفقیت ایجاد شد.");
         },
@@ -264,4 +264,9 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
     this.navigationService.navigate(url);
   }
 
+  focusChanged(focusClass: any) {
+    if(focusClass) {
+      this.focusElement = focusClass;
+    }
+  }
 }

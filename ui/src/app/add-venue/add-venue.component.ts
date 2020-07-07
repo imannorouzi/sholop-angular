@@ -1,13 +1,11 @@
 import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../ng-modal/modal.component";
-import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
-import {AuthenticationService} from "../authentication.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {Venue} from "../venue";
 import {MapsAPILoader} from "@agm/core";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'add-venue',
@@ -39,7 +37,7 @@ export class AddVenueComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private authenticationService: AuthenticationService,
+              private authService: AuthService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone) {
   }
@@ -87,7 +85,7 @@ export class AddVenueComponent implements OnInit {
   }
 
 
-  show(venue){
+  show(venue = new Venue()){
     if(venue) this.venue = venue;
     this.modal.show();
   }
@@ -112,7 +110,7 @@ export class AddVenueComponent implements OnInit {
     if(!this.validateForm()) return;
 
       this.modal.hide();
-      this.venue['userId'] = this.authenticationService.getUser().id;
+      this.venue['userId'] = this.authService.userId;
 
       this.dataService.updateVenue(this.venue).subscribe(
         (value:any) => {

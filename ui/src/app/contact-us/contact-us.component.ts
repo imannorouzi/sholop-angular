@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {first} from "rxjs/operators";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {AlertService} from "../alert.service";
 
 @Component({
@@ -16,7 +16,6 @@ export class ContactUsComponent implements OnInit {
   submitted: boolean = false;
   loading: boolean = false;
 
-  view: number = 1;
 
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
@@ -61,10 +60,5 @@ export class ContactUsComponent implements OnInit {
           this.alertService.error(error);
           this.loading = false;
         });
-  }
-
-  changeView(event, viewNumber: number) {
-    event.preventDefault();
-    this.view = viewNumber;
   }
 }

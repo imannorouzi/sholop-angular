@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
-import {UtilService} from "../util.service";
+import {DateService} from "../utils/date.service";
 import {ActivatedRoute} from "@angular/router";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
+import {CommonService} from "../utils/common.service";
 
 @Component({
   selector: 'app-user-meeting',
@@ -12,7 +12,7 @@ import {DataService} from "../data.service";
 export class UserMeetingComponent implements OnInit {
 
   constructor(public dateService: DateService,
-              public utilService: UtilService,
+              public commonService: CommonService,
               private route: ActivatedRoute,
               private dataService: DataService) { }
 

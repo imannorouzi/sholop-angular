@@ -1,0 +1,25 @@
+.modal-dialog{
+  min-width: 400px;
+}
+.contact-image:first-child{
+  margin-left: 0;
+}
+
+.contact-image-td{
+  width: 50px;
+}
+.main-contact-image{
+  width: 80px;
+  height: 80px;
+}
+.contact-image{
+  width: 35px;
+  height: 35px;
+}
+
+
+table td{
+  vertical-align: middle;
+  border: none;
+}
+

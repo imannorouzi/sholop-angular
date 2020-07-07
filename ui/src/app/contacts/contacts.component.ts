@@ -1,11 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {ConfirmComponent} from "../confirm/confirm.component";
 import {AddContactComponent} from "../add-contact/add-contact.component";
-import {UtilService} from "../util.service";
 import {ActivatedRoute} from "@angular/router";
+import {CommonService} from "../utils/common.service";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'app-contacts',
@@ -19,14 +20,16 @@ export class ContactsComponent implements OnInit {
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
 
   contacts: any[] = [];
+  deletingContact: any;
   loading: boolean = false;
 
   currentUser: User;
   searchString: string = '';
   type: string = 'contact';
+  role: string = '';
 
   constructor(private dataService: DataService,
-              public utilService: UtilService,
+              public commonService: CommonService,
               private route: ActivatedRoute,) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
@@ -36,7 +39,9 @@ export class ContactsComponent implements OnInit {
     // this.loadAllUsers();
     this.route.params.subscribe(params => {
       this.type = params['type'];
-      this.readContacts('', params['type']);
+      this.role = params['role'];
+      // this.readContacts('', params['type']);
+      this.readDummyContacts();
     });
   }
 
@@ -62,6 +67,17 @@ export class ContactsComponent implements OnInit {
         this.loading = false;
       }
     )
+  }
+
+  private readDummyContacts() {
+    this.loading = true;
+    this.contacts = [];
+
+    setTimeout( () => {
+      this.loading = false;
+      this.contacts = DummyData.CONTACTS.filter( c => c.contactType === this.type && (!this.role || c.role === this.role));
+    }, 1500);
+
   }
 
   deleteConfirmed(contact){
@@ -94,6 +110,7 @@ export class ContactsComponent implements OnInit {
 
   onDeleteUser(id: any, index: number, event) {
     event.preventDefault();
+    this.deletingContact = this.contacts[index];
     this.confirm.setObject({id: id, index: index});
     this.confirm.show();
   }

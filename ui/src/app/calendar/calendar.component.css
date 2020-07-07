@@ -1,3 +1,8 @@
+.container{
+/*
+  min-width: 300px;*/
+}
+
 .calendar-title{
   color: #212529;
 }
@@ -82,25 +87,23 @@ td{
 }
 
 .calendar-container{
-  width: fit-content;
-  background: #f7f7f7;
-  border: 1px solid #09164d;
-  border-radius: 5px;
+  /*width: fit-content;*/
+  width: 100%;
   z-index: 20;
   position: absolute;
   right: 0;
   top: 100%;
+  padding: 10px;
+
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background: #f5f7fa;
+  -webkit-transition: opacity .3s linear;
+  transition: opacity .3s linear;
 }
 
 .inline:hover .calendar-container{
   display: block;
   animation: fade-in .2s ease both;
-}
-@keyframes fade-in{
-  0%{
-    opacity: 0;
-  }
-  100%{
-    opacity: 1;
-  }
 }

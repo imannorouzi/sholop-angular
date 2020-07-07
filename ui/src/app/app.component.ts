@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { environment } from "../environments/environment.prod";
-import {CommonService} from "./common.service";
 import {CreateMeetingModalComponent} from "./create-meeting-modal/create-meeting-modal.component";
+import {CommonService} from "./utils/common.service";
+import {AuthService} from "./utils/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,8 @@ export class AppComponent implements OnInit{
   title = 'ui';
   theme = 'light';
 
-  constructor(private commonService: CommonService) {
+  constructor(private commonService: CommonService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {

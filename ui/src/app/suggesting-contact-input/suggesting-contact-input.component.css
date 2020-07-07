@@ -29,3 +29,16 @@
   line-height: 2.5;
   text-align: right;
 }
+
+
+textarea:focus,
+input:focus{
+  border: 1px solid #eee;
+  background: #eeeeee;
+}
+textarea,
+input{
+  border: 1px solid transparent;
+  background: #f6f6f6;
+  padding: 5px;
+}

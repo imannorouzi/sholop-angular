@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DateService} from "../date.service";
-import {UtilService} from "../util.service";
+import {DateService} from "../utils/date.service";
 import {User} from "../user";
-import {AuthenticationService} from "../authentication.service";
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
+import {CommonService} from "../utils/common.service";
+import {AuthService} from "../utils/auth.service";
 
 @Component({
   selector: 'meeting-item',
@@ -19,9 +19,9 @@ export class MeetingItemComponent implements OnInit {
   attendeesString: string;
 
   constructor(public dateService: DateService,
-              public utilService: UtilService,
-              private authenticationService: AuthenticationService,
-              private dataService: DataService) {
+              public commonService: CommonService,
+              private dataService: DataService,
+              private authService: AuthService) {
   }
 
   ngOnInit() {
@@ -33,7 +33,7 @@ export class MeetingItemComponent implements OnInit {
       this.attendeesString = this.event.attendees[0].name + ' و ' + (this.event.attendees.length - 1) + ' میهمان دیگر';
     }
 
-    this.user = this.authenticationService.getUser();
+    this.user = this.authService.getCurrentUser();
 
   }
 
@@ -48,7 +48,7 @@ export class MeetingItemComponent implements OnInit {
           this.event.contactEvent = data['object'];
           this.event.attendees.forEach(att => {
             if(att.email === this.user.username){
-              att.status = this.utilService.getContactStatus(this.event.contactEvent.status);
+              att.status = this.commonService.getContactStatus(this.event.contactEvent.status);
             }
           })
         }

@@ -1,7 +1,7 @@
 <!-- import contact Modal -->
 <modal #selectVenues
        [modalTitle]="'مکان جلسات'"
-       [zIndex]="5"
+       [zIndex]="10"
        [width]="700"
        [maximizable]="true">
   <ng-container class="app-modal-body">
@@ -34,7 +34,7 @@
         </div>
 
         <div class="col-md-2 text-left">
-          <button class="btn btn-outline-primary" (click)="onVenueSelected(venue)"><i class="fa fa-check"></i> انتخاب</button>
+          <button class="btn secondary" (click)="onVenueSelected(venue)"><i class="fa fa-check"></i> انتخاب</button>
         </div>
 
 
@@ -45,7 +45,7 @@
     </div>
 
     <div class="text-center" *ngIf="venues.length === 0 && !loading">
-      <object class="w-25" type="image/svg+xml" data="../../assets/images/owl.svg">
+      <object class="w-25" type="image/svg+xml" data="../../assets/images/owl-old/owl.svg">
         <param name="class" value="look-around" />
       </object>
       <div class="text-muted">هیچی پیدا نکردم</div>
@@ -60,7 +60,7 @@
     <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
     <!--<button type="button" class="btn btn-default">Save</button>-->
     <div class="text-right">
-      <button type="button" class="btn btn-default" (click)="selectVenues.hide()">لغو</button>
+      <button type="button" class="btn secondary" (click)="selectVenues.hide()">لغو</button>
     </div>
   </ng-container>
 </modal>

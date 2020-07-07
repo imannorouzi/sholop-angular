@@ -1,6 +1,5 @@
 .app-container{
-  background: #ddd;
-  background: linear-gradient(180deg, #eee 0%, #eee 52%, #eee 100%);
+  background: #f5f7fa;
   color: #212529;
   font-size: 15px;
 }

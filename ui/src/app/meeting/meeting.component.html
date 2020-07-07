@@ -7,7 +7,7 @@
       <div class="container" *ngIf="event">
 
         <h5 class="text-right mt-2 mb-2">{{event.title}}
-            <small class="text-muted">({{utilService.getStatusString(event.status)}})</small>
+            <small class="text-muted">({{commonService.getStatusString(event.status)}})</small>
         </h5>
 
         <!--Dates-->
@@ -16,8 +16,8 @@
             <div>
 
               <h5><i class="fa fa-calendar ml-2"></i> {{dateService.greToPersian(date.date, true)}}
-                <span class="text-muted" *ngIf="date.startTime"> از  {{utilService.convertTimeString(date.startTime)}}</span>
-                <span class="text-muted" *ngIf="date.endTime"> تا  {{utilService.convertTimeString(date.endTime)}}</span>
+                <span class="text-muted" *ngIf="date.startTime"> از  {{commonService.convertTimeString(date.startTime)}}</span>
+                <span class="text-muted" *ngIf="date.endTime"> تا  {{commonService.convertTimeString(date.endTime)}}</span>
               </h5>
 
             </div>
@@ -59,7 +59,7 @@
         <comments [anonymous]="anonymous" [uuid]="uuid" [guest]="guest" #comments [eventId]="event ? event.id : -1"></comments>
 
         <div class=" text-right" *ngIf="!anonymous && event.chairId===currentUserId">
-          <button class="btn btn-default ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
+          <button class="btn primary ml-2" (click)="goTo('/edit-meeting')"> ویرایش </button>
         </div>
       </div>
 

@@ -2,16 +2,14 @@
 
   <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="">
 
-    <div class="iconed-input input-action flexbox-parent-row">
-      <div class="frame flexbox-parent-row flexbox-item-grow">
-        <i class=" ml-3 icon fa fa-comment"></i>
+    <div class=" flexbox-parent-row">
+      <i class=" ml-3 icon fa fa-comment"></i>
 
-        <textarea class="" rows="3"
-               placeholder="نظرتان را بنویسید..."
-                  [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" ></textarea>
+      <textarea #textAreaElement class="comment-textarea" (focus)="rows = 3" (blur)="rows=1" [rows]="rows"
+                placeholder="نظرتان را بنویسید..."
+                [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" ></textarea>
 
-      </div>
-      <button type="submit" class="iconed-input-action">ارسال</button>
+      <button type="submit" class=" secondary send-comment">ارسال</button>
     </div>
   </form>
 
@@ -30,8 +28,8 @@
 
     </div>
 
-    <div class="more-comments" *ngIf="!noMoreComments">
-      <div class="text-center" (click)="readComments($event)"> نظرات بیشتر  <i class="fa fa-angle-down mr-2"></i></div>
+    <div class="more-comments text-right" *ngIf="!noMoreComments">
+      <a href="" class="" (click)="readComments($event)"> نظرات بیشتر  <i class="fa fa-angle-down mr-2"></i></a>
     </div>
 
   </div>

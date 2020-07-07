@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {DataService} from "../data.service";
+import {DataService} from "../utils/data.service";
 import {ModalDirective} from "ngx-bootstrap";
 import {SpinnerComponent} from "../spinner/spinner.component";
 

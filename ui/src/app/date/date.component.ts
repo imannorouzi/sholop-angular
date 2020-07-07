@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {DateService} from "../date.service";
+import {DateService} from "../utils/date.service";
 
 
 @Component({

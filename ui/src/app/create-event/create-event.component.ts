@@ -2,10 +2,10 @@ import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/
 import {} from 'googlemaps';
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
-import { DataService } from "../data.service";
+import { DataService } from "../utils/data.service";
 import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
-import {NavigationService} from "../navigation.service";
+import {NavigationService} from "../utils/navigation.service";
 
 
 @Component({

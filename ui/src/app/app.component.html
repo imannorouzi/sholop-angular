@@ -1,16 +1,17 @@
-<div [class]="'flex-parent rtl h-100 app-container ' + theme">
+<div [class]="' rtl h-100 app-container ' + theme">
   <create-meeting-modal #createMeetingModal></create-meeting-modal>
 
-  <app-navbar [theme]="theme"></app-navbar>
   <alert></alert>
   <spinner-modal></spinner-modal>
 
+  <div class="flexbox-parent">
+    <app-navbar></app-navbar>
 
-  <div class="grow scroll flex-parent">
-    <div class="grow">
-      <router-outlet></router-outlet>
+    <div class="flexbox-item-grow">
+      <app-home>
+        <router-outlet></router-outlet>
+      </app-home>
     </div>
 
-    <sholop-footer class=""></sholop-footer>
   </div>
 </div>

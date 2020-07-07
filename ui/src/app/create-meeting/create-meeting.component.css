@@ -8,3 +8,15 @@
 .edit-step-button{
   cursor: pointer;
 }
+
+.icon{
+  padding: 5px;
+}
+.frame{
+  margin-bottom: 5px;
+}
+
+.box{
+  background: white;
+  padding: 10px;
+}
