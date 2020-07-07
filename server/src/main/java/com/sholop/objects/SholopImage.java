@@ -2,10 +2,6 @@ package com.sholop.objects;
 
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
-import java.util.Date;
 
 /**
  * Created by Pooyan on 3/20/2018.

@@ -9,7 +9,6 @@ import com.sholop.db.repositories.RepositoryFactory;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.ResponseObject;
 import com.sholop.objects.User;
-import io.dropwizard.auth.Auth;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -181,7 +180,7 @@ public class UserAPIs {
     }
 
     @PostMapping("/update-user")
-    public Response updateUser(@Auth User u,
+    public Response updateUser( User u,
                                @FormDataParam("file") InputStream uploadedInputStream,
                                @FormDataParam("file") FormDataContentDisposition fileDetail,
                                @FormDataParam("file") FormDataBodyPart body,

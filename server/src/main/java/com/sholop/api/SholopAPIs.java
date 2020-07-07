@@ -10,7 +10,6 @@ import com.sholop.db.repositories.RepositoryFactory;
 import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
-import io.dropwizard.auth.Auth;
 import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -102,7 +101,7 @@ public class SholopAPIs {
 
     @PermitAll
     @PostMapping("/create-meeting")
-    public Response createMeeting(@Auth User user, String jsonMeetingString) throws JSONException, IOException {
+    public Response createMeeting( User user, String jsonMeetingString) throws JSONException, IOException {
 
         Gson gson = new Gson();
         int id = -1;
@@ -172,7 +171,7 @@ public class SholopAPIs {
     }
 
     @GetMapping("/get-meetings")
-    public Response getMeetings(@Auth User user,
+    public Response getMeetings( User user,
                                 @QueryParam("date") String dateString) throws JSONException {
 
         Gson gson = new Gson();
@@ -222,7 +221,7 @@ public class SholopAPIs {
     }
 
     @GetMapping("/get-meeting-dates")
-    public Response getMeetingDates(@Auth User user,
+    public Response getMeetingDates( User user,
                                     @QueryParam("startDate") String startDateString,
                                     @QueryParam("endDate") String endDateString) throws JSONException {
 
@@ -254,7 +253,7 @@ public class SholopAPIs {
     }
 
     @GetMapping("/get-meeting")
-    public Response getMeeting(@Auth User user,
+    public Response getMeeting( User user,
                                @QueryParam("meetingId") String meetingId) throws JSONException {
 
         Gson gson = new Gson();
@@ -346,7 +345,7 @@ public class SholopAPIs {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/create-comment")
-    public Response createComment(@Auth User user, String jsonCommentString) throws JSONException, IOException {
+    public Response createComment( User user, String jsonCommentString) throws JSONException, IOException {
 
         Gson gson = new Gson();
         int id = -1;
@@ -401,7 +400,7 @@ public class SholopAPIs {
 
     @PermitAll
     @PostMapping("/delete-comment")
-    public Response deleteComment(@Auth User user,
+    public Response deleteComment( User user,
                                   String id){
 
         Gson gson = new Gson();
@@ -450,7 +449,7 @@ public class SholopAPIs {
 
 
     @GetMapping("/get-comments")
-    public Response getComments(@Auth User user,
+    public Response getComments( User user,
                                 @QueryParam("event_id") int eventId,
                                 @QueryParam("page") int page) throws JSONException {
 
@@ -497,7 +496,7 @@ public class SholopAPIs {
 
 
     @GetMapping("/get-events")
-    public Response getEvents(@Auth User user, String userId) throws JSONException {
+    public Response getEvents( User user, String userId) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -519,7 +518,7 @@ public class SholopAPIs {
 
     @PermitAll
     @GetMapping("/get-venues")
-    public Response getVenues(@Auth User user, @QueryParam("hint") String hint) throws JSONException {
+    public Response getVenues( User user, @QueryParam("hint") String hint) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -580,16 +579,10 @@ public class SholopAPIs {
 
         Gson gson = new Gson();
 
-        try {
-            String url = Utils.saveFile(uploadedInputStream, fileDetail, body, "/images/event/album");
+        String url = "";//Utils.saveFile(uploadedInputStream, fileDetail, body, "/images/event/album");
 
-            return Response.ok(gson.toJson(new ResponseObject("OK", url)))
-                    .build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
+        return Response.ok(gson.toJson(new ResponseObject("OK", url)))
+                .build();
     }
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -601,16 +594,10 @@ public class SholopAPIs {
 
         Gson gson = new Gson();
 
-        try {
-            String url = Utils.saveFile(uploadedInputStream, fileDetail, body, "/docs/event/attachments");
+        String url = "";//Utils.saveFile(uploadedInputStream, fileDetail, body, "/docs/event/attachments");
 
-            return Response.ok(gson.toJson(new ResponseObject("OK", url)))
-                    .build();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
+        return Response.ok(gson.toJson(new ResponseObject("OK", url)))
+                .build();
     }
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -690,7 +677,7 @@ public class SholopAPIs {
 
     @PermitAll
     @PostMapping("/update-venue")
-    public Response updateVenue(@Auth User user,
+    public Response updateVenue( User user,
                                 String venueJsonString) throws JSONException, IOException {
 
         Gson gson = new Gson();
@@ -718,7 +705,7 @@ public class SholopAPIs {
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     @Path("/delete-venue")
-    public Response deleteVenue(@Auth User user,
+    public Response deleteVenue( User user,
                                 String venueId) {
 
         Gson gson = new Gson();
