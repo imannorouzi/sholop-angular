@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LoginDetails } from './login-details';
-import {Subject} from "rxjs";
+import {Observable, Subject, throwError} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
-import {map} from "rxjs/operators";
-import {HttpClient} from "@angular/common/http";
+import {catchError, map} from "rxjs/operators";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AlertService} from "../alert.service";
 import {environment} from "../../environments/environment.prod";
 import {User} from "../user";
 import {DummyData} from "../dummyData";
+import {DataService} from "./data.service";
 
 
 const serverUrl = environment.serverUrl;
@@ -18,7 +19,7 @@ export class AuthService {
 
   loggedIn: Subject<any> = new Subject<any>();
   loggedOut: Subject<any> = new Subject<any>();
-  private loginDetails: LoginDetails = null;
+  private user: User = null;
 
   constructor(private localStorageService: LocalStorageService,
               private http: HttpClient,
@@ -26,46 +27,48 @@ export class AuthService {
     this.loadFromSessionStorage();
   }
 
-  login(loginDetails: LoginDetails): void {
-    this.loginDetails = loginDetails;
+  login(user: User): void {
+    this.user = user;
 
-    this.saveToSessionStorage();
+    this.saveToSessionStorage(user);
   }
 
   logout(): void {
     if(this.isLoggedIn()) {
       this.localStorageService.checkOut(this.userId);
     }
-    this.loginDetails = null;
+    this.user = null;
     this.loggedOut.next();
-    this.saveToSessionStorage();
+    this.saveToSessionStorage(this.user);
   }
 
   get jsonWebToken(): string {
-    return (this.loginDetails !== null) ? this.loginDetails.jsonWebToken : null;
+    return (this.user !== null) ? this.user.token : null;
   }
 
-  get userId(): string {
-    return (this.loginDetails !== null) ? this.loginDetails.userId : null;
+  get userId(): number {
+    return (this.user !== null) ? this.user.id : null;
   }
 
   get username(): string {
-    return (this.loginDetails !== null) ? this.loginDetails.name : null;
+    return (this.user !== null) ? this.user.name : null;
   }
 
-  get department(): string {
-    return (this.loginDetails !== null) ? this.loginDetails.department : null;
+  get imageUrl(): string {
+    if (this.user !== null) {
+      return this.user.imageUrl ? this.user.imageUrl : '/assets/images/user-placeholder.png';
+    }
   }
 
-  private saveToSessionStorage() {
+  private saveToSessionStorage(user) {
     if (this.storageAvailable('sessionStorage')) {
       let sessionStorage = window['sessionStorage'];
 
-      if (this.jsonWebToken === null) {
-        sessionStorage.removeItem('loginDetails');
+      if (!this.jsonWebToken) {
+        sessionStorage.removeItem('user');
       }
       else {
-        sessionStorage['loginDetails'] = JSON.stringify(this.loginDetails);
+        sessionStorage.setItem('user', JSON.stringify(user));
       }
     }
   }
@@ -74,14 +77,14 @@ export class AuthService {
     if (this.storageAvailable('sessionStorage')) {
       let sessionStorage = window['sessionStorage'];
 
-      if ('loginDetails' in sessionStorage) {
-        this.loginDetails = JSON.parse(sessionStorage['loginDetails']);
+      if ('user' in sessionStorage) {
+        this.user = JSON.parse(sessionStorage['user']);
       }
     }
   }
 
   public isLoggedIn():boolean{
-    return this.loginDetails !== null;
+    return this.user !== null;
   }
 
   private storageAvailable(type) {
@@ -93,7 +96,7 @@ export class AuthService {
     }
     catch(e) {
       return e instanceof DOMException && (
-        // everything except Firefox
+          // everything except Firefox
         e.code === 22 ||
         // Firefox
         e.code === 1014 ||
@@ -108,22 +111,27 @@ export class AuthService {
   }
 
   loginWithServer(username: string, password: string) {
-    return this.http.post<any>( serverUrl+'/authenticate', { username: username, password: password })
+    let apiUrl = serverUrl + '/authenticate';
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post<any>( apiUrl, JSON.stringify({username: username, password: password}), {headers: headers})
+
+      .pipe(map(data => JSON.parse(data.entity)) )
       .pipe(map(data => {
-        // login successful if there's a jwt token in the response
-        if (data && data.msg === "OK" && data.object.token) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          data.object.token =
-            localStorage.setItem('currentUser', JSON.stringify(data.object));
-          return data.object;
-
-        }else if(data && data.msg === "INVALID_CREDENTIALS"){
-          this.alertService.error("ایمیل یا کلمه عبور اشتباه است.")
-        }
-
-        return null;
-
-      }));
+          // login successful if there's a jwt token in the response
+          if (data && data.msg === "OK" && data.object.token) {
+            return data.object;
+          }else if(data && data.msg === "INVALID_CREDENTIALS"){
+            this.alertService.error("ایمیل یا کلمه عبور اشتباه است.")
+          }
+          return null;
+        },
+        error => {
+          console.log(error);
+        }));
   }
 
   loginWithGoogle(user) {
@@ -132,7 +140,7 @@ export class AuthService {
         // login successful if there's a jwt token in the response
         if (data && data.msg === "OK" && data.object.token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(data.object));
+          this.login(data.object);
         }
 
         // data.object is the user
@@ -141,19 +149,21 @@ export class AuthService {
   }
 
   getCurrentUser() {
-    return DummyData.USER;
+    return this.user;
   }
 
   getRoleString(){
-    switch(this.getCurrentUser().role){
-      case 'owner':
-        return 'مدیر';
-      case 'reception':
-        return 'پذیرش';
-      case 'user':
-        return 'کاربر';
-      default:
-        return '';
+    if(this.getCurrentUser()) {
+      switch (this.getCurrentUser().role) {
+        case 'owner':
+          return 'مدیر';
+        case 'reception':
+          return 'پذیرش';
+        case 'user':
+          return 'کاربر';
+        default:
+          return '';
+      }
     }
   }
 }

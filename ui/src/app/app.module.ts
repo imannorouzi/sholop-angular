@@ -77,6 +77,7 @@ import {ReceptionComponent} from "./reception/reception.component";
 import {ReceptionService} from "./reception/reception.service";
 import { SlidingTextComponent } from './sliding-text/sliding-text.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { OwlComponent } from './owl/owl.component';
 
 @NgModule({
   declarations: [
@@ -132,7 +133,8 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     ReceptionItemModalComponent,
     ReceptionComponent,
     SlidingTextComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    OwlComponent
   ],
   imports: [
     BrowserModule,

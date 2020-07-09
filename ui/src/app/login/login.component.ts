@@ -10,6 +10,7 @@ import {SpinnerService} from "../utils/spinner.service";
 import { of} from "rxjs";
 import {AuthService} from "../utils/auth.service";
 import {LocalStorageService} from "../utils/local-storage.service";
+import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'app-login',
@@ -60,34 +61,21 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    let guest = {
-      userId: 'Guest',
-      jsonWebToken: '123',
-      name: 'کاربر میهمان',
-      department: 'OCMS',
-      role: 'normal'
-    };
-
     this.loading = true;
     (isGuest ?
-      of(guest)
+      of(DummyData.USER)
       :
       this.authService.loginWithServer(this.f.username.value, this.f.password.value))
-      .pipe(first())
       .subscribe(
-        data => {
-          if(data){
-            if(this.localStorageService.checkIn(data.userId)) {
-              this.authService.login(data);
+        user => {
+          if(user){
+            if(this.localStorageService.checkIn(user.id)) {
+              this.authService.login(user);
               this.router.navigate([this.authService.redirectUrl]);
 
               this.authService.loggedIn.next();
             }
           }
-          this.loading = false;
-        },
-        error => {
-          this.alertService.error("مشکلی پیش آمده. دوباره تلاش کنید.");
           this.loading = false;
         });
   }

@@ -9,8 +9,9 @@ export const environment = {
       storageBucket: "sholop-1526521509022.appspot.com",
       messagingSenderId: "635253433511"
     },
-  serverUrl: '/api',
-  // serverUrl: "http://0.0.0.0:8094/api",
+  serverUrl: '/sholop-api',
+  // serverUrl: '/api',
+  // serverUrl: "http://localhost:8083/api",
   version: require('../../package.json').version
 
 };

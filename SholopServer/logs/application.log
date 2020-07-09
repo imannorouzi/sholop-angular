@@ -1,0 +1,12 @@
+2020-03-28 14:18:35,069 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-3] Received unsubscription request, uuid = 4e54340c-9869-4116-ae56-ce8b388f3dca
+2020-03-28 14:18:35,104 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-3] Sending to SDP, uuid = 4e54340c-9869-4116-ae56-ce8b388f3dca
+2020-03-28 14:18:35,283 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-3] Received from SDP, uuid = 4e54340c-9869-4116-ae56-ce8b388f3dca
+2020-03-28 14:18:35,335 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-3] Sending to client, uuid = 4e54340c-9869-4116-ae56-ce8b388f3dca
+2020-03-28 14:25:53,502 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Received unsubscription request, uuid = bbc01ef8-1102-4e75-8e50-a9d1fb184b68
+2020-03-28 14:25:53,524 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Sending to SDP, uuid = bbc01ef8-1102-4e75-8e50-a9d1fb184b68
+2020-03-28 14:25:53,707 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Received from SDP, uuid = bbc01ef8-1102-4e75-8e50-a9d1fb184b68
+2020-03-28 14:25:53,760 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Sending to client, uuid = bbc01ef8-1102-4e75-8e50-a9d1fb184b68
+2020-03-28 14:34:58,598 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Received unsubscription request, uuid = fe7489d1-3cea-4ddc-aef2-fd4cc56c204d
+2020-03-28 14:34:58,617 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Sending to SDP, uuid = fe7489d1-3cea-4ddc-aef2-fd4cc56c204d
+2020-03-28 14:34:58,807 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Received from SDP, uuid = fe7489d1-3cea-4ddc-aef2-fd4cc56c204d
+2020-03-28 14:34:58,867 INFO c.m.a.GatewayToSdpAPI [http-nio-8080-exec-1] Sending to client, uuid = fe7489d1-3cea-4ddc-aef2-fd4cc56c204d

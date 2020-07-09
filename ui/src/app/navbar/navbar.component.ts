@@ -10,7 +10,6 @@ import {AuthService} from "../utils/auth.service";
 export class NavbarComponent implements OnInit {
 
   @Input() theme: string;
-  currentUser : any = undefined;
 
 
   constructor(public authService: AuthService,
@@ -18,7 +17,6 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.currentUser = localStorage.getItem('currentUser');
   }
 
   themeChanged(switchValue: any) {

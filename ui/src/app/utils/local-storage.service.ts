@@ -70,7 +70,7 @@ export class LocalStorageService {
 
   }
 
-  public checkOut(userId = 'ro'){
+  public checkOut(userId: number){
     if(!this.checkedIn){
       return;
     }

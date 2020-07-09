@@ -13,4 +13,5 @@ export class User {
   farsiAddress2: string;
   description: string;
   token: string;
+  role: string;
 }

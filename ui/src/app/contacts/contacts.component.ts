@@ -31,7 +31,6 @@ export class ContactsComponent implements OnInit {
   constructor(private dataService: DataService,
               public commonService: CommonService,
               private route: ActivatedRoute,) {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
   ngOnInit() {

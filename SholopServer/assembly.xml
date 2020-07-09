@@ -1,0 +1,53 @@
+<assembly>
+    <id>distribution</id>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    <files>
+        <file>
+            <source>src/main/resources/application.properties</source>
+            <outputDirectory></outputDirectory>
+            <filtered>false</filtered>
+        </file>
+
+        <file>
+            <!--<source>target/${project.artifactId}-${project.version}.jar</source>-->
+            <source>target/${project.artifactId}-${project.version}.jar</source>
+            <!--<destName>${project.artifactId}-${project.version}.jar</destName>-->
+            <destName>${project.artifactId}-${project.version}.jar</destName>
+            <outputDirectory></outputDirectory>
+            <filtered>false</filtered>
+        </file>
+    </files>
+
+    <fileSets>
+        <fileSet>
+            <directory>./target/app</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>app</outputDirectory>
+        </fileSet>
+
+
+        <fileSet>
+            <directory>../contents</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <outputDirectory>contents</outputDirectory>
+        </fileSet>
+
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}-${project.version}.${artifact.extension}</outputFileNameMapping>
+            <excludes>
+                <exclude>${project.groupId}:${project.artifactId}</exclude>
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

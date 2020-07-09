@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {User} from "../user";
 import {environment} from "../../environments/environment.prod";
 import {Venue} from "../venue";
+import {AuthService} from "./auth.service";
+import {catchError, map} from "rxjs/operators";
 
 const serverUrl = environment.serverUrl;
 
@@ -13,54 +15,78 @@ const serverUrl = environment.serverUrl;
 })
 export class DataService {
 
-  constructor(private http:HttpClient) {}
+  constructor(private http:HttpClient,
+              private authService: AuthService) {}
 
-  // will return json string of tiny events
+  get jwtHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: 'Bearer ' + this.authService.jsonWebToken
+    });
+  }
+
+  private extractData(res: Response) {
+    return (<any>res).data || null;
+  }
+
+  private handleError(error: Response | any) {
+    let message = error.error || "";
+    return throwError(message);
+  }
+
   getTinyEvents():  Observable<any> {
     let apiURL = serverUrl + "/get-events";
-    return this.http.get(apiURL);
+    return this.http.get(apiURL)
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getMeetings(date: Date):  Observable<any> {
     let apiURL = serverUrl + "/get-meetings";
     return this.http.get(apiURL, {
-      params: {date: date.toUTCString()}
-    });
+      params: {date: date.toUTCString()},
+    })
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getTokens(date: Date):  Observable<any> {
     let apiURL = serverUrl + "/get-tokens";
     return this.http.get(apiURL, {
       params: {date: date.toUTCString()}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getMeeting(id: any) {
     let apiURL = serverUrl + "/get-meeting";
     return this.http.get(apiURL, {
       params: {meetingId: id}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getMeetingByUUID(uuid: any, action: string) {
     let apiURL = serverUrl + "/get-meeting-by-uuid";
     return this.http.get(apiURL, {
       params: {uuid: uuid, action: action}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getContacts( hint: string = '', type: string = 'contact'):  Observable<any> {
     let apiURL = serverUrl + "/get-contacts";
     return this.http.get(apiURL, {
       params: {hint: hint, type: type.toLocaleUpperCase()}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getVenues( hint: string = ''):  Observable<any> {
     let apiURL = serverUrl + "/get-venues";
     return this.http.get(apiURL, {
       params: {hint: hint}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   deleteVenue(id: number) {
@@ -69,7 +95,9 @@ export class DataService {
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
-    return this.http.post(`${apiURL}`, id, {headers: headers});
+    return this.http.post(`${apiURL}`, id, {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   updateVenue(venue: Venue) {
@@ -79,7 +107,9 @@ export class DataService {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
-    return this.http.post(`${apiURL}`, JSON.stringify(venue), {headers: headers});
+    return this.http.post(`${apiURL}`, JSON.stringify(venue), {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
 
   }
 
@@ -99,7 +129,9 @@ export class DataService {
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json'
       });
-      return this.http.post(`${apiURL}`, formData, {headers: headers});
+      return this.http.post(`${apiURL}`, formData, {headers: headers})
+        .pipe(map(this.extractData))
+        .pipe(catchError(this.handleError));
     }
   }
 
@@ -118,7 +150,9 @@ export class DataService {
     let hdrs = new HttpHeaders();
     hdrs.append("Content-Type", "multipart/form-data");
     hdrs.append("Accept", "application/json");
-    return this.http.post(`${apiURL}`, formData, {headers: hdrs});
+    return this.http.post(`${apiURL}`, formData, {headers: hdrs})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   updateUser(user: User) {
@@ -136,7 +170,9 @@ export class DataService {
     let hdrs = new HttpHeaders();
     hdrs.append("Content-Type", "multipart/form-data");
     hdrs.append("Accept", "application/json");
-    return this.http.post(`${apiURL}`, formData, {headers: hdrs});
+    return this.http.post(`${apiURL}`, formData, {headers: hdrs})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   deleteContact(id: number) {
@@ -152,8 +188,9 @@ export class DataService {
   postMeeting(event: any) {
     let apiURL = serverUrl + "/create-meeting";
     let headers = new HttpHeaders({
-      'Content-Type': 'text/json',
-      'Accept': 'application/json'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + this.jwtHeaders
     });
     return this.http.post(`${apiURL}`, JSON.stringify(event), {headers: headers});
   }
@@ -169,7 +206,8 @@ export class DataService {
       let apiURL = serverUrl + "/get-comments";
       return this.http.get(apiURL, {
         params: {event_id: eventId, page: page}
-      });
+      }).pipe(map(this.extractData))
+        .pipe(catchError(this.handleError));
     }
 
   }
@@ -178,7 +216,8 @@ export class DataService {
     let apiURL = serverUrl + "/get-meeting-dates";
     return this.http.get(apiURL, {
       params: {startDate: startDate.toUTCString(), endDate: endDate.toUTCString()}
-    });
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   deleteComment(comment: any) {
@@ -187,7 +226,9 @@ export class DataService {
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
-    return this.http.post(`${apiURL}`, comment.id, {headers: headers});
+    return this.http.post(`${apiURL}`, comment.id, {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   postComment(comment : any){
@@ -202,10 +243,12 @@ export class DataService {
     if(comment.uuid){
       //It is a guest
       apiURL = serverUrl + "/create-comment-guest";
-      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
+      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers}).pipe(map(this.extractData))
+        .pipe(catchError(this.handleError));
     }else{
       apiURL = serverUrl + "/create-comment";
-      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers});
+      return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers}).pipe(map(this.extractData))
+        .pipe(catchError(this.handleError));
     }
 
 
@@ -221,7 +264,9 @@ export class DataService {
     });
 
     apiURL = serverUrl + "/update-contact-status";
-    return this.http.post(`${apiURL}`, JSON.stringify({contactEventId: contactEventId, status: status}), {headers: headers});
+    return this.http.post(`${apiURL}`, JSON.stringify({contactEventId: contactEventId, status: status}), {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   contactUs(message: { name: any; email: any; title: any; message: any }) {
@@ -232,7 +277,9 @@ export class DataService {
       'Accept': 'application/json'
     });
 
-    return this.http.post(`${apiURL}`, JSON.stringify(message), {headers: headers});
+    return this.http.post(`${apiURL}`, JSON.stringify(message), {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   dataURItoBlob(dataURI) {
@@ -255,7 +302,5 @@ export class DataService {
     return new Blob([ia], {type:mimeString});
   }
 
-  dateToString(date: Date) {
-    return [date.getDate(), (date.getMonth()+1), date.getFullYear()].join('/');
-  }
+
 }
