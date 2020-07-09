@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
-import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../utils/data.service";
 import {ImageCropperComponent} from "ng2-img-cropper";

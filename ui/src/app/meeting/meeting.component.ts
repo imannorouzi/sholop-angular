@@ -22,7 +22,7 @@ export class MeetingComponent implements OnInit, OnChanges {
   @Input() guest: any;
 
   map : google.maps.Map;
-  currentUserId: string;
+  currentUserId: number;
   markers : google.maps.Marker[] = [];
 
 

@@ -1,14 +1,11 @@
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<modal #childModal
+       [modalTitle]="''"
+       [zIndex]="10"
+       [size]="'lg'"
+       [maximizable]="true">
 
-    <div class="modal-content">
-    <div class="modal-header ltr">
-      <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
+  <ng-container class="app-modal-body">
 
-    <div class="modal-body">
 
       <div [class]="'rtl text-right ' + focusElement" >
 
@@ -167,12 +164,10 @@
 
       </div>
 
-    </div>
+  </ng-container>>
 
-    <div class="modal-footer text-right w-100">
+  <ng-container class="app-modal-body">
           <button type="button" [disabled]="submitting" class="primary" > ایجاد<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
-      </div>
-    </div>
+  </ng-container>>
 
-  </div>
-</div>
+</modal>

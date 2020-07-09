@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {DummyData} from "../dummyData";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'contacts-modal',
@@ -9,7 +9,7 @@ import {DummyData} from "../dummyData";
   styleUrls: ['./contacts-modal.component.css']
 })
 export class ContactsModalComponent implements OnInit {
-  @ViewChild('selectContacts', {static: true}) public selectContacts:ModalDirective;
+  @ViewChild('selectContacts', {static: true}) public selectContacts: ModalComponent;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
 

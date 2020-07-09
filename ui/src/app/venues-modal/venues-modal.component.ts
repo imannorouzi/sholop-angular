@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {SpinnerComponent} from "../spinner/spinner.component";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'venues-modal',
@@ -9,7 +9,7 @@ import {SpinnerComponent} from "../spinner/spinner.component";
   styleUrls: ['./venues-modal.component.css']
 })
 export class VenuesModalComponent implements OnInit {
-  @ViewChild('selectVenues', {static: true}) public selectVenues:ModalDirective;
+  @ViewChild('selectVenues', {static: true}) public selectVenues: ModalComponent;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();

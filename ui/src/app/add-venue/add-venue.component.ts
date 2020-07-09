@@ -2,10 +2,10 @@ import {Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, View
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {Venue} from "../venue";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../utils/auth.service";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'add-venue',
@@ -13,7 +13,7 @@ import {AuthService} from "../utils/auth.service";
   styleUrls: ['./add-venue.component.css']
 })
 export class AddVenueComponent implements OnInit {
-  @ViewChild('childModal', {static: true}) public modal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public modal:ModalComponent;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
   @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
   @ViewChild('address2', {static: true}) address2: ElementRef;

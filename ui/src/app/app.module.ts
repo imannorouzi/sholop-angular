@@ -34,7 +34,6 @@ import {MeetingItemComponent} from "./meeting-item/meeting-item.component";
 import {DateService} from "./utils/date.service";
 import {MeetingItemModalComponent} from "./meeting-item-modal/meeting-item-modal.component";
 import { CommentsComponent } from './comments/comments.component';
-import {ModalModule, TooltipModule} from "ngx-bootstrap";
 import { SuggestingContactInputComponent } from './suggesting-contact-input/suggesting-contact-input.component';
 import {AgmCoreModule} from "@agm/core";
 import { VenuesModalComponent } from './venues-modal/venues-modal.component';
@@ -59,7 +58,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { FaqComponent } from './faq/faq.component';
 import { ConditionsComponent } from './conditions/conditions.component';
 import { AboutUsComponent } from './about-us/about-us.component';
-import { SpinnerModalComponent } from './spinner-modal/spinner-modal.component';
 import {AddVenueComponent} from "./add-venue/add-venue.component";
 import { IconedInputComponent } from './iconed-input/iconed-input.component';
 import { SwitchButtonComponent } from './switch-button/switch-button.component';
@@ -121,7 +119,6 @@ import { OwlComponent } from './owl/owl.component';
     FaqComponent,
     ConditionsComponent,
     AboutUsComponent,
-    SpinnerModalComponent,
     AddVenueComponent,
     IconedInputComponent,
     SwitchButtonComponent,
@@ -146,7 +143,6 @@ import { OwlComponent } from './owl/owl.component';
     FormsModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    ModalModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: "AIzaSyDXNa76E7XTVYsZR5Q0qeOpE9LyFanBnGc",
       libraries: ["places"]
@@ -155,7 +151,6 @@ import { OwlComponent } from './owl/owl.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    TooltipModule
   ],
   exports: [
   ],

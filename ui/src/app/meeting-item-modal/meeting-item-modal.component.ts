@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DateService} from "../utils/date.service";
 import {CommentsComponent} from "../comments/comments.component";
-import {ModalDirective} from "ngx-bootstrap";
 import {NavigationService} from "../utils/navigation.service";
 import {CommonService} from "../utils/common.service";
 import {ReceptionService} from "../reception/reception.service";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'meeting-item-modal',
@@ -12,7 +12,7 @@ import {ReceptionService} from "../reception/reception.service";
   styleUrls: ['./meeting-item-modal.component.css']
 })
 export class MeetingItemModalComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal: ModalComponent;
   @ViewChild("comments", {static: true}) comments: CommentsComponent;
   @Input() event: any;
 

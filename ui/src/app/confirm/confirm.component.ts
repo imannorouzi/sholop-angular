@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalDirective} from "ngx-bootstrap";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'confirm',
@@ -7,14 +7,12 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./confirm.component.css']
 })
 export class ConfirmComponent implements OnInit {
-  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal: ModalComponent;
 
   @Input() object: any;
   @Input() message: any = "";
   @Input() title: any = "";
   @Output() confirmed: EventEmitter<any> = new EventEmitter();
-
-
 
   constructor() {
   }

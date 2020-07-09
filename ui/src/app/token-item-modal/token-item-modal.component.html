@@ -1,16 +1,8 @@
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<modal [modalTitle]=" 'مجوز ورود' "
+       [size]="'md'"
+       [zIndex]="11" #childModal>
 
-    <div class="modal-content">
-      <div class="modal-header ltr">
-        <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-
-        <div class="">
+  <ng-container class="app-modal-body">
 
           <div *ngIf="event">
 
@@ -64,20 +56,12 @@
 
           </div>
 
-        </div>
+  </ng-container>>
 
-      </div>
 
-      <div class="modal-footer ">
-        <div class="text-right w-100">
+  <ng-container class="app-modal-footer">
           <button class="btn ml-2 primary" (click)="goTo('/edit-token')"> ویرایش </button>
           <button class="btn ml-2 primary" (click)="goTo('/token')" ><i class="fa fa-external-link"></i> صفحه جلسه </button>
           <button class="btn secondary " (click)="hide()"> بستن </button>
-        </div>
-      </div>
-
-
-    </div>
-
-  </div>
-</div>
+  </ng-container>>
+</modal>

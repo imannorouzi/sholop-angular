@@ -4,7 +4,6 @@ import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {AuthService} from "../utils/auth.service";
 
 @Component({
@@ -13,7 +12,7 @@ import {AuthService} from "../utils/auth.service";
   styleUrls: ['./add-contact.component.css']
 })
 export class AddContactComponent implements OnInit {
-  @ViewChild('childModal', {static: true}) public modal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public modal: ModalComponent;
   @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;

@@ -1,16 +1,10 @@
-<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<modal #childModal
+       [modalTitle]="'پذیرش'"
+       [zIndex]="10"
+       [size]="'lg'"
+       [maximizable]="true">
 
-    <div class="modal-content">
-      <div class="modal-header ">
-        <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <span class="text-left">پذیرش</span>
-      </div>
-
-      <div class="modal-body">
-
+  <ng-container class="app-modal-body">
         <div class="" *ngIf="item">
 
           <div *ngIf="item.contact">
@@ -72,19 +66,11 @@
 
 
         </div>
+  </ng-container>
 
-      </div>
-
-    </div>
-
-    <div class="modal-footer ">
-      <div class="text-right w-100">
+  <ng-container class="app-modal-footer">
         <button class="btn ml-2 primary" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> پرینت کارت </button>
         <button class="btn secondary " (click)="hide()"> بستن </button>
-      </div>
-    </div>
+  </ng-container>
 
-
-  </div>
-
-</div>
+</modal>

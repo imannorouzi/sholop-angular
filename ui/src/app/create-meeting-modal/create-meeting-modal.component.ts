@@ -10,8 +10,8 @@ import {AlertService} from "../alert.service";
 import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../utils/date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
-import {ModalDirective} from "ngx-bootstrap";
 import {AuthService} from "../utils/auth.service";
+import {VenuesModalComponent} from "../venues-modal/venues-modal.component";
 
 @Component({
   selector: 'create-meeting-modal',
@@ -23,14 +23,13 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
   @ViewChild('searchBox', {static: false}) searchInput: ElementRef;
   @ViewChild('address2', {static: false}) address2: ElementRef;
   @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
   @ViewChild('contactsModal', {static: false}) contactsModal: ContactsModalComponent;
-  @ViewChild('venuesModal', {static: false}) venuesModal:ModalComponent;
+  @ViewChild('venuesModal', {static: false}) venuesModal: VenuesModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('addAttendee', {static: false}) addAttendee: AddAttendeeComponent;
 
 
-  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal: ModalComponent;
 
   name:string;
 

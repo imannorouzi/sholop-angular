@@ -1,9 +1,9 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DateService} from "../utils/date.service";
-import {ModalDirective} from "ngx-bootstrap";
 import {NavigationService} from "../utils/navigation.service";
 import {ReceptionService} from "../reception/reception.service";
 import {CommonService} from "../utils/common.service";
+import {ModalComponent} from "../ng-modal/modal.component";
 
 @Component({
   selector: 'reception-item-modal',
@@ -11,7 +11,7 @@ import {CommonService} from "../utils/common.service";
   styleUrls: ['./reception-item-modal.component.css']
 })
 export class ReceptionItemModalComponent implements OnInit, OnChanges {
-  @ViewChild('childModal', {static: true}) public childModal:ModalDirective;
+  @ViewChild('childModal', {static: true}) public childModal: ModalComponent;
 
   @Input() item: any = {
     event: undefined,

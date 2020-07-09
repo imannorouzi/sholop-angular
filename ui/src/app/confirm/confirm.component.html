@@ -1,33 +1,15 @@
-<div bsModal #childModal="bs-modal" class="modal  fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog ">
+<modal #childModal [size]="'sm'" [zIndex]="10" [title]="title">
 
-
-    <div class="modal-content">
-      <div class="modal-header ">
-        <button type="button" class="close pull-right small" aria-label="Close" (click)="hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <span class="text-left">{{title}}</span>
-      </div>
-
-      <div class="modal-body">
+  <ng-container class="app-modal-body">
 
         <div class="text-right">
           {{message}}
           <ng-content></ng-content>
         </div>
-      </div>
+  </ng-container>>
 
-      <div class="modal-footer ">
-        <div class="text-right w-100">
+  <ng-container class="app-modal-footer">
           <button class="btn primary ml-2" (click)="confirm()" > بله </button>
           <button class="btn secondary" (click)="hide()"> نه </button>
-        </div>
-      </div>
-
-
-    </div>
-
-
-  </div>
-</div>
+  </ng-container>
+</modal>
