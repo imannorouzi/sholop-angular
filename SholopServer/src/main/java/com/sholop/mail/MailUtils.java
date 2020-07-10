@@ -65,13 +65,15 @@ public class MailUtils {
 
     public static void sendMeetingCreatedMessages(Event event) {
 
-        for(Contact contact: event.getAttendees()){
-            Optional<ContactEvent> ce = event.getContactEvents()
-                    .stream()
-                    .filter(contactEvent -> contactEvent.getContactId() == contact.getId())
-                    .findFirst();
+        if(event.getAttendees() != null && event.getAttendees().size() > 0 ) {
+            for (Contact contact : event.getAttendees()) {
+                Optional<ContactEvent> ce = event.getContactEvents()
+                        .stream()
+                        .filter(contactEvent -> contactEvent.getContactId() == contact.getId())
+                        .findFirst();
 
-            ce.ifPresent(contactEvent -> MailUtils.sendContactMeetingCreated(contact, contactEvent, event));
+                ce.ifPresent(contactEvent -> MailUtils.sendContactMeetingCreated(contact, contactEvent, event));
+            }
         }
     }
 
@@ -104,8 +106,8 @@ public class MailUtils {
 
             htmlString = htmlString.replace("$dateString", event.getPointedDate() == null ?
                     "" : event.getPointedDate().getDateString() + "، از ساعت "
-                    + Utils.formatTimeString(event.getPointedDate().getStartTime())+ " تا "
-                    + Utils.formatTimeString(event.getPointedDate().getEndTime()) );
+                    + Utils.formatTimeString(event.getPointedDate().getStartTime().toString())+ " تا "
+                    + Utils.formatTimeString(event.getPointedDate().getEndTime().toString()) );
 
             htmlString = htmlString.replace("$name", contact.getName());
             htmlString = htmlString.replace("$email", contact.getEmail());

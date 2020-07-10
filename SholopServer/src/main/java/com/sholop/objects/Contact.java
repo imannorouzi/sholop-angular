@@ -32,7 +32,7 @@ public class Contact {
         this.email = "null".equals(email) ? "" : email;
         this.address = "null".equals(address) ? "" : address;
         this.imageUrl = "null".equals(imageUrl) ? "" : imageUrl;
-        this.contactType = "null".equals(type) ? CONTACT_TYPE.UNKNOWN : CONTACT_TYPE.valueOf(type);
+        this.contactType = "null".equals(type) ? CONTACT_TYPE.UNKNOWN.name() : type;
         this.userId = userId;
         this.valid = valid;
         this.created = created;
@@ -54,8 +54,9 @@ public class Contact {
     @Column(name = "user_id")
     Integer userId;
 
-    @Transient
-    CONTACT_TYPE contactType;
+    @Column(name = "type")
+    String contactType;
+
     @Transient
     boolean you;
 
@@ -81,7 +82,7 @@ public class Contact {
     public Contact(JSONObject jo) throws JSONException {
         this.id = jo.has("id") && jo.getInt("id") != 0 ? jo.getInt("id") : -1;
         this.contactType = jo.has("type") && !"".equals(jo.getString("type")) ?
-                CONTACT_TYPE.valueOf(jo.getString("type").toUpperCase()) : CONTACT_TYPE.UNKNOWN;
+                jo.getString("type").toUpperCase() : CONTACT_TYPE.UNKNOWN.name();
         this.name = jo.getString("name");
         this.email = jo.getString("email");
         this.phone = jo.getString("phone");
@@ -202,11 +203,11 @@ public class Contact {
         this.you = you;
     }
 
-    public CONTACT_TYPE getContactType() {
+    public String getContactType() {
         return contactType;
     }
 
-    public void setContactType(CONTACT_TYPE contactType) {
+    public void setContactType(String contactType) {
         this.contactType = contactType;
     }
 }

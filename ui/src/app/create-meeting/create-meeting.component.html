@@ -17,24 +17,33 @@
     <!-- dates -->
     <div class="box" [class.editing]="(step===1 && editingStep === -1) || editingStep === 1">
 
-      <div class="row " *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
-        <div class="col-sm-4">
-          <label class="font-weight-bold" *ngIf="i===0" >تاریخ ملاقات</label>
+      <div class="row mb-1" >
+        <div class="col-sm-5">
+          <label class="font-weight-bold" >تاریخ ملاقات</label>
+        </div>
+        <div class="col-sm-3">
+          <label class="font-weight-bold">از ساعت</label>
+        </div>
+        <div class="col-sm-3">
+          <label class="font-weight-bold">تا ساعت</label>
+        </div>
+        <div class="col-sm-1">
+          <label class="card-title text-right" >&nbsp;</label>
+        </div>
+      </div>
+
+      <div class="row mb-1" *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
+        <div class="col-sm-5">
           <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
         </div>
         <div class="col-sm-3">
-          <label class="font-weight-bold" *ngIf="i===0">از ساعت</label>
           <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
         </div>
         <div class="col-sm-3">
-          <label class="font-weight-bold"  *ngIf="i===0">تا ساعت</label>
           <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
         </div>
-        <div class="col-sm-2">
-          <label class="card-title text-right" *ngIf="i===0">&nbsp;</label>
-          <button class="w-100 secondary" [disabled]="event.dates.length===1" (click)="removeDateTime($event, i)">
-            حذف <i class="fa fa-trash"></i>
-          </button>
+        <div class="col-sm-1">
+          <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
       </div>
       <div class=" row ">
@@ -55,7 +64,7 @@
                  [(ngModel)]="event.venue.farsiAddress1"
                  autocomplete="off"
                  #searchBox name="address_1" placeholder="شهر،‌ خیابان">
-          <i class="mr-3 icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i>
+          <div class="text-left"><i class="mr-3 action-icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i></div>
 
         </div>
 
@@ -90,15 +99,13 @@
 
     <!-- guests -->
     <div class="box">
-
       <div [class.editing]="(step === 4  && editingStep === -1) || editingStep === 4" >
-
         <label class="font-weight-bold">میهمانان</label>
         <div [class.editing]="step === 4 || editingStep === 4" class="frame flexbox-parent-row">
           <i class=" ml-3 icon fa fa-map-marker"></i>
           <input type="text" class="flexbox-item-grow "  placeholder="نام، آدرس ایمیل، ... ">
-          <i class="mr-3 input-button fa fa-user-plus" (click)="addContact($event)"></i>
-          <i class="mr-3 input-button fa fa-address-book" (click)="onImportClick($event)"></i>
+          <i class="mr-3 action-icon fa fa-user-plus" (click)="addContact($event)"></i>
+          <i class=" action-icon fa fa-address-book" (click)="onImportClick($event)"></i>
         </div>
       </div>
 

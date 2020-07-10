@@ -9,6 +9,7 @@ import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
+import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
 import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -35,12 +36,12 @@ import java.util.*;
 @RestController
 public class SholopAPIs {
 
-    // Injecting ConfigurationProperties in your Beans
-//    @Autowired
-//    private ApplicationConfiguration appProperties;
 
     @Autowired
     RepositoryFactory repositoryFactory;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
 //    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @PostMapping("/create-tiny-event")
@@ -274,24 +275,7 @@ public class SholopAPIs {
         }
     }
 
-    @PermitAll
-    @GetMapping("/get-venues")
-    public Response getVenues( User user, @QueryParam("hint") String hint) throws JSONException {
 
-        Gson gson = new Gson();
-        try {
-
-            List<Location> locations = repositoryFactory.getLocationRepository().findAll();
-//            List<Location> locations = locationDao.getAllLocations(user.getId(), hint);
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", locations))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @PermitAll
@@ -433,31 +417,7 @@ public class SholopAPIs {
         }
     }
 
-    @PermitAll
-    @PostMapping("/update-venue")
-    public Response updateVenue( User user,
-                                String venueJsonString) throws JSONException, IOException {
 
-        Gson gson = new Gson();
-        Location location = null;
-        try {
-
-            JSONObject jsonLocation = new JSONObject(venueJsonString);
-            location = new Location(jsonLocation);
-
-            location.setUserId(user.getId());
-            location.downloadMap();
-
-            location = repositoryFactory.getLocationRepository().save(location);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-
-        return Response.ok(gson.toJson(new ResponseObject("OK", location))).build();
-    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)

@@ -1,24 +1,33 @@
 package com.sholop.repositories;
 
 
-import com.sholop.objects.SholopDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Singleton;
 
 @Service
 public class RepositoryFactory {
 
 
+
+    @Autowired
     ContactRepository contactRepository;
+
+    @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
     EventRepository eventRepository;
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
     ContactEventRepository contactEventRepository;
+
+    @Autowired
     SholopDateRepository sholopDateRepository;
+
+    @Autowired
     LocationRepository locationRepository;
 
     public RepositoryFactory(){

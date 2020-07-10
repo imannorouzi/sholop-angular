@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Pooyan on 3/20/2018.
@@ -27,9 +29,9 @@ public class SholopDate {
     String dateString;
 
     @Column(name = "start_time_string")
-    String startTime;
+    Timestamp startTime;
     @Column(name = "end_time_string")
-    String endTime;
+    Timestamp endTime;
 
     public SholopDate(){}
 
@@ -37,8 +39,8 @@ public class SholopDate {
                       int eventId,
                       Timestamp date,
                       String dateString,
-                      String startTime,
-                      String endTime) throws ParseException {
+                      Timestamp startTime,
+                      Timestamp endTime) {
         this.eventId = eventId;
         this.id = id;
         this.startTime = startTime;
@@ -54,11 +56,8 @@ public class SholopDate {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 //        String strDate = dateFormat.format();
         this.date = new Timestamp((dateFormat.parse(jo.getString("date"))).getTime());
-
-        this.dateString = jo.has("dateString") ? jo.getString("dateString") : "";
-
-        startTime = jo.getString("startTime");
-        endTime = jo.getString("endTime");
+        startTime = new Timestamp((dateFormat.parse(jo.getString("startTime"))).getTime());
+        endTime = new Timestamp((dateFormat.parse(jo.getString("endTime"))).getTime());
     }
 
     public Timestamp getDate() {
@@ -77,19 +76,19 @@ public class SholopDate {
         this.dateString = dateString;
     }
 
-    public String getStartTime() {
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Timestamp getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 

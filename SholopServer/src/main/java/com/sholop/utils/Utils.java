@@ -2,7 +2,14 @@ package com.sholop.utils;
 
 import com.sholop.objects.ContactEvent;
 import com.sholop.objects.Event;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -95,4 +102,6 @@ public class Utils {
             }
         });
     }*/
+
+
 }

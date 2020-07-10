@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class OwlComponent implements OnInit {
 
-  @Input() type: string = 'double-blinking walking';
+  @Input() type: string = 'double-blinking walking tree';
   constructor() { }
 
   ngOnInit() {

@@ -39,8 +39,8 @@ export class ContactsComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.type = params['type'];
       this.role = params['role'];
-      // this.readContacts('', params['type']);
-      this.readDummyContacts();
+      this.readContacts('', params['type']);
+      // this.readDummyContacts();
     });
   }
 

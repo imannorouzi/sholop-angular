@@ -73,9 +73,7 @@
     </div>
 
     <div class="text-center" *ngIf="!loading && contacts.length === 0">
-      <object class="w-25" type="image/svg+xml" data="../../assets/images/owl-old/owl.svg">
-        <param name="class" value="look-around" />
-      </object>
+      <app-owl [type]="'double-blinking no-tree'"></app-owl>
       <div class="text-muted">هیچی پیدا نکردم</div>
     </div>
 

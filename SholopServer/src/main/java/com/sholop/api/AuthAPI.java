@@ -43,6 +43,7 @@ public class AuthAPI {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private JwtUserDetailsService userDetailsService;
 

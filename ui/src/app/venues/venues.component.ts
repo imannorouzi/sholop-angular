@@ -25,9 +25,7 @@ export class VenuesComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.readVenues('');
-    this.readDummyVenues();
-    // this.loadAllUsers();
+    this.readVenues('');
   }
 
   readVenues(hint: string){

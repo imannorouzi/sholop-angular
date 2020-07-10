@@ -8,13 +8,15 @@ import com.sholop.objects.ContactEvent;
 import com.sholop.objects.ResponseObject;
 import com.sholop.objects.User;
 import com.sholop.repositories.RepositoryFactory;
+import com.sholop.utils.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,11 @@ public class ContactAPIs {
 
     @Autowired
     RepositoryFactory repositoryFactory;
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    Gson gson = new Gson();
 
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,31 +42,28 @@ public class ContactAPIs {
     }
 
 
-    @PostMapping("/get-contacts")
-    public ResponseObject getContacts(@RequestBody User user,
-                                @RequestParam("type") String type,
-                                @RequestParam("hint") String hint) throws JSONException {
+    @GetMapping("/get-contacts")
+    public Response getContacts(@AuthenticationPrincipal UserDetails u,
+                                      @RequestParam("type") String type,
+                                      @RequestParam("hint") String hint)  {
 
-        Gson gson = new Gson();
         try {
 
-            //TODO user ID !!!
             List<Contact> contacts = null;
+            User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
             type = type.isEmpty() ? Contact.CONTACT_TYPE.CONTACT.name() : type;
 
             if(hint == null || hint.isEmpty()){
-                contacts = repositoryFactory.getContactRepository().findAll();
-//                contacts = repositoryFactory.getContactRepository().getContactsByUserId(user.getId(), "", "");
+                contacts = repositoryFactory.getContactRepository().findAllByUserIdAndContactType(user.getId(), type);
             }else{
-                contacts = repositoryFactory.getContactRepository().findAll();
-//                contacts = repositoryFactory.getContactRepository().getContactsByUserId(user.getId(), type, hint);
+                contacts = repositoryFactory.getContactRepository().findAllByUserIdAndContactType(user.getId(), type);
             }
 
-            return new ResponseObject("OK", contacts);
+            return Response.ok(gson.toJson(new ResponseObject("OK", contacts))).build();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseObject("FAIL", e.getMessage());
+            return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", e.getMessage()))).build();
         }
     }
 
@@ -87,30 +91,29 @@ public class ContactAPIs {
 
 
     @PostMapping("/update-contact")
-    public ResponseObject updateContact(@RequestBody User user,
-                                  @RequestParam("file") InputStream uploadedInputStream,
-//                                  @RequestParam("file") FormDataContentDisposition fileDetail,
-//                                  @RequestParam("file") FormDataBodyPart body,
+    public Response updateContact(@AuthenticationPrincipal UserDetails u,
+                                  @RequestParam(value = "file", required = false) MultipartFile file,
                                   @RequestParam("contact") String contactJsonString,
-                                  @RequestParam("filename") String filename) {
+                                  @RequestParam(value = "filename", required = false) String filename) {
 
 
-        Gson gson = new Gson();
+        User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         Contact contact;
         try {
             JSONObject jsonContact = new JSONObject(contactJsonString);
             contact = new Contact(jsonContact);
 
-            String relationalUrl = "";
+            if(filename != null && file != null) {
+                filename = "contact_" + user.getId() + "_" + filename.replaceAll("\\s+", "");
 
-            if(filename != null) {
-                filename = filename.replaceAll("\\s+", "");
+                String fileName = fileStorageService.storeFile(file, filename, "/contacts");
 
-                Files.copy(uploadedInputStream,
-                        Paths.get("./contents/images/contacts/" +  /*fileDetail.getFileName()*/ filename),
-                        StandardCopyOption.REPLACE_EXISTING);
-//                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/contacts/" + filename;
-                contact.setImageUrl(relationalUrl);
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/download/contacts/")
+                        .path(fileName)
+                        .toUriString();
+
+                contact.setImageUrl(fileDownloadUri);
             }
 
             contact.setUserId(user.getId());
@@ -119,9 +122,11 @@ public class ContactAPIs {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseObject("FAIL", e.getMessage());
+
+            return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", ""))).build();
         }
 
-        return new ResponseObject("OK", contact);
+
+        return Response.ok(gson.toJson(new ResponseObject("OK", contact))).build();
     }
 }

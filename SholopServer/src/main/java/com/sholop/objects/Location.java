@@ -2,13 +2,13 @@ package com.sholop.objects;
 
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
+import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -31,10 +31,16 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
-    Integer userId;
-    String farsiAddress1, farsiAddress2, englishAddress, title, description, mapUrl;
+    @Column(name = "user_id") Integer userId;
+    @Column(name = "persian_address_1") String farsiAddress1;
+    @Column(name = "persian_address_2") String farsiAddress2;
+    @Column(name = "english_address") String englishAddress;
+    @Column(name = "title") String title;
+    @Column(name = "description") String description;
+    @Column(name = "map_url") String mapUrl;
 
-    double latitude, longitude;
+    @Column(name = "latitude") double latitude;
+    @Column(name = "longitude") double longitude;
 
     public Location(String title, String description, String farsiAddress1, String farsiAddress2, String englishAddress, double latitude, double longitude) {
         this.title = title;
@@ -139,57 +145,4 @@ public class Location {
         this.mapUrl = mapUrl;
     }
 
-    public void downloadMap() {
-
-        String url = "https://maps.googleapis.com/maps/api/staticmap?" +
-                "center=" + this.latitude +"%2c%20"+ this.longitude +
-                "&markers=" + this.latitude + "," + this.longitude +
-                "&zoom=16&size=400x200&key=AIzaSyDXNa76E7XTVYsZR5Q0qeOpE9LyFanBnGc";
-
-        /*"http://maps.google.com/maps/api/staticmap?" +
-                "center=25.3176452,82.97391440000001," +
-                "&zoom=15" +
-                "&markers=25.3176452,82.97391440000001" +
-                "&path=color:0x0000FF80|weight:5|25.3176452,82.97391440000001" +
-                "&size=175x175" +
-                "&key=AIzaSyDXNa76E7XTVYsZR5Q0qeOpE9LyFanBnGc"*/
-
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(url);
-        javax.ws.rs.core.Response resp = target.request("image/png").get();
-
-
-        try {
-            if(resp.getStatus() == 200)
-            {
-                InputStream is = resp.readEntity(InputStream.class);
-
-                this.setMapUrl(fetchFeed(is));
-                IOUtils.closeQuietly(is);
-            }
-            //fetchFeedAnotherWay(is) //use for Java 7
-
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Store contents of file from response to local disk
-     */
-    private String fetchFeed(InputStream is) throws IOException {
-        byte[] byteArray = IOUtils.toByteArray(is);
-
-
-        String filename = "/contents/images/venues/venue_" + (new Date()).toString().replaceAll(" ", "") + ".png";
-        FileOutputStream fos = new FileOutputStream("." + filename);
-
-        String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + filename;
-
-        fos.write(byteArray);
-        fos.flush();
-        fos.close();
-
-        return relationalUrl;
-    }
 }

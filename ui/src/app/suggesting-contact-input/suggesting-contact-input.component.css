@@ -3,11 +3,17 @@
   right: 0;
   width: 100%;
   position: absolute;
-  border: 1px solid #9d9d9d;
-  background: white;
   z-index: 10;
   max-height: 200px;
   overflow: hidden;
+
+
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background: #f5f7fa;
+  -webkit-transition: opacity .3s linear;
+  transition: opacity .3s linear;
 }
 
 .contact:last-child{
@@ -21,24 +27,12 @@
   font-weight: bold;
 }
 .contact{
-  border-bottom: 1px solid #9d9d9d;
+  border-bottom: 1px dotted #9da3a6;
   cursor: pointer;
+  line-height: 3;
 }
 
-.contact_name{
+.frame{
   line-height: 2.5;
   text-align: right;
-}
-
-
-textarea:focus,
-input:focus{
-  border: 1px solid #eee;
-  background: #eeeeee;
-}
-textarea,
-input{
-  border: 1px solid transparent;
-  background: #f6f6f6;
-  padding: 5px;
 }

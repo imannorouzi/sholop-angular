@@ -25,11 +25,14 @@ export class DataService {
   }
 
   private extractData(res: Response) {
-    return (<any>res).data || null;
+    let retVal =  (<any>res).data || (<any>res).entity;
+
+    return retVal ? JSON.parse(retVal) : null;
+
   }
 
   private handleError(error: Response | any) {
-    let message = error.error || "";
+    let message = error.error || error || "";
     return throwError(message);
   }
 
@@ -135,14 +138,18 @@ export class DataService {
     }
   }
 
-  updateContact(contact: any) {
+  updateContact(con: any) {
     let apiURL = serverUrl + "/update-contact";
 
+    let contact = Object.assign({}, con);
     let formData:FormData = new FormData();
     if(contact.image ) {
       formData.append('file', this.dataURItoBlob(contact.image), contact.fileName);
-      contact.image = null;
       formData.append("filename", contact.fileName);
+      contact.image = null;
+    }else{
+      formData.append('file', null);
+      formData.append("filename", "");
     }
 
     formData.append("contact", JSON.stringify(contact));
@@ -192,7 +199,9 @@ export class DataService {
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + this.jwtHeaders
     });
-    return this.http.post(`${apiURL}`, JSON.stringify(event), {headers: headers});
+    return this.http.post(`${apiURL}`, JSON.stringify(event), {headers: headers})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
   }
 
   getComments(eventId, page, uuid):  Observable<any> {

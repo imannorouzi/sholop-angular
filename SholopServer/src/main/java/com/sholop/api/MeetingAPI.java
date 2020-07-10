@@ -1,59 +1,62 @@
 package com.sholop.api;
 
-import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
-import com.sholop.mail.MailMessage;
+import com.sholop.Application;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
-import com.sholop.utils.Utils;
-import org.apache.commons.io.FileUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+import com.sholop.utils.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import org.springframework.core.io.Resource;
 
 @RestController
 public class MeetingAPI {
 
-    // Injecting ConfigurationProperties in your Beans
-//    @Autowired
-//    private ApplicationConfiguration appProperties;
-
     @Autowired
     RepositoryFactory repositoryFactory;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    Gson gson = new Gson();
+
     @PermitAll
     @PostMapping("/create-meeting")
-    public Response createMeeting(User user, String jsonMeetingString) throws JSONException, IOException {
+    public Response createMeeting(@AuthenticationPrincipal UserDetails u, @RequestBody String jsonMeetingString)  {
 
-        Gson gson = new Gson();
+
         int id = -1;
+
+        User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
             JSONObject jsonEvent = new JSONObject(jsonMeetingString);
 
             Event event = new Event(jsonEvent);
             if(event.getVenue().getId() <= 0) {
                 event.getVenue().setUserId(user.getId());
-                event.getVenue().downloadMap();
+                event.getVenue().setMapUrl(this.fileStorageService.downloadMap(
+                        event.getVenue().getLatitude(),
+                        event.getVenue().getLongitude()
+                ));
                 event.setVenueId(repositoryFactory.getLocationRepository().save(event.getVenue()).getId());
             }else{
                 event.setVenueId(event.getVenue().getId());
@@ -77,44 +80,44 @@ public class MeetingAPI {
                 //create a link for the event
                 event.createLink();
                 event.setCreatedBy(user.getId());
+                event.setStatus(Event.EVENT_STATUS.PUBLISHED.name());
                 event = repositoryFactory.getEventRepository().save(event);
                 event.setId(id);
             }
 
-            repositoryFactory.getSholopDateRepository().saveAll(event.getDates());
-
-            List<ContactEvent> contactEvents = new ArrayList<>();
-            for( Contact contact: event.getAttendees()){
-                ContactEvent contactEvent = new ContactEvent(contact.getId(), id, ContactEvent.STATUS.NOT_REPLIED.name());
-                contactEvent.generateQRCodeImage();
-                contactEvent = repositoryFactory.getContactEventRepository().save(contactEvent);
-
-                contactEvents.add(contactEvent);
+            // save dates
+            if(event.getDates() != null && event.getDates().size() > 0) {
+                repositoryFactory.getSholopDateRepository().saveAll(event.getDates());
             }
 
+            // save contact events
+            List<ContactEvent> contactEvents = new ArrayList<>();
+            if(event.getAttendees() != null && event.getAttendees().size() > 0) {
+                for (Contact contact : event.getAttendees()) {
+                    ContactEvent contactEvent = new ContactEvent(contact.getId(), id, ContactEvent.STATUS.NOT_REPLIED.name());
+                    contactEvent.generateQRCodeImage();
+                    contactEvent = repositoryFactory.getContactEventRepository().save(contactEvent);
+
+                    contactEvents.add(contactEvent);
+                }
+            }
             event.setContactEvents(contactEvents);
 
-
-            if(id == -1){
-                return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", null)))
-                        .build();
-            }
-
             event.setChair(repositoryFactory.getUserRepository().findById(event.getChairId()).orElse(null));
-            event.setPointedDate(event.getDates().get(0));
+//            event.setPointedDate(event.getDates().get(0));
             MailUtils.sendMeetingCreatedMessages(event);
             return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(500)
+            return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", null)))
                     .build();
         }
     }
 
     @GetMapping("/get-meetings")
     public Response getMeetings( User user,
-                                @QueryParam("date") String dateString)  {
+                                 @QueryParam("date") String dateString)  {
 
         Gson gson = new Gson();
         try {
@@ -164,8 +167,8 @@ public class MeetingAPI {
 
     @GetMapping("/get-meeting-dates")
     public Response getMeetingDates( User user,
-                                    @QueryParam("startDate") String startDateString,
-                                    @QueryParam("endDate") String endDateString) throws JSONException {
+                                     @QueryParam("startDate") String startDateString,
+                                     @QueryParam("endDate") String endDateString) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -196,7 +199,7 @@ public class MeetingAPI {
 
     @GetMapping("/get-meeting")
     public Response getMeeting( User user,
-                               @QueryParam("meetingId") String meetingId) throws JSONException {
+                                @QueryParam("meetingId") String meetingId) throws JSONException {
 
         Gson gson = new Gson();
         try {
@@ -283,4 +286,56 @@ public class MeetingAPI {
     }
 
 
+    @PostMapping("/uploadFile")
+    public Response uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+        String fileName = fileStorageService.storeFile(file, file.getOriginalFilename(), "/");
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/downloadFile/")
+                .path(fileName)
+                .toUriString();
+
+        return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", fileDownloadUri)))
+                .build();
+    }
+
+    @PostMapping("/uploadMultipleFiles")
+    public List<Response> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        return Arrays.stream(files)
+                .map(file -> {
+                    try {
+                        return uploadFile(file);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/download/{type}/{fileName:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
+                                                 @PathVariable String type,
+                                                 HttpServletRequest request) throws Exception {
+        // type could be venues, users, contacts
+        Resource resource = fileStorageService.loadFileAsResource(fileName, "/" + type);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            Application.logger.info("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
 }

@@ -7,59 +7,26 @@
   <ng-container class="app-modal-body">
 
     <!--Title-->
-    <div class="row ">
-      <label class="col-sm-2 col-form-label">نام</label>
-      <div class="col-sm-10">
-
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="align-bottom fa fa-user"></i></span>
-          </div>
-          <input type="text" name="name" class="form-control" placeholder="نام کامل" [(ngModel)]="contact.name">
-        </div>
-
-      </div>
+    <div class=" ">
+      <label class=" col-form-label">نام</label>
+      <input type="text" name="name" class="" placeholder="نام کامل" [(ngModel)]="contact.name">
     </div>
 
     <!--Email-->
-    <div class="row ">
+    <div class=" ">
       <label class="col-sm-2 col-form-label">ایمیل</label>
-      <div class="col-sm-10">
-
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="align-bottom fa fa-envelope"></i></span>
-          </div>
-          <input type="text" name="email" class="form-control ltr" placeholder="ایمیل" [(ngModel)]="contact.email">
-        </div>
-
-      </div>
+          <input type="text" name="email" class=" ltr" placeholder="ایمیل" [(ngModel)]="contact.email">
     </div>
 
-    <!--Email-->
-    <div class="row ">
+    <!--Phone-->
+    <div class=" ">
       <label class="col-sm-2 col-form-label">تلفن</label>
-      <div class="col-sm-10">
-
-        <div class="input-group mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text"><i class="align-bottom fa fa-phone"></i></span>
-          </div>
-          <input type="text" name="phone" class="form-control ltr" placeholder="تلفن" [(ngModel)]="contact.phone">
-        </div>
-
-      </div>
+          <input type="text" name="phone" class=" ltr" placeholder="تلفن" [(ngModel)]="contact.phone">
     </div>
 
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-10">
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" [(ngModel)]="addToContacts" id="defaultUnchecked">
-          <label class="custom-control-label" for="defaultUnchecked">به لیست مخاطبان اضافه شود.</label>
-        </div>
-      </div>
-
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" [(ngModel)]="addToContacts" id="454">
+      <label class="custom-control-label" for="454">به لیست مخاطبان اضافه شود.</label>
     </div>
 
   </ng-container>

@@ -43,14 +43,15 @@ public class Event {
         this.limitGuests = limitGuests;
         this.maxGuests = maxGuests;
         this.allowComments = allowComments;
-        this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKOWN.name() :  (eventType);
+        this.eventType = eventType == null || eventType.equals("") ? EVENT_TYPE.UNKNOWN.name() :  (eventType);
         this.venue = location;
         this.imageUrl = imageUrl;
         this.status = status;
         this.chairId = chairId;
     }
 
-    public enum EVENT_TYPE {UNKOWN, MEETING }
+    public enum EVENT_TYPE {UNKNOWN, MEETING }
+    public enum EVENT_STATUS { UNKNOWN, DRAFT, PUBLISHED, FINISHED, CANCELLED}
 
     String title, link, tags, status;
 

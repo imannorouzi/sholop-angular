@@ -15,7 +15,7 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 //    List<Contact> findByTitleContainingOrContentContaining(String name, String textAgain);
 
 
-//    List<Contact> getContactsByUserId(int userId, String address, String name);
+    List<Contact> findAllByUserIdAndContactType(int userId, String type);
 
 
     @Query("select s FROM sh_contact s WHERE s.id in :ids")

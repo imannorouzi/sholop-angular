@@ -4,11 +4,14 @@
   width: 100%;
   left: 0;
   top: 100%;
-  background: white;
   z-index: 200;
 
-  border: 1px solid #9d9d9d;
-  border-radius: 4px;
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background: #f5f7fa;
+  -webkit-transition: opacity .3s linear;
+  transition: opacity .3s linear;
 }
 
 .time-arrows{
@@ -22,11 +25,13 @@
   cursor: pointer;
 }
 
+.main-row,
 .time-item.highlight{
   color: indianred;
-  font-weight: bold;
-  background: gainsboro;
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 0;
+  font-size: 20px;
+  font-weight: bold;
 }
 .time-item.highlight.hour-item{
   border-bottom-left-radius: 4px;
@@ -42,7 +47,6 @@
 }
 .time-item{
   color: black;
-  font-weight: bold;
   cursor: pointer;
   padding: 2px 0;
   margin: 0;
@@ -50,7 +54,7 @@
 }
 
 .hour-item, .minute-item{
-  background: #f6f6f6;
+  background: #efefef;
 }
 
 .change-button{

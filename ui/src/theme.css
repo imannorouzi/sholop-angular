@@ -9,6 +9,12 @@ textarea:focus{
   box-shadow: 0 0 0 4px rgba(234,76,137,0.1);
 }
 
+select.ng-touched.ng-invalid,
+input.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid{
+  background-color: rgba(255, 183, 207, 0.4);
+}
+
 select:hover,
 input:hover[type='text'],
 input:hover[type='number'],
@@ -143,4 +149,20 @@ label{
   height: 2rem;
 }
 
-
+.action-icon{
+  border-radius: 50%;
+  font-size: 15px;
+  /* padding: 5px; */
+  width: 40px;
+  height: 40px;
+  /* height: 32px; */
+  cursor: pointer;
+  margin-left: 15px;
+  text-align: center;
+  line-height: 2.5;
+  background-color: #f1f1f1;
+}
+.action-icon:hover{
+  background-color: #909ea8;
+  color: white;
+}

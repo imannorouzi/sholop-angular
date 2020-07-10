@@ -2,6 +2,7 @@ package com.sholop;
 
 import com.sholop.auth.JwtAuthenticationEntryPoint;
 import com.sholop.auth.JwtRequestFilter;
+import com.sholop.utils.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,10 @@ public class ContextConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService jwtUserDetailsService;
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    private ApplicationConfiguration applicationConfiguration;
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
@@ -70,6 +75,10 @@ public class ContextConfiguration extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
+                .antMatchers("/content/**").permitAll()
+                .antMatchers("/uploadFile/**").permitAll()
+                .antMatchers("/downloadFile/**").permitAll()
+                .antMatchers("/**").permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and()
                 // make sure we use stateless session; session won't be used to store user's state.

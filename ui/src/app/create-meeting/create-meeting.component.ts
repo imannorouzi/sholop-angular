@@ -91,9 +91,6 @@ export class CreateMeetingComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit(): void {
-  }
-
   addDateTime(event) {
     let d = new Date();
 
@@ -136,12 +133,15 @@ export class CreateMeetingComponent implements OnInit {
 
       this.submitting = true;
       this.dataService.postMeeting(this.event).subscribe(
-        (value:any) => {
-          // console.log(value);
+        (res:any) => {
+          if(res && res.msg === 'OK'){
+            this.navigationService.navigate("/meetings");
+            this.alertService.success("ملاقات با موفقیت ایجاد شد.");
+          }else{
+            this.alertService.error("ببخشید، مشکلی پیش آمد. دوباره تلاش کنید.");
+          }
           this.submitting = false;
-          this.navigationService.navigate("/meetings");
 
-          this.alertService.success("ملاقات با موفقیت ایجاد شد.");
         },
         (error:any) => {
           console.log(error);
@@ -192,8 +192,8 @@ export class CreateMeetingComponent implements OnInit {
     this.event.attendees.push(contact);
   }
 
-  fromTimeChanged(event, i) {
-    this.event.dates[i].startTime = event;
+  fromTimeChanged(dateObj, i) {
+    this.event.dates[i].startTime = dateObj.getTime();
   }
 
   toTimeChanged(event, i) {
