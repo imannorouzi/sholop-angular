@@ -62,6 +62,12 @@ export class DateService {
     return new Date(Date.parse(dateString));
   }
 
+  getTimeFromDateString(timeString){
+    let date = new Date(timeString);
+    return date.getHours() + ":" + date.getMinutes();
+    // return timeString.substring(0, 2) + ":" + timeString.substring(2);
+  }
+
   getMonthName(monthIndex: number): string{
     return monthNames[monthIndex];
   }

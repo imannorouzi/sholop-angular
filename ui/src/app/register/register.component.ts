@@ -7,6 +7,7 @@ import {UserService} from "../utils/user.service";
 import {AfService} from "../providers/af.service";
 import {NavigationService} from "../utils/navigation.service";
 import {AuthService} from "../utils/auth.service";
+import {LocalStorageService} from "../utils/local-storage.service";
 
 @Component({templateUrl: 'register.component.html',
   styleUrls: ['register.component.css']})
@@ -22,7 +23,8 @@ export class RegisterComponent implements OnInit {
     private alertService: AlertService,
     private navigationService: NavigationService,
     private authService: AuthService,
-    private afService: AfService) { }
+    private afService: AfService,
+    private localStorageService: LocalStorageService) { }
 
   ngOnInit() {
 
@@ -53,30 +55,19 @@ export class RegisterComponent implements OnInit {
 
     this.loading = true;
 
-    this.navigationService.navigate("/meetings");
-
-    /*this.userService.register(this.registerForm.value)
-      .pipe(first())
+    this.authService.register(this.registerForm.value)
       .subscribe(
-        data => {
-          if (data && data['msg'] === "OK" && data['object'].token) {
+        user => {
+          if(user){
+            if(this.localStorageService.checkIn(user.id)) {
+              this.authService.login(user);
+              this.router.navigate([this.authService.redirectUrl]);
 
-            // store user details and jwt token in local storage to keep user logged in between page refreshes
-            this.alertService.success('ثبت نام شما با موفقیت انجام شد.', true);
-            localStorage.setItem('currentUser', JSON.stringify(data['object']));
-            this.router.navigate(['/meetings']);
-
-          }else if(data['msg'] === 'DUPLICATE'){
-            this.alertService.error('این ایمیل قبلا ثبت نام کرده است.', true);
-          }else{
-            this.alertService.error('مشکلی به وجود آمد. لطفا دوباره تلاش کنید.', true);
+              this.authService.loggedIn.next();
+            }
           }
           this.loading = false;
-        },
-        error => {
-          this.alertService.error(error);
-          this.loading = false;
-        });*/
+        });
   }
 
 

@@ -1,5 +1,6 @@
 package com.sholop.utils;
 
+import com.sholop.ApplicationConfiguration;
 import com.sholop.objects.ContactEvent;
 import com.sholop.objects.Event;
 import org.apache.commons.io.IOUtils;
@@ -18,23 +19,11 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 public class Utils {
-//    public static final String RELATIONAL_WEBSITE_URL = "http://localhost:8094";
-//    public static final String WEBSITE_URL = "http://localhost:8094";
 
     public static final String RELATIONAL_WEBSITE_URL = "";
-    public static final String WEBSITE_URL = "http://185.173.104.77:8094";
+//    public static final String WEBSITE_URL = "http://185.173.104.77";
+    public static final String WEBSITE_URL = "http://185.173.104.77";
 
-    public static Date readFromGMT(Date date) throws ParseException {
-        String datePattern = "dd-MMM-yyyy, HH:mm:ss";
-        SimpleDateFormat format = new SimpleDateFormat(datePattern);
-        String dateString = format.format(date);
-
-        DateFormat dateFormat = new SimpleDateFormat(datePattern);
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        Date formattedDate = dateFormat.parse(dateString);
-
-        return formattedDate;
-    }
 
     public static String generateRandomString(){
         return UUID.randomUUID().toString();
@@ -68,6 +57,10 @@ public class Utils {
                 .append("/#/contact-meeting")
                 .append("/").append(ce.getUuid())
                 .append("/").append(event.getPointedDate().getId()).toString();
+    }
+
+    public static String fixUri(String fileDownloadUri) {
+        return fileDownloadUri.replace("http://localhost:8083", "/sholop-api");
     }
 
     /*public static String saveFile(InputStream uploadedInputStream,

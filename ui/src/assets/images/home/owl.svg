@@ -3,11 +3,10 @@
 
 <svg
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   width="210mm"
+   width="110mm"
    height="97mm"
    viewBox="0 0 210 297"
-   class="double-blinking walking"
+   class="double-blinking"
    id="">
   <defs
      id="defs2" />

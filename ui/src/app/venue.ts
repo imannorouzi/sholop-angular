@@ -1,3 +1,5 @@
+export const TEHRAN = {lat: 35.6892, lng: 51.3890}
+
 export class Venue {
   id: number = -1;
   title : string = '';
@@ -11,9 +13,9 @@ export class Venue {
   constructor(
     id: number = 0,
     title: string = '',
-    lat: number = 18.5793,
-    lng: number = 73.8143,
-    address1: string = 'تهران، در دوم، کدپستی ۲',
+    lat: number = TEHRAN.lat,
+    lng: number = TEHRAN.lng,
+    address1: string = '',
     address2: string = '',
     mapUrl: string = ''){
 

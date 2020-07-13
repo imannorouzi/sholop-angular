@@ -5,7 +5,13 @@
        [maximizable]="true">
 
   <ng-container class="app-modal-body">
-        <div class="" *ngIf="item">
+
+    <div *ngIf="item && item.event" class="text-center">
+      <canvas id="canvas" #canvas width="500" height="335"></canvas>
+    </div>
+
+
+    <!--<div class="" *ngIf="item">
 
           <div *ngIf="item.contact">
             <div class="row p-2 ">
@@ -31,15 +37,15 @@
 
           <hr>
 
-          <div *ngIf="item.event">
+          <div *ngIf="item.event" class="text-center">
 
             <h5 class="text-center">{{item.event.title}}</h5>
 
             <div class="panel text-center font-weight-bold mb-3">
               <i class="fa fa-calendar ml-2"></i>
               <span> {{dateService.greToPersian(item.event.pointedDate.date, true)}}  </span>
-              <span *ngIf="item.event.pointedDate.startTime"> از  {{commonService.convertTimeString(item.event.pointedDate.startTime)}}</span>
-              <span *ngIf="item.event.pointedDate.endTime"> تا  {{commonService.convertTimeString(item.event.pointedDate.endTime)}}</span>
+              <span *ngIf="item.event.pointedDate.startTime"> از  {{dateService.getTimeFromDateString(item.event.pointedDate.startTime)}}</span>
+              <span *ngIf="item.event.pointedDate.endTime"> تا  {{dateService.getTimeFromDateString(item.event.pointedDate.endTime)}}</span>
             </div>
 
             <hr>
@@ -64,12 +70,11 @@
 
 
 
-
-        </div>
+        </div>-->
   </ng-container>
 
   <ng-container class="app-modal-footer">
-        <button class="btn ml-2 primary" (click)="goTo('/meeting')" ><i class="fa fa-external-link"></i> پرینت کارت </button>
+        <button class="btn ml-2 primary" (click)="print()" ><i class="fa fa-external-link"></i> پرینت کارت </button>
         <button class="btn secondary " (click)="hide()"> بستن </button>
   </ng-container>
 

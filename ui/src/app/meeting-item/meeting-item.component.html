@@ -6,49 +6,39 @@
       <div class="row ">
 
         <div class="col-sm-2 meeting-time text-right" >
-          <span *ngIf="event.pointedDate.startTime" class="meeting-time">
-            <i class="fa fa-clock-o ml-3"></i>
-            <span>{{commonService.convertTimeString(event.pointedDate.startTime)}}</span>
-          </span>
 
-          <span *ngIf="!event.pointedDate.startTime" class="meeting-time">
-            <i class="fa fa-calendar ml-3"></i>
-            <span>{{dateService.greToPersian(event.pointedDate.date)}}</span>
-          </span>
+          <div *ngIf="event.pointedDate">
+            <span *ngIf="event.pointedDate.startTime" class="meeting-time">
+              <i class="fa fa-clock-o ml-3"></i>
+              <span>{{dateService.getTimeFromDateString(event.pointedDate.startTime)}}</span>
+            </span>
 
-          <span *ngIf="event.contactEvent" class="" [style.color]="commonService.getContactStatus(event.contactEvent.status).color">
-            <i [class]="'mr-2 fa ' + commonService.getContactStatus(event.contactEvent.status).class"></i>
-          </span>
-          <span *ngIf="event.chairId===user.id" class="">
-            <i class="mr-1 fa fa-coffee" ></i>
-          </span>
-        </div>
-
-        <div class="col-sm-4" >
-
-          <div class="panel text-right" >
-
-            <div class="contact-image-container " *ngFor="let contact of event.attendees;">
-              <img class="contact-image rounded-circle shadow" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-            </div>
-
-            <span class="mr-2">  {{attendeesString}}  </span>
+            <span *ngIf="!event.pointedDate.startTime" class="meeting-time">
+              <i class="fa fa-calendar ml-3"></i>
+              <span>{{dateService.greToPersian(event.pointedDate.date)}}</span>
+            </span>
           </div>
-
         </div>
 
         <div class="col-sm-4 text-right">
-          <span class="meeting-title font-weight-bold mr-2">{{event.title}}</span>
+          <span [class]="'meeting-title mr-2 ' + (event.title ? 'font-weight-bold' : 'text-muted')">{{event.title ? event.title : 'بدون عنوان'}}</span>
         </div>
 
-        <div [class]="'col-sm-2 '">
-          {{commonService.getEventStatus(event.status).text}}
+        <div class="col-sm-6 text-left" >
+          <div class="panel text-right flexbox-parent-row" >
+            <div class="contact-image-container " *ngFor="let contact of event.attendees;">
+              <img class="contact-image rounded-circle shadow" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+            </div>
+            <span class="mr-2 names flexbox-item-grow">  {{attendeesString}}  </span>
+          </div>
+
         </div>
       </div>
 
-      <div *ngIf="false">
 
-        <!--<span class="text-left"><small class="text-muted">{{commonService.getStatusString(event.status)}}</small></span>-->
+      <!--<div *ngIf="false">
+
+        &lt;!&ndash;<span class="text-left"><small class="text-muted">{{commonService.getStatusString(event.status)}}</small></span>&ndash;&gt;
         <a [routerLink]="['/edit-meeting/' + event.id]" *ngIf="user.id === event.chairId" class="meeting-tool btn ml-1"><i class="fa fa-edit meeting-tool"></i></a>
         <a class="meeting-tool shadow dropdown-toggle btn" *ngIf="user.id !== event.chairId" data-toggle="dropdown" (click)="$event.stopPropagation" ></a>
         <div class="dropdown-menu rtl">
@@ -82,7 +72,7 @@
 
         </div>
 
-      </div>
+      </div>-->
 
     </div>
 

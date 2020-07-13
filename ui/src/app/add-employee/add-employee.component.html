@@ -1,0 +1,84 @@
+<modal [modalTitle]=" 'ثبت ' +  'کارمند' + ' جدید' "
+       [size]="'sm'"
+       [zIndex]="11" #childModal>
+  <ng-container class="app-modal-body">
+
+    <div class="">
+      <div class="col-sm-12 m-2 text-center">
+        <img class="rounded-circle contact-image" (click)="onImageClick()" [src]="employee.imageUrl ? employee.imageUrl : '../assets/images/user-placeholder.png'">
+        <div><small class="text-muted ">کلیک کنید</small></div>
+      </div>
+    </div>
+    <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+
+    <!--Name-->
+    <div class=" ">
+      <label class=" text-right">نام</label>
+      <input type="text" name="name" class=""
+             #nameField="ngModel" required
+             [ngClass]="{ 'is-invalid': !nameField.valid && (nameField.touched || nameField.dirty || submitted) }"
+             placeholder="نام کامل" [(ngModel)]="employee.name">
+    </div>
+
+    <!--Email-->
+    <div class=" ">
+      <label class=" text-right">ایمیل</label>
+      <input type="text" name="email" class=" ltr"
+             #emailField="ngModel" pattern="^\S*[@]\S*[.]\S*$" email required
+             [ngClass]="{ 'is-invalid': !emailField.valid && (emailField.touched || emailField.dirty || submitted) }"
+             placeholder="ali@gmail.com" [(ngModel)]="employee.email" [email]="true">
+
+    </div>
+
+    <!--Phone-->
+    <div class=" ">
+      <label class=" text-right">تلفن</label>
+      <input type="text" name="phone" class=" ltr"
+             #phoneField="ngModel" pattern="^[0-9]{7,13}$"
+             [ngClass]="{ 'is-invalid': !phoneField.valid && (phoneField.touched || phoneField.dirty || submitted) }"
+             placeholder="0912XXXXXXXX" [(ngModel)]="employee.phone">
+
+    </div>
+
+
+    <label class=" text-right">سطح دسترسی</label>
+    <div class="row ">
+      <div class="custom-control custom-radio col-md-4" (click)="employee.role='user'">
+        <input type="radio" class="custom-control-input" value="user" id="user-radio-button" [(ngModel)]="employee.role" name="role">
+        <label class="custom-control-label" for="user-radio-button">کاربر</label>
+      </div>
+
+      <div class="custom-control custom-radio col-md-4" (click)="employee.role='reception'" >
+        <input type="radio" class="custom-control-input" value="reception" id="reception-radio-button" [(ngModel)]="employee.role" name="role">
+        <label class="custom-control-label" for="reception-radio-button">پذیرش</label>
+      </div>
+
+      <div class="custom-control custom-radio col-md-4" (click)="employee.role='owner'" >
+        <input type="radio" class="custom-control-input" value="owner" id="manager-radio-button" [(ngModel)]="employee.role" name="role">
+        <label class="custom-control-label" for="manager-radio-button">مدیر</label>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container class="app-modal-footer">
+    <button type="button" class="btn primary ml-2" (click)="createEmployee()">ذخیره</button>
+    <button type="button" class="btn secondary" (click)="hide()">لغو</button>
+  </ng-container>
+
+</modal>
+<!-- Image Modal -->
+<modal #imageCropperModal
+       [modalTitle]="'اندازه عکس'"
+       [zIndex]="11"
+       [size]="'auto'"
+       [maximizable]="true">
+  <ng-container class="app-modal-body">
+    <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" ></img-cropper>
+  </ng-container>
+  <ng-container class="app-modal-footer">
+    <div class="text-right">
+      <button type="button" class="btn primary" (click)="onImageCropperModalOk()">خوبه</button>
+    </div>
+  </ng-container>
+</modal>

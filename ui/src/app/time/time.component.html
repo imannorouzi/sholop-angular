@@ -1,7 +1,6 @@
 <div class="iconed-input" click-zone (clickOutside)="clickOutside($event)">
 
   <div class="frame flexbox-parent-row">
-    <i class=" ml-3 icon fa fa-clock-o"></i>
     <input #input (change)="onTimeChanged()"
            type="text" [class]="inputClasses + ' flexbox-item-grow ltr'" autocomplete="false"
            [autocomplete]="false"

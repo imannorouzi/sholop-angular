@@ -27,5 +27,7 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                 @Param("user_id") int userId,
                                 @Param("email") String email,
                                 @Param("date") Date date);
+
+    List<Event> findAllByEventType(String type);
 }
 

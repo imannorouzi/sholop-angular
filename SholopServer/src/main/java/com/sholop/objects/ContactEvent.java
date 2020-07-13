@@ -24,6 +24,7 @@ public class ContactEvent {
     public ContactEvent(){}
 
     public enum STATUS {ATTENDING, NOT_ATTENDING, NOT_REPLIED, REJECTED, REMOVED, TENTATIVE}
+    public enum TYPE {USER, CONTACT, UNKNOWN}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,13 +51,21 @@ public class ContactEvent {
     }
 
     public ContactEvent(
-             int contactId,
-             int eventId,
-             String status) {
+            int contactId,
+            int eventId,
+            TYPE type,
+            String status,
+            String name,
+            String email,
+            String phone) {
 
         this.contactId = contactId;
         this.eventId = eventId;
         this.status = STATUS.valueOf(status);
+        this.type = type.name();
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
     }
 
     @Column(name = "contact_id") Integer contactId;
@@ -65,6 +74,12 @@ public class ContactEvent {
     @Column(name = "modified_by") Integer modifiedBy;
     Timestamp created, modified;
     @Column(name = "qr_code_url") String QRCodeUrl;
+
+    /* used for the contacts which should not be remembered*/
+    @Column(name = "type") String type;
+    @Column(name = "name") String name;
+    @Column(name = "phone") String phone;
+    @Column(name = "email") String email;
 
     private String uuid;
 
@@ -143,21 +158,7 @@ public class ContactEvent {
         this.QRCodeUrl = QRCordeUrl;
     }
 
-    public void generateQRCodeImage()
-            throws WriterException, IOException {
-        QRCodeWriter qrCodeWriter = new QRCodeWriter();
-        String uuid = Utils.generateRandomString();
-        this.setUuid(uuid);
-        BitMatrix bitMatrix = qrCodeWriter.encode(uuid, BarcodeFormat.QR_CODE, 200, 200);
 
-        String filename = "/contents/images/events/QRCodes/contact" + (new Date()).toString().replaceAll(" ", "") + ".png";
-
-        Path path = FileSystems.getDefault().getPath("." + filename);
-        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-
-        String relationalUrl = Utils.RELATIONAL_WEBSITE_URL + filename;
-        this.setQRCodeUrl(relationalUrl);
-    }
 
     public String getUuid() {
         return uuid;
@@ -165,5 +166,37 @@ public class ContactEvent {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

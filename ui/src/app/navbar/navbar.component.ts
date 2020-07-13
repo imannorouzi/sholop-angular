@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonService} from "../utils/common.service";
 import {AuthService} from "../utils/auth.service";
+import {NavigationEnd, Router} from "@angular/router";
+import {NavigationService} from "../utils/navigation.service";
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,8 @@ export class NavbarComponent implements OnInit {
 
 
   constructor(public authService: AuthService,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private navigationService: NavigationService) {
   }
 
   ngOnInit() {

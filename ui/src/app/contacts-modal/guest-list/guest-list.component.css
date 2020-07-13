@@ -1,0 +1,29 @@
+.contact-image{
+  width: 40px;
+  height: 40px;
+}
+
+.selected{
+  background: royalblue;
+  color: black;
+}
+
+.check-icon{
+  line-height: 2;
+  color: darkolivegreen;
+}
+
+.contact:hover{
+  background: #E0E2E6;
+}
+.contact{
+  cursor: pointer;
+  background: #f5f7fa;
+  margin-bottom: 10px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.contact.selected{
+  border: 2px solid #444;
+}

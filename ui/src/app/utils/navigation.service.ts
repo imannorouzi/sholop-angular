@@ -4,6 +4,7 @@ import {NavigationEnd, Router} from '@angular/router';
 const homeUrls = [
   '/',
   '/meetings',
+  '/home',
   '/login',
   '/register'
 ];
@@ -35,6 +36,10 @@ export class NavigationService{
   }
 
   isHome(){
-    return homeUrls.indexOf(this.currentPath) === -1;
+    return homeUrls.indexOf(this.currentPath) !== -1;
+  }
+
+  get currentLocation(){
+    return this.currentPath;
   }
 }

@@ -25,7 +25,7 @@ export class DataService {
   }
 
   private extractData(res: Response) {
-    let retVal =  (<any>res).data || (<any>res).entity;
+    let retVal =  (<any>res).data || (<any>res).entity || (<any>res).object;
 
     return retVal ? JSON.parse(retVal) : null;
 
@@ -76,12 +76,60 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
-  getContacts( hint: string = '', type: string = 'contact'):  Observable<any> {
+  getContacts( hint: string = ''):  Observable<any> {
     let apiURL = serverUrl + "/get-contacts";
     return this.http.get(apiURL, {
-      params: {hint: hint, type: type.toLocaleUpperCase()}
+      params: {hint: hint}
     }).pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
+  }
+
+  getUsers( hint: string = ''):  Observable<any> {
+    let apiURL = serverUrl + "/get-users";
+    return this.http.get(apiURL, {
+      params: {hint: hint}
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
+  }
+
+  getEmployees( hint: string = '', role: string = ''):  Observable<any> {
+    let apiURL = serverUrl + "/get-employees";
+    return this.http.get(apiURL, {
+      params: {hint: hint, role: role}
+    }).pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
+  }
+
+  updateEmployee(emp: any) {
+    let apiURL = serverUrl + "/update-employee";
+
+    let employee = Object.assign({}, emp);
+    let formData:FormData = new FormData();
+    if(employee.image ) {
+      formData.append('file', this.dataURItoBlob(employee.image), employee.fileName);
+      formData.append("filename", employee.fileName);
+      employee.image = null;
+    }else{
+      formData.append('file', null);
+      formData.append("filename", "");
+    }
+
+    formData.append("employee", JSON.stringify(employee));
+
+    let hdrs = new HttpHeaders();
+    hdrs.append("Content-Type", "multipart/form-data");
+    hdrs.append("Accept", "application/json");
+    return this.http.post(`${apiURL}`, formData, {headers: hdrs})
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteEmployee(id: number) {
+    let apiURL = serverUrl + "/delete-employee";
+    let headers = new HttpHeaders({
+      'Accept': 'application/json'
+    });
+    return this.http.post(`${apiURL}`, id, {headers: headers});
   }
 
   getVenues( hint: string = ''):  Observable<any> {
@@ -185,7 +233,6 @@ export class DataService {
   deleteContact(id: number) {
     let apiURL = serverUrl + "/delete-contact";
     let headers = new HttpHeaders({
-      'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
     return this.http.post(`${apiURL}`, id, {headers: headers});

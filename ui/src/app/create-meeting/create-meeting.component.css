@@ -1,5 +1,13 @@
+.map:hover{
+  height: 300px;
+}
 .map{
   height: 100px;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .edit-step-button:hover{
@@ -19,4 +27,15 @@
 .box{
   background: white;
   padding: 10px;
+}
+
+.line-height{
+  line-height: 2.5;
+}
+
+.contact-border{
+  line-height: 38px;
+  border: 1px dashed #ddd;
+  border-radius: 10px;
+  padding: 5px;
 }

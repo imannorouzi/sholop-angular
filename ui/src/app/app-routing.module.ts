@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import {CreateEventComponent} from "./create-event/create-event.component";
 import {MeetingsComponent} from "./meetings/meetings.component";
-import {HomeComponent} from "./home/home.component";
 import {ContactsComponent} from "./contacts/contacts.component";
 import {AuthGuard} from "./utils/auth-guard.service";
 import {LoginComponent} from "./login/login.component";
@@ -23,6 +22,8 @@ import {FaqComponent} from "./faq/faq.component";
 import {CreateTokenComponent} from "./create-token/create-token.component";
 import {TokensComponent} from "./tokens/tokens.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
+import {EmployeeComponent} from "./employees/employee.component";
+import {AddressBookComponent} from "./address-book/address-book.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,10 +34,11 @@ const routes: Routes = [
   { path: 'meeting/:id', component: UserMeetingComponent, canActivate: [AuthGuard] },
   { path: 'contact-meeting/:uuid/:dateId/:action', component: ContactMeetingComponent},
   { path: 'meetings', component: MeetingsComponent, canActivate: [AuthGuard] },
-  { path: 'home', component: LandingPageComponent },
+  { path: 'home', component: MeetingsComponent, canActivate: [AuthGuard] },
   { path: 'tokens', component: TokensComponent, canActivate: [AuthGuard] },
-  { path: 'contacts/:type', component: ContactsComponent, canActivate: [AuthGuard] },
-  { path: 'contacts/:type/:role', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'address-book', component: AddressBookComponent, canActivate: [AuthGuard] },
+  { path: 'employees', component: EmployeeComponent, canActivate: [AuthGuard] },
+  { path: 'employees/:role', component: EmployeeComponent, canActivate: [AuthGuard] },
   { path: 'venues', component: VenuesComponent, canActivate: [AuthGuard] },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'faq', component: FaqComponent },

@@ -6,7 +6,6 @@ import {ConfirmComponent} from "../confirm/confirm.component";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {ActivatedRoute} from "@angular/router";
 import {CommonService} from "../utils/common.service";
-import {DummyData} from "../dummyData";
 
 @Component({
   selector: 'app-contacts',
@@ -25,8 +24,6 @@ export class ContactsComponent implements OnInit {
 
   currentUser: User;
   searchString: string = '';
-  type: string = 'contact';
-  role: string = '';
 
   constructor(private dataService: DataService,
               public commonService: CommonService,
@@ -34,21 +31,16 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.readContacts('');
-    // this.loadAllUsers();
     this.route.params.subscribe(params => {
-      this.type = params['type'];
-      this.role = params['role'];
-      this.readContacts('', params['type']);
-      // this.readDummyContacts();
+      this.readContacts('');
     });
   }
 
-  readContacts(hint: string, type: string){
+  readContacts(hint: string){
 
     this.loading = true;
 
-    this.dataService.getContacts(hint, type).subscribe(
+    this.dataService.getContacts(hint).subscribe(
       data => {
         if(data.msg === "OK") {
 
@@ -68,17 +60,6 @@ export class ContactsComponent implements OnInit {
     )
   }
 
-  private readDummyContacts() {
-    this.loading = true;
-    this.contacts = [];
-
-    setTimeout( () => {
-      this.loading = false;
-      this.contacts = DummyData.CONTACTS.filter( c => c.contactType === this.type && (!this.role || c.role === this.role));
-    }, 1500);
-
-  }
-
   deleteConfirmed(contact){
     this.dataService.deleteContact(contact.id).subscribe(
       data => {
@@ -89,12 +70,6 @@ export class ContactsComponent implements OnInit {
       }
     )
   }
-
-  /*private loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-      this.users = users;
-    });
-  }*/
 
   onContactAdded(contact){
     let c = this.contacts.find( c => { return c.id === contact.id});
@@ -121,7 +96,7 @@ export class ContactsComponent implements OnInit {
   }
 
   onKeyUp(event){
-    this.readContacts(this.searchString, this.type)
+    this.readContacts(this.searchString)
   }
 
   onUploadFileClick(event) {

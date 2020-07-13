@@ -10,18 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "sh_user")
-public class User{
+public class User extends Attendee{
 
-    public User(){}
+    public User(){super(ContactEvent.TYPE.USER.name());}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
 
+    @Column(name = "parent_id") private Integer parentId;
+
 
     @Column(name = "full_name") private String name;
     private String username;
-    @Transient private List<String> roles;
+    @Column(name = "role") private String role;
     private String password, email, phone, description = "";
     @Column(name = "persian_address_1") String farsiAddress1 = "";
     @Column(name = "persian_address_2") String farsiAddress2 = "";
@@ -40,6 +42,8 @@ public class User{
     @Column(name = "google_password") String googlePassword;
 
     public User(String name, String type, String email, String password, String imageUrl, String phone) {
+        super(ContactEvent.TYPE.USER.name());
+
         this.name = name;
         this.userType = USER_TYPE.valueOf(type);
         this.username = email;
@@ -48,14 +52,15 @@ public class User{
         this.phone = phone;
         this.password = password;
         this.id = -1;
-        this.roles = null;
+        this.role = null;
         this.latitude = 35.6892;
         this.longitude = 51.3890;
     }
 
-    public User(String name, String password, List<String> roles) {
+    public User(String name, String password, String role) {
+        super(ContactEvent.TYPE.USER.name());
         this.name = name;
-        this.roles = roles;
+        this.role = role;
         this.password = password;
     }
 
@@ -79,6 +84,8 @@ public class User{
                 Timestamp modified,
                 int modifiedBy) {
 
+        super(ContactEvent.TYPE.USER.name());
+
         this.id = id;
         this.userType = USER_TYPE.valueOf(type);
         this.name  = name;
@@ -88,13 +95,7 @@ public class User{
         this.imageUrl = imageUrl;
         this.phone = phone;
         this.googlePassword = googlePassword;
-        this.roles = new ArrayList<>();
-        if(roles != null) {
-            String[] rolesSplit = roles.split(",");
-            for (String role : rolesSplit) {
-                this.roles.add(role);
-            }
-        }
+        this.role = role;
 
         this.latitude = latitude;
         this.longitude = longitude;
@@ -109,32 +110,30 @@ public class User{
     }
 
     public User (JSONObject jo) throws JSONException {
+        super(ContactEvent.TYPE.USER.name());
+
         this.setId(jo.getInt("id"));
         this.setUsername(jo.getString("username"));
         this.setName(jo.getString("name"));
         this.setEmail(jo.getString("email"));
-        this.setPassword(jo.getString("password"));
+        this.setPassword(jo.has("password") ? jo.getString("password") : "");
 
-        this.setUserType(jo.has("type") ? USER_TYPE.valueOf(jo.getString("type")) : USER_TYPE.UNKNOWN);
+//        this.setUserType(jo.has("type") ? USER_TYPE.valueOf(jo.getString("type")) : USER_TYPE.PERSONAL);
         this.setPhone(jo.has("phone") ? jo.getString("phone") : "");
         this.setLatitude(jo.has("latitude") ? jo.getDouble("latitude") : 0);
         this.setLongitude(jo.has("longitude") ? jo.getDouble("longitude") : 0);
         this.setFarsiAddress1(jo.has("farsiAddress1") ? jo.getString("farsiAddress1") : "");
         this.setFarsiAddress2(jo.has("farsiAddress2") ? jo.getString("farsiAddress2") : "");
         this.setDescription(jo.has("welcomeMessage") ? jo.getString("welcomeMessage") : "");
-        this.roles = new ArrayList<>();
-        String[] rolesSplit = jo.getString("roles").split(",");
-        for(String role : rolesSplit ){
-            this.roles.add(role);
-        }
+        this.role = jo.has("role") ? jo.getString("role") : "user";
     }
 
     public String getName() {
         return name;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
     @XmlElement
@@ -143,8 +142,8 @@ public class User{
     }
 
     @XmlElement
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
+    public void setRole(String roles) {
+        this.role = roles;
     }
 
     public String getPassword() {
@@ -290,5 +289,13 @@ public class User{
 
     public void setUserType(USER_TYPE userType) {
         this.userType = userType;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 }

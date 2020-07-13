@@ -4,6 +4,7 @@ import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
 import com.sholop.auth.JwtTokenUtil;
 import com.sholop.auth.JwtUserDetailsService;
+import com.sholop.auth.PasswordHash;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.ResponseObject;
 import com.sholop.objects.User;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
@@ -44,8 +46,7 @@ public class AuthAPI {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
+    Gson gson = new Gson();
 
     public AuthAPI() {
     }
@@ -89,6 +90,44 @@ public class AuthAPI {
             e.printStackTrace();
             return Response.status(500)
                     .entity(gson.toJson(new ResponseObject("Internal Error", 500)))
+                    .build();
+        }
+    }
+
+    @PostMapping("/register")
+    public Response register(@RequestBody String jsonSchedule){
+
+        try {
+            JSONObject jsonUser = new JSONObject(jsonSchedule);
+
+            User user = repositoryFactory.getUserRepository().findByUsername(jsonUser.getString("email"));
+
+            if( user == null ){
+
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                User newUser = new User(
+                        jsonUser.getString("name"),jsonUser.has("type") ? jsonUser.getString("type") : "",
+                        jsonUser.getString("email"),
+                        bCryptPasswordEncoder.encode(jsonUser.getString("password")),
+                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
+                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
+
+//                MailUtils.sendRegisterMail(newUser);
+                // To update the id
+                newUser = repositoryFactory.getUserRepository().save(newUser);
+                newUser.setToken( jwtTokenUtil.generateToken(newUser));
+                newUser.setPassword("");
+
+                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
+                        .build();
+
+            }else{
+                return Response.status(200).entity(gson.toJson(new ResponseObject("DUPLICATE", null))).build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
                     .build();
         }
     }
@@ -160,47 +199,6 @@ public class AuthAPI {
         }
     }
 
-
-    @PostMapping("/register")
-    public Response register(String jsonSchedule){
-
-        try {
-            JSONObject jsonUser = new JSONObject(jsonSchedule);
-
-            User user = repositoryFactory.getUserRepository().findByUsername(jsonUser.getString("email"));
-
-            Gson gson = new Gson();
-            if( user == null ){
-
-                User newUser = new User(
-                        jsonUser.getString("name"),jsonUser.has("type") ? jsonUser.getString("type") : "",
-                        jsonUser.getString("email"),
-                        /*PasswordHash.getSaltedHash(jsonUser.getString("password"))*/ "",
-                        jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
-                        jsonUser.has("phone") ? jsonUser.getString("phone") : "");
-
-                // To update the id
-                MailUtils.sendRegisterMail(newUser);
-                newUser = repositoryFactory.getUserRepository().save(newUser);
-
-                newUser.setToken(/*JWTHelper.createAndSignToken(
-                        jsonUser.getString("email"),
-                        jsonUser.getString("password"))*/ "");
-                newUser.setPassword("");
-
-
-                return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
-                        .build();
-            }else{
-                return Response.status(200).entity(gson.toJson(new ResponseObject("DUPLICATE", null))).build();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
 
     @PostMapping("/update-user")
     public Response updateUser( User u,

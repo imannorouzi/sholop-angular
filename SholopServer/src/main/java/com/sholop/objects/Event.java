@@ -65,9 +65,9 @@ public class Event {
     @Transient
     User chair;
     @Transient
-    List<SholopDate> dates;
+    List<EventDate> dates;
     @Transient
-    SholopDate pointedDate;
+    EventDate pointedDate;
     @Transient
     List<SholopImage> images;
     @Transient
@@ -75,11 +75,11 @@ public class Event {
     @Transient
     List<ContactEvent> contactEvents;
     @Transient
-    List<Contact> attendees;
+    List<Attendee> attendees;
     @Transient
     ContactEvent contactEvent;
     @Transient
-    SholopDate closeDate;
+    EventDate closeDate;
 
     // setting attributes
     @Column(name = "confirm_needed")
@@ -117,16 +117,21 @@ public class Event {
         this.setVenue(new Location(jo.getJSONObject("venue")));
         this.setChairId(jo.getInt("chairId"));
 
-        JSONArray datesArray = jo.getJSONArray("dates");
+        JSONArray datesArray = jo.getJSONArray("dateStrings");
         this.dates = new ArrayList<>();
         for(int i=0; i<datesArray.length(); i++) {
-            this.dates.add(new SholopDate(datesArray.getJSONObject(i)));
+            this.dates.add(new EventDate(datesArray.getJSONObject(i)));
         }
 
         JSONArray contactsArray = jo.getJSONArray("attendees");
         this.attendees = new ArrayList<>();
         for(int i=0; i<contactsArray.length(); i++) {
-            this.attendees.add(new Contact(contactsArray.getJSONObject(i)));
+            JSONObject attendee = contactsArray.getJSONObject(i);
+            if(attendee.has("type") && attendee.getString("type").equals(ContactEvent.TYPE.USER.name())) {
+                this.attendees.add(new User(attendee));
+            }else{
+                this.attendees.add(new Contact(attendee));
+            }
         }
 
         this.setAllowComments(jo.has("allowComments") && jo.getBoolean("allowComments"));
@@ -183,11 +188,11 @@ public class Event {
         this.venue = venue;
     }
 
-    public List<SholopDate> getDates() {
+    public List<EventDate> getDates() {
         return dates;
     }
 
-    public void setTimes(List<SholopDate> times) {
+    public void setTimes(List<EventDate> times) {
         this.dates = times;
     }
 
@@ -255,7 +260,7 @@ public class Event {
         this.link = link;
     }
 
-    public void setDates(List<SholopDate> dates) {
+    public void setDates(List<EventDate> dates) {
         this.dates = dates;
     }
 
@@ -307,14 +312,6 @@ public class Event {
         this.attachments = attachments;
     }
 
-    public List<Contact> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(List<Contact> attendees) {
-        this.attendees = attendees;
-    }
-
     public int getCreatedBy() {
         return createdBy;
     }
@@ -323,11 +320,11 @@ public class Event {
         this.createdBy = createdBy;
     }
 
-    public SholopDate getPointedDate() {
+    public EventDate getPointedDate() {
         return pointedDate;
     }
 
-    public void setPointedDate(SholopDate pointedDate) {
+    public void setPointedDate(EventDate pointedDate) {
         this.pointedDate = pointedDate;
     }
 
@@ -361,5 +358,13 @@ public class Event {
 
     public void setContactEvent(ContactEvent contactEvent) {
         this.contactEvent = contactEvent;
+    }
+
+    public List<Attendee> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(List<Attendee> attendees) {
+        this.attendees = attendees;
     }
 }

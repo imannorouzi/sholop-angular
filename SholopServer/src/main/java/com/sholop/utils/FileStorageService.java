@@ -1,5 +1,10 @@
 package com.sholop.utils;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.sholop.ApplicationConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.Date;
 
 @Service
@@ -78,6 +81,22 @@ public class FileStorageService {
         }
     }
 
+    public String generateQRCodeImage(String uuid)
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(uuid, BarcodeFormat.QR_CODE, 200, 200);
+
+        String filename = "qr_code_" + (new Date()).toString().replaceAll(" ", "") + ".png";
+
+        Path fileLocation = Paths.get(applicationConfiguration.getUploadDir() + "/QRCodes")
+                .toAbsolutePath().normalize();
+        // Copy file to the target location (Replacing existing file with the same name)
+        Path targetLocation = fileLocation.resolve(filename);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", targetLocation);
+
+        return filename;
+    }
+
     public Resource loadFileAsResource(String fileName, String subDir) throws Exception {
         try {
             Path fileLocation = Paths.get(applicationConfiguration.getUploadDir() + subDir)
@@ -129,6 +148,8 @@ public class FileStorageService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  fileDownloadUri;
+        return  Utils.fixUri(fileDownloadUri);
     }
+
+
 }

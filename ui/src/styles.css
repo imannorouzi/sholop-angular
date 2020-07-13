@@ -14,29 +14,6 @@
 }
 
 @font-face {
-  font-family: yekan;
-  src: url(./assets/fonts/BYekan.ttf);
-  font-weight: normal;
-  font-style: normal
-}
-@font-face {
-  font-family: yekan;
-  src: url(./assets/fonts/BYekanBold.ttf);
-  font-weight: bold;
-  font-style: normal;
-}
-@font-face {
-  font-family: fmpFont;
-  src: url(./assets/fonts/NetworkSans-2018-Bold.ttf);
-  font-weight: bold;
-}
-@font-face {
-  font-family: fmpFontIE;
-  src: url(./assets/fonts/NetworkSans-2018-Bold.eot);
-  font-weight: bold;
-}
-
-@font-face {
   font-family: networkFont;
   src: url(./assets/fonts/NetworkSans-2018-Medium.ttf);
   font-weight: normal;
@@ -167,13 +144,13 @@ table.table  td{
   height: 70px;
 }
 
-.custom-control-label::before,
+/*.custom-control-label::before,
 .custom-control-label::after {
   right: -1.5rem;
 }
 .custom-control {
   padding-right: 1.5rem;
-}
+}*/
 
 
 .unselectable {
@@ -199,10 +176,6 @@ table.table  td{
   height: 12px; /* for horizontal scrollbars */
 }
 
-
-.fa{
-  line-height: inherit;
-}
 
 .modal {
   text-align: center;
@@ -280,6 +253,14 @@ table.table  td{
   overflow: auto;
 }
 
+.overflow-visible{
+  overflow: visible!important;
+}
+
+.owl-container{
+  max-width: 400px;
+  margin: auto;
+}
 
 @keyframes fade-in{
   0%{

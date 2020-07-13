@@ -1,4 +1,4 @@
-<form class="h-100 overflow-auto " >
+<div class="h-100 overflow-auto " >
 
   <div class="text-right bg-white p-3">
 
@@ -17,32 +17,25 @@
     <!-- dates -->
     <div class="box" [class.editing]="(step===1 && editingStep === -1) || editingStep === 1">
 
-      <div class="row mb-1" >
-        <div class="col-sm-5">
-          <label class="font-weight-bold" >تاریخ ملاقات</label>
-        </div>
-        <div class="col-sm-3">
-          <label class="font-weight-bold">از ساعت</label>
-        </div>
-        <div class="col-sm-3">
-          <label class="font-weight-bold">تا ساعت</label>
-        </div>
-        <div class="col-sm-1">
-          <label class="card-title text-right" >&nbsp;</label>
-        </div>
-      </div>
+      <label class="font-weight-bold" >زمان ملاقات</label>
 
-      <div class="row mb-1" *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
-        <div class="col-sm-5">
+      <div class="row" *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
+        <div class="col-sm-5 mb-1">
           <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
         </div>
-        <div class="col-sm-3">
-          <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+        <div class="col-sm-3 flexbox-parent-row line-height mb-1">
+          <span class="ml-2">از ساعت</span>
+          <div class="flexbox-item-grow">
+            <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+          </div>
         </div>
-        <div class="col-sm-3">
-          <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
+        <div class="col-sm-3 flexbox-parent-row line-height mb-1">
+          <span class="ml-2">تا ساعت</span>
+          <div class="flexbox-item-grow">
+            <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
+          </div>
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-1 mb-1">
           <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
       </div>
@@ -77,8 +70,15 @@
         <venues-modal (onSelected)="onVenueSelected($event)" #venuesModal ></venues-modal>
       </div>
 
-      <agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="true" [zoom]="zoom">
-        <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+      <agm-map class="map"
+               [latitude]="mapLat"
+               [longitude]="mapLng"
+               [scrollwheel]="true"
+               [zoom]="zoom"
+               (mapClick)="mapClicked($event)">
+        <agm-marker [markerDraggable]="true"
+                    (dragEnd)="markerMoved($event)"
+                    [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
       </agm-map>
 
       <p class="card-text" [class.editing]="step===2 || editingStep === 2"><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
@@ -89,57 +89,63 @@
     <div class="box" [class.editing]="(step===3 && editingStep === -1) || editingStep === 3">
       <label class="font-weight-bold">میزبان ملاقات</label>
 
-      <div class="custom-control custom-checkbox text-right mb-2" *ngIf="false">
-        <input type="checkbox" class="custom-control-input" #imChair [(ngModel)]="event.chairId" id="defaultUnchecked">
-        <label class="custom-control-label" for="defaultUnchecked">خودم</label>
-      </div>
-      <suggesting-contact-input (contactSelected)="chairSelected($event)"></suggesting-contact-input>
+      <suggesting-item-input #selectChair  click-zone (clickOutside)="selectChair.outsideClicked($event)"
+                             (itemSelected)="chairSelected($event)" [items]="chairs|generalFilter:chairHint">
+        <div class="frame flexbox-parent-row">
+          <i class="ml-3 icon fa fa-coffee"></i>
+          <img class="rounded-circle contact-image ml-2" *ngIf="event.chair"
+               [src]="event.chair.imageUrl ? event.chair.imageUrl : '../assets/images/user-placeholder.png'">
+          <input type="text" class="flexbox-item-grow"
+                 autocomplete="off" (keyup)="onChairInputKeyUp($event)"
+                 placeholder="نام همکار میزبان"
+                 [(ngModel)]="chairHint" >
+
+          <i class="mr-3 action-icon fa fa-remove" (click)="clearChairInput()"></i>
+        </div>
+      </suggesting-item-input>
       <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
     </div>
 
+
     <!-- guests -->
     <div class="box">
-      <div [class.editing]="(step === 4  && editingStep === -1) || editingStep === 4" >
         <label class="font-weight-bold">میهمانان</label>
-        <div [class.editing]="step === 4 || editingStep === 4" class="frame flexbox-parent-row">
-          <i class=" ml-3 icon fa fa-map-marker"></i>
-          <input type="text" class="flexbox-item-grow "  placeholder="نام، آدرس ایمیل، ... ">
-          <i class="mr-3 action-icon fa fa-user-plus" (click)="addContact($event)"></i>
-          <i class=" action-icon fa fa-address-book" (click)="onImportClick($event)"></i>
-        </div>
-      </div>
 
-      <div [class.editing]="step >=4">
+        <suggesting-item-input #selectGuest  click-zone (clickOutside)="selectGuest.outsideClicked($event)"
+                               (itemSelected)="onGuestAdded($event)" [items]="guests|generalFilter:guestHint">
+          <div class="frame flexbox-parent-row">
+            <i class="ml-3 icon fa fa-users"></i>
+            <input type="text" class="flexbox-item-grow"
+                   autocomplete="off"
+                   (focus)="selectGuest.showing=true" (keyup)="onGuestInputKeyUp($event)"
+                   name="title" placeholder="جستجوی میهمانان" [(ngModel)]="guestHint">
+
+            <i class="mr-3 action-icon fa fa-user-plus" (click)="addGuests($event)"></i>
+            <i class=" action-icon fa fa-address-book" (click)="onImportClick($event)"></i>
+          </div>
+        </suggesting-item-input>
+
         <div class="row">
 
-          <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-6 contact p-2 ">
-            <div class="contact-border">
-              <div class="row p-2 ">
+          <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-4 contact ">
+            <div class="contact-border mb-1">
+                <div class="text-right flexbox-parent-row">
+                  <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
 
-                <div class="col text-right"><img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'"></div>
-
-                <div class="col-8 text-right">
-                  <div class="font-noraml font-weight-bold" >{{contact.name}}</div>
-                  <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
-                  <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
-
-                  <div>
-                    <a href="#" (click)="removeContact($event, i)">حذف</a>
-                  </div>
+                  <div class="font-noraml flexbox-item-grow mr-2" >{{contact.name}}</div>
+                  <i class="mr-3 action-icon fa fa-remove" (click)="removeContact($event, i)"></i>
                 </div>
-
-              </div>
             </div>
+
           </div>
-
-
         </div>
-      </div>
 
-      <add-attendee (onContactAdded)="onAttendeeAdded($event);" #addAttendee></add-attendee>
-      <contacts-modal (onSelected)="onContactsSelected($event)" #contactsModal ></contacts-modal>
 
     </div>
+
+    <add-attendee (onAttendeeAdded)="onGuestAdded($event);" #addAttendee></add-attendee>
+    <contacts-modal (onSelected)="onGuestsSelected($event)" #contactsModal ></contacts-modal>
+
 
     <!-- welcome msg-->
     <div class="box" [class.editing]="step===5 || editingStep === 5">
@@ -159,4 +165,4 @@
   </div>
 
 
-</form>
+</div>

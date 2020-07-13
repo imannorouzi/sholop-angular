@@ -1,0 +1,23 @@
+<div class="position-relative " >
+  <ng-content></ng-content>
+
+  <div class="contacts " *ngIf="showing">
+    <div *ngFor="let c of items; let i = index;" [class.selected]="selectedIndex===i"
+         (click)="onItemSelected(i)"
+         class="row contact p-1 ml-2 mr-2">
+      <div class="col-md-1">
+        <img class="rounded-circle contact-image" [src]="c.imageUrl ? c.imageUrl : '../assets/images/user-placeholder.png'">
+      </div>
+      <div class="col-md-11 contact_name">{{c.name}}</div>
+    </div>
+
+    <div class="row contact p-1" *ngIf="!loading && items && items.length === 0">
+      <div class="col-md-12 contact_name">چیزی پیدا نشد.</div>
+    </div>
+
+    <div class="contact p-1" *ngIf="loading">
+      <spinner [size]="'small'" [showing]="true" #spinner></spinner>
+    </div>
+  </div>
+
+</div>

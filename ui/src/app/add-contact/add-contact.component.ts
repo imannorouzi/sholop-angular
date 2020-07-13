@@ -24,7 +24,6 @@ export class AddContactComponent implements OnInit {
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
   @Input() index: number = -1;
-  @Input() type: string = 'contact';
   @Input() contact = {
     name: '',
     email: '',
@@ -33,7 +32,6 @@ export class AddContactComponent implements OnInit {
     image: File,
     id: -1,
     fileName: '',
-    type: this.type
   };
 
   submitted: boolean = false;
@@ -97,7 +95,6 @@ export class AddContactComponent implements OnInit {
       image: null,
       id: -1,
       fileName: '',
-      type: this.type
     };
 
     this.cropper.reset();

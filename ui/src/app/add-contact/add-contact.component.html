@@ -1,4 +1,4 @@
-<modal [modalTitle]=" 'ثبت ' + (type==='contact' ? 'مخاطب' : 'کارمند' )+ ' جدید' "
+<modal [modalTitle]=" 'ثبت ' + 'مخاطب' + ' جدید' "
        [size]="'sm'"
        [zIndex]="11" #childModal>
   <ng-container class="app-modal-body">
@@ -50,7 +50,8 @@
 </modal>
 <!-- Image Modal -->
 <modal #imageCropperModal
-       [modalTitle]="'Edit Image Size'"
+       [modalTitle]="'اندازه عکس'"
+       [size]="'auto'"
        [zIndex]="11"
        [maximizable]="true">
   <ng-container class="app-modal-body">

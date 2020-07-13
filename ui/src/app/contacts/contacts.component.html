@@ -3,23 +3,10 @@
     <div class="flexbox-parent-row pb-2">
       <div class="ml-2">
         <button type="button" class="btn secondary w-100" (click)="addNewContact.reset();addNewContact.show()" >
-          <i class="fa fa-user-plus"></i>{{type==='contact' ? ' مخاطب جدید' : ' کارمند جدید'}}
-        </button>
-        <add-contact [type]="type" (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
+          <i class="fa fa-user-plus"></i> مخاطب جدید</button>
+        <add-contact (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
       </div>
       <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="نام، ایمیل ..." >
-    </div>
-
-    <div *ngIf="type === 'employee'" class="card text-right bg-light mb-3 ">
-      <div class="card-body">
-        <h5 class="card-title">آپلود لیست کارمندان</h5>
-        <p class="card-text">می‌توانید با دانلود <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> نام کارمندان خود را در آن وارد و با آپلود آن اطلاعات کارمندان خود را در شالاپ ثبت کنید.</p>
-        <div class="text-left">
-          <button href="" class="primary" (click)="onUploadFileClick($event)">آپلود فایل</button>
-        </div>
-      </div>
-
-      <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" [hidden]="true">
     </div>
 
     <div class="row ">
@@ -30,11 +17,6 @@
 
 
             <div class="col text-right">
-
-              <!--<div class="rounded-circle contact-image text-center" [style.background]="commonService.getRandomColor()" *ngIf="!contact.imageUrl">
-                <span class=" font-weight-bold contact-letter">{{contact.name.substring(0,1)}}</span>
-              </div>-->
-
               <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
             </div>
 
@@ -72,8 +54,10 @@
 
     </div>
 
-    <div class="text-center" *ngIf="!loading && contacts.length === 0">
-      <app-owl [type]="'double-blinking no-tree'"></app-owl>
+    <div class="text-center owl-container" *ngIf="!loading && contacts.length === 0">
+      <object class="w-75" type="image/svg+xml" data="../../assets/images/home/owl.svg">
+        <param name="class" value="look-around" />
+      </object>
       <div class="text-muted">هیچی پیدا نکردم</div>
     </div>
 

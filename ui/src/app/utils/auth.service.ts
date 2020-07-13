@@ -51,6 +51,10 @@ export class AuthService {
   }
 
   get username(): string {
+    return (this.user !== null) ? this.user.username : null;
+  }
+
+  get name(): string {
     return (this.user !== null) ? this.user.name : null;
   }
 
@@ -126,6 +130,33 @@ export class AuthService {
             return data.object;
           }else if(data && data.msg === "INVALID_CREDENTIALS"){
             this.alertService.error("ایمیل یا کلمه عبور اشتباه است.")
+          }
+          return null;
+        },
+        error => {
+          console.log(error);
+        }));
+  }
+
+  register(user: User) {
+    let apiUrl = serverUrl + '/register';
+
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.post<any>( apiUrl, JSON.stringify(user), {headers: headers})
+
+      .pipe(map(data => JSON.parse(data.entity)) )
+      .pipe(map(data => {
+          // login successful if there's a jwt token in the response
+          if (data && data['msg'] === "OK" && data['object'].token) {
+            this.alertService.success('ثبت نام شما با موفقیت انجام شد.', true);
+            return data.object;
+          }else if(data['msg'] === 'DUPLICATE'){
+            this.alertService.error('این ایمیل قبلا ثبت نام کرده است.', true);
+          }else{
+            this.alertService.error('مشکلی به وجود آمد. لطفا دوباره تلاش کنید.', true);
           }
           return null;
         },

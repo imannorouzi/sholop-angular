@@ -64,10 +64,6 @@ export class CommonService {
     return retVal;
   }
 
-  convertTimeString(timeString){
-    return timeString.substring(0, 2) + ":" + timeString.substring(2);
-  }
-
   getTimeDuration(startTime, endTime): string{
 
     if(startTime && endTime) {
@@ -145,4 +141,5 @@ export class CommonService {
         return {text:  'نامشخص', color: 'gray', class: ''};
     }
   }
+
 }

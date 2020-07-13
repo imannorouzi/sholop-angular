@@ -188,7 +188,7 @@ export class CreateMeetingModalComponent implements OnInit, AfterViewInit{
 
   onImportClick(event) {
     this.contactsModal.show();
-    this.contactsModal.setSelected(this.event.attendees);
+    // this.contactsModal.setSelected(this.event.attendees);
     event.preventDefault();
   }
   addContact(event) {

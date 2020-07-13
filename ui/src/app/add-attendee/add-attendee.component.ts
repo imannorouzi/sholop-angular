@@ -16,12 +16,13 @@ export class AddAttendeeComponent implements OnInit {
 
   addToContacts: boolean = true;
 
-  @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
+  @Output() onAttendeeAdded: EventEmitter<any> = new EventEmitter();
 
   contact = {
     name: '',
     email: '',
     phone: '',
+    type: 'CONTACT',
     image: File,
     id: -1,
     fileName: ''
@@ -45,6 +46,7 @@ export class AddAttendeeComponent implements OnInit {
     this.contact = {
       name: '',
       email: '',
+      type: 'CONTACT',
       phone: '',
       image: null,
       id: -1,
@@ -61,11 +63,11 @@ export class AddAttendeeComponent implements OnInit {
 
     this.modal.hide();
 
-    if(false && this.addToContacts) {
+    if(this.addToContacts) {
       this.contact['userId'] = this.authService.userId;
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
-          this.onContactAdded.emit(value.object);
+          this.onAttendeeAdded.emit(value.object);
         },
         (error:any) => {
           console.log(error);
@@ -73,7 +75,7 @@ export class AddAttendeeComponent implements OnInit {
           this.alertService.error(error.toString())
         });
     }else{
-      this.onContactAdded.emit(this.contact);
+      this.onAttendeeAdded.emit(this.contact);
     }
   }
 }

@@ -1,13 +1,9 @@
-<nav class="navbar navbar-light navbar-expand-lg text-right" >
-  <button class="navbar-toggler secondary" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
+<nav class="navbar flexbox-parent-row" >
   <ul class="navbar-nav">
-    <li class="nav-item dropdown ml-3">
+    <li class=" dropdown ">
       <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
          aria-haspopup="true" aria-expanded="false">
-        <img src="../assets/images/Sholop-Logo-White.png" class="rounded mb-2" alt width="80">
+        <img src="../assets/images/Sholop-Logo-White.png" class="rounded" alt width="80">
       </a>
       <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <li>
@@ -38,36 +34,18 @@
     </li>
   </ul>
 
-  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+  <!--<div class="nav-item" [class.active]="navigationService.isHome()">
+    <i class="nav-icon fa fa-home"></i>
+    <a class="nav-text" [routerLink]="[authService.isLoggedIn() ? '/meetings' : '/home']">خانه</a>
+  </div>-->
 
-    <ul class="navbar-nav">
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link" [routerLink]="[authService.isLoggedIn() ? '/meetings' : '/home']"><i class="navbar-icon fa fa-home"></i> </a>
-      </li>
-    </ul>
+  <!--Separator-->
+  <div class="flexbox-item-grow"></div>
 
-    <!-- Left hand side menus-->
-
-    <ul class="navbar-nav mr-auto ml-2" *ngIf="!authService.isLoggedIn()">
-      <li class="nav-item "  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link " [routerLink]="['/login']"><!--<i class="fa fa-sign-in"></i>--> ورود</a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link  " [routerLink]="['/register']"><!--<i class="fa fa-key"></i>--> ثبت نام کنید</a>
-      </li>
-    </ul>
-
-    <ul class="navbar-nav mr-auto ml-2" *ngIf="authService.isLoggedIn()">
-      <li class="nav-item" *ngIf="false" [routerLink]="['/login']" data-toggle="collapse" data-target=".navbar-collapse.show">
-        <a class="nav-link colored-navbar-item" ><i class="fa fa-bell navbar-icon"></i></a>
-      </li>
-      <li class="nav-item"  data-toggle="collapse"data-target=".navbar-collapse.show">
-        <a class="nav-link "  [routerLink]="['/login']" ><i class="fa fa-power-off navbar-icon"></i></a>
-      </li>
-    </ul>
-
+  <div class="nav-item">
+<!--    <i class="nav-icon fa fa-sign-out"></i>-->
+    <a class="nav-text" [routerLink]="'/login'">خروج</a>
   </div>
-
 
 </nav>
 

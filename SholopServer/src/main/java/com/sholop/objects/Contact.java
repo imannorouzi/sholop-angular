@@ -7,9 +7,11 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity(name = "sh_contact")
-public class Contact {
+public class Contact extends Attendee {
 
-    public Contact(){}
+    public Contact(){
+        super(ContactEvent.TYPE.CONTACT.name());
+    }
 
     public Contact(
              int id,
@@ -26,6 +28,7 @@ public class Contact {
              Timestamp modified,
              int modifiedBy) {
 
+        super(ContactEvent.TYPE.CONTACT.name());
         this.id = id;
         this.name = "null".equals(name) ? "" : name;
         this.phone = "null".equals(phone) ? "" : phone;
@@ -39,6 +42,13 @@ public class Contact {
         this.createdBy = createdBy;
         this.modified = modified;
         this.modifiedBy = modifiedBy;
+    }
+
+    public Contact(String name, String phone, String email){
+        super(ContactEvent.TYPE.CONTACT.name());
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
     }
 
     /**
@@ -80,6 +90,7 @@ public class Contact {
     Timestamp created, modified;
 
     public Contact(JSONObject jo) throws JSONException {
+        super(ContactEvent.TYPE.CONTACT.name());
         this.id = jo.has("id") && jo.getInt("id") != 0 ? jo.getInt("id") : -1;
         this.contactType = jo.has("type") && !"".equals(jo.getString("type")) ?
                 jo.getString("type").toUpperCase() : CONTACT_TYPE.UNKNOWN.name();
@@ -94,6 +105,7 @@ public class Contact {
 
     // this is for handling email contacts
     public Contact(String email) {
+        super(ContactEvent.TYPE.CONTACT.name());
         this.valid = 0;
         this.email = email;
         this.id = -1;

@@ -4,8 +4,6 @@ import {SpinnerComponent} from "../spinner/spinner.component";
 import {CalendarComponent} from "../calendar/calendar.component";
 import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
 import {DateService} from "../utils/date.service";
-import {DummyData} from "../dummyData";
-import {ReceptionService} from "../reception/reception.service";
 
 @Component({
   selector: 'app-meetings',
@@ -22,12 +20,12 @@ export class MeetingsComponent implements OnInit, OnDestroy {
 
   selectedMeeting = undefined;
 
+  filter: string = '';
   selectedDate: any;
   interval;
 
   constructor(private dataService : DataService,
-              public dateService: DateService,
-              private receptionService: ReceptionService) { }
+              public dateService: DateService) { }
 
   ngOnInit() {
 
@@ -54,6 +52,7 @@ export class MeetingsComponent implements OnInit, OnDestroy {
       data => {
         data.object.forEach( event => {
           this.meetings.push(event);
+          console.log(event);
         });
         this.loading = false;
       },
@@ -68,7 +67,7 @@ export class MeetingsComponent implements OnInit, OnDestroy {
     // this.readMeetings(date);
 
     this.meetings = [];
-    this.readDummyMeetings(date);
+    this.readMeetings(date);
 
     this.selectedDate = date;
   }
@@ -80,15 +79,6 @@ export class MeetingsComponent implements OnInit, OnDestroy {
 
   }
 
-  private readDummyMeetings(date: any) {
-    this.loading = true;
-
-    setTimeout( () => {
-      this.loading = false;
-      this.meetings = DummyData.MEETINGS;
-    }, 1500);
-
-  }
 
   ngOnDestroy(): void {
     clearInterval(this.interval);

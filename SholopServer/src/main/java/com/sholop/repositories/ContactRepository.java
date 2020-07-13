@@ -17,8 +17,12 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
     List<Contact> findAllByUserIdAndContactType(int userId, String type);
 
+    List<Contact> findAllByUserId(int userId);
+
+    Contact findContactById(int contactId);
+
 
     @Query("select s FROM sh_contact s WHERE s.id in :ids")
-    List<Contact> getContactsByContactIds(@Param("ids") List<String> contactIds);
+    List<Contact> getContactsByContactIds(@Param("ids") List<Integer> contactIds);
 }
 

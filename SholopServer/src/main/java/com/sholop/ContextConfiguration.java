@@ -74,7 +74,9 @@ public class ContextConfiguration extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate").permitAll()
+                .authorizeRequests()
+                .antMatchers("/authenticate").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/content/**").permitAll()
                 .antMatchers("/uploadFile/**").permitAll()
                 .antMatchers("/downloadFile/**").permitAll()

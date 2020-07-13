@@ -34,6 +34,7 @@
   align-items: center;
   /*border-top-right-radius: 10px;*/
   /*border-top-left-radius: 10px;*/
+  cursor: move;
 }
 
 .ui-modal-body {
@@ -132,6 +133,9 @@
 }
 
 
+.ui-modal.auto {
+  width: fit-content;
+}
 .ui-modal.sm {
   width: 400px;
 }

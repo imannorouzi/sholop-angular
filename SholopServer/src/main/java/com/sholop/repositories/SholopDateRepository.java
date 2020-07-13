@@ -1,22 +1,24 @@
 package com.sholop.repositories;
 
-import com.sholop.objects.SholopDate;
+import com.sholop.objects.EventDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface SholopDateRepository extends JpaRepository<SholopDate, Integer> {
+public interface SholopDateRepository extends JpaRepository<EventDate, Integer> {
 
     // custom query to search to blog post by title or content
 //    List<Contact> findByTitleContainingOrContentContaining(String name, String textAgain);
 
 
-    List<SholopDate> findAllByEventId(int eventId);
+    List<EventDate> findAllByEventId(int eventId);
 
     void deleteByEventId(int eventId);
 
@@ -27,11 +29,11 @@ public interface SholopDateRepository extends JpaRepository<SholopDate, Integer>
             "WHERE d.date between :start_date and :end_date " +
             "and event_type=:type " +
             "and (s.chair_id=:user_id or c.email=:email) ", nativeQuery = true)
-    List<SholopDate> getDatesByPeriod(@Param("type") String type,
-                                      @Param("user_id") int userId,
-                                      @Param("email") String email,
-                                      @Param("start_date") Date startDate,
-                                      @Param("end_date") Date endDate);
+    List<EventDate> getDatesByPeriod(@Param("type") String type,
+                                     @Param("user_id") int userId,
+                                     @Param("email") String email,
+                                     @Param("start_date") Timestamp startDate,
+                                     @Param("end_date") Timestamp endDate);
 
 
 }

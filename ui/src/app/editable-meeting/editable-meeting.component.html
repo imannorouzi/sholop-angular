@@ -104,7 +104,7 @@
             <input type="checkbox" class="custom-control-input" #imChair [(ngModel)]="event.chairId" id="defaultUnchecked">
             <label class="custom-control-label" for="defaultUnchecked">خودم</label>
           </div>
-          <suggesting-contact-input (contactSelected)="chairSelected($event)"></suggesting-contact-input>
+          <suggesting-item-input (contactSelected)="chairSelected($event)"></suggesting-item-input>
           <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
         </div>
       </div>
@@ -144,7 +144,7 @@
           <div class=" row ">
             <div class="col-sm-10 text-right">
               <a href="#" (click)="addContact($event)"><span class=""><i class="fa fa-plus"></i> اضافه کردن میهمان</span></a>
-              <add-attendee (onContactAdded)="onAttendeeAdded($event);" #addAttendee></add-attendee>
+              <add-attendee (onAttendeeAdded)="onAttendeeAdded($event);" #addAttendee></add-attendee>
               <a class="mr-4" href="#" (click)="onImportClick($event)"><span class=""><i class="fa fa-check"></i> انتخاب مخاطبان از لیست</span></a>
               <contacts-modal (onSelected)="onContactsSelected($event)" #contactsModal ></contacts-modal>
             </div>

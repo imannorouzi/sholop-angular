@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
-import {Venue} from "../venue";
+import {TEHRAN, Venue} from "../venue";
 import { DataService } from "../utils/data.service";
 import {ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../ng-modal/modal.component";
@@ -10,13 +10,15 @@ import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../utils/date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
 import {AuthService} from "../utils/auth.service";
+import {SuggestingItemInputComponent} from "../suggesting-item-input/suggesting-item-input.component";
+import { switchMap} from "rxjs/operators";
 
 @Component({
   selector: 'create-meeting',
   templateUrl: './create-meeting.component.html',
   styleUrls: ['./create-meeting.component.css']
 })
-export class CreateMeetingComponent implements OnInit {
+export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
   @ViewChild('searchBox', {static: false}) searchInput: ElementRef;
   @ViewChild('address2', {static: false}) address2: ElementRef;
@@ -26,6 +28,8 @@ export class CreateMeetingComponent implements OnInit {
   @ViewChild('venuesModal', {static: false}) venuesModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('addAttendee', {static: false}) addAttendee: AddAttendeeComponent;
+  @ViewChild('selectChair', {static: false}) selectChair: SuggestingItemInputComponent;
+  @ViewChild('selectGuest', {static: false}) selectGuest: SuggestingItemInputComponent;
 
   name:string;
   step: number =0;
@@ -46,15 +50,24 @@ export class CreateMeetingComponent implements OnInit {
   event = {
     userId: -1,
     dates: [{date: new Date(), startTime: new Date(), endTime: new Date()}],
+    dateStrings: [],
     attendees: [],
     title: '',
     venue: new Venue(),
     chairId: -1,
-    chair: undefined,
+    chair: this.authService.getCurrentUser(),
     welcomeMessage: "",
     eventType: "MEETING",
+    imChair: true
   };
+  mapLat: number = TEHRAN.lat;
+  mapLng: number = TEHRAN.lng;
 
+  guests: any[];
+  guestHint: string = '';
+
+  chairs: any[];
+  chairHint: string = this.authService.name;
   user: any;
 
   submitting: boolean = false;
@@ -78,7 +91,29 @@ export class CreateMeetingComponent implements OnInit {
       }
     }
 
-    // this.event.times.push(new DateTime());
+
+    //load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+        types: ["address"]
+      });
+      autocomplete.addListener("place_changed", () => {
+        this.ngZone.run(() => {
+          //get the place result
+          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          //verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          //set latitude, longitude and zoom
+          this.event.venue.latitude = place.geometry.location.lat();
+          this.event.venue.longitude = place.geometry.location.lng();
+          this.zoom = 12;
+        });
+      });
+    });
   }
 
   private setCurrentPosition() {
@@ -131,6 +166,17 @@ export class CreateMeetingComponent implements OnInit {
         );
       }
 
+      // take times to utc format
+      if(this.event.dates) {
+        this.event.dateStrings = this.event.dates.map(d => {
+          return {
+            date: d.date.toISOString(),
+            startTime: d.startTime.toISOString(),
+            endTime: d.startTime.toISOString()
+          };
+        })
+      }
+
       this.submitting = true;
       this.dataService.postMeeting(this.event).subscribe(
         (res:any) => {
@@ -152,30 +198,37 @@ export class CreateMeetingComponent implements OnInit {
 
   onImportClick(event) {
     this.contactsModal.show();
-    this.contactsModal.setSelected(this.event.attendees);
     event.preventDefault();
   }
-  addContact(event) {
-    this.addAttendee.reset();
-    this.addAttendee.show();
-    event.preventDefault();
-  }
+
   removeContact($event, index) {
     this.event.attendees.splice(index, 1);
     event.preventDefault();
   }
 
-  onContactsSelected(contacts) {
+  addGuests(event) {
+    this.addAttendee.reset();
+    this.addAttendee.show();
+    event.preventDefault();
+  }
 
-    contacts.forEach( contact => {
-      for(let i=0; i<this.event.attendees.length; i++){
-        if(this.event.attendees[i].id === contact.id){
-          this.event.attendees.splice(i, 1);
-          break;
-        }
-      }
-      this.event.attendees.push(contact);
+  onGuestsSelected(guests) {
+    guests.forEach( guest => {
+      this.event.attendees = this.event.attendees.filter( a => {
+        return guest.email !== a.email
+      });
+      guest.type = 'CONTACT';
+      this.event.attendees.push(guest);
     })
+  }
+
+  onGuestAdded(guest: any) {
+     this.event.attendees = this.event.attendees.filter( a => {
+      return guest.email !== a.email
+    });
+
+     this.event.attendees.push(guest);
+     this.guestHint = '';
   }
 
   onVenueImportClick(event) {
@@ -184,28 +237,46 @@ export class CreateMeetingComponent implements OnInit {
 
   }
 
+
+
   onVenueSelected(venue: any) {
     this.event.venue = venue;
+    this.mapLat = venue.latitude;
+    this.mapLng = venue.longitude;
   }
 
-  onAttendeeAdded(contact: any) {
-    this.event.attendees.push(contact);
-  }
+
 
   fromTimeChanged(dateObj, i) {
-    this.event.dates[i].startTime = dateObj.getTime();
+    this.event.dates[i].startTime = dateObj;
   }
 
   toTimeChanged(event, i) {
     this.event.dates[i].endTime = event;
   }
 
-  chairSelected(contact: any) {
-    this.event.userId = contact.id;
-    this.event.chair = contact;
+  chairSelected(chair: any) {
+    if(chair){
+      this.event.chair = chair;
+      this.event.userId = chair.id;
+      this.chairHint = chair.name;
+    }
   }
 
   markerMoved(e) {
+
+    this.event.venue.latitude = e.coords.lat;
+    this.event.venue.longitude = e.coords.lng;
+
+    const geocoder = new google.maps.Geocoder;
+    geocoder.geocode({'location': e.coords}, (res, status) => {
+      if (status === google.maps.GeocoderStatus.OK && res.length) {
+        this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
+      }
+    })
+  }
+
+  mapClicked(e) {
 
     this.event.venue.latitude = e.coords.lat;
     this.event.venue.longitude = e.coords.lng;
@@ -265,7 +336,85 @@ export class CreateMeetingComponent implements OnInit {
     }
   }
 
-  back() {
-    this.step--;
+  ngAfterViewInit(): void {
+
+  }
+
+  onChairInputKeyUp(event: KeyboardEvent) {
+    switch (event.keyCode) {
+
+      case 13: // Enter
+      case 38: // Arrow Up
+      case 40: // Arrow Down
+        break;
+
+      default:
+        this.clearChair();
+        this.dataService.getContacts(this.chairHint)
+          .subscribe(
+            data => {
+              if(data.msg === "OK"){
+                this.chairs = data.object;
+              }
+            },
+            error1 => {
+              console.log(error1);
+            }
+          )
+    }
+
+    this.selectChair.onKeyUp(event);
+    event.preventDefault();
+  }
+
+  onGuestInputKeyUp(event: KeyboardEvent) {
+    switch (event.keyCode) {
+
+      case 13: // Enter
+      case 38: // Arrow Up
+      case 40: // Arrow Down
+        break;
+
+      default:
+        this.dataService.getUsers(this.guestHint)
+          .pipe(switchMap( data =>{
+              if(data.msg === "OK"){
+                this.guests = data.object.map(
+                  u => {
+                    return u;
+                  }
+                );
+              }
+              return this.dataService.getContacts(this.guestHint);
+            }
+          ))
+          .subscribe(
+            data => {
+              if(data.msg === "OK"){
+                let contacts = data.object.map(
+                  u => {
+                    return u;
+                  }
+                );
+                this.guests = [...contacts, ...this.guests];
+              }
+            },
+            error1 => {
+              console.log(error1);
+            }
+          )
+    }
+
+    this.selectGuest.onKeyUp(event);
+    event.preventDefault();
+  }
+
+  clearChairInput() {
+    this.clearChair();
+    this.chairHint = '';
+  }
+
+  clearChair(){
+    this.event.chair = undefined;
   }
 }

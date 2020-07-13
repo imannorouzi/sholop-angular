@@ -1,76 +1,21 @@
-.navbar.navbar-expand-lg a{
+.navbar a{
   color: #fff;
 }
-.navbar.navbar-expand-lg a:hover{
+.navbar a:hover{
   color:#111111;
 }
-.navbar.navbar-expand-lg a.add-item:hover{
-  background: #343a40;
-  /*color: #9d9d9d;*/
-}
-.navbar.navbar-expand-lg{
-  background-color: #0070ba;
-}
-
 .navbar{
+  background-color: #0070ba;
   padding: 0;
   border-bottom: #444;
 }
-.navbar-nav{
-  line-height: 1;
-}
-
-
-.right-0{
-  right: 0;
-  left: unset;
-}
-.contact-image{
-  width: 25px;
-  height: 25px;
-  margin-right: 5px;
-}
-
-
-
-.add-item{
-  border: 1px solid;
-  border-radius: 3px;
-  line-height: 1.5;
-  padding: 5px 20px;
-}
-
-.navbar-icon{
-  font-size: 25px;
-  margin-left: 10px;
-}
-
-/*.navbar-light .navbar-nav .nav-link.colored-navbar-item:hover{
-  -webkit-animation-duration: 400ms;
-  -webkit-animation-timing-function: ease-in-out;
-  -webkit-animation-name: shakeAnimation;
-  -moz-animation-duration: 400ms;
-  -moz-animation-timing-function: ease-in-out;
-  -moz-animation-name: shakeAnimation;
-
-}
-.navbar-light .navbar-nav .nav-link.colored-navbar-item{
-  background: royalblue;
-  color: white;
-  border-radius: 4px;
-  -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-  -moz-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-  -o-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-  transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
-}*/
-
 .dropdown-menu .fa{
   width: 25px;
   text-align: center;
   font-size: 20px;
   margin-left: 15px;
 }
-.navbar.navbar-expand-lg .dropdown-menu a{
+.navbar-nav .dropdown-menu a{
   color: #3a3f48;
 }
 
@@ -103,33 +48,35 @@
   content: "";
   font-size: 15px;
 }
-
-.nav-item .nav-item-bordered:hover{
-  animation: .6s bgFadeIn 0s forwards;
+.navbar-nav {
+  padding: 5px;
 }
-.nav-item a.nav-item-bordered{
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 6px 25px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-.nav-item a.nav-item-filled{
-  background-color: #ddd;
-  color: #0070ba;
-}
-
 .navbar-nav .dropdown-menu {
   position: absolute;
   float: none;
   left: 0;
 }
-
-@keyframes bgFadeIn {
-  0% {
-    background-color: #ddd;
-  }
-  100% {
-    background-color: #f5f7fa;
-  }
+.nav-item.active:after{
+  content: ' ';
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: white;
+}
+.nav-item{
+  position: relative;
+  padding: 5px;
+  color: white;
+  text-align: center;
+  width: 50px;
+}
+.nav-text{
+  display: block;
+  font-size: 12px;
+}
+.nav-icon{
+  font-size: 25px;
+  line-height: 1;
 }

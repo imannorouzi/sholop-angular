@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {DataService} from "../utils/data.service";
 import {DummyData} from "../dummyData";
 import {ModalComponent} from "../ng-modal/modal.component";
+import {GuestListComponent} from "./guest-list/guest-list.component";
 
 @Component({
   selector: 'contacts-modal',
@@ -10,59 +11,18 @@ import {ModalComponent} from "../ng-modal/modal.component";
 })
 export class ContactsModalComponent implements OnInit {
   @ViewChild('selectContacts', {static: true}) public selectContacts: ModalComponent;
+  @ViewChild('contacts', {static: true}) public contacts: GuestListComponent;
+  @ViewChild('users', {static: true}) public users: GuestListComponent;
 
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
 
-  contacts: any[] = [];
-  loading: boolean = false;
+  tab: number = 1;
 
-  constructor(private dataService: DataService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.readDummyContacts();
   }
 
-  setSelected(list){
-
-    list.forEach( sc => {
-      this.contacts.forEach( contact => {
-        if(sc.id === contact.id){
-          contact.selected = true;
-        }
-      });
-    });
-  }
-
-  private readDummyContacts() {
-    this.loading = true;
-
-    setTimeout( () => {
-      this.loading = false;
-      this.contacts = DummyData.CONTACTS;
-    }, 1500);
-
-  }
-
-  readContacts(){
-
-    this.dataService.getContacts().subscribe(
-      data => {
-        data.object.forEach( contact => {
-          this.contacts.push(contact);
-        });
-      },
-      error1 => {
-        console.log(error1);
-      }
-    )
-  }
-
-  selectAll(event){
-    event.preventDefault();
-    this.contacts.forEach( contact => {
-      contact.selected = true;
-    });
-  }
 
   show(){
     this.selectContacts.show();
@@ -73,10 +33,13 @@ export class ContactsModalComponent implements OnInit {
   }
 
   onSubmit(){
-    let selectedContacts = [];
-    this.contacts.forEach(contact => {
-      if(contact.selected) selectedContacts.push(contact);
+    let contacts = this.contacts.getSelectedItems().filter( c => {
+      return c;
     });
+    let users = this.users.getSelectedItems().filter( c => {
+      return c;
+    })
+    let selectedContacts = [...contacts, ...users];
 
     this.onSelected.emit(selectedContacts);
     this.selectContacts.hide();

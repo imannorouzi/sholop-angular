@@ -6,6 +6,7 @@
        [maximizable]="false">
   <ng-container class="app-modal-body">
 
+
     <!--Title-->
     <div class=" ">
       <label class=" col-form-label">نام</label>
@@ -14,19 +15,19 @@
 
     <!--Email-->
     <div class=" ">
-      <label class="col-sm-2 col-form-label">ایمیل</label>
+      <label class=" col-form-label">ایمیل</label>
           <input type="text" name="email" class=" ltr" placeholder="ایمیل" [(ngModel)]="contact.email">
     </div>
 
     <!--Phone-->
     <div class=" ">
-      <label class="col-sm-2 col-form-label">تلفن</label>
+      <label class=" col-form-label">تلفن</label>
           <input type="text" name="phone" class=" ltr" placeholder="تلفن" [(ngModel)]="contact.phone">
     </div>
 
-    <div class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" [(ngModel)]="addToContacts" id="454">
-      <label class="custom-control-label" for="454">به لیست مخاطبان اضافه شود.</label>
+    <div class="custom-control custom-checkbox mt-2" (click)="addToContacts= !addToContacts">
+      <input type="checkbox" class="custom-control-input" id="add-to-contacts" [checked]="addToContacts">
+      <label class="custom-control-label" for="add-to-contacts">به لیست مخاطبان اضافه شود.</label>
     </div>
 
   </ng-container>

@@ -17,7 +17,7 @@
 
   font-size: 16px;
 
-  line-height: 2;
+  line-height: 3;
   padding: 5px 15px;
   color: #161a1e;
   background: #fff;
@@ -46,6 +46,10 @@
 .meeting-item.CANCELLED{
   opacity: .4;
 }
+.names{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 /*.meeting-item.DONE{background: rgba(0, 77, 0, 0.05)}*/
 /*.meeting-item.CANCELLED{background: rgba(128, 128, 128, 0.1)}*/
@@ -55,20 +59,8 @@
 /*.meeting-item.GOING_ON{background: rgba(0, 77, 0, 0.05)}*/
 
 .meeting-item:hover{
-  /*animation: meeting-item-hover .05s ease both;*/
-  /*-webkit-box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);*/
-  /*box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);*/
-  /**/
-  opacity: 1!important;
-  background-color: rgba(0,112,186,.1);
-  left: -.75rem;
-  top: 0;
-  height: 100%;
-  width: calc(100% + 1.5rem);
-  z-index: -1;
-  border-left: 3px solid #0070ba;
-  -webkit-transition: all .5s linear;
-  transition: all .5s linear;
+  /*background-color: #f5f7fa;*/
+  background: #f9fffc;
 }
 @keyframes meeting-item-hover {
   0% {

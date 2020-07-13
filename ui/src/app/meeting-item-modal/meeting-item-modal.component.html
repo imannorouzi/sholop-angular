@@ -6,11 +6,11 @@
 
     <h5 class="text-center">{{event.title}}</h5>
 
-    <div class="panel text-center font-weight-bold mb-3">
+    <div class="panel text-center font-weight-bold mb-3" *ngIf="event.pointedDate">
       <i class="fa fa-calendar ml-2"></i>
       <span> {{dateService.greToPersian(event.pointedDate.date, true)}}  </span>
-      <span *ngIf="event.pointedDate.startTime"> از  {{commonService.convertTimeString(event.pointedDate.startTime)}}</span>
-      <span *ngIf="event.pointedDate.endTime"> تا  {{commonService.convertTimeString(event.pointedDate.endTime)}}</span>
+      <span *ngIf="event.pointedDate.startTime"> از  {{dateService.getTimeFromDateString(event.pointedDate.startTime)}}</span>
+      <span *ngIf="event.pointedDate.endTime"> تا  {{dateService.getTimeFromDateString(event.pointedDate.endTime)}}</span>
     </div>
 
     <div class="table-responsive" *ngIf="event.attendees.length > 0">

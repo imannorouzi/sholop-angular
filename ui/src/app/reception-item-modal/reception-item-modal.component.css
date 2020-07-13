@@ -23,3 +23,7 @@ table td{
   border: none;
 }
 
+#canvas{
+  border:1px solid #9da3a6;
+  border-radius: 10px;
+}

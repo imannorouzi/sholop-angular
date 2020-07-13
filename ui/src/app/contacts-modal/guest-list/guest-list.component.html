@@ -1,0 +1,37 @@
+<div class="frame flexbox-parent-row mt-3 mb-3">
+  <input type="text" class="flexbox-item-grow"
+         autocomplete="off"
+         name="title" placeholder="جستجو..." [(ngModel)]="filter">
+
+  <i class="mr-3 action-icon fa fa-th-list" (click)="selectAll($event)"></i>
+</div>
+<div class="row ">
+  <div *ngFor="let contact of items | generalFilter:filter; let index=index;" class="col-md-6  " (click)="contact.selected = !contact.selected">
+    <div class="contact" [class.selected]="contact.selected">
+      <div class="row p-2 contact-frame">
+        <div class="col text-right">
+          <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+        </div>
+
+        <div class="col-8 text-right" [class.font-weight-bold]="contact.selected">
+          <div class="font-noraml font-weight-bold" >
+            <i class="role-icon fa fa-briefcase" *ngIf="contact.role==='owner'"></i>
+            <i class="role-icon fa fa-handshake-o" *ngIf="contact.role==='reception'"></i>
+            <i class="role-icon fa fa-user" *ngIf="contact.role==='user'"></i>
+            {{contact.name}}
+          </div>
+          <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+          <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center owl-container" *ngIf="items.length === 0">
+  <object class="w-75" type="image/svg+xml" data="../../assets/images/home/owl.svg">
+    <param name="class" value="look-around" />
+  </object>
+  <div class="text-muted">هیچی پیدا نکردم</div>
+</div>

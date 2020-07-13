@@ -34,7 +34,7 @@ import {MeetingItemComponent} from "./meeting-item/meeting-item.component";
 import {DateService} from "./utils/date.service";
 import {MeetingItemModalComponent} from "./meeting-item-modal/meeting-item-modal.component";
 import { CommentsComponent } from './comments/comments.component';
-import { SuggestingContactInputComponent } from './suggesting-contact-input/suggesting-contact-input.component';
+import { SuggestingItemInputComponent } from './suggesting-item-input/suggesting-item-input.component';
 import {AgmCoreModule} from "@agm/core";
 import { VenuesModalComponent } from './venues-modal/venues-modal.component';
 import { VenuesComponent } from './venues/venues.component';
@@ -76,6 +76,11 @@ import {ReceptionService} from "./reception/reception.service";
 import { SlidingTextComponent } from './sliding-text/sliding-text.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { OwlComponent } from './owl/owl.component';
+import {AddEmployeeComponent} from "./add-employee/add-employee.component";
+import {EmployeeComponent} from "./employees/employee.component";
+import {GuestListComponent} from "./contacts-modal/guest-list/guest-list.component";
+import {GeneralPipe} from "./utils/general-pipe";
+import { AddressBookComponent } from './address-book/address-book.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +108,7 @@ import { OwlComponent } from './owl/owl.component';
     MeetingItemComponent,
     MeetingItemModalComponent,
     CommentsComponent,
-    SuggestingContactInputComponent,
+    SuggestingItemInputComponent,
     VenuesModalComponent,
     VenuesComponent,
     FooterComponent,
@@ -131,7 +136,12 @@ import { OwlComponent } from './owl/owl.component';
     ReceptionComponent,
     SlidingTextComponent,
     LandingPageComponent,
-    OwlComponent
+    OwlComponent,
+    AddEmployeeComponent,
+    EmployeeComponent,
+    GuestListComponent,
+    GeneralPipe,
+    AddressBookComponent
   ],
   imports: [
     BrowserModule,

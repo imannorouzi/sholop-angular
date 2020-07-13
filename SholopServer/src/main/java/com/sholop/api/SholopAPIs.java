@@ -404,7 +404,12 @@ public class SholopAPIs {
                 }
 
                 // Relate this contact to the event
-                ContactEvent ce = new ContactEvent(c.getId(), eventId, ContactEvent.STATUS.NOT_REPLIED.name());
+                ContactEvent ce = new ContactEvent(c.getId(), eventId,
+                        ContactEvent.TYPE.CONTACT,
+                        ContactEvent.STATUS.NOT_REPLIED.name(),
+                        c.getName(),
+                        c.getEmail(),
+                        c.getPhone());
                 repositoryFactory.getContactEventRepository().save(ce);
             }
             return Response.ok(gson.toJson(new ResponseObject("OK", eventId)))
