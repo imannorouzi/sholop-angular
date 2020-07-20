@@ -30,6 +30,14 @@ export class AlertService {
     // setTimeout(()=>{this.subject.next();}, 3000);
   }
 
+  warn(message: string, keepAfterNavigationChange = false) {
+    this.keepAfterNavigationChange = keepAfterNavigationChange;
+    this.subject.next({ type: 'warn', text: message });
+
+    // Clear the alert
+    // setTimeout(()=>{this.subject.next();}, 3000);
+  }
+
   error(message: string, keepAfterNavigationChange = false) {
     this.keepAfterNavigationChange = keepAfterNavigationChange;
     this.subject.next({ type: 'error', text: message });

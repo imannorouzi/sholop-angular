@@ -13,7 +13,6 @@ import {AuthService} from "../utils/auth.service";
 })
 export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
 
-  commentForm: FormGroup;
   submitted: boolean = false;
   rows: number = 1;
 
@@ -31,25 +30,17 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() uuid: string = '';
 
   @Input() guest: any;
-  user: User;
+  text: string = '';
   noMoreComments: boolean = false;
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.eventId.currentValue !== changes.eventId.previousValue){
-      // this.reset();
+      this.reset();
     }
   }
 
-  ngOnInit() {
-    this.commentForm = this.formBuilder.group({
-      comment: ['', [Validators.minLength(3), Validators.required]]
-    });
-
-    this.user = this.authService.getCurrentUser();
-  }
-
   ngAfterViewInit(){
-    this.reset();
+    // this.reset();
   }
 
   reset(){
@@ -58,57 +49,45 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
     this.comments = [];
 
 
-    this.readDummyComments();
+    this.readComments();
   }
 
   readComments(event = undefined){
     if(event) event.preventDefault();
 
-    this.dataService.getComments(this.eventId, this.page++, this.uuid).subscribe(
-      data => {
-        if(data && data.msg === "OK"){
-          this.comments.push(...data.object);
-
-          if(data.object.length < 5){
-            // No more comments
-            this.noMoreComments = true;
-          }
-        }
-      },
-      error =>{
-        console.log(error);
-      }
+    (this.authService.isLoggedIn() ?
+        this.dataService.getComments(this.eventId, this.page++)
+        :
+        this.dataService.getCommentsGuest(this.eventId, this.page++, this.uuid)
     )
-  }
+      .subscribe(
+        data => {
+          if(data && data.msg === "OK"){
+            this.comments.push(...data.object);
 
-  readDummyComments(event = undefined){
-    this.loading = true;
-
-    setTimeout( () => {
-      this.loading = false;
-      this.comments = DummyData.COMMENTS;
-    }, 100);
+            if(data.object.length < 5){
+              // No more comments
+              this.noMoreComments = true;
+            }
+          }
+        },
+        error =>{
+          console.log(error);
+        }
+      )
   }
 
 
   onSubmit() {
     this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.commentForm.invalid) {
-      return;
-    }
-
-    this.postComment(this.f.comment.value);
+    this.postComment();
   }
 
-  get f() { return this.commentForm.controls; }
-
-  postComment(c){
+  postComment(){
 
 
     let comment = {
-      text: c,
+      text: this.text,
       eventId: this.eventId,
       uuid: this.uuid
     };
@@ -119,7 +98,7 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
         if(value && value['msg'] === "OK"){
           this.comments.unshift(value['object']);
 
-          this.commentForm.reset();
+          this.text = '';
           this.submitted = false;
         }
         this.loading = false;
@@ -144,5 +123,8 @@ export class CommentsComponent implements OnInit, AfterViewInit, OnChanges {
         console.log(error1);
       }
     )
+  }
+
+  ngOnInit(): void {
   }
 }

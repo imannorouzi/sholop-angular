@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {DateService} from "../utils/date.service";
-import {DataService} from "../utils/data.service";
+import {DateService} from "../../utils/date.service";
+import {DataService} from "../../utils/data.service";
 
 const daysInMonth: number[] = [
   31,31,31,31,31,31,30,30,30,30,30,29

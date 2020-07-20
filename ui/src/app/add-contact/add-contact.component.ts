@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";

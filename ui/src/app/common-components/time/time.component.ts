@@ -17,8 +17,8 @@ export class TimeComponent implements OnInit {
 
   @Output() onTimeSelected: EventEmitter<any> = new EventEmitter();
 
-  hourString: string = "";
-  minuteString: string = "";
+  hourString: number = 0;
+  minuteString: number = 0;
 
   mainRow: number = 5;
 
@@ -34,8 +34,8 @@ export class TimeComponent implements OnInit {
 
 
     if(this.date){
-      this.hourString = (this.date.getHours()<10 ? '0' : '') + this.date.getHours().toString();
-      this.minuteString = (this.date.getMinutes()<10 ? '0' : '') + this.date.getMinutes().toString();
+      this.hourString =  this.date.getHours();
+      this.minuteString = this.date.getMinutes();
     }
 
     this.dummyRows = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -49,7 +49,7 @@ export class TimeComponent implements OnInit {
     this.isShowing = true;
   }
 
-  hourChange(increment: boolean = false){
+  /*hourChange(increment: boolean = false){
     if(increment)this.listUp(this.hours);
     else this.listDown(this.hours);
   }
@@ -115,17 +115,41 @@ export class TimeComponent implements OnInit {
       this.listDown(this.minutes);
       setTimeout( () =>{this.minuteClick(i-1)}, 50);
     }
-  }
+  }*/
 
   onTimeChanged(){
+      let date = new Date();
+      date.setHours(Number(this.hourString));
+      date.setMinutes(Number(this.minuteString));
+      this.onTimeSelected.emit(date);
+  }
 
-    let stringValue = this.input.nativeElement.value;
-    let date = new Date();
+  onHourChange(step){
+    if (step > 0) {
+      this.hourString = (this.hourString + 1) % 24;
+    }else{
+      if(this.hourString === 0){
+        this.hourString = 23;
+      }else{
+        this.hourString = (this.hourString - 1) % 24;
+      }
+    }
 
-    date.setHours(Number(this.hourString));
-    date.setMinutes(Number(this.minuteString));
+    this.onTimeChanged();
+  }
 
-    this.onTimeSelected.emit(date);
+  onMinuteChange(step){
+    if (step > 0) {
+      this.minuteString = (this.minuteString + 1) % 59;
+    }else{
+      if(this.minuteString === 0){
+        this.minuteString = 59;
+      }else{
+        this.minuteString = (this.minuteString - 1) % 59;
+      }
+    }
+
+    this.onTimeChanged();
   }
 
   clickOutside(value: boolean = false) {

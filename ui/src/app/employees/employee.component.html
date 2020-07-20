@@ -1,6 +1,6 @@
-<div class="h-100 overflow-auto p-3">
+<div class="p-3">
 
-  <div class="w-100 overflow-hidden">
+  <div class="w-100 overflow-visible">
     <div class="row mb-1">
       <div class="col-md-4 mb-1">
         <button type="button" class="btn secondary w-100" (click)="addNewEmployee.reset();addNewEmployee.show()" >
@@ -9,7 +9,7 @@
         <add-employee (onEmployeeAdded)="onEmployeeAdded($event)" #addNewEmployee></add-employee>
       </div>
       <div class="col-md-5 mb-1">
-        <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="جستجو ..." >
+        <input type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="جستجو ..." >
       </div>
 
       <div class="col-md-3 mb-1">
@@ -22,22 +22,18 @@
       </div>
     </div>
   </div>
-  <div class="card text-right bg-light mb-3 ">
-    <div class="card-body">
-      <h5 class="card-title">آپلود لیست کارمندان</h5>
-      <p class="card-text">می‌توانید با دانلود <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> نام کارمندان خود را در آن وارد و با آپلود آن اطلاعات کارمندان خود را در شالاپ ثبت کنید.</p>
+  <div class="w-100  bg-light mb-3 ">
+      <p class="card-text">نام همکاران خود را در <a href="../../assets/files/EmployeeList.xlsx">این قالب</a> وارد و با برای ثبت اطلاعات آن‌ها در سایت فایل را
+        <a href="" (click)="onUploadFileClick($event)">آپلود </a> کنید.</p>
       <div class="text-left">
-        <button href="" class="primary" (click)="onUploadFileClick($event)">آپلود فایل</button>
-      </div>
     </div>
-
     <input (change)="fileChanged($event)" #fileInput type="file" class="custom-file-input" [hidden]="true">
   </div>
 
   <div class="row ">
 
     <div *ngFor="let employee of employees; let index=index;" class="col-md-6 contact ">
-      <div class="contact-frame">
+      <div class="contact-frame shadow">
         <div class="row p-2 ">
 
 
@@ -57,8 +53,8 @@
               <i class="role-icon fa fa-user" *ngIf="employee.role==='user'"></i>
               {{employee.name}}
             </div>
-            <div class="text-muted"><i class="fa fa-envelope"></i>  {{employee.email}}</div>
-            <div class="text-muted"><i class="fa fa-phone"></i>  {{employee.phone}}</div>
+            <div class="text-muted text-overflow"><i class="fa fa-envelope"></i>  {{employee.email}}</div>
+            <div class="text-muted text-overflow"><i class="fa fa-phone"></i>  {{employee.phone}}</div>
 
             <div>
               <a href="#" class="ml-3" (click)="onEditContact(employee, index)">ویرایش </a>

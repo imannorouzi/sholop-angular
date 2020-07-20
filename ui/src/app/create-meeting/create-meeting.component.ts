@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} 
 import {TEHRAN, Venue} from "../venue";
 import { DataService } from "../utils/data.service";
 import {ImageCropperComponent} from "ng2-img-cropper";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {NavigationService} from "../utils/navigation.service";
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
 import {AlertService} from "../alert.service";
@@ -111,6 +111,9 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
           this.event.venue.latitude = place.geometry.location.lat();
           this.event.venue.longitude = place.geometry.location.lng();
           this.zoom = 12;
+
+          this.mapLat = place.geometry.location.lat();
+          this.mapLng = place.geometry.location.lng();
         });
       });
     });
@@ -122,6 +125,10 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
         this.event.venue.latitude = position.coords.latitude;
         this.event.venue.longitude = position.coords.longitude;
         this.zoom = 12;
+
+        this.mapLat = position.coords.latitude;
+        this.mapLng = position.coords.longitude;
+
       });
     }
   }
@@ -223,6 +230,11 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   }
 
   onGuestAdded(guest: any) {
+
+    if(guest.type === 'USER'){
+      this.alertService.warn('همکاری با این ایمیل ثبت شده است.');
+    }
+
      this.event.attendees = this.event.attendees.filter( a => {
       return guest.email !== a.email
     });
@@ -296,44 +308,6 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
   goTo(url) {
     this.navigationService.navigate(url);
-  }
-
-  next() {
-    if(this.editingStep !== -1){
-      this.editingStep = -1;
-      return;
-    }
-
-    this.step++;
-
-    if(this.step === 2){
-
-      setTimeout( () => {
-        //load Places Autocomplete
-        this.mapsAPILoader.load().then(() => {
-          let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
-            types: ["address"]
-          });
-          autocomplete.addListener("place_changed", () => {
-            this.ngZone.run(() => {
-              //get the place result
-              let place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-              //verify result
-              if (place.geometry === undefined || place.geometry === null) {
-                return;
-              }
-
-              //set latitude, longitude and zoom
-              this.event.venue.latitude = place.geometry.location.lat();
-              this.event.venue.longitude = place.geometry.location.lng();
-              this.zoom = 12;
-            });
-          });
-        });
-      }, 10);
-
-    }
   }
 
   ngAfterViewInit(): void {

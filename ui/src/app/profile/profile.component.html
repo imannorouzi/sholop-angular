@@ -1,4 +1,4 @@
-<div class="overflow-auto h-100 p-3">
+<div class=" p-3">
 
   <div class="bg-white p-5">
     <div class="text-center justify-content-center">
@@ -10,7 +10,7 @@
       <!-- Image Modal -->
       <modal #imageCropperModal
              [modalTitle]="'Edit Image Size'"
-             [zIndex]="6"
+             [zIndex]="10"
              [maximizable]="true">
         <ng-container class="app-modal-body">
           <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" ></img-cropper>
@@ -48,17 +48,26 @@
 
       <div class="">
         <label class=" col-form-label text-right">آدرس</label>
-            <input type="text" class="mb-2" size=80
+            <input type="text" class="mb-2"
                    [(ngModel)]="user.farsiAddress1"
+                   autocomplete="off"
                    #searchBox name="address_1" placeholder="شهر،‌ خیابان" />
 
-            <input type="text" class="mb-2" :size=80
+            <input type="text" class="mb-2"
                    [(ngModel)]="user.farsiAddress2"
+                   autocomplete="off"
                    #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد" /> <!--on-place-changed="vm.placeChanged()"-->
 
           <div class="mb-3">
-            <agm-map class="map" [latitude]="user.latitude" [longitude]="user.longitude" [scrollwheel]="true" [zoom]="12">
-              <agm-marker [markerDraggable]="true" (dragEnd)="markerMoved($event)" [latitude]="user.latitude" [longitude]="user.longitude"></agm-marker>
+            <agm-map class="map"
+                     [latitude]="mapLat"
+                     [longitude]="mapLng"
+                     [scrollwheel]="true"
+                     [zoom]="zoom"
+                     (mapClick)="mapClicked($event)">
+              <agm-marker [markerDraggable]="true"
+                          (dragEnd)="markerMoved($event)"
+                          [latitude]="user.latitude" [longitude]="user.longitude"></agm-marker>
             </agm-map>
           </div>
 

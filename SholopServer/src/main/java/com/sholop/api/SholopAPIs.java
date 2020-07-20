@@ -17,6 +17,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +43,12 @@ public class SholopAPIs {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @GetMapping("/send-mail/{template}/{to}")
+    public Response sendmail(@PathVariable("template") String template, @PathVariable("to") String to){
+        MailUtils.sendTemplate( template, to);
+        return Response.ok("OK").build();
+    }
 
 //    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @PostMapping("/create-tiny-event")
@@ -100,80 +107,7 @@ public class SholopAPIs {
         }
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @PermitAll
-    @Path("/create-comment")
-    public Response createComment( User user, String jsonCommentString) throws JSONException, IOException {
 
-        Gson gson = new Gson();
-        int id = -1;
-        try {
-            JSONObject jsonComment = new JSONObject(jsonCommentString);
-
-            Comment comment = new Comment(jsonComment);
-
-            comment.setUserId(user.getId());
-            comment.setUserImageUrl(user.getImageUrl());
-            comment.setUserName(user.getName());
-            comment = repositoryFactory.getCommentRepository().save(comment);
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
-
-    @PostMapping("/create-comment-guest")
-    public Response createComment(String jsonCommentString) throws JSONException, IOException {
-
-        Gson gson = new Gson();
-        int id = -1;
-        try {
-            JSONObject jsonComment = new JSONObject(jsonCommentString);
-
-            String uuid = jsonComment.getString("uuid");
-            ContactEvent contactEvent = repositoryFactory.getContactEventRepository().findByUuid(uuid);
-            Contact contact = repositoryFactory.getContactRepository().findById(contactEvent.getContactId()).orElse(null);
-
-            Comment comment = new Comment(jsonComment);
-
-            comment.setUserId(-1);
-            comment.setContactId(contactEvent.getContactId());
-            comment.setEventId(contactEvent.getEventId());
-            comment.setUserName(contact.getName());
-            comment.setUserImageUrl(contact.getImageUrl());
-            comment = repositoryFactory.getCommentRepository().save(comment);
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
-
-    @PermitAll
-    @PostMapping("/delete-comment")
-    public Response deleteComment( User user,
-                                  String id){
-
-        Gson gson = new Gson();
-        Comment comment = null;
-        try {
-            repositoryFactory.getCommentRepository().delete(comment);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-
-        return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
-    }
 
     @PostMapping("/contact-us")
     public Response contactUs(String jsonCommentString) {
@@ -206,52 +140,6 @@ public class SholopAPIs {
         }
     }
 
-
-    @GetMapping("/get-comments")
-    public Response getComments( User user,
-                                @QueryParam("event_id") int eventId,
-                                @QueryParam("page") int page) throws JSONException {
-
-        Gson gson = new Gson();
-        try {
-
-
-            List<Comment> comments = repositoryFactory.getCommentRepository().findAll();
-//            List<Comment> comments = commentDao.getCommentsByEventId(eventId, page);
-//            Utils.setCommentsAuthor(comments, userDao, contactDao);
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", comments))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
-
-
-
-    @GetMapping("/get-comments-guest")
-    public Response getComments(@QueryParam("uuid") String uuid,
-                                @QueryParam("page") int page) {
-
-        Gson gson = new Gson();
-        try {
-
-//            ContactEvent contactEvent = contactEventDao.getEventContactByUUID(uuid);
-//            List<Comment> comments = commentDao.getCommentsByEventId(contactEvent.getEventId(), page);
-//
-//            Utils.setCommentsAuthor(comments, userDao, contactDao);
-
-
-            return Response.ok(gson.toJson(new ResponseObject("OK", null))).build();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.status(500)
-                    .build();
-        }
-    }
 
 
     @GetMapping("/get-events")

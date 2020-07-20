@@ -1,6 +1,9 @@
 <div *ngFor="let alert of alerts">
   <div *ngIf="alert.message"
-       [ngClass]="{ ' text-center m-5 sholop-alert alert': alert.message, 'alert-success': alert.message.type === 'success', 'alert-danger': alert.message.type === 'error' }">
+       [ngClass]="{ ' text-center m-5 sholop-alert alert': alert.message,
+        'alert-success': alert.message.type === 'success',
+        'alert-warning': alert.message.type === 'warn',
+         'alert-danger': alert.message.type === 'error' }">
     {{alert.message.text}}
   </div>
 </div>

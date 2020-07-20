@@ -6,9 +6,11 @@ import com.sholop.auth.JwtTokenUtil;
 import com.sholop.auth.JwtUserDetailsService;
 import com.sholop.auth.PasswordHash;
 import com.sholop.mail.MailUtils;
+import com.sholop.objects.Contact;
 import com.sholop.objects.ResponseObject;
 import com.sholop.objects.User;
 import com.sholop.repositories.RepositoryFactory;
+import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -19,10 +21,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.ws.rs.core.Response;
+import javax.xml.crypto.Data;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
@@ -42,6 +49,9 @@ public class AuthAPI {
 
     @Autowired
     RepositoryFactory repositoryFactory;
+
+    @Autowired
+    private FileStorageService fileStorageService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -112,15 +122,18 @@ public class AuthAPI {
                         jsonUser.has("imageUrl") ? jsonUser.getString("imageUrl") : "",
                         jsonUser.has("phone") ? jsonUser.getString("phone") : "");
 
-//                MailUtils.sendRegisterMail(newUser);
                 // To update the id
+                newUser.setConfirmEmailUUID(Utils.generateRandomString());
                 newUser = repositoryFactory.getUserRepository().save(newUser);
                 newUser.setToken( jwtTokenUtil.generateToken(newUser));
                 newUser.setPassword("");
 
+                MailUtils.sendRegisterMail(newUser);
                 return Response.ok(gson.toJson(new ResponseObject("OK", newUser)))
                         .build();
 
+            }else if(user.getPassword() == null || "".equals(user.getPassword())){
+                return Response.status(200).entity(gson.toJson(new ResponseObject("NO_PASSWORD", null))).build();
             }else{
                 return Response.status(200).entity(gson.toJson(new ResponseObject("DUPLICATE", null))).build();
             }
@@ -200,40 +213,48 @@ public class AuthAPI {
     }
 
 
+
+
     @PostMapping("/update-user")
-    public Response updateUser( User u,
-                               @FormDataParam("file") InputStream uploadedInputStream,
-                               @FormDataParam("file") FormDataContentDisposition fileDetail,
-                               @FormDataParam("file") FormDataBodyPart body,
-                               @FormDataParam("user") String userJsonString,
-                               @FormDataParam("filename") String filename)  {
+    public Response updateContact(@AuthenticationPrincipal UserDetails u,
+                                  @RequestParam(value = "file", required = false) MultipartFile file,
+                                  @RequestParam("user") String userJsonString,
+                                  @RequestParam(value = "filename", required = false) String filename) {
 
 
-        Gson gson = new Gson();
-        User user;
+        User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
+        User updatedUser;
         try {
             JSONObject jsonContact = new JSONObject(userJsonString);
-            user = new User(jsonContact);
+            updatedUser = new User(jsonContact);
 
-            String relationalUrl;
+            if(filename != null && file != null) {
+                filename = "user_" + user.getId() + "_" + filename.replaceAll("\\s+", "");
+                String fileName = fileStorageService.storeFile(file, filename, "/users");
+                String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/download/users/")
+                        .path(fileName)
+                        .toUriString();
 
-            if(filename != null) {
-                filename = filename.replaceAll("\\s+", "");
-
-                Files.copy(uploadedInputStream,
-                        Paths.get("./contents/images/users/" +  /*fileDetail.getFileName()*/ filename),
-                        StandardCopyOption.REPLACE_EXISTING);
-                relationalUrl = Utils.RELATIONAL_WEBSITE_URL + "/contents/images/users/" + filename;
-                user.setImageUrl(relationalUrl);
+                user.setImageUrl(Utils.fixUri(fileDownloadUri));
             }
 
-            repositoryFactory.getUserRepository().save(user);
+            user.setName(updatedUser.getName());
+            user.setPhone(updatedUser.getPhone());
+            user.setLatitude(updatedUser.getLatitude());
+            user.setLongitude(updatedUser.getLongitude());
+            user.setFarsiAddress1(updatedUser.getFarsiAddress1());
+            user.setFarsiAddress2(updatedUser.getFarsiAddress2());
+            user.setDescription(updatedUser.getDescription());
+
+            user = repositoryFactory.getUserRepository().save(user);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(500)
-                    .build();
+
+            return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", ""))).build();
         }
+
 
         return Response.ok(gson.toJson(new ResponseObject("OK", user))).build();
     }

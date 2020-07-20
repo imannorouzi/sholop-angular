@@ -1,30 +1,28 @@
 <div class="comments pt-2 mt-2 pb-2 mb-2">
 
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="">
+  <div  class="">
 
     <div class=" flexbox-parent-row">
       <i class=" ml-3 icon fa fa-comment"></i>
 
-      <textarea #textAreaElement class="comment-textarea" (focus)="rows = 3" (blur)="rows=1" [rows]="rows"
+      <textarea #textAreaElement (focus)="rows = 3" (blur)="rows=1" [rows]="rows"
                 placeholder="نظرتان را بنویسید..."
-                [ngClass]="{ 'is-invalid': submitted && f.comment.errors }" ></textarea>
+                class="comment-textarea" [(ngModel)]="text" ></textarea>
 
-      <button type="submit" class=" secondary send-comment">ارسال</button>
+      <button (click)="onSubmit()" class=" secondary send-comment">ارسال</button>
     </div>
-  </form>
+  </div>
 
   <div class="">
 
     <div *ngFor="let c of comments; let i=index;" class="comment flexbox-parent-row">
       <img class="rounded-circle contact-image ml-2" [src]="c.userImageUrl ? c.userImageUrl : '../assets/images/user-placeholder.png'">
-
-
-      <div class="flexbox-item-grow ml-2 mr-2 text-right comment-content">
-        <span class="text-muted">{{c.userName}} </span>
-        <span class="mr-2">{{c.text}} </span>
+      <div class="flexbox-item-grow flexbox-parent-row ml-2 mr-2 rtl comment-content">
+        <div class="text-muted">{{c.userName}} </div>
+        <div class="mr-2 flexbox-item-grow"> {{c.text}}</div>
         <span class="comment-time">14:23</span>
       </div>
-      <i class="fa fa-close delete-comment" *ngIf="(!anonymous && c.userId === user.id)" (click)="deleteComment(i)"></i>
+      <i class="fa fa-trash mt-2 action-icon-sm" *ngIf="(!anonymous && c.userId === authService.userId)" (click)="deleteComment(i)"></i>
 
     </div>
 

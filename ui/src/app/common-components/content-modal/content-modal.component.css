@@ -1,0 +1,28 @@
+.modal-dialog{
+  min-width: 300px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  width: 100%;
+  text-align: right;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.modal-header {
+  padding: 5px 10px;
+}
+
+.modal-title {
+  line-height: 2;
+}

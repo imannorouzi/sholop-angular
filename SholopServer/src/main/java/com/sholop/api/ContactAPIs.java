@@ -1,6 +1,5 @@
 package com.sholop.api;
 
-import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
 import com.sholop.objects.*;
@@ -43,7 +42,7 @@ public class ContactAPIs {
 
     @GetMapping("/get-contacts")
     public Response getContacts(@AuthenticationPrincipal UserDetails u,
-                                      @RequestParam("hint") String hint)  {
+                                @RequestParam("hint") String hint)  {
 
         try {
 
@@ -99,6 +98,17 @@ public class ContactAPIs {
         try {
             JSONObject jsonContact = new JSONObject(contactJsonString);
             contact = new Contact(jsonContact);
+
+            // check if any user has been registered with the same email
+            User cu = repositoryFactory.getUserRepository().findByUsername(contact.getEmail());
+            if(cu != null && // found one with the same email
+                    (
+                            (cu.getParentId() != -1 && cu.getParentId().equals(user.getParentId())) || // under the same manager
+                                    (cu.getParentId() == user.getId()) // under me
+                    )
+            ){
+                return Response.ok(gson.toJson(new ResponseObject("USER_EXISTS", cu))).build();
+            }
 
             if(filename != null && file != null) {
                 filename = "contact_" + user.getId() + "_" + filename.replaceAll("\\s+", "");

@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
@@ -7,6 +7,7 @@ import {AlertService} from "../alert.service";
 import {User} from "../user";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../utils/auth.service";
+import {TEHRAN} from "../venue";
 
 @Component({
   selector: 'profile',
@@ -31,6 +32,9 @@ export class ProfileComponent implements OnInit {
   croppedWidth:number;
   croppedHeight:number;
 
+  mapLat: number = TEHRAN.lat;
+  mapLng: number = TEHRAN.lng;
+
   public zoom: number;
 
   constructor(private dataService: DataService,
@@ -39,7 +43,7 @@ export class ProfileComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,) {
 
-    this.user = authService.getCurrentUser();
+
 
     this.cropperSettings1 = new CropperSettings();
     this.cropperSettings1.width = 200;
@@ -65,7 +69,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = this.authService.getCurrentUser();
+    this.user = Object.assign({}, this.authService.getCurrentUser());
 
     this.zoom = 12;
 
@@ -93,6 +97,8 @@ export class ProfileComponent implements OnInit {
           this.user.latitude = place.geometry.location.lat();
           this.user.longitude = place.geometry.location.lng();
           this.zoom = 12;
+          this.mapLat = place.geometry.location.lat();
+          this.mapLng = place.geometry.location.lng();
         });
       });
     });
@@ -131,7 +137,8 @@ export class ProfileComponent implements OnInit {
         if (data && data.msg === "OK") {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           data.object.token = this.authService.getCurrentUser().token;
-          localStorage.setItem('currentUser', JSON.stringify(data.object));
+          this.authService.login(data.object);
+
           this.alertService.success("تغییرات ذخیره شد.");
         }else{
           this.alertService.error("لطفا دوباره تلاش کنید.")
@@ -154,6 +161,25 @@ export class ProfileComponent implements OnInit {
     this.user.latitude = e.coords.lat;
     this.user.longitude = e.coords.lng;
 
+    const geocoder = new google.maps.Geocoder;
+    geocoder.geocode({'location': e.coords}, (res, status) => {
+      if (status === google.maps.GeocoderStatus.OK && res.length) {
+        this.ngZone.run(() => this.user.farsiAddress1 = res[0].formatted_address);
+      }
+    })
+  }
+
+  mapClicked(e) {
+
+    this.user.latitude = e.coords.lat;
+    this.user.longitude = e.coords.lng;
+
+    const geocoder = new google.maps.Geocoder;
+    geocoder.geocode({'location': e.coords}, (res, status) => {
+      if (status === google.maps.GeocoderStatus.OK && res.length) {
+        this.ngZone.run(() => this.user.farsiAddress1 = res[0].formatted_address);
+      }
+    })
   }
 
   private setCurrentPosition() {

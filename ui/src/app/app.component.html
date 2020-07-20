@@ -4,10 +4,10 @@
   <alert></alert>
 
   <div class="flexbox-parent">
-    <app-navbar></app-navbar>
+    <app-navbar (toggle)="home.toggleSidebar()"></app-navbar>
 
     <div class="flexbox-item-grow">
-      <app-home>
+      <app-home #home>
         <router-outlet></router-outlet>
       </app-home>
     </div>

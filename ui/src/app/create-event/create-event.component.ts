@@ -4,7 +4,7 @@ import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../utils/data.service";
 import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {NavigationService} from "../utils/navigation.service";
 
 

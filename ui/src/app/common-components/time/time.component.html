@@ -4,7 +4,8 @@
     <input #input (change)="onTimeChanged()"
            type="text" [class]="inputClasses + ' flexbox-item-grow ltr'" autocomplete="false"
            [autocomplete]="false"
-           [value]="(hourString ? hourString : '-- ')+':'+(minuteString ? minuteString : ' --')"
+           readonly
+           [value]="((hourString<10 ? '0' : '') + hourString ) + ':' + ((minuteString<10 ? '0' : '') + minuteString )"
            (focus)="onFocus()" name="date"
            [placeholder]="placeholder? placeholder : 'Time'" >
   </div>
@@ -12,7 +13,23 @@
   <div class="unselectable"   *ngIf="isShowing" >
 
     <div class="times-container ltr" >
-      <table class="w-100 text-center">
+
+
+      <div class="flexbox-parent-row ltr p-2">
+        <div class="flexbox-item-grow text-center">
+          <button class="secondary" (click)="onHourChange(+1)"><i class="fa fa-angle-up"></i></button>
+          <input type="number" class="text-center mt-1 mb-1" min="0" max="23" [(ngModel)]="hourString">
+          <button class="secondary" (click)="onHourChange(-1)"><i class="fa fa-angle-down"></i></button>
+        </div>
+        <div class="ml-2 mr-2 font-large"> : </div>
+        <div class="flexbox-item-grow text-center">
+          <button class="secondary" (click)="onMinuteChange(+1)"><i class="fa fa-angle-up"></i></button>
+          <input type="number" class="text-center mt-1 mb-1" [(ngModel)]="minuteString"  min="0" max="59">
+          <button class="secondary" (click)="onMinuteChange(-1)"><i class="fa fa-angle-down"></i></button>
+        </div>
+      </div>
+
+      <!--<table class="w-100 text-center">
         <tr *ngFor="let hour of dummyRows; let i=index;">
           <td [class.main-row]="mainRow===i">
             <span (click)="hourChange(true)" *ngIf="i===mainRow-1"><i class="fa fa-angle-up change-button font-x-large"></i></span>
@@ -37,7 +54,7 @@
             <span (click)="minuteChange(false)" *ngIf="i===mainRow+1"><i class="fa fa-angle-down change-button font-x-large"></i></span>
           </td>
         </tr>
-      </table>
+      </table>-->
 
       <!--<hr>
       <div class="text-right">

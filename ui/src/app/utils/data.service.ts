@@ -84,6 +84,15 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
+  getReception(text: string):  Observable<any> {
+    let apiURL = serverUrl + "/get-reception";
+    return this.http.get(apiURL, {
+      params: {uuid: text},
+    })
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
+  }
+
   getUsers( hint: string = ''):  Observable<any> {
     let apiURL = serverUrl + "/get-users";
     return this.http.get(apiURL, {
@@ -251,21 +260,18 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
-  getComments(eventId, page, uuid):  Observable<any> {
-    if(uuid){
+  getComments(eventId, page):  Observable<any> {
+      let apiURL = serverUrl + "/get-comments/" + eventId + "/" + page;
+      return this.http.get(apiURL, {}).pipe(map(this.extractData))
+        .pipe(catchError(this.handleError));
+
+  }
+  getCommentsGuest(eventId, page, uuid):  Observable<any> {
       // It is a guest user
       let apiURL = serverUrl + "/get-comments-guest";
       return this.http.get(apiURL, {
         params: {event_id: eventId, page: page, uuid: uuid}
       });
-    }else{
-      let apiURL = serverUrl + "/get-comments";
-      return this.http.get(apiURL, {
-        params: {event_id: eventId, page: page}
-      }).pipe(map(this.extractData))
-        .pipe(catchError(this.handleError));
-    }
-
   }
 
   getDatesByPeriod(startDate, endDate):  Observable<any> {
@@ -288,16 +294,10 @@ export class DataService {
   }
 
   postComment(comment : any){
-
     let apiURL;
-
     let headers = new HttpHeaders({
-      'Content-Type': 'text/json',
-      'Accept': 'application/json'
     });
-
     if(comment.uuid){
-      //It is a guest
       apiURL = serverUrl + "/create-comment-guest";
       return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers}).pipe(map(this.extractData))
         .pipe(catchError(this.handleError));

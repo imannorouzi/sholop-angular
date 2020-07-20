@@ -1,14 +1,25 @@
 <reception-item-modal></reception-item-modal>
 <app-reception></app-reception>
+<app-qr-code-scanner #scanner ></app-qr-code-scanner>
+<overlay-spinner [text]="'در حال دریافت اطلاعات...'" *ngIf="loadingReception"></overlay-spinner>
+<confirm #prompt [type]="'PROMPT'" [title]="''">{{promptText}}</confirm>
 
 <div [class]="(authService.isLoggedIn() ? 'container' : '' ) + ' home h-100 '" id="home">
 
-  <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'toggled' : '')" #pageWrapper>
+  <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'toggled ' : '')
+      + (sidebar ? 'open' : '')" #pageWrapper>
 
     <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
       <div class="sidebar-content">
+
+        <div class="sidebar-brand  text-left" id="sidebar-brand-close">
+          <div id="close-sidebar"  (click)="this.toggleSidebar()">
+            <i class="fa fa-remove nav-icon active "></i>
+          </div>
+        </div>
+
         <div class="sidebar-header " >
-          <div class="flexbox-parent-row" [routerLink]="'/settings'" >
+          <div class="flexbox-parent-row profile-link" [routerLink]="'/settings'" >
             <div class="user-pic ">
               <img class="img-responsive img-rounded" [src]="[authService.imageUrl]"
                    alt="User picture">
@@ -28,6 +39,12 @@
 
           <div class="input-group ">
             <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
+          </div>
+
+          <hr>
+
+          <div class="input-group ">
+            <button class="form-control secondary" (click)="scanner.show()"  >اسکن بارکد</button>
           </div>
         </div>
 
@@ -124,14 +141,9 @@
 
     <main class="page-content flexbox-item-grow ">
 
-      <div class="flexbox-parent">
-        <div class="flexbox-item-grow">
-          <div class="h-100">
             <ng-content></ng-content>
-          </div>
-        </div>
 
-        <div class="bottom-menu-wrapper" *ngIf="authService.isLoggedIn()">
+        <!--<div class="bottom-menu-wrapper" *ngIf="authService.isLoggedIn()">
           <div class="bottom-menu flexbox-parent-row text-center">
             <div  [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/meetings' ? 'selected' : '')"
                   [routerLink]="'/meetings'">
@@ -157,14 +169,12 @@
               <div>دفترچه افراد</div>
             </div>
 
-            <div [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/venues' ? 'selected' : '')"
-                 [routerLink]="'/venues'">
-              <i class="fa fa-map-marker"></i>
-              <div>مکان‌ها</div>
+            <div [class]="'bottom-menu-item flexbox-item-grow '" (click)="scanner.show()">
+              <i class="fa fa-qrcode"></i>
+              <div>اسکن بارکد</div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>-->
     </main>
   </div>
 

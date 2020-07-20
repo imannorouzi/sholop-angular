@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {DummyData} from "../dummyData";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {GuestListComponent} from "./guest-list/guest-list.component";
 
 @Component({

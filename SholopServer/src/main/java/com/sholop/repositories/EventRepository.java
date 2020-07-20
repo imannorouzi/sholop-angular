@@ -16,7 +16,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 //    List<Contact> findByTitleContainingOrContentContaining(String name, String textAgain);
 
 
-
     @Query(value = "SELECT distinct s.* FROM sh_event s " +
             "inner join sh_event_date d on s.id=d.event_id " +
             "inner join sh_contact_event ec on s.id=ec.event_id " +

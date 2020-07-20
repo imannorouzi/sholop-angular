@@ -94,7 +94,12 @@ public class FileStorageService {
         Path targetLocation = fileLocation.resolve(filename);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", targetLocation);
 
-        return filename;
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/download/QRCodes/")
+                .path(filename)
+                .toUriString();
+        return Utils.fixUri(fileDownloadUri);
+
     }
 
     public Resource loadFileAsResource(String fileName, String subDir) throws Exception {
@@ -116,7 +121,7 @@ public class FileStorageService {
     public String downloadMap(double latitude,
                                      double longitude) {
 
-        String filename = "venue_" + (new Date()) + ".png";
+        String filename = "venue_" + (new Date()).toString().replaceAll(" ", "") + ".png";
 
         String url = "https://maps.googleapis.com/maps/api/staticmap?" +
                 "center=" + latitude +"%2c%20"+ longitude +
@@ -139,7 +144,7 @@ public class FileStorageService {
                 IOUtils.closeQuietly(is);
 
                 fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/downloadFile/")
+                        .path("/download/venues/")
                         .path(filename)
                         .toUriString();
             }

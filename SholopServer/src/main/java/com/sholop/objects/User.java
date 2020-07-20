@@ -27,6 +27,8 @@ public class User extends Attendee{
     private String password, email, phone, description = "";
     @Column(name = "persian_address_1") String farsiAddress1 = "";
     @Column(name = "persian_address_2") String farsiAddress2 = "";
+    @Column(name = "confirm_email_uuid") String confirmEmailUUID = "";
+    @Column(name = "forget_password_uuid") String forgetPasswordUUID = "";
     @Column(name = "image_url") String imageUrl = "";
     @Transient private String token;
 
@@ -292,10 +294,26 @@ public class User extends Attendee{
     }
 
     public Integer getParentId() {
-        return parentId;
+        return parentId != null? parentId : -1;
     }
 
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    public String getConfirmEmailUUID() {
+        return confirmEmailUUID;
+    }
+
+    public void setConfirmEmailUUID(String confirmEmailUUID) {
+        this.confirmEmailUUID = confirmEmailUUID;
+    }
+
+    public String getForgetPasswordUUID() {
+        return forgetPasswordUUID;
+    }
+
+    public void setForgetPasswordUUID(String forgetPasswordUUID) {
+        this.forgetPasswordUUID = forgetPasswordUUID;
     }
 }

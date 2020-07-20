@@ -5,7 +5,7 @@ import {AlertService} from "../alert.service";
 import {Venue} from "../venue";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../utils/auth.service";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 
 @Component({
   selector: 'add-venue',

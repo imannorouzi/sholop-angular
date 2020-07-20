@@ -1,17 +1,17 @@
-@font-face {
-  src: url("./assets/fonts/Vazir.ttf");
-  font-family: sholop-font;
-}
 
 @font-face {
-  font-family: sholop-font-normal;
-  src: url('./assets/fonts/Tanha.eot');
-  src: url('./assets/fonts/Tanha.eot?#iefix') format('Tanha-opentype'),
-  url('./assets/fonts/Tanha.woff') format('woff'),
-  url('./assets/fonts/Tanha.ttf') format('truetype');
+  font-family: sholop-font;
+  src: url("./assets/fonts/Vazir.eot"); /* IE9 Compat Modes */
+  src: url("./assets/fonts/Vazir.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+  url("./assets/fonts/Vazir.otf") format("opentype"), /* Open Type Font */
+  url("./assets/fonts/Vazir.svg") format("svg"), /* Legacy iOS */
+  url("./assets/fonts/Vazir.ttf") format("truetype"), /* Safari, Android, iOS */
+  url("./assets/fonts/Vazir.woff") format("woff"), /* Modern Browsers */
+  url("./assets/fonts/Vazir.woff2") format("woff2"); /* Modern Browsers */
   font-weight: normal;
   font-style: normal;
 }
+
 
 @font-face {
   font-family: networkFont;
@@ -249,8 +249,14 @@ table.table  td{
   z-index: 1060!important;
 }
 
+.text-overflow{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .overflow-auto{
   overflow: auto;
+  box-sizing: initial;
 }
 
 .overflow-visible{

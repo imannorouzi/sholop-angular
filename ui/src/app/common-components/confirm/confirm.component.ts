@@ -12,6 +12,7 @@ export class ConfirmComponent implements OnInit {
   @Input() object: any;
   @Input() message: any = "";
   @Input() title: any = "";
+  @Input() type: string = "CONFIRM"; // or PROMPT
   @Output() confirmed: EventEmitter<any> = new EventEmitter();
 
   constructor() {

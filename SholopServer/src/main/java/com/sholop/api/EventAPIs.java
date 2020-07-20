@@ -1,6 +1,5 @@
 package com.sholop.api;
 
-import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
 import com.sholop.objects.Location;
@@ -19,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class EventAPIs {
@@ -40,7 +39,7 @@ public class EventAPIs {
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
 
-            List<Location> locations = repositoryFactory.getLocationRepository().findAllByUserId(user.getId());
+            List<Location> locations = repositoryFactory.getLocationRepository().findAllByUserIdAndIsActive(user.getId(), true);
             return Response.ok(gson.toJson(new ResponseObject("OK", locations))).build();
 
         } catch (Exception e) {
@@ -79,6 +78,34 @@ public class EventAPIs {
         }
 
         return Response.ok(gson.toJson(new ResponseObject("OK", location))).build();
+    }
+
+    @PermitAll
+    @PostMapping("/delete-venue")
+    public Response delete( @AuthenticationPrincipal UserDetails u,
+                                 @RequestBody String id) {
+
+        Gson gson = new Gson();
+
+        User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
+        Location location = null;
+        try {
+
+            Optional<Location> loc = repositoryFactory.getLocationRepository().findById(Integer.valueOf(id));
+
+            if(loc.isPresent() && loc.get().getUserId() == user.getId()){
+                repositoryFactory.getLocationRepository().delete(loc.get());
+                return Response.ok(gson.toJson(new ResponseObject("OK", loc.get()))).build();
+            }else{
+                return Response.ok(gson.toJson(new ResponseObject("FAIL", "No venue found"))).build();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500)
+                    .build();
+        }
+
     }
 
 }

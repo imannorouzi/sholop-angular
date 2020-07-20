@@ -2,10 +2,11 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
-import {ConfirmComponent} from "../confirm/confirm.component";
+import {ConfirmComponent} from "../common-components/confirm/confirm.component";
 import {AddContactComponent} from "../add-contact/add-contact.component";
 import {ActivatedRoute} from "@angular/router";
 import {CommonService} from "../utils/common.service";
+import {AlertService} from "../alert.service";
 
 @Component({
   selector: 'app-contacts',
@@ -27,7 +28,8 @@ export class ContactsComponent implements OnInit {
 
   constructor(private dataService: DataService,
               public commonService: CommonService,
-              private route: ActivatedRoute,) {
+              private route: ActivatedRoute,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -72,13 +74,19 @@ export class ContactsComponent implements OnInit {
   }
 
   onContactAdded(contact){
-    let c = this.contacts.find( c => { return c.id === contact.id});
-    if(c){
-      let i = this.contacts.indexOf(c);
-      this.contacts.splice(i, 1);
-      this.contacts.splice(i, 0, contact);
-    }else{
-      this.contacts.push(contact);
+    if(contact.type === 'USER'){
+      this.alertService.error('همکاری با این ایمیل ثبت شده است.');
+    }else {
+      let c = this.contacts.find(c => {
+        return c.id === contact.id
+      });
+      if (c) {
+        let i = this.contacts.indexOf(c);
+        this.contacts.splice(i, 1);
+        this.contacts.splice(i, 0, contact);
+      } else {
+        this.contacts.push(contact);
+      }
     }
   }
 

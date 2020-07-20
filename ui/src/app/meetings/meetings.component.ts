@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
-import {CalendarComponent} from "../calendar/calendar.component";
+import {CalendarComponent} from "../common-components/calendar/calendar.component";
 import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
 import {DateService} from "../utils/date.service";
 

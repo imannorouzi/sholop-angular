@@ -4,6 +4,7 @@ import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
 import com.sholop.Application;
+import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
@@ -130,11 +131,15 @@ public class MeetingAPI {
                     ));
                     contactEvent = repositoryFactory.getContactEventRepository().save(contactEvent);
                     contactEvents.add(contactEvent);
+
                 }
             }
             event.setContactEvents(contactEvents);
 
             event.setChair(repositoryFactory.getUserRepository().findById(event.getChairId()).orElse(null));
+
+
+            MailUtils.sendMeetingCreatedMessages(event);
             return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
 
         } catch (Exception e) {

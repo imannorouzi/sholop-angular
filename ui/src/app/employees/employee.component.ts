@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {User} from "../user";
 import {SpinnerComponent} from "../spinner/spinner.component";
-import {ConfirmComponent} from "../confirm/confirm.component";
+import {ConfirmComponent} from "../common-components/confirm/confirm.component";
 import {ActivatedRoute} from "@angular/router";
 import {CommonService} from "../utils/common.service";
 import {AddEmployeeComponent} from "../add-employee/add-employee.component";

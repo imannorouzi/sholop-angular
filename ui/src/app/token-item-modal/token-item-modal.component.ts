@@ -3,7 +3,7 @@ import {DateService} from "../utils/date.service";
 import {CommentsComponent} from "../comments/comments.component";
 import {NavigationService} from "../utils/navigation.service";
 import {CommonService} from "../utils/common.service";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 
 @Component({
   selector: 'token-item-modal',

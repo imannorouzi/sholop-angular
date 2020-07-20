@@ -1,4 +1,4 @@
-<div class="h-100 overflow-auto p-3">
+<div class=" p-3">
 
   <div class="flexbox-parent-row pb-2">
     <div class="">
@@ -7,14 +7,14 @@
       </button>
       <add-venue (onVenueAdded)="onVenueAdded($event)" #addNewVenue></add-venue>
     </div>
-    <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="mr-2" placeholder="عنوان،‌ آدرس، ..." >
+    <input type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="mr-2" placeholder="عنوان،‌ آدرس، ..." >
   </div>
   <small class="text-muted">برای جستجوی کلمه تایپ شده کلید اینتر را فشار دهید.</small>
 
   <div class="row">
 
     <div *ngFor="let venue of venues; let index=index;" class="col-md-6 venue ">
-      <div class="venue-frame">
+      <div class="venue-frame shadow">
         <div class="row p-2 text-right">
 
           <div class="col-md-4">

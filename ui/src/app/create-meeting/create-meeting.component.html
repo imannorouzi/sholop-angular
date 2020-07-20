@@ -20,22 +20,22 @@
       <label class="font-weight-bold" >زمان ملاقات</label>
 
       <div class="row" *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
-        <div class="col-sm-5 mb-1">
+        <div class="col-lg-5 mb-1">
           <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
         </div>
-        <div class="col-sm-3 flexbox-parent-row line-height mb-1">
+        <div class="col-lg-3 flexbox-parent-row line-height mb-1">
           <span class="ml-2">از ساعت</span>
           <div class="flexbox-item-grow">
             <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
           </div>
         </div>
-        <div class="col-sm-3 flexbox-parent-row line-height mb-1">
+        <div class="col-lg-3 flexbox-parent-row line-height mb-1">
           <span class="ml-2">تا ساعت</span>
           <div class="flexbox-item-grow">
             <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
           </div>
         </div>
-        <div class="col-sm-1 mb-1">
+        <div class="col-lg-1 mb-1">
           <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
       </div>

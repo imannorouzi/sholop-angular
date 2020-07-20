@@ -27,7 +27,6 @@
                #emailField="ngModel" pattern="^\S*[@]\S*[.]\S*$" email required
                [ngClass]="{ 'is-invalid': !emailField.valid && (emailField.touched || emailField.dirty || submitted) }"
                placeholder="ali@gmail.com" [(ngModel)]="contact.email" [email]="true">
-
       </div>
 
       <!--Phone-->
@@ -37,10 +36,8 @@
                #phoneField="ngModel" pattern="^[0-9]{7,13}$"
                [ngClass]="{ 'is-invalid': !phoneField.valid && (phoneField.touched || phoneField.dirty || submitted) }"
                placeholder="0912XXXXXXXX" [(ngModel)]="contact.phone">
-
       </div>
   </ng-container>
-
 
   <ng-container class="app-modal-footer">
       <button type="button" class="btn primary ml-2" (click)="createContact()">ذخیره</button>

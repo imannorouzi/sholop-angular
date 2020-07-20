@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
-import {ModalComponent} from "../ng-modal/modal.component";
+import {ModalComponent} from "../common-components/ng-modal/modal.component";
 
 @Component({
   selector: 'venues-modal',

@@ -17,7 +17,7 @@
 }
 
 .meeting-item:not(:last-child) {
-  border-bottom: 1px dotted #9da3a6;
+  /*border-bottom: 1px dotted #9da3a6;*/
 }
 
 .search-input{

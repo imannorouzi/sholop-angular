@@ -38,6 +38,7 @@ public class Location {
     @Column(name = "title") String title;
     @Column(name = "description") String description;
     @Column(name = "map_url") String mapUrl;
+    @Column(name = "is_active") Boolean isActive;
 
     @Column(name = "latitude") double latitude;
     @Column(name = "longitude") double longitude;
@@ -145,4 +146,11 @@ public class Location {
         this.mapUrl = mapUrl;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 }

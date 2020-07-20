@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'modal',
+  selector: 'app-modal',
   templateUrl: 'modal.component.html',
   styleUrls: ['modal.component.css']
 })
@@ -23,6 +23,7 @@ export class ModalComponent implements OnInit, AfterViewChecked {
 
   @Output() close: EventEmitter<boolean> = new EventEmitter();
   @Output() isShown: EventEmitter<boolean> = new EventEmitter();
+  @Output() isHidden: EventEmitter<boolean> = new EventEmitter();
   @Output() resize: EventEmitter<number> = new EventEmitter();
 
   @ViewChild('modalRoot', {static: true}) modalRoot: ElementRef;
@@ -126,6 +127,7 @@ export class ModalComponent implements OnInit, AfterViewChecked {
   hide(): void {
     this.visible = false;
     this.close.emit(true);
+    this.isHidden.emit();
     this.focusLastModal();
     this.removeEventListener();
   }

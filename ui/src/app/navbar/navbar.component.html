@@ -1,4 +1,12 @@
 <nav class="navbar flexbox-parent-row" >
+
+  <div class="nav-item toggle-item"  *ngIf="authService.isLoggedIn()">
+    <!--    <i class="nav-icon fa fa-sign-out"></i>-->
+    <a class="nav-text" [routerLink]="" (click)="toggle.emit()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+
   <ul class="navbar-nav">
     <li class=" dropdown ">
       <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -42,9 +50,19 @@
   <!--Separator-->
   <div class="flexbox-item-grow"></div>
 
-  <div class="nav-item">
+  <div class="nav-item"  *ngIf="authService.isLoggedIn()">
 <!--    <i class="nav-icon fa fa-sign-out"></i>-->
     <a class="nav-text" [routerLink]="'/login'">خروج</a>
+  </div>
+
+  <div class="nav-item"  *ngIf="!authService.isLoggedIn()">
+    <!--    <i class="nav-icon fa fa-sign-out"></i>-->
+    <a class="nav-text" [routerLink]="'/login'">ورود</a>
+  </div>
+
+  <div class="nav-item"  *ngIf="!authService.isLoggedIn()">
+    <!--    <i class="nav-icon fa fa-sign-out"></i>-->
+    <a class="nav-text" [routerLink]="'/register'">ثبت نام</a>
   </div>
 
 </nav>

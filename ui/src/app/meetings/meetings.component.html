@@ -1,9 +1,8 @@
 <meeting-item-modal #meetingModal  [event]="selectedMeeting"></meeting-item-modal>
 <div class=" h-100 p-3 meeting-container ">
-  <div class="p-3 overflow-auto h-100 ">
+  <div class="p-3 h-100 ">
     <div class="w-100 ">
       <div class="row">
-
         <div class="col-md-5">
           <calendar #calendar [mode]="'inline'" (onDateSelected)="onDateChanged($event)"></calendar>
         </div>
@@ -31,11 +30,11 @@
 
     <spinner [showing]="loading" #spinner></spinner>
 
-    <div class="meeting-item" *ngFor="let event of meetings | generalFilter:filter" >
-      <meeting-item (clicked)="onMeetingClick($event)"
-                    class="mt-2" [event]="event">
-      </meeting-item>
-    </div>
+      <div class="meeting-item shadow mb-1" *ngFor="let event of meetings | generalFilter:filter" >
+        <meeting-item (clicked)="onMeetingClick($event)"
+                      class="mt-2" [event]="event">
+        </meeting-item>
+      </div>
   </div>
 </div>
 

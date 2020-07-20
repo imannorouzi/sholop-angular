@@ -1,4 +1,4 @@
-<div class="h-100 overflow-auto p-3">
+<div class=" p-3">
 
     <div class="flexbox-parent-row pb-2">
       <div class="ml-2">
@@ -6,13 +6,13 @@
           <i class="fa fa-user-plus"></i> مخاطب جدید</button>
         <add-contact (onContactAdded)="onContactAdded($event)" #addNewContact></add-contact>
       </div>
-      <input id="search" type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="نام، ایمیل ..." >
+      <input type="text" name="search" (keyup)="onKeyUp($event)" [(ngModel)]="searchString" class="" placeholder="نام، ایمیل ..." >
     </div>
 
     <div class="row ">
 
       <div *ngFor="let contact of contacts; let index=index;" class="col-md-6 contact ">
-        <div class="contact-frame">
+        <div class="contact-frame shadow">
           <div class="row p-2 ">
 
 
@@ -27,8 +27,8 @@
                 <i class="role-icon fa fa-user" *ngIf="contact.role==='user'"></i>
                 {{contact.name}}
               </div>
-              <div class="text-muted"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
-              <div class="text-muted"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
+              <div class="text-muted text-overflow"><i class="fa fa-envelope"></i>  {{contact.email}}</div>
+              <div class="text-muted text-overflow"><i class="fa fa-phone"></i>  {{contact.phone}}</div>
 
               <div>
                 <a href="#" class="ml-3" (click)="onEditContact(contact, index)">ویرایش </a>

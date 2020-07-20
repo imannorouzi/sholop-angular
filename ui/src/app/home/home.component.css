@@ -30,6 +30,13 @@
   margin-right: 5px;
 }
 
+.profile-link:hover{
+  background-color: #d4e4f5;
+}
+.profile-link{
+  cursor: pointer;
+}
+
 /*************** */
 @keyframes swing {
   0% {
@@ -124,6 +131,10 @@
   .bottom-menu-wrapper{
     display: none;
   }
+
+  #sidebar-brand-close{
+    display: none;
+  }
 }
 @media screen and (max-width: 767px) {
   .page-wrapper .page-content {
@@ -132,6 +143,11 @@
 
   .page-wrapper .sidebar-wrapper {
     right: -260px;
+  }
+
+  .page-wrapper.open .sidebar-wrapper {
+    right: 0px;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
   }
 
   .bottom-menu-wrapper{
@@ -167,7 +183,7 @@
   position: absolute;
   top: 0;
   right: -260px;
-  z-index: 8;
+  z-index: 9;
   background: #f5f7fa;
 }
 
@@ -221,7 +237,8 @@
 
 .sidebar-wrapper .sidebar-header .user-pic {
   float: right;
-  width: 60px;
+  width: 70px;
+  height: 70px;
   padding: 2px;
   border-radius: 12px;
   overflow: hidden;
@@ -428,6 +445,7 @@
 
 .page-wrapper .page-content {
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 
@@ -526,6 +544,10 @@
 .bottom-menu .fa{
   font-size: 20px;
 }
+.bottom-menu-item.selected i{
+  text-shadow: 1px 1px #66afe9;
+  color: #005ea6;
+}
 .bottom-menu-item.selected:before{
 
   content: ' ';
@@ -534,7 +556,7 @@
   top: 0;
   left: 0;
   height: 3px;
-  background-color: #3a3f48;
+  background-color: #005ea6;
 }
 .bottom-menu-item{
   position: relative;
