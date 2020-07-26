@@ -98,9 +98,9 @@ public class Contact extends Attendee {
         this.email = jo.getString("email");
         this.phone = jo.getString("phone");
         this.valid = 1;//jo.getBoolean("valid");
-        this.address = jo.has("address") ? jo.getString("address") : "";
-        this.userId = jo.has("chairId") ? jo.getInt("chairId") : 0;
-        this.imageUrl = jo.has("imageUrl") ? jo.getString("imageUrl") : "";
+        this.address = jo.has("address") && !"null".equals(address) ? jo.getString("address") : "";
+        this.userId = jo.has("chairId")   ? jo.getInt("chairId") : 0;
+        this.imageUrl = jo.has("imageUrl") && !"null".equals(imageUrl) ? jo.getString("imageUrl") : "";
     }
 
     // this is for handling email contacts

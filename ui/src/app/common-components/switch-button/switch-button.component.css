@@ -1,0 +1,40 @@
+.switch-container{
+  line-height: 1;
+}
+
+.switch-frame:hover{
+}
+.switch-frame{
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.switch{
+  color: white;
+}
+.switch,
+.text{
+  padding: 10px;
+  text-align: center;
+}
+
+.switch{
+  position: absolute;
+  top: 0;
+}
+
+.switch{
+  width: 50%;
+  border-radius: 5px;
+  background: #005ea6;
+  height: 100%;
+}
+
+.fa{
+  font-size: 20px;
+  color: #222;
+}
+

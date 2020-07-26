@@ -1,21 +1,26 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {CalendarComponent} from "../common-components/calendar/calendar.component";
 import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
 import {DateService} from "../utils/date.service";
+import {AlertService} from "../alert.service";
+import {MeetingService} from "./meeting.service";
+import {CommonService} from "../utils/common.service";
 
 @Component({
   selector: 'app-meetings',
   templateUrl: './meetings.component.html',
   styleUrls: ['./meetings.component.css']
 })
-export class MeetingsComponent implements OnInit, OnDestroy {
+export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
+
+
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
   @ViewChild('calendar', {static: true}) calendar: CalendarComponent;
   @ViewChild('meetingModal', {static: true}) meetingModal: MeetingItemModalComponent;
 
-  meetings = [];
+  meetings = {};
   loading = false;
 
   selectedMeeting = undefined;
@@ -25,35 +30,46 @@ export class MeetingsComponent implements OnInit, OnDestroy {
   interval;
 
   constructor(private dataService : DataService,
-              public dateService: DateService) { }
-
-  ngOnInit() {
-
-    let d = new Date();
-    let date = new Date(d.getFullYear(),
-      d.getMonth(),
-      d.getDate()
-    );
-    this.onDateChanged(date);
-
-    /*this.interval = setInterval(() => {
-      let meeting = this.meetings[Math.floor(Math.random() * this.meetings.length)];
-      let contact = meeting.attendees[Math.floor(Math.random() * meeting.attendees.length)]
-
-      this.receptionService.prompt({event: meeting, contact: contact});
-    }, 30000);*/
+              public dateService: DateService,
+              private alertService: AlertService,
+              private meetingService: MeetingService,
+              public commonService: CommonService) {
   }
 
-  readMeetings(date){
-    this.meetings = [];
+  ngOnInit() {
+    this.meetingService.readMeetings
+      .subscribe( () => {
+        this.readMeetings();
+      })
+  }
+
+  ngAfterViewInit(): void {
+    this.readMeetings();
+  }
+
+  readMeetings(){
     this.loading = true;
 
-    this.dataService.getMeetings(date).subscribe(
+    this.dataService.getMeetings(
+      this.meetingService.getDate(),
+      this.meetingService.isShowingAll().toString()
+    ).subscribe(
       data => {
-        data.object.forEach( event => {
-          this.meetings.push(event);
-          console.log(event);
-        });
+        this.meetings = {};
+        if(data.msg === "OK") {
+
+          data.object.forEach(event => {
+            event.dates.forEach( ed => {
+              if(!this.meetings[ed.date]){
+                this.meetings[ed.date] = [event];
+              }else{
+                this.meetings[ed.date].push(event);
+              }
+            })
+          });
+        }else{
+          this.alertService.error('مشکلی پیش آمده!');
+        }
         this.loading = false;
       },
       error1 => {
@@ -63,20 +79,9 @@ export class MeetingsComponent implements OnInit, OnDestroy {
     )
   }
 
-  onDateChanged(date: any) {
-    // this.readMeetings(date);
-
-    this.meetings = [];
-    this.readMeetings(date);
-
-    this.selectedDate = date;
-  }
-
   onMeetingClick(event: any){
     this.selectedMeeting = event;
-
     this.meetingModal.show();
-
   }
 
 

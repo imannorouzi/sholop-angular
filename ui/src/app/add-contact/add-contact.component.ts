@@ -130,7 +130,13 @@ export class AddContactComponent implements OnInit {
 
       this.dataService.updateContact(this.contact).subscribe(
         (value:any) => {
-          this.onContactAdded.emit(value.object);
+          if(value.msg === "OK"){
+            this.onContactAdded.emit(value.object);
+          }else if(value.msg === "CONTACT_EXISTS"){
+            this.alertService.warn('مخاطبی با این ایمیل قبلا ثبت شده است.')
+          }else if(value.msg === "USER_EXISTS"){
+            this.alertService.warn('همکاری با این ایمیل ثبت شده است.')
+          }
         },
         (error:any) => {
           console.log(error);

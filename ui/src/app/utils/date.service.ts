@@ -218,4 +218,19 @@ export class DateService {
 
     return '';
   }
+
+  getPersianDateString(date: Date, startTime: Date, endTime: Date){
+    let retVal = '';
+
+    retVal += this.greToPersian(date, true);
+    if(startTime){
+      retVal += ' از '  + this.getTimeFromDateString(startTime);
+    }
+
+    if(endTime){
+      retVal += ' تا '  + this.getTimeFromDateString(endTime);
+    }
+
+    return retVal;
+  }
 }

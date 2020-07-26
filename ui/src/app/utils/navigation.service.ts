@@ -1,5 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
+import {MeetingService} from "../meetings/meeting.service";
 
 const homeUrls = [
   '/',

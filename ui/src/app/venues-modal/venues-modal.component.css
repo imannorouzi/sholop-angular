@@ -1,3 +1,12 @@
 .map{
   height: 100px;
 }
+
+.venue-frame{
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.venue-frame:hover{
+  background: #f9fffc;
+  border: 1px solid #9da3a6;
+}

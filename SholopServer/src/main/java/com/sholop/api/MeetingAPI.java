@@ -9,6 +9,8 @@ import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -151,13 +154,25 @@ public class MeetingAPI {
 
     @GetMapping("/get-meetings")
     public Response getMeetings( @AuthenticationPrincipal UserDetails u,
-                                 @QueryParam("date") String dateString)  {
+                                 @RequestParam("date") String dateString,
+                                 @RequestParam("showAll") boolean showAll)  {
 
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
 
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            Calendar cal = Calendar.getInstance(tz);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            sdf.setCalendar(cal);
+            cal.setTime(sdf.parse(dateString));
+            Date date = cal.getTime();
 
-            List<Event> events = repositoryFactory.getEventRepository().findAllByEventType("MEETING");
+            List<Event> events = repositoryFactory.getEventRepository().findMyMeetings(
+                    user.getId(),
+                    user.getEmail(),
+                    new Timestamp(date.getTime()), showAll
+            );
+
             for(Event event : events){
                 List<EventDate> dates = repositoryFactory.getSholopDateRepository().findAllByEventId(event.getId());
                 event.setDates(dates);

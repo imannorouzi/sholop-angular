@@ -20,9 +20,6 @@ public interface SholopDateRepository extends JpaRepository<EventDate, Integer> 
 
     List<EventDate> findAllByEventId(int eventId);
 
-    @Query( value = "", nativeQuery = true)
-    List<EventDate> findMyMeetings(@Param("user_id") int userId, @Param("start_date") Timestamp startDate, @Param("end_date") Timestamp endDate);
-
     void deleteByEventId(int eventId);
 
     @Query( value = "SELECT distinct d.* FROM sh_event s " +

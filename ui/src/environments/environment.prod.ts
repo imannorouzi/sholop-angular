@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  VERSION: require('../../package.json').version,
   firebase:
     {
       apiKey: "AIzaSyDPxrXEXL44MTWY5ZOhm55Z9EucFkS0Rg0",
@@ -9,9 +10,6 @@ export const environment = {
       storageBucket: "sholop-1526521509022.appspot.com",
       messagingSenderId: "635253433511"
     },
+  baseUrl: '',
   serverUrl: '/sholop-api',
-  // serverUrl: '/api',
-  // serverUrl: "http://localhost:8083/api",
-  version: require('../../package.json').version
-
 };

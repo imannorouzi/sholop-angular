@@ -25,3 +25,10 @@ export class GeneralPipe implements PipeTransform{
     return false;
   }
 }
+
+@Pipe({ name: 'keys',  pure: false })
+export class KeysPipe implements PipeTransform {
+  transform(value: any, args: any[] = null): any {
+    return Object.keys(value)//.map(key => value[key]);
+  }
+}

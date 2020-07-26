@@ -3,11 +3,11 @@
        [modalTitle]="'اسکن بارکد'"
        [width]="500"
        [zIndex]="10"
-       (isShown)="changed(true)"
-       (isHidden)="changed(false)"
+       (onShown)="changed(true)"
+       (onHidden)="changed(false)"
        [maximizable]="false">
   <ng-container class="app-modal-body">
-<!--    <zxing-scanner #scanner *ngIf="isShown" (scanComplete)="scanComplete($event)"></zxing-scanner>-->
+    <zxing-scanner #scanner *ngIf="isShown" (scanComplete)="scanComplete($event)"></zxing-scanner>
   </ng-container>
   <ng-container class="app-modal-footer">
     <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->

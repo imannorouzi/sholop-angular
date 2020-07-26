@@ -8,6 +8,8 @@ import {DataService} from "../utils/data.service";
 import {ConfirmComponent} from "../common-components/confirm/confirm.component";
 import {ReceptionService} from "../reception/reception.service";
 import {NavigationEnd, NavigationStart, Router} from "@angular/router";
+import {SwitchButtonComponent} from "../common-components/switch-button/switch-button.component";
+import {MeetingService} from "../meetings/meeting.service";
 
 @Component({
   selector: 'app-home',
@@ -17,19 +19,25 @@ import {NavigationEnd, NavigationStart, Router} from "@angular/router";
 export class HomeComponent implements OnInit {
   @ViewChild('scanner', {static: false}) scanner: QrCodeScannerComponent;
   @ViewChild('prompt', {static: false}) prompt: ConfirmComponent;
+  @ViewChild('switch', {static: false}) switch: SwitchButtonComponent;
 
-  version: string = environment.VERSION;
   loadingReception: boolean = false;
   sidebar: boolean = false;
 
   promptText: string = '';
+
+  showAll: boolean = true;
+  selectedDate: Date = new Date();
+
+  version: string = environment.VERSION;
 
   constructor(public navigationService: NavigationService,
               public authService: AuthService,
               private qrCodeService: QrCodeService,
               private dataService: DataService,
               private receptionService: ReceptionService,
-              private router: Router) { }
+              private router: Router,
+              private meetingService: MeetingService) { }
 
   ngOnInit() {
 
@@ -63,6 +71,8 @@ export class HomeComponent implements OnInit {
             }
           )
       });
+
+    this.goToMeetings();
   }
 
   toggleSidebar(open = undefined){
@@ -71,5 +81,23 @@ export class HomeComponent implements OnInit {
     }else{
       this.sidebar = open;
     }
+  }
+
+  onDateSelected(dateObj: any) {
+    this.showAll = false;
+    this.switch.setValue(1);
+    this.selectedDate = dateObj;
+
+    this.goToMeetings();
+  }
+
+  switchChanged(value: any) {
+    this.showAll = (value === 0);
+    this.goToMeetings();
+  }
+
+  goToMeetings(){
+    this.meetingService.loadMeetings(this.selectedDate, this.showAll);
+    this.toggleSidebar(false)
   }
 }

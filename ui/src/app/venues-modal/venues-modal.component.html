@@ -3,46 +3,31 @@
        [modalTitle]="'مکان جلسات'"
        [zIndex]="10"
        [width]="700"
+       [size]="'lg'"
        [maximizable]="true">
   <ng-container class="app-modal-body">
 
-    <div class="container">
+    <div class="row p-3">
+      <div class="shadow p-2 col-md-6 venue-frame" (click)="onVenueSelected(venue)" *ngFor="let venue of venues">
 
+        <div class="row">
+          <div class="col-md-3">
+            <agm-map class="map" [latitude]="venue.latitude" [longitude]="venue.longitude" [scrollwheel]="true" [zoom]="12">
+              <agm-marker [markerDraggable]="false" [latitude]="venue.latitude" [longitude]="venue.longitude"></agm-marker>
+            </agm-map>
+          </div>
 
-      <div class="row p-2 border" *ngFor="let venue of venues">
-        <!--description: ""
-            englishAddress: "اصفهان، استان اصفهان، ایران"
-            farsiAddress1: "اصفهان، استان اصفهان، ایران"
-            farsiAddress2: "اینجا"
-            id: 53
-            latitude: 32.6546275
-            longitude: 51.66798259999996
-            title: "این عنوان درست نشد"
-            userId: 0-->
+          <div class="col-md-7">
+            <p>{{venue.title}}</p>
 
-        <div class="col-md-3">
-          <agm-map class="map" [latitude]="venue.latitude" [longitude]="venue.longitude" [scrollwheel]="true" [zoom]="12">
-            <agm-marker [markerDraggable]="false" [latitude]="venue.latitude" [longitude]="venue.longitude"></agm-marker>
-          </agm-map>
+            <div><span class="text-muted">{{venue.farsiAddress1}}</span> </div>
+            <div><span class="text-muted">{{venue.farsiAddress2}}</span> </div>
+          </div>
+
         </div>
-
-        <div class="col-md-7">
-          <p>{{venue.title}}</p>
-
-          <div><span class="text-muted">{{venue.farsiAddress1}}</span> </div>
-          <div><span class="text-muted">{{venue.farsiAddress2}}</span> </div>
-        </div>
-
-        <div class="col-md-2 text-left">
-          <button class="btn secondary" (click)="onVenueSelected(venue)"><i class="fa fa-check"></i> انتخاب</button>
-        </div>
-
-
       </div>
-
-
-
     </div>
+
 
     <div class="text-center owl-container" *ngIf="venues.length === 0 && !loading">
       <object class="w-75" type="image/svg+xml" data="../../assets/images/owl-old/owl.svg">

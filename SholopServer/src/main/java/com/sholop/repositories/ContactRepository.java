@@ -21,6 +21,8 @@ public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
     Contact findContactById(int contactId);
 
+    Contact findFirstByEmailAndUserId(String email, int userId);
+
 
     @Query("select s FROM sh_contact s WHERE s.id in :ids")
     List<Contact> getContactsByContactIds(@Param("ids") List<Integer> contactIds);

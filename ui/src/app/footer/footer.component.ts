@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {environment} from "../../environments/environment.prod";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'sholop-footer',
@@ -12,7 +12,7 @@ export class FooterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.version = environment.version;
+    this.version = environment.VERSION;
   }
 
 }

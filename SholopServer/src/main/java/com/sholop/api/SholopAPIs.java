@@ -4,7 +4,6 @@ import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
-import com.sholop.ApplicationConfiguration;
 import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
@@ -16,10 +15,7 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.ws.rs.*;
@@ -31,6 +27,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -332,12 +330,25 @@ public class SholopAPIs {
     }
 
 
-    @GetMapping("/")
-    public Map<String, String> getAppDetails() {
-        Map<String, String> appDetails = new HashMap<>();
-//        appDetails.put("name", appProperties.getName());
-//        appDetails.put("description", appProperties.getDescription());
+    @GetMapping("/convert-date/{date}")
+    public Response getAppDetails(@PathVariable("date") String dateString) throws ParseException {
+//        String dateString = "2020-07-20T14:00:00.000Z";
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        Calendar cal = Calendar.getInstance(tz);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        sdf.setCalendar(cal);
+        cal.setTime(sdf.parse(dateString));
+        Date date = cal.getTime();
 
-        return appDetails;
+        List<Event> events = repositoryFactory.getEventRepository().findMyMeetings(
+                22,
+                "iman.norouzy@gmail.com",
+                new Timestamp(date.getTime()), true
+        );
+        System.out.println(events.size());
+
+        return Response.ok().entity((new Gson()).toJson(events)).build();
     }
+
+
 }

@@ -49,7 +49,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   times : string[] = [];
   event = {
     userId: -1,
-    dates: [{date: new Date(), startTime: new Date(), endTime: new Date()}],
+    dates: [],
     dateStrings: [],
     attendees: [],
     title: '',
@@ -85,6 +85,8 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       this.setCurrentPosition();
     }
 
+    let d = new Date(); d.setHours(0,0,0,0);
+    this.event.dates.push({date: d, startTime: new Date(), endTime: new Date()});
     for(let h=0; h<24; h++){
       for(let m=0; m<12; m++){
         this.times.push(( h<10? '0'+h : h)+":"+( m<2 ? '0' + (m*5) : (m*5) ) );
@@ -179,7 +181,8 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
           return {
             date: d.date.toISOString(),
             startTime: d.startTime.toISOString(),
-            endTime: d.startTime.toISOString()
+            endTime: d.endTime.toISOString(),
+            dateString: this.dateService.getPersianDateString(d.date, d.startTime, d.endTime)
           };
         })
       }

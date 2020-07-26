@@ -1,0 +1,9 @@
+<div class="switch-container w-100 flexbox-parent-row">
+  <i *ngIf="leftIcon" [class]="'fa ' + leftIcon"></i>
+  <div class="switch-frame w-100 flexbox-item-grow" (click)="switchClicked($event)">
+    <div class="text right-text pull-right" *ngIf="value==0">{{rightText}}</div>
+    <div [class]="'switch '" [ngStyle]="(value === 0 ? {left: 0} : {left: '50%'})">{{value === 0 ? leftText : rightText}}</div>
+    <div class="text left-text pull-left" *ngIf="value==1">{{leftText}}</div>
+  </div>
+  <i *ngIf="rightIcon" [class]="'fa ' + rightIcon"></i>
+</div>

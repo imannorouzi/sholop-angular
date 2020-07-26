@@ -6,6 +6,6 @@
   </div>
 
   <div id="calendar-container" class="form-group" *ngIf="isShowing"  >
-    <calendar id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
+    <calendar [mode]="'inline'" id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
   </div>
 </div>

@@ -3,10 +3,7 @@
   <div class="p-3 h-100 ">
     <div class="w-100 ">
       <div class="row">
-        <div class="col-md-5">
-          <calendar #calendar [mode]="'inline'" (onDateSelected)="onDateChanged($event)"></calendar>
-        </div>
-        <div class="col-md-7">
+        <div class="col-md-12">
           <input type="text" class=" search-input"
                  [(ngModel)]="filter"
                  placeholder='جستجو با ایمیل، نام و ... '/>
@@ -14,26 +11,29 @@
 
       </div>
     </div>
-    <div class="mt-2 text-center sticky" *ngIf="selectedDate">
-      <div class="date-title-container">
-        <div class="date-title  ">
-          <i class=" fa fa-calendar ml-2"></i>
-          {{dateService.greToPersian(selectedDate, true)}}
-        </div>
-      </div>
-    </div>
-    <div class="text-center owl-container" *ngIf="!loading && (!meetings || meetings.length === 0)">
-      <object class="w-75" type="image/svg+xml" data="../../assets/images/home/owl.svg">
-        <param name="class" value="look-around" />
-      </object>
+
+    <div class="text-center owl-container" *ngIf="!loading && (commonService.isEmpty(meetings))">
+      <img class="w-75"  src="../../assets/images/home/owl.svg">
+      <div>چیزی پیدا نکردم</div>
     </div>
 
     <spinner [showing]="loading" #spinner></spinner>
 
-      <div class="meeting-item shadow mb-1" *ngFor="let event of meetings | generalFilter:filter" >
+      <div class="mb-1 mt-4" *ngFor="let item of meetings | keyvalue" >
+        <div class="mt-2 text-center sticky">
+          <div class="date-title-container">
+            <div class="date-title  ">
+              <i class=" fa fa-calendar ml-2"></i>
+              {{dateService.greToPersian(item.key, true)}}
+            </div>
+          </div>
+        </div>
+
+        <div class="meeting-item shadow mb-1" *ngFor="let event of item.value | generalFilter:filter" >
         <meeting-item (clicked)="onMeetingClick($event)"
                       class="mt-2" [event]="event">
         </meeting-item>
+        </div>
       </div>
   </div>
 </div>

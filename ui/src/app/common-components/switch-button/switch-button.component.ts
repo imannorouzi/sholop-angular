@@ -11,6 +11,8 @@ export class SwitchButtonComponent implements OnInit {
   value: number = 0; // 0 is left, 1 is right
   @Input() leftIcon: string = '';
   @Input() rightIcon: string = '';
+  @Input() leftText: string = '';
+  @Input() rightText: string = '';
 
 
   @Output() switchChanged: EventEmitter<any> = new EventEmitter();
@@ -25,5 +27,9 @@ export class SwitchButtonComponent implements OnInit {
     this.value = Math.abs(this.value -1);
 
     this.switchChanged.emit(this.value);
+  }
+
+  setValue(value){
+    this.value = value;
   }
 }

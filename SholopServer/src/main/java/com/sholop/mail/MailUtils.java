@@ -12,7 +12,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Properties;
 
 public class MailUtils {
@@ -50,6 +49,8 @@ public class MailUtils {
             }
         }
 
+        MailUtils.sendChairMeetingCreated(event);
+
         /*if(event.getAttendees() != null && event.getAttendees().size() > 0 ) {
             for (Attendee contact : event.getAttendees()) {
                 if(contact instanceof Contact){
@@ -64,6 +65,41 @@ public class MailUtils {
                 }
             }
         }*/
+    }
+
+    private static void sendChairMeetingCreated(Event event) {
+
+        try {
+
+            if(event.getChair() == null) return;
+
+            MailMessage msg = new MailMessage();
+            msg.setSubject("".equals(event.getTitle()) ? "قرار ملاقات" : event.getTitle());
+            msg.setTo(event.getChair().getEmail());
+//            msg.setFrom("iman.norouzy@gmail.com");
+            msg.setFrom("root@sholop.com");
+
+            String htmlString = FileUtils.readFileToString(new File("./content/templates/meeting/newMeetingChair.html"));
+            htmlString = htmlString.replace("$logo-url", Utils.getIconUrl("logo").toString());
+            String dates = "";
+            for(EventDate date: event.getDates()){
+                dates += date.getDateString() + "<br>";
+            }
+            htmlString = htmlString.replace("$date-string", dates);
+
+            htmlString = htmlString.replace("$title", event.getTitle());
+            htmlString = htmlString.replace("$name", event.getChair().getName());
+            htmlString = htmlString.replace("$chair-name", event.getChair().getName());
+            htmlString = htmlString.replace("$map-url", Utils.WEBSITE_URL + event.getVenue().getMapUrl());
+            htmlString = htmlString.replace("$venue-address-1", event.getVenue().getFarsiAddress1() );
+            htmlString = htmlString.replace("$venue-address-2", event.getVenue().getFarsiAddress2());
+
+            msg.setBody(htmlString);
+            MailUtils.sendMail(msg);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private static void sendContactMeetingCreated(ContactEvent ce, Event event) {
@@ -85,10 +121,11 @@ public class MailUtils {
 //            htmlString = htmlString.replace("$maybeIconUrl", Utils.getIconUrl("maybe"));
 //            htmlString = htmlString.replace("$maybeUrl", Utils.getMyMeetingUrl(ce, event) + "/TENTATIVE");
 
-            htmlString = htmlString.replace("$date-string", event.getPointedDate() == null ?
-                    "" : event.getPointedDate().getDate() + "، از ساعت "
-                    + Utils.formatTimeString(event.getPointedDate().getStartTime().toString())+ " تا "
-                    + Utils.formatTimeString(event.getPointedDate().getEndTime().toString()) );
+            String dates = "";
+            for(EventDate date: event.getDates()){
+                dates += date.getDateString() + "<br>";
+            }
+            htmlString = htmlString.replace("$date-string", dates);
 
             htmlString = htmlString.replace("$title", event.getTitle());
             htmlString = htmlString.replace("$name", ce.getName());
@@ -98,6 +135,7 @@ public class MailUtils {
             htmlString = htmlString.replace("$venue-address-1", event.getVenue().getFarsiAddress1() );
             htmlString = htmlString.replace("$venue-address-2", event.getVenue().getFarsiAddress2());
             htmlString = htmlString.replace("$qr-code-url", Utils.WEBSITE_URL + ce.getQRCodeUrl());
+            htmlString = htmlString.replace("$meeting-url", Utils.WEBSITE_URL + "/my-meeting/" + ce.getUuid());
 
             msg.setBody(htmlString);
             MailUtils.sendMail(msg);

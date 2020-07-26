@@ -33,6 +33,7 @@ export class CalendarComponent implements OnInit {
 
   @Input() inputClasses: string = '';
   @Input() mode: string = 'full';
+  @Input() disabled: boolean = false;
   @Output() onDateSelected: EventEmitter<any> = new EventEmitter();
 
   constructor(public dateService: DateService,

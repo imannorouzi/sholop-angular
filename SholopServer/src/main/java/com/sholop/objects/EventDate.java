@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Pooyan on 3/20/2018.
@@ -24,6 +27,9 @@ public class EventDate {
 
     @Column(name = "event_id")
     Integer eventId;
+
+    @Column(name = "date_string")
+    String dateString;
 
     @Column(name = "date")
     Timestamp date;
@@ -44,21 +50,32 @@ public class EventDate {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-
-
         this.date = date;
     }
 
     public EventDate(JSONObject jo) throws JSONException, ParseException {
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        DateTime date = ISODateTimeFormat.dateTimeParser().parseDateTime(jo.getString("date"));
-        DateTime startTime = ISODateTimeFormat.dateTimeParser().parseDateTime(jo.getString("startTime"));
-        DateTime endTime = ISODateTimeFormat.dateTimeParser().parseDateTime(jo.getString("endTime"));
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        Calendar cal = Calendar.getInstance(tz);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        sdf.setCalendar(cal);
 
-        this.date = new Timestamp(date.toDate().getTime());
-        this.startTime = new Timestamp(startTime.toDate().getTime());
-        this.endTime = new Timestamp(endTime.toDate().getTime());
+        cal.setTime(sdf.parse(jo.getString("date")));
+        Date date = cal.getTime();
+
+        cal.setTime(sdf.parse(jo.getString("startTime")));
+        Date startTime = cal.getTime();
+
+        cal.setTime(sdf.parse(jo.getString("endTime")));
+        Date endTime = cal.getTime();
+
+        this.date = new Timestamp(date.getTime());
+        this.startTime = new Timestamp(startTime.getTime());
+        this.endTime = new Timestamp(endTime.getTime());
+
+        this.dateString = jo.has("dateString") && !"null".equals(jo.getString("dateString")) ?
+                jo.getString("dateString")
+                : "";
     }
 
     public Timestamp getDate() {
@@ -99,5 +116,13 @@ public class EventDate {
 
     public void setEventId(Integer eventId) {
         this.eventId = eventId;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
     }
 }

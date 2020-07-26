@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {QrCodeService} from "../utils/qr-code.service";
-// import {ZXingScannerComponent} from "@zxing/ngx-scanner";
+import {ZXingScannerComponent} from "@zxing/ngx-scanner";
 
 @Component({
   selector: 'app-qr-code-scanner',

@@ -60,8 +60,7 @@ import { ConditionsComponent } from './conditions/conditions.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import {AddVenueComponent} from "./add-venue/add-venue.component";
 import { IconedInputComponent } from './common-components/iconed-input/iconed-input.component';
-import { SwitchButtonComponent } from './switch-button/switch-button.component';
-import { CreateMeetingModalComponent } from './create-meeting-modal/create-meeting-modal.component';
+import { SwitchButtonComponent } from './common-components/switch-button/switch-button.component';
 import {ClickOutsideDirective} from "./utils/click-outside.directive";
 import {AuthService} from "./utils/auth.service";
 import {LocalStorageService} from "./utils/local-storage.service";
@@ -79,13 +78,13 @@ import { OwlComponent } from './owl/owl.component';
 import {AddEmployeeComponent} from "./add-employee/add-employee.component";
 import {EmployeeComponent} from "./employees/employee.component";
 import {GuestListComponent} from "./contacts-modal/guest-list/guest-list.component";
-import {GeneralPipe} from "./utils/general-pipe";
+import {GeneralPipe, KeysPipe} from "./utils/general-pipe";
 import { AddressBookComponent } from './address-book/address-book.component';
-// import {ZXingScannerModule} from "@zxing/ngx-scanner";
+import {ZXingScannerModule} from "@zxing/ngx-scanner";
 import { QrCodeScannerComponent } from './qr-code-scanner/qr-code-scanner.component';
 import {OverlaySpinnerComponent} from "./common-components/overlay-spinner/overlay.spinner.component";
 import {ContentModalComponent} from "./common-components/content-modal/content-modal.component";
-import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
+import {ModalModule} from "ngx-bootstrap/modal";
 
 @NgModule({
   declarations: [
@@ -132,7 +131,6 @@ import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
     AddVenueComponent,
     IconedInputComponent,
     SwitchButtonComponent,
-    CreateMeetingModalComponent,
     CreateTokenComponent,
     TokensComponent,
     TokenItemComponent,
@@ -146,6 +144,7 @@ import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
     EmployeeComponent,
     GuestListComponent,
     GeneralPipe,
+    KeysPipe,
     AddressBookComponent,
     QrCodeScannerComponent,
     OverlaySpinnerComponent,
@@ -169,7 +168,7 @@ import {BsModalRef, BsModalService, ModalModule} from "ngx-bootstrap/modal";
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    // ZXingScannerModule,
+    ZXingScannerModule,
     ModalModule.forRoot()
   ],
   exports: [

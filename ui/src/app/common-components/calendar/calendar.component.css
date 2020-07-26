@@ -1,6 +1,15 @@
-.container{
-/*
-  min-width: 300px;*/
+.container.disabled{
+  opacity: .6;
+  position: relative;
+}
+
+.blocker{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
 }
 
 .calendar-title{
@@ -10,7 +19,7 @@
 .calendar-cell{
   cursor: pointer;
   border-radius: 5px;
-  padding: 5px;
+  padding: 2px;
   box-sizing: border-box;
   border: 1px solid transparent;
   color: #212529;
@@ -83,12 +92,11 @@ td{
 }
 
 .inline .calendar-container{
-  display: none;
 }
 
-.calendar-container{
+.inline .calendar-container{
   /*width: fit-content;*/
-  width: 100%;
+  /*width: 100%;*/
   z-index: 20;
   position: absolute;
   right: 0;
@@ -106,4 +114,17 @@ td{
 .inline:hover .calendar-container{
   display: block;
   animation: fade-in .2s ease both;
+}
+
+
+.change-month-btn:hover{
+  background: #3a3f48;
+  color: white;
+}
+.change-month-btn{
+  border: 1px solid transparent;
+}
+
+.btn-container{
+  line-height: 7;
 }

@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { LoginDetails } from './login-details';
-import {Observable, Subject, throwError} from "rxjs";
+import {Subject} from "rxjs";
 import {LocalStorageService} from "./local-storage.service";
-import {catchError, map} from "rxjs/operators";
+import { map} from "rxjs/operators";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AlertService} from "../alert.service";
-import {environment} from "../../environments/environment.prod";
+import {environment} from "../../environments/environment";
 import {User} from "../user";
-import {DummyData} from "../dummyData";
-import {DataService} from "./data.service";
 
 
 const serverUrl = environment.serverUrl;

@@ -43,10 +43,10 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
-  getMeetings(date: Date):  Observable<any> {
+  getMeetings(date: Date, showAll: string):  Observable<any> {
     let apiURL = serverUrl + "/get-meetings";
     return this.http.get(apiURL, {
-      params: {date: date.toUTCString()},
+      params: {date: date.toISOString(), showAll: showAll},
     })
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));

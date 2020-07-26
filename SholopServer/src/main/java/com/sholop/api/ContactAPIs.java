@@ -110,7 +110,12 @@ public class ContactAPIs {
                 return Response.ok(gson.toJson(new ResponseObject("USER_EXISTS", cu))).build();
             }
 
-            if(filename != null && file != null) {
+            Contact repetitive = repositoryFactory.getContactRepository().findFirstByEmailAndUserId(contact.getEmail(), user.getId());
+            if(repetitive != null){
+                return Response.ok(gson.toJson(new ResponseObject("CONTACT_EXISTS", repetitive))).build();
+            }
+
+            if(filename != null && !filename.isEmpty() && file != null) {
                 filename = "contact_" + user.getId() + "_" + filename.replaceAll("\\s+", "");
 
                 String fileName = fileStorageService.storeFile(file, filename, "/contacts");

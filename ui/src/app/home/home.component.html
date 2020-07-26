@@ -10,7 +10,7 @@
       + (sidebar ? 'open' : '')" #pageWrapper>
 
     <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
-      <div class="sidebar-content">
+      <div class="sidebar-content pl-2 pr-2">
 
         <div class="sidebar-brand  text-left" id="sidebar-brand-close">
           <div id="close-sidebar"  (click)="this.toggleSidebar()">
@@ -32,20 +32,27 @@
             </div>
 
           </div>
+        </div>
 
-          <div class="input-group ">
-            <button class="form-control mt-3 primary" routerLink="/create-meeting" >ایجاد ملاقات</button>
-          </div>
+        <div class="input-group ">
+          <button class="form-control mt-3 primary" routerLink="/create-meeting" >ایجاد ملاقات</button>
+        </div>
 
-          <div class="input-group ">
-            <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
-          </div>
+        <div class="input-group ">
+          <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
+        </div>
 
-          <hr>
+        <hr>
 
-          <div class="input-group ">
-            <button class="form-control secondary" (click)="scanner.show()"  >اسکن بارکد</button>
-          </div>
+        <div class="calendar-wrapper">
+          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>
+          <calendar [disabled]="showAll" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
+        </div>
+
+        <hr>
+
+        <div class="input-group ">
+          <button class="form-control secondary" (click)="scanner.show()"  >اسکن بارکد</button>
         </div>
 
         <!-- sidebar-header  -->
@@ -66,7 +73,7 @@
 
         <div class="sidebar-menu">
           <ul>
-            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation === '/meetings' ? 'selected' : '')" [routerLink]="'/meetings'">
+            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
               <a [routerLink]="">
                 <i class="fa fa-users"></i>
                 <span>جلسات</span>
@@ -132,6 +139,10 @@
 
 
           </ul>
+
+          <div class="text-center mt-5">
+            <small class="text-muted">version {{version}}</small>
+          </div>
         </div>
 
         <!-- sidebar-menu  -->
@@ -139,42 +150,42 @@
       <!-- sidebar-content  -->
     </nav>
 
-    <main class="page-content flexbox-item-grow ">
+    <main class="page-content flexbox-item-grow">
 
-            <ng-content></ng-content>
+      <ng-content></ng-content>
 
-        <!--<div class="bottom-menu-wrapper" *ngIf="authService.isLoggedIn()">
-          <div class="bottom-menu flexbox-parent-row text-center">
-            <div  [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/meetings' ? 'selected' : '')"
-                  [routerLink]="'/meetings'">
-              <i class="fa fa-users"></i>
-              <div>جلسات</div>
-            </div>
-
-            <div [class]="' bottom-menu-item  flexbox-item-grow ' + (navigationService.currentLocation.startsWith('/tokens') ? ' active selected' : '')"
-                 [routerLink]="'/tokens'">
-              <i class="fa fa-id-badge"></i>
-              <div>مجوزها</div>
-            </div>
-
-            <div [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation.startsWith('/create-meeting') ? ' active selected' : '')"
-                 [routerLink]="'/create-meeting'">
-              <i class="fa fa-plus-circle"></i>
-              <div>ملاقات</div>
-            </div>
-
-            <div [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/address-book' ? 'selected' : '')"
-                 [routerLink]="'/address-book'">
-              <i class="fa fa-address-book"></i>
-              <div>دفترچه افراد</div>
-            </div>
-
-            <div [class]="'bottom-menu-item flexbox-item-grow '" (click)="scanner.show()">
-              <i class="fa fa-qrcode"></i>
-              <div>اسکن بارکد</div>
-            </div>
+      <!--<div class="bottom-menu-wrapper" *ngIf="authService.isLoggedIn()">
+        <div class="bottom-menu flexbox-parent-row text-center">
+          <div  [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/meetings' ? 'selected' : '')"
+                [routerLink]="'/meetings'">
+            <i class="fa fa-users"></i>
+            <div>جلسات</div>
           </div>
-        </div>-->
+
+          <div [class]="' bottom-menu-item  flexbox-item-grow ' + (navigationService.currentLocation.startsWith('/tokens') ? ' active selected' : '')"
+               [routerLink]="'/tokens'">
+            <i class="fa fa-id-badge"></i>
+            <div>مجوزها</div>
+          </div>
+
+          <div [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation.startsWith('/create-meeting') ? ' active selected' : '')"
+               [routerLink]="'/create-meeting'">
+            <i class="fa fa-plus-circle"></i>
+            <div>ملاقات</div>
+          </div>
+
+          <div [class]="'bottom-menu-item flexbox-item-grow ' + (navigationService.currentLocation === '/address-book' ? 'selected' : '')"
+               [routerLink]="'/address-book'">
+            <i class="fa fa-address-book"></i>
+            <div>دفترچه افراد</div>
+          </div>
+
+          <div [class]="'bottom-menu-item flexbox-item-grow '" (click)="scanner.show()">
+            <i class="fa fa-qrcode"></i>
+            <div>اسکن بارکد</div>
+          </div>
+        </div>
+      </div>-->
     </main>
   </div>
 
