@@ -185,4 +185,10 @@ public class MailUtils {
         }
 
     }
+
+    public static void sendCommentEmails(Event event, Comment comment) {
+        // send to users
+
+        // send to contacts
+    }
 }

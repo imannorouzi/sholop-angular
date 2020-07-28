@@ -227,7 +227,6 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       this.event.attendees = this.event.attendees.filter( a => {
         return guest.email !== a.email
       });
-      guest.type = 'CONTACT';
       this.event.attendees.push(guest);
     })
   }

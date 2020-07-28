@@ -52,6 +52,15 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
+  getContactEventMeeting(uuid: string) {
+    let apiURL = serverUrl + "/get-contact-event-meeting/" + uuid;
+    return this.http.get(apiURL, {
+      params: {},
+    })
+      .pipe(map(this.extractData))
+      .pipe(catchError(this.handleError));
+  }
+
   getTokens(date: Date):  Observable<any> {
     let apiURL = serverUrl + "/get-tokens";
     return this.http.get(apiURL, {
@@ -357,6 +366,5 @@ export class DataService {
 
     return new Blob([ia], {type:mimeString});
   }
-
 
 }

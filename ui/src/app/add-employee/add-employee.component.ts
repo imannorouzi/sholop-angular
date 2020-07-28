@@ -39,21 +39,18 @@ export class AddEmployeeComponent implements OnInit {
 
   data1:any;
   cropperSettings1:CropperSettings;
-  croppedWidth:number;
-  croppedHeight:number;
 
   constructor(private dataService: DataService,
-              private alertService: AlertService,
-              private authService: AuthService) {
+              private alertService: AlertService) {
     this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 600;
-    this.cropperSettings1.height = 600;
+    this.cropperSettings1.width = 300;
+    this.cropperSettings1.height = 300;
 
-    this.cropperSettings1.croppedWidth = 600;
-    this.cropperSettings1.croppedHeight = 600;
+    this.cropperSettings1.croppedWidth = 300;
+    this.cropperSettings1.croppedHeight = 300;
 
-    this.cropperSettings1.canvasWidth = 600;
-    this.cropperSettings1.canvasHeight = 600;
+    this.cropperSettings1.canvasWidth = 300;
+    this.cropperSettings1.canvasHeight = 300;
 
     this.cropperSettings1.minWidth = 10;
     this.cropperSettings1.minHeight = 10;
@@ -109,6 +106,8 @@ export class AddEmployeeComponent implements OnInit {
       this.cropper.fileChangeListener($event);
       this.employee.fileName = file.name;
     }
+
+    $event.target.value = "";
   }
 
   onImageClick() {

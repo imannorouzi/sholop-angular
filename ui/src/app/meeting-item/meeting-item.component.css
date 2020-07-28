@@ -17,11 +17,12 @@
 
   font-size: 16px;
 
-  line-height: 3;
-  padding: 5px 15px;
+  padding: 0px 15px;
   color: #161a1e;
   background: #fff;
   border-bottom-color: rgb(157, 163, 166);
+
+  line-height: 3;
 }
 
 .meeting-tool:hover{
@@ -34,12 +35,18 @@
   border-radius: 50%;
 }
 
+.meeting-title-wrapper{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .dropdown-item{
   cursor: pointer;
 }
 
 .meeting-time .fa{
   font-size: 20px;
+  white-space: nowrap;
 }
 
 .meeting-item.DONE,

@@ -7,6 +7,7 @@ import {DateService} from "../utils/date.service";
 import {AlertService} from "../alert.service";
 import {MeetingService} from "./meeting.service";
 import {CommonService} from "../utils/common.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-meetings',
@@ -29,6 +30,8 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedDate: any;
   interval;
 
+  subscriptions: Subscription[] = [];
+
   constructor(private dataService : DataService,
               public dateService: DateService,
               private alertService: AlertService,
@@ -37,10 +40,12 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.meetingService.readMeetings
+    this.subscriptions.push(
+      this.meetingService.readMeetings
       .subscribe( () => {
         this.readMeetings();
       })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -87,5 +92,11 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
+
+    this.subscriptions.forEach( sub => {
+      sub.unsubscribe();
+    })
+
+    this.subscriptions = [];
   }
 }

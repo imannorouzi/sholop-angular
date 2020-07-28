@@ -1,0 +1,69 @@
+<h5 class="text-center">{{event.title}}</h5>
+
+<div class="panel text-center font-weight-bold mb-3" *ngIf="event.pointedDate">
+  <i class="fa fa-calendar ml-2"></i>
+  <span> {{dateService.greToPersian(event.pointedDate.date, true)}}  </span>
+  <span *ngIf="event.pointedDate.startTime"> از  {{dateService.getTimeFromDateString(event.pointedDate.startTime)}}</span>
+  <span *ngIf="event.pointedDate.endTime"> تا  {{dateService.getTimeFromDateString(event.pointedDate.endTime)}}</span>
+</div>
+
+<div class="table-responsive" >
+  <table class="table table-striped text-right">
+    <tr class="" *ngIf="event.chair">
+
+      <td class="panel text-right contact-image-td">
+        <img  class="rounded-circle contact-image" [src]="event.chair.imageUrl ? event.chair.imageUrl : '../assets/images/user-placeholder.png'">
+      </td>
+      <td>
+        <div>{{event.chair.name}}</div>
+        <div class="text-muted">میزبان</div>
+      </td>
+      <!--<td>{{contact.email}}</td>-->
+      <!--<td>{{contact.phone}}</td>-->
+      <td></td>
+      <td></td>
+    </tr>
+
+    <tr class="" *ngFor="let contact of event.attendees;">
+
+      <td class="panel text-right contact-image-td">
+        <img  class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+      </td>
+      <td>{{contact.name}}</td>
+      <!--<td>{{contact.email}}</td>-->
+      <!--<td>{{contact.phone}}</td>-->
+
+      <td class="" [style.color]="contact.status.color">
+        <i [class]="'fa ' + contact.status.class "></i> {{contact.status.text}}
+      </td>
+      <td class="text-left" ><button class="secondary" (click)="reception(contact)">پذیرش</button></td>
+    </tr>
+  </table>
+</div>
+
+<div class="text-right mb-1">
+  <i class="fa fa-map-marker ml-2"></i>
+  <span class="">{{event.venue ? event.venue.farsiAddress1 + "، " + event.venue.farsiAddress2 : ""}}</span>
+</div>
+<agm-map class="map" [latitude]="event.venue.latitude" [longitude]="event.venue.longitude" [scrollwheel]="false" [zoom]="12">
+  <agm-marker [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
+</agm-map>
+
+<!--Dates-->
+<div *ngIf="event.dates.length > 1">
+  <h5 class="text-right mt-3">جلسات مرتبط</h5>
+  <div class="panel text-right" *ngFor="let date of event.dates; let i=index;">
+    <div *ngIf="!dateService.isEqual(date, event.pointedDate)">
+      <i class="fa fa-calendar ml-2"></i>
+      <span>  {{dateService.greToPersian(date.date, true)}}  </span>
+      <span *ngIf="date.startTime"> از  {{dateService.getTimeString(date.startTime)}}</span>
+      <span *ngIf="date.endTime"> تا  {{dateService.getTimeString(date.endTime)}}</span>
+    </div>
+  </div>
+</div>
+
+<span class="text-left"><small class="text-muted">{{commonService.getStatusString(event.status)}}</small></span>
+
+<hr>
+
+<comments #comments [eventId]="event ? event.id : -1"></comments>

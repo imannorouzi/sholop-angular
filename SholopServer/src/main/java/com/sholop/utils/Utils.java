@@ -1,19 +1,11 @@
 package com.sholop.utils;
 
-import com.sholop.ApplicationConfiguration;
 import com.sholop.objects.ContactEvent;
 import com.sholop.objects.Event;
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import java.io.InputStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -24,6 +16,8 @@ public class Utils {
 //    public static final String WEBSITE_URL = "http://185.173.104.77";
     public static final String WEBSITE_URL = "http://185.173.104.77";
 
+    static TimeZone tz = TimeZone.getTimeZone("UTC");
+    static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public static String generateRandomString(){
         return UUID.randomUUID().toString();
@@ -96,5 +90,18 @@ public class Utils {
         });
     }*/
 
+    
+    public static Date convertStringToDateUTC(String dateString){
+        Calendar cal = Calendar.getInstance(tz);
+        sdf.setCalendar(cal);
+        try {
+            cal.setTime(sdf.parse(dateString));
+            return cal.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
 
 }

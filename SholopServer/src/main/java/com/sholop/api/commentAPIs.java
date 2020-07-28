@@ -3,6 +3,7 @@ package com.sholop.api;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
+import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import org.hibernate.criterion.Order;
@@ -106,12 +107,16 @@ public class commentAPIs {
             JSONObject jsonComment = new JSONObject(jsonCommentString);
 
             Comment comment = new Comment(jsonComment);
-            comment = repositoryFactory.getCommentRepository().save(comment);
-
             comment.setUserId(user.getId());
+            comment = repositoryFactory.getCommentRepository().save(comment);
             comment.setUserImageUrl(user.getImageUrl());
             comment.setUserName(user.getName());
 
+
+            Optional<Event> event = repositoryFactory.getEventRepository().findById(comment.getEventId());
+            if(event.isPresent()){
+                MailUtils.sendCommentEmails(event.get(), comment);
+            }
             return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
 
         } catch (Exception e) {
@@ -122,7 +127,7 @@ public class commentAPIs {
     }
 
     @PostMapping("/create-comment-guest")
-    public Response createComment(String jsonCommentString) throws JSONException, IOException {
+    public Response createComment(String jsonCommentString){
 
         Gson gson = new Gson();
         int id = -1;
@@ -153,19 +158,18 @@ public class commentAPIs {
 
     @PermitAll
     @PostMapping("/delete-comment")
-    public Response deleteComment( User user,
-                                   String id){
+    public Response deleteComment(  @AuthenticationPrincipal UserDetails u,
+                                    @RequestBody String id){
 
         Gson gson = new Gson();
-        Comment comment = null;
         try {
-            repositoryFactory.getCommentRepository().delete(comment);
+            repositoryFactory.getCommentRepository().deleteById(Integer.valueOf(id));
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.status(500)
+            return Response.status(500).entity(new ResponseObject("FAIL", e.getMessage()))
                     .build();
         }
 
-        return Response.ok(gson.toJson(new ResponseObject("OK", comment))).build();
+        return Response.ok(gson.toJson(new ResponseObject("OK", id))).build();
     }
 }

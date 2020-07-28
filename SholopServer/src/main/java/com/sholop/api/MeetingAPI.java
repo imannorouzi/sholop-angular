@@ -159,13 +159,7 @@ public class MeetingAPI {
 
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
-
-            TimeZone tz = TimeZone.getTimeZone("UTC");
-            Calendar cal = Calendar.getInstance(tz);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            sdf.setCalendar(cal);
-            cal.setTime(sdf.parse(dateString));
-            Date date = cal.getTime();
+            Date date = Utils.convertStringToDateUTC(dateString);
 
             List<Event> events = repositoryFactory.getEventRepository().findMyMeetings(
                     user.getId(),
@@ -214,6 +208,68 @@ public class MeetingAPI {
 
             return Response.ok(gson.toJson(new ResponseObject("OK", events))).build();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", e.getMessage())))
+                    .build();
+        }
+    }
+
+    @GetMapping("/get-contact-event-meeting/{uuid}")
+    public Response getContactEventMeeting( @PathVariable("uuid") String uuid)  {
+
+        try {
+
+            ContactEvent uuidCE = repositoryFactory.getContactEventRepository().findByUuid(uuid);
+            Optional<Event> eventOptional = Optional.empty();
+            if(uuid != null){
+                eventOptional = repositoryFactory.getEventRepository().findById(uuidCE.getEventId());
+            }
+
+            if(eventOptional.isPresent()){
+                Event event = eventOptional.get();
+
+                List<EventDate> dates = repositoryFactory.getSholopDateRepository().findAllByEventId(event.getId());
+                event.setDates(dates);
+                for(EventDate sd : dates){
+                    if(true /*check if date string falls in this one*/){
+                        event.setPointedDate(sd);
+                    }
+                }
+                event.setVenue(repositoryFactory.getLocationRepository().findById(event.getVenueId()).orElse(null));
+
+                List<ContactEvent> contactEvents = repositoryFactory.getContactEventRepository().getEventContactsByEventId(event.getId());
+                event.setContactEvents(contactEvents);
+
+                // add attending contacts
+                event.setAttendees(new ArrayList<>());
+                List<Integer> contactIds = new ArrayList<>();
+                List<ContactEvent> contacts = contactEvents.stream().filter(ce -> ce.getType().equals(ContactEvent.TYPE.CONTACT.name())).collect(Collectors.toList());
+                for (ContactEvent contactEvent : contacts) {
+                    contactIds.add(contactEvent.getContactId());
+                }
+                event.getAttendees().addAll(repositoryFactory.getContactRepository().getContactsByContactIds(contactIds));
+
+                // add attending users
+                List<Integer> userIds = new ArrayList<>();
+                for(ContactEvent contactEvent : contactEvents.stream().filter(ce -> ce.getType().equals(ContactEvent.TYPE.USER.name())).collect(Collectors.toList())){
+                    userIds.add(contactEvent.getContactId());
+                }
+                event.getAttendees().addAll(repositoryFactory.getUserRepository().getUsersByContactIds(userIds));
+
+                /* add contacts of event who are not in contact list*/
+                contactEvents.forEach( ce -> {
+                    if(ce.getContactId() == -1){
+                        event.getAttendees().add(new Contact(ce.getName(), ce.getPhone(), ce.getEmail()));
+                    }
+                });
+
+                event.setChair(repositoryFactory.getUserRepository().findById(event.getChairId()).orElse(null));
+
+                return Response.ok(gson.toJson(new ResponseObject("OK", event))).build();
+            }
+
+            return Response.ok(gson.toJson(new ResponseObject("NOT_FOUND", null))).build();
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(500).entity(gson.toJson(new ResponseObject("FAIL", e.getMessage())))

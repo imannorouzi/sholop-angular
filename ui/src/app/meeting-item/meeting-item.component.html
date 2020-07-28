@@ -1,7 +1,7 @@
 <div class="">
   <div [class]="'meeting-item  ' + event.status" (click)="onClicked($event, event)">
 
-    <div class="p-2">
+    <div class="">
 
       <div class="row ">
 
@@ -9,18 +9,13 @@
 
           <div *ngIf="event.pointedDate">
             <span *ngIf="event.pointedDate.startTime" class="meeting-time">
-              <i class="fa fa-clock-o ml-3"></i>
+              <i class="fa fa-clock-o ml-2"></i>
               <span>{{dateService.getTimeFromDateString(event.pointedDate.startTime)}}</span>
-            </span>
-
-            <span *ngIf="!event.pointedDate.startTime" class="meeting-time">
-              <i class="fa fa-calendar ml-3"></i>
-              <span>{{dateService.greToPersian(event.pointedDate.date)}}</span>
             </span>
           </div>
         </div>
 
-        <div class="col-sm-4 text-right">
+        <div class="col-sm-4 text-right meeting-title-wrapper">
           <span [class]="'meeting-title mr-2 ' + (event.title ? 'font-weight-bold' : 'text-muted')">{{event.title ? event.title : 'بدون عنوان'}}</span>
         </div>
 

@@ -24,6 +24,7 @@ import {TokensComponent} from "./tokens/tokens.component";
 import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {EmployeeComponent} from "./employees/employee.component";
 import {AddressBookComponent} from "./address-book/address-book.component";
+import {ContactEventMeetingComponent} from "./contact-event-meeting/contact-event-meeting.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'conditions', component: ConditionsComponent },
   { path: 'contact-us', component: ContactUsComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'my-meeting/:uuid', component: ContactEventMeetingComponent},
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

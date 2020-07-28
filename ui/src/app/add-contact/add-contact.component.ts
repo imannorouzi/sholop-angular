@@ -38,28 +38,21 @@ export class AddContactComponent implements OnInit {
 
   data1:any;
   cropperSettings1:CropperSettings;
-  croppedWidth:number;
-  croppedHeight:number;
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
               private authService: AuthService) {
     this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 200;
-    this.cropperSettings1.height = 200;
-
-    this.cropperSettings1.croppedWidth = 200;
-    this.cropperSettings1.croppedHeight = 200;
-
-    this.cropperSettings1.canvasWidth = 200;
-    this.cropperSettings1.canvasHeight = 200;
-
+    this.cropperSettings1.width = 300;
+    this.cropperSettings1.height = 300;
+    this.cropperSettings1.croppedWidth = 300;
+    this.cropperSettings1.croppedHeight = 300;
+    this.cropperSettings1.canvasWidth = 300;
+    this.cropperSettings1.canvasHeight = 300;
     this.cropperSettings1.minWidth = 10;
     this.cropperSettings1.minHeight = 10;
-
     this.cropperSettings1.rounded = false;
     this.cropperSettings1.keepAspect = true;
-
     this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
     this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
     this.cropperSettings1.noFileInput = true;
@@ -107,6 +100,8 @@ export class AddContactComponent implements OnInit {
       this.cropper.fileChangeListener($event);
       this.contact.fileName = file.name;
     }
+
+    $event.target.value = "";
   }
 
   onImageClick() {

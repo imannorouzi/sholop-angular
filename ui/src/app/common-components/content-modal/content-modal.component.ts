@@ -58,7 +58,7 @@ export class ContentModalComponent implements OnInit, OnDestroy {
   onHide(event) {
     this.onHidden.emit(event);
     // This is added to fix a bug, backdrop is not removed when modal is closed
-    this.removeElements( document.querySelectorAll(".modal-backdrop") );
+    // this.removeElements( document.querySelectorAll(".modal-backdrop") );
   }
 
   removeElements = (elms) => elms.forEach(el => el.remove());
@@ -68,6 +68,6 @@ export class ContentModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.removeElements( document.querySelectorAll(".modal-backdrop") );
+    // this.removeElements( document.querySelectorAll(".modal-backdrop") );
   }
 }

@@ -29,8 +29,6 @@ export class ProfileComponent implements OnInit {
 
   data1:any;
   cropperSettings1:CropperSettings;
-  croppedWidth:number;
-  croppedHeight:number;
 
   mapLat: number = TEHRAN.lat;
   mapLng: number = TEHRAN.lng;
@@ -46,14 +44,14 @@ export class ProfileComponent implements OnInit {
 
 
     this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 200;
-    this.cropperSettings1.height = 200;
+    this.cropperSettings1.width = 300;
+    this.cropperSettings1.height = 300;
 
-    this.cropperSettings1.croppedWidth = 200;
-    this.cropperSettings1.croppedHeight = 200;
+    this.cropperSettings1.croppedWidth = 300;
+    this.cropperSettings1.croppedHeight = 300;
 
-    this.cropperSettings1.canvasWidth = 200;
-    this.cropperSettings1.canvasHeight = 200;
+    this.cropperSettings1.canvasWidth = 300;
+    this.cropperSettings1.canvasHeight = 300;
 
     this.cropperSettings1.minWidth = 10;
     this.cropperSettings1.minHeight = 10;
@@ -112,6 +110,8 @@ export class ProfileComponent implements OnInit {
       this.cropper.fileChangeListener($event);
       this.user.fileName = file.name;
     }
+
+    $event.target.value = "";
   }
 
   onImageClick() {

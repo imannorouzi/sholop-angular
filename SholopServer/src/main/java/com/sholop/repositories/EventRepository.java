@@ -30,12 +30,12 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                 @Param("date") Date date);
 
 
-    @Query( value = "select * from sh_event e " +
+    @Query( value = "select distinct e.* from sh_event e " +
             "inner join sh_contact_event sce on e.id = sce.event_id " +
             "where " +
             " exists( select 1 from sh_event_date ed where ed.event_id = e.id and " +
             " ((:showAll = false && ed.date = :date) || (:showAll = true && ed.date >= :date) ) ) and " +
-            "( e.chair_id = :user_id " +
+            " ( e.chair_id = :user_id " +
             "      or sce.email = :email ) ", nativeQuery = true)
     List<Event> findMyMeetings(@Param("user_id") int userId,
                                @Param("email") String email,

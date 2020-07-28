@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
           )
       });
 
-    this.goToMeetings();
+    // this.goToMeetings();
   }
 
   toggleSidebar(open = undefined){

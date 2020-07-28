@@ -1,0 +1,30 @@
+.contact-image:first-child{
+  margin-left: 0;
+}
+
+.contact-image-td{
+  width: 50px;
+}
+.contact-image{
+  width: 35px;
+  height: 35px;
+}
+
+
+.meeting-item{
+  cursor: pointer;
+}
+
+table td{
+  vertical-align: middle;
+}
+
+.map{
+  height: 150px;
+}
+
+.names{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 3;
+}

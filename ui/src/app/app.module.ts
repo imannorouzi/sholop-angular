@@ -85,6 +85,8 @@ import { QrCodeScannerComponent } from './qr-code-scanner/qr-code-scanner.compon
 import {OverlaySpinnerComponent} from "./common-components/overlay-spinner/overlay.spinner.component";
 import {ContentModalComponent} from "./common-components/content-modal/content-modal.component";
 import {ModalModule} from "ngx-bootstrap/modal";
+import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
+import { ContactEventMeetingComponent } from './contact-event-meeting/contact-event-meeting.component';
 
 @NgModule({
   declarations: [
@@ -148,7 +150,9 @@ import {ModalModule} from "ngx-bootstrap/modal";
     AddressBookComponent,
     QrCodeScannerComponent,
     OverlaySpinnerComponent,
-    ContentModalComponent
+    ContentModalComponent,
+    MeetingDetailsComponent,
+    ContactEventMeetingComponent
   ],
   imports: [
     BrowserModule,
