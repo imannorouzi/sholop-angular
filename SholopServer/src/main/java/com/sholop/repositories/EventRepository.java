@@ -14,7 +14,8 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Integer> {
 
-    // custom query to search to blog post by title or content
+//Mohammed test comments    
+// custom query to search to blog post by title or content
 //    List<Contact> findByTitleContainingOrContentContaining(String name, String textAgain);
 
 
