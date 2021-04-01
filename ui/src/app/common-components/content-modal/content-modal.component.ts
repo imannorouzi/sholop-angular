@@ -17,10 +17,10 @@ import {ModalDirective} from "ngx-bootstrap/modal";
 })
 export class ContentModalComponent implements OnInit, OnDestroy {
 
-  @ViewChild('searchModal', {static: false}) rootModal;
-  @ViewChild('closeButton', {static: false}) closeButton;
-  @ViewChild('scrollPane', {static: false}) scrollPane: ElementRef;
-  @ViewChild('inputField', {static: false}) inputField;
+  @ViewChild('searchModal') rootModal;
+  @ViewChild('closeButton') closeButton;
+  @ViewChild('scrollPane') scrollPane: ElementRef;
+  @ViewChild('inputField') inputField;
 
   @Input() modalTitle : string = '';
   @Input() size : string = ' lg ';

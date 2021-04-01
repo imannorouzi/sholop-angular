@@ -19,14 +19,14 @@ import {AuthService} from "../utils/auth.service";
 })
 export class CreateTokenComponent implements OnInit {
 
-  @ViewChild('searchBox', {static: false}) searchInput: ElementRef;
-  @ViewChild('address2', {static: false}) address2: ElementRef;
+  @ViewChild('searchBox') searchInput: ElementRef;
+  @ViewChild('address2') address2: ElementRef;
   @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
-  @ViewChild('contactsModal', {static: false}) contactsModal: ContactsModalComponent;
-  @ViewChild('venuesModal', {static: false}) venuesModal:ModalComponent;
+  @ViewChild('contactsModal') contactsModal: ContactsModalComponent;
+  @ViewChild('venuesModal') venuesModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
-  @ViewChild('addAttendee', {static: false}) addAttendee: AddAttendeeComponent;
+  @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
 
   name:string;
 

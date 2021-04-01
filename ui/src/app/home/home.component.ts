@@ -17,9 +17,9 @@ import {MeetingService} from "../meetings/meeting.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  @ViewChild('scanner', {static: false}) scanner: QrCodeScannerComponent;
-  @ViewChild('prompt', {static: false}) prompt: ConfirmComponent;
-  @ViewChild('switch', {static: false}) switch: SwitchButtonComponent;
+  @ViewChild('scanner') scanner: QrCodeScannerComponent;
+  @ViewChild('prompt') prompt: ConfirmComponent;
+  @ViewChild('switch') switch: SwitchButtonComponent;
 
   loadingReception: boolean = false;
   sidebar: boolean = false;
