@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
 import {TEHRAN, Venue} from "../venue";
 import { DataService } from "../utils/data.service";
-import {ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {NavigationService} from "../utils/navigation.service";
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
@@ -12,6 +11,7 @@ import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component
 import {AuthService} from "../utils/auth.service";
 import {SuggestingItemInputComponent} from "../suggesting-item-input/suggesting-item-input.component";
 import { switchMap} from "rxjs/operators";
+import {ImageCropperComponent} from "ngx-image-cropper";
 
 @Component({
   selector: 'create-meeting',

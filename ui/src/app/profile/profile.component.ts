@@ -1,6 +1,5 @@
 import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
-import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
@@ -8,6 +7,7 @@ import {User} from "../user";
 import {MapsAPILoader} from "@agm/core";
 import {AuthService} from "../utils/auth.service";
 import {TEHRAN} from "../venue";
+import {ImageCropperComponent} from "ngx-image-cropper";
 
 @Component({
   selector: 'profile',
@@ -15,7 +15,7 @@ import {TEHRAN} from "../venue";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
@@ -27,8 +27,9 @@ export class ProfileComponent implements OnInit {
   user: User;
   submitted: boolean = false;
 
-  data1:any;
-  cropperSettings1:CropperSettings;
+
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   mapLat: number = TEHRAN.lat;
   mapLng: number = TEHRAN.lng;
@@ -40,30 +41,6 @@ export class ProfileComponent implements OnInit {
               private authService: AuthService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,) {
-
-
-
-    this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 300;
-    this.cropperSettings1.height = 300;
-
-    this.cropperSettings1.croppedWidth = 300;
-    this.cropperSettings1.croppedHeight = 300;
-
-    this.cropperSettings1.canvasWidth = 300;
-    this.cropperSettings1.canvasHeight = 300;
-
-    this.cropperSettings1.minWidth = 10;
-    this.cropperSettings1.minHeight = 10;
-
-    this.cropperSettings1.rounded = false;
-    this.cropperSettings1.keepAspect = true;
-
-    this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
-    this.cropperSettings1.noFileInput = true;
-
-    this.data1 = {};
   }
 
   ngOnInit() {
@@ -107,7 +84,6 @@ export class ProfileComponent implements OnInit {
     let file = $event.target.files[0];
     if(file){
       this.imageCropperModal.show();
-      this.cropper.fileChangeListener($event);
       this.user.fileName = file.name;
     }
 
@@ -152,8 +128,6 @@ export class ProfileComponent implements OnInit {
 
   onImageCropperModalOk() {
     this.imageCropperModal.hide();
-    this.user.image = this.data1.image;
-    this.user.imageUrl = this.data1.image;
   }
 
   markerMoved(e) {

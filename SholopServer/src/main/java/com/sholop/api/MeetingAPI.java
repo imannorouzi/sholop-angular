@@ -9,9 +9,8 @@ import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +29,6 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.springframework.core.io.Resource;
 
 @RestController
 public class MeetingAPI {
@@ -61,6 +59,7 @@ public class MeetingAPI {
                         event.getVenue().getLatitude(),
                         event.getVenue().getLongitude()
                 ));
+                event.getVenue().setActive(true);
                 event.setVenueId(repositoryFactory.getLocationRepository().save(event.getVenue()).getId());
             }else{
                 event.setVenueId(event.getVenue().getId());

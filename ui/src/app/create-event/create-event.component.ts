@@ -1,12 +1,14 @@
+/// <reference types="@types/googlemaps" />
+
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
-import {} from 'googlemaps';
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../utils/data.service";
-import {Bounds, CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
+import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper';
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {NavigationService} from "../utils/navigation.service";
-
+// import {} from 'googlemaps';
+declare let google: any;
 
 @Component({
   selector: 'app-create-event',
@@ -17,43 +19,21 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   @ViewChild('gmap', {static: true}) gmapElement: any;
   @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
   @ViewChild('address2', {static: true}) address2: ElementRef;
-  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
 
   name:string;
-  data1:any;
-  cropperSettings1:CropperSettings;
   croppedWidth:number;
   croppedHeight:number;
 
   fileName : string = "";
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   constructor(private dataService : DataService,
               private navigationService: NavigationService) {
     this.name = 'Angular2';
-    this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 440;
-    this.cropperSettings1.height = 330;
-
-    this.cropperSettings1.croppedWidth = 440;
-    this.cropperSettings1.croppedHeight = 300;
-
-    this.cropperSettings1.canvasWidth = 440;
-    this.cropperSettings1.canvasHeight = 300;
-
-    this.cropperSettings1.minWidth = 10;
-    this.cropperSettings1.minHeight = 10;
-
-    this.cropperSettings1.rounded = false;
-    this.cropperSettings1.keepAspect = true;
-
-    this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
-    this.cropperSettings1.noFileInput = true;
-
-    this.data1 = {};
-
   }
 
   times : string[] = [];
@@ -63,15 +43,15 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
   event = {
     times: [],
     title: '',
-    venue: this.venue,
+    venue: undefined,
     image: File,
     userId: -1
   };
   submitting: boolean = false;
 
   ngOnInit() {
-    for(var h=0; h<24; h++){
-      for(var m=0; m<12; m++){
+    for(let h=0; h<24; h++){
+      for(let m=0; m<12; m++){
         this.times.push(( h<10? '0'+h : h)+":"+( m<2 ? '0' + (m*5) : (m*5) ) );
       }
     }
@@ -146,23 +126,20 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     searchBox.addListener('places_changed', handleMap);
   }
 
-  cropped(bounds:Bounds) {
-    this.croppedHeight =bounds.bottom-bounds.top;
-    this.croppedWidth = bounds.right-bounds.left;
-  }
-
   fileChangeListener($event) {
-    var image:any = new Image();
-    var file:File = $event.target.files[0];
-    var myReader:FileReader = new FileReader();
-    var that = this;
-    myReader.onloadend = function (loadEvent:any) {
+    let image:any = new Image();
+    let file:File = $event.target.files[0];
+    let myReader:FileReader = new FileReader();
+    myReader.onloadend = (loadEvent:any) => {
       image.src = loadEvent.target.result;
-      that.cropper.setImage(image);
-
+      this.imageChangedEvent = loadEvent;
     };
 
     myReader.readAsDataURL(file);
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImage = event.base64;
   }
 
   addDateTime(event) {
@@ -218,7 +195,7 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
     let file = $event.target.files[0];
     if(file){
       this.imageCropperModal.show();
-      this.cropper.fileChangeListener($event);
+      this.imageChangedEvent = $event;
       this.fileName = file.name;
       this.event.image = file;
     }
@@ -226,14 +203,11 @@ export class CreateEventComponent implements OnInit, AfterViewInit {
 
   removeImage() {
     this.fileName = "";
-    this.cropper.reset();
+    this.cropper.resetCropperPosition();
     this.fileInput.nativeElement.value = '';
   }
 
   onImageClick() {
-    if(this.data1.image)
-      this.imageCropperModal.show();
-    else
       this.fileInput.nativeElement.click();
   }
 }

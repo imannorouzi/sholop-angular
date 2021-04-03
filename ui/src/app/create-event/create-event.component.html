@@ -48,7 +48,7 @@
                    [zIndex]="5"
                    [maximizable]="true">
               <ng-container class="app-modal-body">
-                <img-cropper #cropper [image]="data1" [settings]="cropperSettings1" (onCrop)="cropped($event)"></img-cropper>
+                <image-cropper #cropper></image-cropper>
               </ng-container>
               <ng-container class="app-modal-footer">
                 <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->
@@ -139,11 +139,11 @@
 
             <div class="row" >
               <div class="col-md-12 image-container">
-                <img class="form-group image-element" [src]="data1.image ? data1.image : '../assets/images/event-placeholder.png'"
+                <img class="form-group image-element" [src]="'../assets/images/event-placeholder.png'"
                      [width]="croppedWidth"
                      [height]="croppedHeight"
                      (click)="onImageClick();" />
-                <i *ngIf="data1.image" (click)="removeImage()" class="fa fa-times image-remove"></i>
+                <i *ngIf="false" (click)="removeImage()" class="fa fa-times image-remove"></i>
               </div>
             </div>
 

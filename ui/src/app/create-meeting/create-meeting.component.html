@@ -94,7 +94,7 @@
         <div class="frame flexbox-parent-row">
           <i class="ml-3 icon fa fa-coffee"></i>
           <img class="rounded-circle contact-image ml-2" *ngIf="event.chair"
-               [src]="event.chair.imageUrl ? event.chair.imageUrl : '../assets/images/user-placeholder.png'">
+               [src]="event.chair.imageUrl ? event.chair.imageUrl : 'assets/images/user-placeholder.png'">
           <input type="text" class="flexbox-item-grow"
                  autocomplete="off" (keyup)="onChairInputKeyUp($event)"
                  placeholder="نام همکار میزبان"

@@ -1,10 +1,10 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
-import {CropperSettings, ImageCropperComponent} from "ng2-img-cropper";
 import {DataService} from "../utils/data.service";
 import {SpinnerComponent} from "../spinner/spinner.component";
 import {AlertService} from "../alert.service";
 import {AuthService} from "../utils/auth.service";
+import {ImageCropperComponent} from "ngx-image-cropper";
 
 @Component({
   selector: 'add-employee',
@@ -13,7 +13,7 @@ import {AuthService} from "../utils/auth.service";
 })
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('childModal', {static: true}) public modal: ModalComponent;
-  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
+  @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
@@ -37,32 +37,12 @@ export class AddEmployeeComponent implements OnInit {
 
   submitted: boolean = false;
 
-  data1:any;
-  cropperSettings1:CropperSettings;
+
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
 
   constructor(private dataService: DataService,
               private alertService: AlertService) {
-    this.cropperSettings1 = new CropperSettings();
-    this.cropperSettings1.width = 300;
-    this.cropperSettings1.height = 300;
-
-    this.cropperSettings1.croppedWidth = 300;
-    this.cropperSettings1.croppedHeight = 300;
-
-    this.cropperSettings1.canvasWidth = 300;
-    this.cropperSettings1.canvasHeight = 300;
-
-    this.cropperSettings1.minWidth = 10;
-    this.cropperSettings1.minHeight = 10;
-
-    this.cropperSettings1.rounded = false;
-    this.cropperSettings1.keepAspect = true;
-
-    this.cropperSettings1.cropperDrawSettings.strokeColor = 'rgba(255,255,255,1)';
-    this.cropperSettings1.cropperDrawSettings.strokeWidth = 2;
-    this.cropperSettings1.noFileInput = true;
-
-    this.data1 = {};
   }
 
   ngOnInit() {
@@ -96,14 +76,12 @@ export class AddEmployeeComponent implements OnInit {
       role: 'user'
     };
 
-    this.cropper.reset();
   }
 
   fileChanged($event){
     let file = $event.target.files[0];
     if(file){
       this.imageCropperModal.show();
-      this.cropper.fileChangeListener($event);
       this.employee.fileName = file.name;
     }
 
@@ -147,7 +125,5 @@ export class AddEmployeeComponent implements OnInit {
 
   onImageCropperModalOk() {
     this.imageCropperModal.hide();
-    this.employee.image = this.data1.image;
-    this.employee.imageUrl = this.data1.image;
   }
 }

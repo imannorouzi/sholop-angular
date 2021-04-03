@@ -11,7 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { DateComponent} from "./common-components/date/date.component";
 import { HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { ImageCropperModule } from 'ng2-img-cropper';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { ModalComponent } from "./common-components/ng-modal/modal.component";
 import { FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { EditableMeetingComponent } from './editable-meeting/editable-meeting.component';

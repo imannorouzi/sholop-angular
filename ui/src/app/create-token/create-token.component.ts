@@ -2,7 +2,6 @@ import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} 
 import {DateTime} from "../date-time";
 import {Venue} from "../venue";
 import { DataService } from "../utils/data.service";
-import {ImageCropperComponent} from "ng2-img-cropper";
 import {ModalComponent} from "../common-components/ng-modal/modal.component";
 import {NavigationService} from "../utils/navigation.service";
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
@@ -11,6 +10,7 @@ import {MapsAPILoader} from "@agm/core";
 import {DateService} from "../utils/date.service";
 import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
 import {AuthService} from "../utils/auth.service";
+import {ImageCropperComponent} from "ngx-image-cropper";
 
 @Component({
   selector: 'create-meeting',

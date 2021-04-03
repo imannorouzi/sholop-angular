@@ -57,7 +57,7 @@ export class AuthService {
 
   get imageUrl(): string {
     if (this.user !== null) {
-      return this.user.imageUrl ? this.user.imageUrl : '/assets/images/user-placeholder.png';
+      return this.user.imageUrl ? this.user.imageUrl : 'assets/images/user-placeholder.png';
     }
   }
 

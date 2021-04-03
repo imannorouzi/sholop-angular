@@ -1,13 +1,23 @@
-import {AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {DataService} from "../utils/data.service";
-import {SpinnerComponent} from "../spinner/spinner.component";
-import {CalendarComponent} from "../common-components/calendar/calendar.component";
-import {MeetingItemModalComponent} from "../meeting-item-modal/meeting-item-modal.component";
-import {DateService} from "../utils/date.service";
-import {AlertService} from "../alert.service";
-import {MeetingService} from "./meeting.service";
-import {CommonService} from "../utils/common.service";
-import {Subscription} from "rxjs";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {DataService} from '../utils/data.service';
+import {SpinnerComponent} from '../spinner/spinner.component';
+import {CalendarComponent} from '../common-components/calendar/calendar.component';
+import {MeetingItemModalComponent} from '../meeting-item-modal/meeting-item-modal.component';
+import {DateService} from '../utils/date.service';
+import {AlertService} from '../alert.service';
+import {MeetingService} from './meeting.service';
+import {CommonService} from '../utils/common.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-meetings',
@@ -26,17 +36,22 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   selectedMeeting = undefined;
 
-  filter: string = '';
+  filter = '';
   selectedDate: any;
   interval;
 
   subscriptions: Subscription[] = [];
 
-  constructor(private dataService : DataService,
+  constructor(private dataService: DataService,
               public dateService: DateService,
               private alertService: AlertService,
               private meetingService: MeetingService,
-              public commonService: CommonService) {
+              public commonService: CommonService,
+              private cdRef: ChangeDetectorRef) {
+  }
+
+  ngAfterViewChecked()  {
+    this.cdRef.detectChanges();
   }
 
   ngOnInit() {
@@ -52,7 +67,7 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.readMeetings();
   }
 
-  readMeetings(){
+  readMeetings() {
     this.loading = true;
 
     this.dataService.getMeetings(
@@ -61,18 +76,20 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
     ).subscribe(
       data => {
         this.meetings = {};
-        if(data.msg === "OK") {
+        if (data.msg === 'OK') {
 
-          data.object.forEach(event => {
-            event.dates.forEach( ed => {
-              if(!this.meetings[ed.date]){
-                this.meetings[ed.date] = [event];
-              }else{
-                this.meetings[ed.date].push(event);
-              }
-            })
-          });
-        }else{
+          if (data.object) {
+            data.object.forEach(event => {
+              event.dates.forEach(ed => {
+                if (!this.meetings[ed.date]) {
+                  this.meetings[ed.date] = [event];
+                } else {
+                  this.meetings[ed.date].push(event);
+                }
+              });
+            });
+          }
+        } else {
           this.alertService.error('مشکلی پیش آمده!');
         }
         this.loading = false;
@@ -81,10 +98,10 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log(error1);
         this.loading = false;
       }
-    )
+    );
   }
 
-  onMeetingClick(event: any){
+  onMeetingClick(event: any) {
     this.selectedMeeting = event;
     this.meetingModal.show();
   }
@@ -95,7 +112,7 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.subscriptions.forEach( sub => {
       sub.unsubscribe();
-    })
+    });
 
     this.subscriptions = [];
   }
