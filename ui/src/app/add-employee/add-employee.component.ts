@@ -1,10 +1,10 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../common-components/ng-modal/modal.component";
-import {DataService} from "../utils/data.service";
-import {SpinnerComponent} from "../spinner/spinner.component";
-import {AlertService} from "../alert.service";
-import {AuthService} from "../utils/auth.service";
-import {ImageCropperComponent} from "ngx-image-cropper";
+import {ModalComponent} from '../common-components/ng-modal/modal.component';
+import {DataService} from '../utils/data.service';
+import {SpinnerComponent} from '../spinner/spinner.component';
+import {AlertService} from '../alert.service';
+import {AuthService} from '../utils/auth.service';
+import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper';
 
 @Component({
   selector: 'add-employee',
@@ -14,7 +14,7 @@ import {ImageCropperComponent} from "ngx-image-cropper";
 export class AddEmployeeComponent implements OnInit {
   @ViewChild('childModal', {static: true}) public modal: ModalComponent;
   @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
-  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal: ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
   @ViewChild('emailField', {static: true}) emailField: any;
@@ -23,7 +23,7 @@ export class AddEmployeeComponent implements OnInit {
 
   @Output() onEmployeeAdded: EventEmitter<any> = new EventEmitter();
 
-  @Input() index: number = -1;
+  @Input() index = -1;
   @Input() employee = {
     name: '',
     email: '',
@@ -35,11 +35,10 @@ export class AddEmployeeComponent implements OnInit {
     role: ''
   };
 
-  submitted: boolean = false;
+  submitted = false;
 
 
   imageChangedEvent: any = '';
-  croppedImage: any = '';
 
   constructor(private dataService: DataService,
               private alertService: AlertService) {
@@ -48,15 +47,15 @@ export class AddEmployeeComponent implements OnInit {
   ngOnInit() {
   }
 
-  show(){
+  show() {
     this.modal.show();
   }
 
-  hide(){
+  hide() {
     this.modal.hide();
   }
 
-  setContact(contact, index){
+  setContact(contact, index) {
 
     contact = Object.assign({}, contact);
 
@@ -64,7 +63,7 @@ export class AddEmployeeComponent implements OnInit {
     this.index = index;
   }
 
-  reset(){
+  reset() {
     this.employee = {
       name: '',
       email: '',
@@ -78,14 +77,15 @@ export class AddEmployeeComponent implements OnInit {
 
   }
 
-  fileChanged($event){
-    let file = $event.target.files[0];
-    if(file){
+  fileChanged($event) {
+    const file = $event.target.files[0];
+    if (file) {
       this.imageCropperModal.show();
+      this.imageChangedEvent = $event;
       this.employee.fileName = file.name;
     }
 
-    $event.target.value = "";
+    // $event.target.value = "";
   }
 
   onImageClick() {
@@ -99,31 +99,39 @@ export class AddEmployeeComponent implements OnInit {
     return this.nameField.valid && this.emailField.valid && this.phoneField.valid;
   }
 
-  createEmployee(){
+  createEmployee() {
 
     this.submitted = true;
-    if(!this.validateForm()) return;
+    if (!this.validateForm()) { return; }
 
       this.modal.hide();
       this.employee['username'] = this.employee.email;
 
       this.dataService.updateEmployee(this.employee).subscribe(
-        (value:any) => {
-          if(value.msg === "USER_EXISTS"){
-            this.alertService.error("کاربری با این ایمیل ثبت شده است.");
-          }else{
+        (value: any) => {
+          if (value.msg === 'USER_EXISTS') {
+            this.alertService.error('کاربری با این ایمیل ثبت شده است.');
+          } else {
             this.onEmployeeAdded.emit(value.object);
           }
         },
-        (error:any) => {
+        (error: any) => {
           console.log(error);
           // this.spinner.hide();
           this.modal.show();
-          this.alertService.error(error.toString())
+          this.alertService.error(error.toString());
         });
   }
 
   onImageCropperModalOk() {
     this.imageCropperModal.hide();
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.employee.imageUrl = event.base64;
+  }
+  loadImageFailed() {
+    // show message
+    console.log('failed');
   }
 }

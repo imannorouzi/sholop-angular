@@ -24,20 +24,20 @@
 
     <fileSets>
         <fileSet>
-            <directory>./target/app</directory>
+            <directory>../ui/dist\</directory>
             <includes>
                 <include>**/*</include>
             </includes>
-            <outputDirectory>app</outputDirectory>
+            <outputDirectory>public</outputDirectory>
         </fileSet>
 
 
         <fileSet>
-            <directory>../contents</directory>
+            <directory>../content</directory>
             <includes>
                 <include>**/*</include>
             </includes>
-            <outputDirectory>contents</outputDirectory>
+            <outputDirectory>content</outputDirectory>
         </fileSet>
 
     </fileSets>

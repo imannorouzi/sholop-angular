@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import {Subject} from "rxjs";
-import {LocalStorageService} from "./local-storage.service";
-import { map} from "rxjs/operators";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AlertService} from "../alert.service";
-import {environment} from "../../environments/environment";
-import {User} from "../user";
+import {Subject} from 'rxjs';
+import {LocalStorageService} from './local-storage.service';
+import { map} from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {AlertService} from '../alert.service';
+import {environment} from '../../environments/environment';
+import {User} from '../user';
 
 
 const serverUrl = environment.serverUrl;
 
 @Injectable()
 export class AuthService {
-  redirectUrl: string = '/';
+  redirectUrl = '/';
 
   loggedIn: Subject<any> = new Subject<any>();
   loggedOut: Subject<any> = new Subject<any>();
@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   logout(): void {
-    if(this.isLoggedIn()) {
+    if (this.isLoggedIn()) {
       this.localStorageService.checkOut(this.userId);
     }
     this.user = null;
@@ -63,12 +63,11 @@ export class AuthService {
 
   private saveToSessionStorage(user) {
     if (this.storageAvailable('sessionStorage')) {
-      let sessionStorage = window['sessionStorage'];
+      const sessionStorage = window['sessionStorage'];
 
       if (!this.jsonWebToken) {
         sessionStorage.removeItem('user');
-      }
-      else {
+      } else {
         sessionStorage.setItem('user', JSON.stringify(user));
       }
     }
@@ -76,7 +75,7 @@ export class AuthService {
 
   private loadFromSessionStorage() {
     if (this.storageAvailable('sessionStorage')) {
-      let sessionStorage = window['sessionStorage'];
+      const sessionStorage = window['sessionStorage'];
 
       if ('user' in sessionStorage) {
         this.user = JSON.parse(sessionStorage['user']);
@@ -84,18 +83,17 @@ export class AuthService {
     }
   }
 
-  public isLoggedIn():boolean{
+  public isLoggedIn(): boolean {
     return this.user !== null;
   }
 
   private storageAvailable(type) {
-    let storage = window[type], x = '__storage_test__';
+    const storage = window[type], x = '__storage_test__';
     try {
       (<any>storage).setItem(x, x);
       (<any>storage).removeItem(x);
       return true;
-    }
-    catch(e) {
+    } catch (e) {
       return e instanceof DOMException && (
           // everything except Firefox
         e.code === 22 ||
@@ -112,9 +110,9 @@ export class AuthService {
   }
 
   loginWithServer(username: string, password: string) {
-    let apiUrl = serverUrl + '/authenticate';
+    const apiUrl = serverUrl + '/authenticate';
 
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
@@ -123,10 +121,10 @@ export class AuthService {
       .pipe(map(data => JSON.parse(data.entity)) )
       .pipe(map(data => {
           // login successful if there's a jwt token in the response
-          if (data && data.msg === "OK" && data.object.token) {
+          if (data && data.msg === 'OK' && data.object.token) {
             return data.object;
-          }else if(data && data.msg === "INVALID_CREDENTIALS"){
-            this.alertService.error("ایمیل یا کلمه عبور اشتباه است.")
+          } else if (data && data.msg === 'INVALID_CREDENTIALS') {
+            this.alertService.error('ایمیل یا کلمه عبور اشتباه است.');
           }
           return null;
         },
@@ -136,9 +134,9 @@ export class AuthService {
   }
 
   register(user: User) {
-    let apiUrl = serverUrl + '/register';
+    const apiUrl = serverUrl + '/register';
 
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
 
@@ -147,12 +145,12 @@ export class AuthService {
       .pipe(map(data => JSON.parse(data.entity)) )
       .pipe(map(data => {
           // login successful if there's a jwt token in the response
-          if (data && data['msg'] === "OK" && data['object'].token) {
+          if (data && data['msg'] === 'OK' && data['object'].token) {
             this.alertService.success('ثبت نام شما با موفقیت انجام شد.', true);
             return data.object;
-          }else if(data['msg'] === 'DUPLICATE'){
+          } else if (data && data['msg'] === 'DUPLICATE') {
             this.alertService.error('این ایمیل قبلا ثبت نام کرده است.', true);
-          }else{
+          } else {
             this.alertService.error('مشکلی به وجود آمد. لطفا دوباره تلاش کنید.', true);
           }
           return null;
@@ -163,10 +161,10 @@ export class AuthService {
   }
 
   loginWithGoogle(user) {
-    return this.http.post<any>( serverUrl+'/authenticate-with-google', user )
+    return this.http.post<any>( serverUrl + '/authenticate-with-google', user )
       .pipe(map(data => {
         // login successful if there's a jwt token in the response
-        if (data && data.msg === "OK" && data.object.token) {
+        if (data && data.msg === 'OK' && data.object.token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           this.login(data.object);
         }
@@ -180,8 +178,8 @@ export class AuthService {
     return this.user;
   }
 
-  getRoleString(){
-    if(this.getCurrentUser()) {
+  getRoleString() {
+    if (this.getCurrentUser()) {
       switch (this.getCurrentUser().role) {
         case 'owner':
           return 'مدیر';

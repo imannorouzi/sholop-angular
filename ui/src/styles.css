@@ -12,6 +12,42 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-300-Light.woff);
+  font-weight: 300;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-400-Regular.woff);
+  font-weight: 400;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-500-Medium.woff);
+  font-weight: 500;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-600-Semibold.woff);
+  font-weight: 600;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-700-Bold.woff);
+  font-weight: 700;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-800-ExtraBold.woff);
+  font-weight: 800;
+}
+@font-face {
+  font-family: Sefid;
+  src: url(./assets/fonts/SefidUI-900-Black.woff);
+  font-weight: 900;
+}
+
 
 @font-face {
   font-family: networkFont;
@@ -25,7 +61,7 @@
 }
 
 *{
-  font-family: "sholop-font", serif;
+  font-family: Sefid, "sholop-font", serif;
 }
 html{
   font-size: 13px;
@@ -299,7 +335,7 @@ table.table  td{
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #e9f3f8;
+  background: #cdd6db;
   border: 0px none #ffffff;
   border-radius: 0px;
 }

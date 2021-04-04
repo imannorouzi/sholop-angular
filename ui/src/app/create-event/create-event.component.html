@@ -48,7 +48,13 @@
                    [zIndex]="5"
                    [maximizable]="true">
               <ng-container class="app-modal-body">
-                <image-cropper #cropper></image-cropper>
+                <image-cropper #cropper
+                         [imageChangedEvent]="imageChangedEvent"
+                         [maintainAspectRatio]="true"
+                         [aspectRatio]="4 / 4"
+                         format="png"
+                         (imageCropped)="imageCropped($event)"
+                         (loadImageFailed)="loadImageFailed()"></image-cropper>
               </ng-container>
               <ng-container class="app-modal-footer">
                 <!--<button type="button" class="btn btn-default">Delete</button>&nbsp;-->

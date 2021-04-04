@@ -172,17 +172,28 @@
     <build>
 
         <plugins>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
                     <excludes>
-                        <!-- This is where the exclusion occurs -->
+                        &lt;!&ndash; This is where the exclusion occurs &ndash;&gt;
                         <exclude>**/application.properties</exclude>
+                        <exclude>**/log4j.properties</exclude>
                     </excludes>
+                    <archive>
+                        <manifest>
+                            &lt;!&ndash; Jar file entry point &ndash;&gt;
+                            <mainClass>com.sholop.Application</mainClass>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>lib/</Class-Path>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -205,4 +216,101 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <!-- enable with -Passemble or -Dassemble=true on command line to perform assembly, otherwise skipped to save time -->
+            <id>assemble</id>
+            <activation>
+                <property>
+                    <name>assemble</name>
+                    <value>true</value>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <version>2.8</version>
+                        <executions>
+                            <execution>
+                                <phase>test-jar</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                                    <includeScope>runtime</includeScope>
+                                </configuration>
+                            </execution>
+
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <classpathPrefix>lib/</classpathPrefix>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>com.sholop.Application</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>${basedir}/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                                <phase>package</phase> <!-- append to the packaging phase. -->
+                                <goals>
+                                    <goal>single</goal> <!-- goals == mojos -->
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resource-one</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+
+                                <configuration>
+                                    <outputDirectory>${basedir}/public</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>../pids-ws-ract/build/*</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

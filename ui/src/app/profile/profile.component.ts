@@ -1,13 +1,13 @@
 import {Component, ElementRef, EventEmitter, NgZone, OnInit, Output, ViewChild} from '@angular/core';
-import {ModalComponent} from "../common-components/ng-modal/modal.component";
-import {DataService} from "../utils/data.service";
-import {SpinnerComponent} from "../spinner/spinner.component";
-import {AlertService} from "../alert.service";
-import {User} from "../user";
-import {MapsAPILoader} from "@agm/core";
-import {AuthService} from "../utils/auth.service";
-import {TEHRAN} from "../venue";
-import {ImageCropperComponent} from "ngx-image-cropper";
+import {ModalComponent} from '../common-components/ng-modal/modal.component';
+import {DataService} from '../utils/data.service';
+import {SpinnerComponent} from '../spinner/spinner.component';
+import {AlertService} from '../alert.service';
+import {User} from '../user';
+import {MapsAPILoader} from '@agm/core';
+import {AuthService} from '../utils/auth.service';
+import {TEHRAN} from '../venue';
+import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper';
 
 @Component({
   selector: 'profile',
@@ -16,7 +16,7 @@ import {ImageCropperComponent} from "ngx-image-cropper";
 })
 export class ProfileComponent implements OnInit {
   @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
-  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal: ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('spinner', {static: true}) spinner: SpinnerComponent;
   @ViewChild('searchBox', {static: true}) searchInput: ElementRef;
@@ -25,11 +25,10 @@ export class ProfileComponent implements OnInit {
   @Output() onContactAdded: EventEmitter<any> = new EventEmitter();
 
   user: User;
-  submitted: boolean = false;
+  submitted = false;
 
 
   imageChangedEvent: any = '';
-  croppedImage: any = '';
 
   mapLat: number = TEHRAN.lat;
   mapLng: number = TEHRAN.lng;
@@ -40,7 +39,7 @@ export class ProfileComponent implements OnInit {
               private alertService: AlertService,
               private authService: AuthService,
               private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone,) {
+              private ngZone: NgZone, ) {
   }
 
   ngOnInit() {
@@ -48,27 +47,27 @@ export class ProfileComponent implements OnInit {
 
     this.zoom = 12;
 
-    //set current position
-    if(this.user.latitude === 0 ){
+    // set current position
+    if (this.user.latitude === 0 ) {
       this.setCurrentPosition();
     }
 
-    //load Places Autocomplete
+    // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
-        types: ["address"]
+      const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+        types: ['address']
       });
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          //get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          //verify result
+          // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
 
-          //set latitude, longitude and zoom
+          // set latitude, longitude and zoom
           this.user.latitude = place.geometry.location.lat();
           this.user.longitude = place.geometry.location.lng();
           this.zoom = 12;
@@ -80,14 +79,23 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  fileChanged($event){
-    let file = $event.target.files[0];
-    if(file){
+  fileChanged($event) {
+    const file = $event.target.files[0];
+    if (file) {
       this.imageCropperModal.show();
+      this.imageChangedEvent = $event;
       this.user.fileName = file.name;
     }
 
-    $event.target.value = "";
+    // $event.target.value = '';
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.user.imageUrl = event.base64;
+  }
+  loadImageFailed() {
+    // show message
+    console.log('failed');
   }
 
   onImageClick() {
@@ -101,28 +109,28 @@ export class ProfileComponent implements OnInit {
     return true;
   }
 
-  updateUser(){
+  updateUser() {
 
     this.submitted = true;
-    if(!this.validateForm()) return;
+    if (!this.validateForm()) { return; }
 
     this.user.farsiAddress1 = this.searchInput.nativeElement.value;
 
     this.dataService.updateUser(this.user).subscribe(
-      (data:any) => {
-        if (data && data.msg === "OK") {
+      (data: any) => {
+        if (data && data.msg === 'OK') {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           data.object.token = this.authService.getCurrentUser().token;
           this.authService.login(data.object);
 
-          this.alertService.success("تغییرات ذخیره شد.");
-        }else{
-          this.alertService.error("لطفا دوباره تلاش کنید.")
+          this.alertService.success('تغییرات ذخیره شد.');
+        } else {
+          this.alertService.error('لطفا دوباره تلاش کنید.');
         }
       },
-      (error:any) => {
+      (error: any) => {
         console.log(error);
-        this.alertService.error(error.toString())
+        this.alertService.error(error.toString());
       });
   }
 
@@ -140,7 +148,7 @@ export class ProfileComponent implements OnInit {
       if (status === google.maps.GeocoderStatus.OK && res.length) {
         this.ngZone.run(() => this.user.farsiAddress1 = res[0].formatted_address);
       }
-    })
+    });
   }
 
   mapClicked(e) {
@@ -153,11 +161,11 @@ export class ProfileComponent implements OnInit {
       if (status === google.maps.GeocoderStatus.OK && res.length) {
         this.ngZone.run(() => this.user.farsiAddress1 = res[0].formatted_address);
       }
-    })
+    });
   }
 
   private setCurrentPosition() {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.user.latitude = position.coords.latitude;
         this.user.longitude = position.coords.longitude;
