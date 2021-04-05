@@ -2,10 +2,11 @@
   color: #fff;
 }
 .navbar a:hover{
-  color:#111111;
+  color:#ffcc00;
 }
 .navbar{
-  background-color: #0070ba;
+  background-color: #674200;
+  /*background-color: #0070ba;*/
   padding: 0;
   border-bottom: #444;
 }
@@ -15,8 +16,31 @@
   font-size: 20px;
   margin-left: 15px;
 }
-.navbar-nav .dropdown-menu a{
+.navbar .dropdown-item{
   color: #3a3f48;
+}
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:active {
+  color: red;
+  text-decoration: none;
+  background-color: #3a3f48;
+}
+
+.navbar-collapse.collapsing,
+.navbar-collapse.collapse.show{
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1050;
+  padding: 10px;
+
+  width: fit-content;
+
+  border-radius: .4em;
+  -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,.25);
+  background-color: #674200;
 }
 
 .dropdown-menu{
@@ -28,13 +52,18 @@
 
   z-index: 1050;
   right: 0;
+  position: absolute;
 
   border-radius: .4em;
   -webkit-box-shadow: 0 3px 8px rgba(0,0,0,.25);
   box-shadow: 0 3px 8px rgba(0,0,0,.25);
   background: #f5f7fa;
-  -webkit-transition: opacity .3s linear;
-  transition: opacity .3s linear;
+  -webkit-transition: opacity .1s linear;
+  transition: opacity .1s linear;
+}
+.dropdown-menu.left{
+  text-align: right;
+  right: auto;
 }
 
 .dropdown-item{
@@ -42,35 +71,19 @@
 }
 
 .dropdown-toggle::after {
-  margin-right: 10px;
-  vertical-align: -1px;
+  margin-right: 7px;
+  vertical-align: 0;
   margin-left: 0;
   content: "";
   font-size: 15px;
 }
 .navbar-nav {
-  padding: 5px;
-}
-.navbar-nav .dropdown-menu {
-  position: absolute;
-  float: none;
-  left: 0;
-}
-.nav-item.active:after{
-  content: ' ';
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background-color: white;
-}
-.nav-item{
-  position: relative;
-  padding: 5px;
-  color: white;
-  text-align: center;
-  width: 50px;
+  padding: 0px;
+  display: flex;
+  /*flex-direction: inherit;*/
+  margin-bottom: 0;
+  list-style: none;
+  line-height: 2.4;
 }
 .nav-text{
   display: block;
@@ -81,6 +94,10 @@
   line-height: 1;
 }
 
+.nav-item{
+  margin-left: 15px;
+}
+
 .toggle-item .nav-text{
   font-size: 20px;
 }
@@ -88,4 +105,30 @@
   .toggle-item{
     display: none;
   }
+}
+
+
+.user-item{
+  display: inline-block;
+}
+.user-img{
+  width: 35px;
+  border-radius: 50%;
+  height: 35px;
+  margin-left: 5px;
+}
+.user-nav-item{
+  background: #6c5353;
+}
+
+button{
+  margin-left: 5px;
+}
+
+.search-container{
+  flex-grow: 1;
+  margin: 0 20px
+}
+#navbarSupportedContent{
+  flex-grow: 0;
 }

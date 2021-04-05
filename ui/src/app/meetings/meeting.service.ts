@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
-import {NavigationService} from "../utils/navigation.service";
-import {Subject} from "rxjs";
+import {NavigationService} from '../utils/navigation.service';
+import {Subject} from 'rxjs';
+
+export enum readMethod {INITIAL, MORE_FORWARD, MORE_BACKWARD}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeetingService {
-
-  readMeetings: Subject<any> = new Subject<any>();
+  readMeetings: Subject<readMethod> = new Subject<readMethod>();
   date: Date;
-  showAll: boolean = true;
+  period = 5; // days with or without meetings
+  limit = 1; // days with meetings
 
   constructor(private navigationService: NavigationService) { }
 
-  loadMeetings(date: Date, showAll: boolean){
+  loadMeetings(date: Date | undefined) {
     this.date = date;
-    this.showAll = showAll;
-
-    if(this.navigationService.currentPath !== '/meetings'){
+    if (this.navigationService.currentPath !== '/meetings') {
       this.navigationService.navigate('/meetings');
-    }else{
-      this.readMeetings.next();
+    } else {
+      this.readMeetings.next(readMethod.INITIAL);
     }
   }
 
-  getDate(){
+  getDate() {
 
-    if(!this.date || this.showAll){
-      let d = new Date();
-      d.setHours(0,0,0,0);
+    if (!this.date) {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      this.date = d;
       return d;
     }
     return this.date;
-  }
-
-  isShowingAll(){
-    return this.showAll;
   }
 }

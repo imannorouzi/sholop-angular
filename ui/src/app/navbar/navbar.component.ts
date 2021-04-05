@@ -13,7 +13,7 @@ export class NavbarComponent implements OnInit {
   @Input() theme: string;
   @Output() toggle: EventEmitter<any> = new EventEmitter();
   constructor(public authService: AuthService,
-              private commonService: CommonService,
+              public commonService: CommonService,
               private navigationService: NavigationService) {
   }
 

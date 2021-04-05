@@ -1,7 +1,6 @@
 package com.sholop.repositories;
 
 import com.sholop.objects.Event;
-import com.sholop.objects.EventDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,6 +42,23 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                @Param("date") Timestamp date,
                                @Param("showAll") Boolean showAll);
 
+    @Query( value = "select distinct e.* from sh_event e " +
+            "inner join sh_contact_event sce on e.id = sce.event_id " +
+            "where " +
+            " exists( select 1 from sh_event_date ed where ed.event_id = e.id and " +
+            " (ed.date between :date and  DATE(DATE_ADD(:date, INTERVAL + :period  DAY)) ) ) and " +
+            " ( e.chair_id = :user_id " +
+            "      or sce.email = :email ) ", nativeQuery = true)
+    List<Event> findMyMeetingsByPeriod(@Param("user_id") int userId,
+                               @Param("email") String email,
+                               @Param("date") Timestamp date,
+                               @Param("period") Integer period);
+
     List<Event> findAllByEventType(String type);
+
+
+    @Query("select s FROM sh_event s WHERE s.id in :ids")
+    List<Event> getEventsByIds(@Param("ids") List<Integer> eventIDs);
+
 }
 

@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
 import { AfService } from '../providers/af.service';
 
 
-import {AlertService} from "../alert.service";
-import {SpinnerService} from "../utils/spinner.service";
-import { of} from "rxjs";
-import {AuthService} from "../utils/auth.service";
-import {LocalStorageService} from "../utils/local-storage.service";
-import {DummyData} from "../dummyData";
+import {AlertService} from '../alert.service';
+import {SpinnerService} from '../utils/spinner.service';
+import { of} from 'rxjs';
+import {AuthService} from '../utils/auth.service';
+import {LocalStorageService} from '../utils/local-storage.service';
+import {DummyData} from '../dummyData';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +27,7 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
-    public AfService: AfService,
+    public afService: AfService,
     private authService: AuthService,
     private localStorageService: LocalStorageService,
     private spinnerService: SpinnerService) {}
@@ -41,8 +40,8 @@ export class LoginComponent implements OnInit {
 
     // reset login status
     this.authService.logout();
-    if(this.AfService.user) {
-      this.AfService.logout();
+    if (this.afService.user) {
+      this.afService.logout();
     }
 
     // get return url from route parameters or default to '/'
@@ -68,8 +67,8 @@ export class LoginComponent implements OnInit {
       this.authService.loginWithServer(this.f.username.value, this.f.password.value))
       .subscribe(
         user => {
-          if(user){
-            if(this.localStorageService.checkIn(user.id)) {
+          if (user) {
+            if (this.localStorageService.checkIn(user.id)) {
               this.authService.login(user);
               this.router.navigate([this.authService.redirectUrl]);
 
@@ -80,12 +79,13 @@ export class LoginComponent implements OnInit {
         }, error => {
           this.loading = false;
           console.error(error);
+          this.alertService.error('مشکلی پیش آمد.');
         });
   }
 
-  loginWithGoogle(){
-    this.AfService.logout();
-    this.AfService.loginWithGoogle('PERSONAL');
+  loginWithGoogle() {
+    this.afService.logout();
+    this.afService.loginWithGoogle('PERSONAL');
   }
 
 }

@@ -1,17 +1,17 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
-import {TEHRAN, Venue} from "../venue";
-import { DataService } from "../utils/data.service";
-import {ModalComponent} from "../common-components/ng-modal/modal.component";
-import {NavigationService} from "../utils/navigation.service";
-import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
-import {AlertService} from "../alert.service";
-import {MapsAPILoader} from "@agm/core";
-import {DateService} from "../utils/date.service";
-import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component";
-import {AuthService} from "../utils/auth.service";
-import {SuggestingItemInputComponent} from "../suggesting-item-input/suggesting-item-input.component";
-import { switchMap} from "rxjs/operators";
-import {ImageCropperComponent} from "ngx-image-cropper";
+import {TEHRAN, Venue} from '../venue';
+import { DataService } from '../utils/data.service';
+import {ModalComponent} from '../common-components/ng-modal/modal.component';
+import {NavigationService} from '../utils/navigation.service';
+import {AddAttendeeComponent} from '../add-attendee/add-attendee.component';
+import {AlertService} from '../alert.service';
+import {MapsAPILoader} from '@agm/core';
+import {DateService} from '../utils/date.service';
+import {ContactsModalComponent} from '../contacts-modal/contacts-modal.component';
+import {AuthService} from '../utils/auth.service';
+import {SuggestingItemInputComponent} from '../suggesting-item-input/suggesting-item-input.component';
+import { switchMap} from 'rxjs/operators';
+import {ImageCropperComponent} from 'ngx-image-cropper';
 
 @Component({
   selector: 'create-meeting',
@@ -22,31 +22,31 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
   @ViewChild('searchBox') searchInput: ElementRef;
   @ViewChild('address2') address2: ElementRef;
-  @ViewChild('cropper', {static: true}) cropper:ImageCropperComponent;
-  @ViewChild('imageCropperModal', {static: true}) imageCropperModal:ModalComponent;
+  @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
+  @ViewChild('imageCropperModal', {static: true}) imageCropperModal: ModalComponent;
   @ViewChild('contactsModal') contactsModal: ContactsModalComponent;
-  @ViewChild('venuesModal') venuesModal:ModalComponent;
+  @ViewChild('venuesModal') venuesModal: ModalComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
   @ViewChild('selectChair') selectChair: SuggestingItemInputComponent;
   @ViewChild('selectGuest') selectGuest: SuggestingItemInputComponent;
 
-  name:string;
-  step: number =0;
-  editingStep: number = -1;
+  name: string;
+  step = 0;
+  editingStep = -1;
 
-  constructor(private dataService : DataService,
+  constructor(private dataService: DataService,
               private navigationService: NavigationService,
               private authService: AuthService,
               private alertService: AlertService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
-              public dateService: DateService){
+              public dateService: DateService) {
   }
 
   public zoom: number;
 
-  times : string[] = [];
+  times: string[] = [];
   event = {
     userId: -1,
     dates: [],
@@ -56,60 +56,60 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     venue: new Venue(),
     chairId: -1,
     chair: this.authService.getCurrentUser(),
-    welcomeMessage: "",
-    eventType: "MEETING",
+    welcomeMessage: '',
+    eventType: 'MEETING',
     imChair: true
   };
   mapLat: number = TEHRAN.lat;
   mapLng: number = TEHRAN.lng;
 
   guests: any[];
-  guestHint: string = '';
+  guestHint = '';
 
   chairs: any[];
   chairHint: string = this.authService.name;
   user: any;
 
-  submitting: boolean = false;
+  submitting = false;
 
   ngOnInit() {
 
     this.user = this.authService.getCurrentUser();
 
-    //set google maps defaults
+    // set google maps defaults
     this.zoom = 12;
     // this.latitude = 18.5793;
     // this.longitude = 73.8143;
-    //set current position
-    if(!this.event.venue || this.event.venue.id <= 0){
+    // set current position
+    if (!this.event.venue || this.event.venue.id <= 0) {
       this.setCurrentPosition();
     }
 
-    let d = new Date(); d.setHours(0,0,0,0);
+    const d = new Date(); d.setHours(0, 0, 0, 0);
     this.event.dates.push({date: d, startTime: new Date(), endTime: new Date()});
-    for(let h=0; h<24; h++){
-      for(let m=0; m<12; m++){
-        this.times.push(( h<10? '0'+h : h)+":"+( m<2 ? '0' + (m*5) : (m*5) ) );
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 12; m++) {
+        this.times.push(( h < 10 ? '0' + h : h) + ':' + ( m < 2 ? '0' + (m * 5) : (m * 5) ) );
       }
     }
 
 
-    //load Places Autocomplete
+    // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      let autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
-        types: ["address"]
+      const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
+        types: ['address']
       });
-      autocomplete.addListener("place_changed", () => {
+      autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          //get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-          //verify result
+          // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
 
-          //set latitude, longitude and zoom
+          // set latitude, longitude and zoom
           this.event.venue.latitude = place.geometry.location.lat();
           this.event.venue.longitude = place.geometry.location.lng();
           this.zoom = 12;
@@ -122,7 +122,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   }
 
   private setCurrentPosition() {
-    if ("geolocation" in navigator) {
+    if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.event.venue.latitude = position.coords.latitude;
         this.event.venue.longitude = position.coords.longitude;
@@ -136,18 +136,16 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   }
 
   addDateTime(event) {
-    let d = new Date();
+    const d = new Date();
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setSeconds(0);
 
-    let date = new Date(d.getFullYear(),
-      d.getMonth(),
-      d.getDate()
-    );
-
-    this.event.dates.push({date: date, startTime: new Date(), endTime: new Date()});
+    this.event.dates.push({date: d, startTime: new Date(), endTime: new Date()});
     event.preventDefault();
   }
 
-  onDateSelected(index, event){
+  onDateSelected(index, event) {
     this.event.dates[index].date = event;
   }
 
@@ -160,13 +158,13 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     return true;
   }
 
-  onSubmit(){
-    if(this.validateForm()) {
+  onSubmit() {
+    if (this.validateForm()) {
       if (this.event.venue && this.event.venue.id === 0) {
         // this.event.userId = this.authService.getUser().id;
         this.event.venue = new Venue(
           -1,
-          "",
+          '',
           this.event.venue.latitude,
           this.event.venue.longitude,
           this.searchInput.nativeElement.value,
@@ -176,7 +174,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       }
 
       // take times to utc format
-      if(this.event.dates) {
+      if (this.event.dates) {
         this.event.dateStrings = this.event.dates.map(d => {
           return {
             date: d.date.toISOString(),
@@ -184,22 +182,22 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
             endTime: d.endTime.toISOString(),
             dateString: this.dateService.getPersianDateString(d.date, d.startTime, d.endTime)
           };
-        })
+        });
       }
 
       this.submitting = true;
       this.dataService.postMeeting(this.event).subscribe(
-        (res:any) => {
-          if(res && res.msg === 'OK'){
-            this.navigationService.navigate("/meetings");
-            this.alertService.success("ملاقات با موفقیت ایجاد شد.");
-          }else{
-            this.alertService.error("ببخشید، مشکلی پیش آمد. دوباره تلاش کنید.");
+        (res: any) => {
+          if (res && res.msg === 'OK') {
+            this.navigationService.navigate('/meetings');
+            this.alertService.success('ملاقات با موفقیت ایجاد شد.');
+          } else {
+            this.alertService.error('ببخشید، مشکلی پیش آمد. دوباره تلاش کنید.');
           }
           this.submitting = false;
 
         },
-        (error:any) => {
+        (error: any) => {
           console.log(error);
           this.submitting = false;
         });
@@ -225,20 +223,20 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   onGuestsSelected(guests) {
     guests.forEach( guest => {
       this.event.attendees = this.event.attendees.filter( a => {
-        return guest.email !== a.email
+        return guest.email !== a.email;
       });
       this.event.attendees.push(guest);
-    })
+    });
   }
 
   onGuestAdded(guest: any) {
 
-    if(guest.type === 'USER'){
+    if (guest.type === 'USER') {
       this.alertService.warn('همکاری با این ایمیل ثبت شده است.');
     }
 
      this.event.attendees = this.event.attendees.filter( a => {
-      return guest.email !== a.email
+      return guest.email !== a.email;
     });
 
      this.event.attendees.push(guest);
@@ -270,7 +268,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   }
 
   chairSelected(chair: any) {
-    if(chair){
+    if (chair) {
       this.event.chair = chair;
       this.event.userId = chair.id;
       this.chairHint = chair.name;
@@ -287,7 +285,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       if (status === google.maps.GeocoderStatus.OK && res.length) {
         this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
       }
-    })
+    });
   }
 
   mapClicked(e) {
@@ -300,7 +298,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       if (status === google.maps.GeocoderStatus.OK && res.length) {
         this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
       }
-    })
+    });
   }
 
   setLocation(place) {
@@ -329,14 +327,14 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
         this.dataService.getContacts(this.chairHint)
           .subscribe(
             data => {
-              if(data.msg === "OK"){
+              if (data.msg === 'OK') {
                 this.chairs = data.object;
               }
             },
             error1 => {
               console.log(error1);
             }
-          )
+          );
     }
 
     this.selectChair.onKeyUp(event);
@@ -353,8 +351,8 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
       default:
         this.dataService.getUsers(this.guestHint)
-          .pipe(switchMap( data =>{
-              if(data.msg === "OK"){
+          .pipe(switchMap( data => {
+              if (data.msg === 'OK') {
                 this.guests = data.object.map(
                   u => {
                     return u;
@@ -366,8 +364,8 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
           ))
           .subscribe(
             data => {
-              if(data.msg === "OK"){
-                let contacts = data.object.map(
+              if (data.msg === 'OK') {
+                const contacts = data.object.map(
                   u => {
                     return u;
                   }
@@ -378,7 +376,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
             error1 => {
               console.log(error1);
             }
-          )
+          );
     }
 
     this.selectGuest.onKeyUp(event);
@@ -390,7 +388,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     this.chairHint = '';
   }
 
-  clearChair(){
+  clearChair() {
     this.event.chair = undefined;
   }
 }

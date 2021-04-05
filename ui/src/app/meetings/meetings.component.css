@@ -1,7 +1,12 @@
 .date-title-container{
   margin-bottom: 5px;
   background: rgb(255,255,255);
-  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgb(234, 234, 234) 50%, rgba(255,255,255,0) 100%);
+  background: linear-gradient(-90deg,
+  rgb(234, 234, 234) 50%,
+  rgba(255,255,255,0) 100%,
+  rgba(255,255,255,0) 0%
+  );
+  text-align: right;
 }
 
 .date-title{
@@ -22,4 +27,16 @@
 
 .search-input{
   font-size: 17px;
+}
+
+.load-more-btn:hover{
+  background: #3a3f48;
+  color: white;
+}
+.load-more-btn{
+  border: 1px solid transparent;
+}
+
+.date-title-container.selected{
+  font-weight: 900;
 }

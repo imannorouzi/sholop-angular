@@ -1,16 +1,6 @@
 <meeting-item-modal #meetingModal  [event]="selectedMeeting"></meeting-item-modal>
 <div class=" h-100 p-3 meeting-container ">
   <div class="p-3 h-100 ">
-    <div class="w-100 ">
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text" class=" search-input"
-                 [(ngModel)]="filter"
-                 placeholder='جستجو با ایمیل، نام و ... '/>
-        </div>
-
-      </div>
-    </div>
 
     <div class="text-center owl-container" *ngIf="!loading && (commonService.isEmpty(meetings))">
       <img class="w-75"  src="../../assets/images/home/owl.svg">
@@ -19,22 +9,41 @@
 
     <spinner [showing]="loading" #spinner></spinner>
 
-      <div class="mb-3 mt-4" *ngFor="let item of meetings | keyvalue" >
-        <div class="mt-2 text-center sticky">
-          <div class="date-title-container">
-            <div class="date-title  ">
-              <i class=" fa fa-calendar ml-2"></i>
-              {{dateService.greToPersian(item.key, true)}}
-            </div>
+
+    <div *ngIf="!noMoreBackward; else noMoreB" class="btn-container">
+      <a class="btn load-more-btn" (click)="loadMoreBackward()"><i class="fa fa-angle-up"></i> ملاقات‌های قبلی </a>
+    </div>
+    <ng-template #noMoreB>
+      <span>قبل از این تاریخ ملاقاتی ثبت نشده است.</span>
+    </ng-template>
+
+    <div class="mb-3 mt-4" *ngFor="let item of meetings | keyvalue" >
+      <div class="mt-2 text-center sticky">
+        <div [class]="'date-title-container ' + (meetingService.date.toISOString() === item.key ? 'selected' : '')">
+          <div class="date-title  ">
+            <i class=" fa fa-calendar ml-2"></i>
+            {{dateService.greToPersian(item.key, true)}}
           </div>
         </div>
+      </div>
 
-        <div class="meeting-item shadow mb-1" *ngFor="let event of item.value | generalFilter:filter" >
+      <div class="text-right " *ngIf="item.value.length === 0">
+        <img class="small-owl"  src="../../assets/images/home/owl.svg">
+        <div class="d-inline-block">برای این روز چیزی ثبت نشده.</div>
+      </div>
+
+      <div class="meeting-item shadow mb-1" *ngFor="let event of item.value | generalFilter:filter" >
         <meeting-item (clicked)="onMeetingClick($event)"
                       class="mt-2" [event]="event">
         </meeting-item>
-        </div>
       </div>
+    </div>
+
+    <div *ngIf="!noMoreForward; else noMoreF" class="btn-container">
+      <a class="btn load-more-btn" (click)="loadMoreForward()"> ملاقات‌های بعدی <i class="fa fa-angle-down"></i></a>
+    </div>
+    <ng-template #noMoreF>
+      <span>بعد از این تاریخ ملاقاتی ثبت نشده است.</span>
+    </ng-template>
   </div>
 </div>
-

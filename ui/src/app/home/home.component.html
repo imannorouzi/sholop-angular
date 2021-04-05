@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <div class="sidebar-header " >
+        <!--<div class="sidebar-header " >
           <div class="flexbox-parent-row profile-link" [routerLink]="'/settings'" >
             <div class="user-pic ">
               <img class="img-responsive img-rounded" [src]="[authService.imageUrl]"
@@ -42,31 +42,11 @@
           <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
         </div>
 
-        <hr>
+        <hr>-->
 
         <div class="calendar-wrapper">
-          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>
-          <calendar [disabled]="showAll" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
-        </div>
-
-        <hr>
-
-        <div class="input-group ">
-          <button class="form-control secondary" (click)="scanner.show()"  >اسکن بارکد</button>
-        </div>
-
-        <!-- sidebar-header  -->
-        <div class="sidebar-search" *ngIf="false">
-          <div>
-            <div class="input-group">
-              <input type="text" class="form-control search-menu" placeholder="جسنجو...">
-              <div class="input-group-append">
-              <span class="input-group-text">
-                <i class="fa fa-search" aria-hidden="true"></i>
-              </span>
-              </div>
-            </div>
-          </div>
+<!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
+          <calendar #calendar (onDateSelected)="onDateSelected($event)"></calendar>
         </div>
 
         <hr>
@@ -140,9 +120,9 @@
 
           </ul>
 
-          <div class="text-center mt-5">
+          <!--<div class="text-center mt-5">
             <small class="text-muted">version {{version}}</small>
-          </div>
+          </div>-->
         </div>
 
         <!-- sidebar-menu  -->

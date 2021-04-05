@@ -154,17 +154,49 @@ public class MeetingAPI {
     @GetMapping("/get-meetings")
     public Response getMeetings( @AuthenticationPrincipal UserDetails u,
                                  @RequestParam("date") String dateString,
-                                 @RequestParam("showAll") boolean showAll)  {
+                                 @RequestParam(value = "limit", required = false) Integer limit, // days with meetings
+                                 @RequestParam(value = "period", required = false) Integer period)  {
 
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
             Date date = Utils.convertStringToDateUTC(dateString);
+            List<Event> events = new ArrayList<>();
 
-            List<Event> events = repositoryFactory.getEventRepository().findMyMeetings(
-                    user.getId(),
-                    user.getEmail(),
-                    new Timestamp(date.getTime()), showAll
-            );
+            if(limit != null){
+                // we need to query all the dates because we don't know what is client's timezone
+                List<EventDate> eventDates = limit > 0 ? // negative limit means go backwards
+                        repositoryFactory.getSholopDateRepository().findEventDatesForward(user.getId(),
+                                user.getEmail(),
+                                new Timestamp(date.getTime()))
+                        :
+                        repositoryFactory.getSholopDateRepository().findEventDatesBackward(user.getId(),
+                                user.getEmail(),
+                                new Timestamp(date.getTime()));
+
+                List<Integer> eventIds = new ArrayList<>();
+                int i = 0, daysWithMeetings = 0;
+                while (eventDates.size() > 0 && daysWithMeetings < Math.abs(limit)){
+                    Date dt = new Date(date.getTime());
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(dt);
+                    c.add(Calendar.DATE, (limit < 0 ? -1 : 1) * ++i);
+                    List<Integer> ids = eventDates.stream()
+                            .filter(ed -> (limit < 0 ? ed.getDate().after(c.getTime()) : ed.getDate().before(c.getTime())))
+                            .map(EventDate::getEventId).collect(Collectors.toList());
+                    eventIds.addAll(ids);
+                    daysWithMeetings += ids.size() > 0 ? 1 : 0;
+                    eventDates.removeIf( ed -> (limit < 0 ? ed.getDate().after(c.getTime()) : ed.getDate().before(c.getTime())));
+                }
+
+                events = repositoryFactory.getEventRepository().getEventsByIds(eventIds);
+            } else if (period != null){
+                events = repositoryFactory.getEventRepository().findMyMeetingsByPeriod(
+                        user.getId(),
+                        user.getEmail(),
+                        new Timestamp(date.getTime()),
+                        period
+                );
+            }
 
             for(Event event : events){
                 List<EventDate> dates = repositoryFactory.getSholopDateRepository().findAllByEventId(event.getId());

@@ -97,7 +97,8 @@ label{
 
 
   border: 0;
-  background-color: #0070ba;
+  background-color: #ab5900;
+  /*background-color: #0070ba;*/
   border-radius: 8px;
   color: #fff;
 }
@@ -115,7 +116,8 @@ label{
 }
 
 .app-container button:hover {
-  background-color: #005ea6;
+  background-color: #e18f35;
+  /*background-color: #005ea6;*/
 }
 
 .app-container button.secondary {

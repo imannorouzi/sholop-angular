@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {User} from "../user";
-import {environment} from "../../environments/environment.prod";
-import {Venue} from "../venue";
-import {AuthService} from "./auth.service";
-import {catchError, map} from "rxjs/operators";
+import {User} from '../user';
+import {environment} from '../../environments/environment';
+import {Venue} from '../venue';
+import {AuthService} from './auth.service';
+import {catchError, map} from 'rxjs/operators';
 
 const serverUrl = environment.serverUrl;
 
@@ -15,7 +15,7 @@ const serverUrl = environment.serverUrl;
 })
 export class DataService {
 
-  constructor(private http:HttpClient,
+  constructor(private http: HttpClient,
               private authService: AuthService) {}
 
   get jwtHeaders(): HttpHeaders {
@@ -25,35 +25,35 @@ export class DataService {
   }
 
   private extractData(res: Response) {
-    let retVal =  (<any>res).data || (<any>res).entity || (<any>res).object;
+    const retVal =  (<any>res).data || (<any>res).entity || (<any>res).object;
 
     return retVal ? JSON.parse(retVal) : null;
 
   }
 
   private handleError(error: Response | any) {
-    let message = error.error || error || "";
+    const message = error.error || error || '';
     return throwError(message);
   }
 
   getTinyEvents():  Observable<any> {
-    let apiURL = serverUrl + "/get-events";
+    const apiURL = serverUrl + '/get-events';
     return this.http.get(apiURL)
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
-  getMeetings(date: Date, showAll: string):  Observable<any> {
-    let apiURL = serverUrl + "/get-meetings";
+  getMeetings(params):  Observable<any> {
+    const apiURL = serverUrl + '/get-meetings';
     return this.http.get(apiURL, {
-      params: {date: date.toISOString(), showAll: showAll},
+      params: params,
     })
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
   getContactEventMeeting(uuid: string) {
-    let apiURL = serverUrl + "/get-contact-event-meeting/" + uuid;
+    const apiURL = serverUrl + '/get-contact-event-meeting/' + uuid;
     return this.http.get(apiURL, {
       params: {},
     })
@@ -62,7 +62,7 @@ export class DataService {
   }
 
   getTokens(date: Date):  Observable<any> {
-    let apiURL = serverUrl + "/get-tokens";
+    const apiURL = serverUrl + '/get-tokens';
     return this.http.get(apiURL, {
       params: {date: date.toUTCString()}
     }).pipe(map(this.extractData))
@@ -70,7 +70,7 @@ export class DataService {
   }
 
   getMeeting(id: any) {
-    let apiURL = serverUrl + "/get-meeting";
+    const apiURL = serverUrl + '/get-meeting';
     return this.http.get(apiURL, {
       params: {meetingId: id}
     }).pipe(map(this.extractData))
@@ -78,7 +78,7 @@ export class DataService {
   }
 
   getMeetingByUUID(uuid: any, action: string) {
-    let apiURL = serverUrl + "/get-meeting-by-uuid";
+    const apiURL = serverUrl + '/get-meeting-by-uuid';
     return this.http.get(apiURL, {
       params: {uuid: uuid, action: action}
     }).pipe(map(this.extractData))
@@ -86,7 +86,7 @@ export class DataService {
   }
 
   getContacts( hint: string = ''):  Observable<any> {
-    let apiURL = serverUrl + "/get-contacts";
+    const apiURL = serverUrl + '/get-contacts';
     return this.http.get(apiURL, {
       params: {hint: hint}
     }).pipe(map(this.extractData))
@@ -94,7 +94,7 @@ export class DataService {
   }
 
   getReception(text: string):  Observable<any> {
-    let apiURL = serverUrl + "/get-reception";
+    const apiURL = serverUrl + '/get-reception';
     return this.http.get(apiURL, {
       params: {uuid: text},
     })
@@ -103,7 +103,7 @@ export class DataService {
   }
 
   getUsers( hint: string = ''):  Observable<any> {
-    let apiURL = serverUrl + "/get-users";
+    const apiURL = serverUrl + '/get-users';
     return this.http.get(apiURL, {
       params: {hint: hint}
     }).pipe(map(this.extractData))
@@ -111,7 +111,7 @@ export class DataService {
   }
 
   getEmployees( hint: string = '', role: string = ''):  Observable<any> {
-    let apiURL = serverUrl + "/get-employees";
+    const apiURL = serverUrl + '/get-employees';
     return this.http.get(apiURL, {
       params: {hint: hint, role: role}
     }).pipe(map(this.extractData))
@@ -119,39 +119,39 @@ export class DataService {
   }
 
   updateEmployee(emp: any) {
-    let apiURL = serverUrl + "/update-employee";
+    const apiURL = serverUrl + '/update-employee';
 
-    let employee = Object.assign({}, emp);
-    let formData:FormData = new FormData();
-    if(employee.image ) {
+    const employee = Object.assign({}, emp);
+    const formData: FormData = new FormData();
+    if (employee.image ) {
       formData.append('file', this.dataURItoBlob(employee.image), employee.fileName);
-      formData.append("filename", employee.fileName);
+      formData.append('filename', employee.fileName);
       employee.image = null;
-    }else{
+    } else {
       formData.append('file', null);
-      formData.append("filename", "");
+      formData.append('filename', '');
     }
 
-    formData.append("employee", JSON.stringify(employee));
+    formData.append('employee', JSON.stringify(employee));
 
-    let hdrs = new HttpHeaders();
-    hdrs.append("Content-Type", "multipart/form-data");
-    hdrs.append("Accept", "application/json");
+    const hdrs = new HttpHeaders();
+    hdrs.append('Content-Type', 'multipart/form-data');
+    hdrs.append('Accept', 'application/json');
     return this.http.post(`${apiURL}`, formData, {headers: hdrs})
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
   deleteEmployee(id: number) {
-    let apiURL = serverUrl + "/delete-employee";
-    let headers = new HttpHeaders({
+    const apiURL = serverUrl + '/delete-employee';
+    const headers = new HttpHeaders({
       'Accept': 'application/json'
     });
     return this.http.post(`${apiURL}`, id, {headers: headers});
   }
 
   getVenues( hint: string = ''):  Observable<any> {
-    let apiURL = serverUrl + "/get-venues";
+    const apiURL = serverUrl + '/get-venues';
     return this.http.get(apiURL, {
       params: {hint: hint}
     }).pipe(map(this.extractData))
@@ -159,8 +159,8 @@ export class DataService {
   }
 
   deleteVenue(id: number) {
-    let apiURL = serverUrl + "/delete-venue";
-    let headers = new HttpHeaders({
+    const apiURL = serverUrl + '/delete-venue';
+    const headers = new HttpHeaders({
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
@@ -170,9 +170,9 @@ export class DataService {
   }
 
   updateVenue(venue: Venue) {
-    let apiURL = serverUrl + "/update-venue";
+    const apiURL = serverUrl + '/update-venue';
 
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     });
@@ -183,18 +183,18 @@ export class DataService {
   }
 
 
-  postTinyEvent(event : any){
+  postTinyEvent(event: any) {
 
-    let apiURL = serverUrl + "/create-tiny-event";
+    const apiURL = serverUrl + '/create-tiny-event';
 
-    if(event.image) {
-      let file: File = event.image;
-      let formData:FormData = new FormData();
+    if (event.image) {
+      const file: File = event.image;
+      const formData: FormData = new FormData();
       formData.append('file', file, file.name);
-      formData.append("contact", JSON.stringify(event));
-      formData.append("filename", JSON.stringify(event));
+      formData.append('contact', JSON.stringify(event));
+      formData.append('filename', JSON.stringify(event));
 
-      let headers = new HttpHeaders({
+      const headers = new HttpHeaders({
         'Content-Type': 'multipart/form-data',
         'Accept': 'application/json'
       });
@@ -205,52 +205,52 @@ export class DataService {
   }
 
   updateContact(con: any) {
-    let apiURL = serverUrl + "/update-contact";
+    const apiURL = serverUrl + '/update-contact';
 
-    let contact = Object.assign({}, con);
-    let formData:FormData = new FormData();
-    if(contact.image ) {
+    const contact = Object.assign({}, con);
+    const formData: FormData = new FormData();
+    if (contact.image ) {
       formData.append('file', this.dataURItoBlob(contact.image), contact.fileName);
-      formData.append("filename", contact.fileName);
+      formData.append('filename', contact.fileName);
       contact.image = null;
-    }else{
+    } else {
       formData.append('file', null);
-      formData.append("filename", "");
+      formData.append('filename', '');
     }
 
-    formData.append("contact", JSON.stringify(contact));
+    formData.append('contact', JSON.stringify(contact));
 
-    let hdrs = new HttpHeaders();
-    hdrs.append("Content-Type", "multipart/form-data");
-    hdrs.append("Accept", "application/json");
+    const hdrs = new HttpHeaders();
+    hdrs.append('Content-Type', 'multipart/form-data');
+    hdrs.append('Accept', 'application/json');
     return this.http.post(`${apiURL}`, formData, {headers: hdrs})
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
   updateUser(user: User) {
-    let apiURL = serverUrl + "/update-user";
+    const apiURL = serverUrl + '/update-user';
 
-    let formData:FormData = new FormData();
-    if(user.image ) {
+    const formData: FormData = new FormData();
+    if (user.image ) {
       formData.append('file', this.dataURItoBlob(user.image), user.fileName);
       user.image = null;
-      formData.append("filename", user.fileName);
+      formData.append('filename', user.fileName);
     }
 
-    formData.append("user", JSON.stringify(user));
+    formData.append('user', JSON.stringify(user));
 
-    let hdrs = new HttpHeaders();
-    hdrs.append("Content-Type", "multipart/form-data");
-    hdrs.append("Accept", "application/json");
+    const hdrs = new HttpHeaders();
+    hdrs.append('Content-Type', 'multipart/form-data');
+    hdrs.append('Accept', 'application/json');
     return this.http.post(`${apiURL}`, formData, {headers: hdrs})
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
   deleteContact(id: number) {
-    let apiURL = serverUrl + "/delete-contact";
-    let headers = new HttpHeaders({
+    const apiURL = serverUrl + '/delete-contact';
+    const headers = new HttpHeaders({
       'Accept': 'application/json'
     });
     return this.http.post(`${apiURL}`, id, {headers: headers});
@@ -258,8 +258,8 @@ export class DataService {
   }
 
   postMeeting(event: any) {
-    let apiURL = serverUrl + "/create-meeting";
-    let headers = new HttpHeaders({
+    const apiURL = serverUrl + '/create-meeting';
+    const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer ' + this.jwtHeaders
@@ -270,21 +270,21 @@ export class DataService {
   }
 
   getComments(eventId, page):  Observable<any> {
-      let apiURL = serverUrl + "/get-comments/" + eventId + "/" + page;
+      const apiURL = serverUrl + '/get-comments/' + eventId + '/' + page;
       return this.http.get(apiURL, {}).pipe(map(this.extractData))
         .pipe(catchError(this.handleError));
 
   }
   getCommentsGuest(eventId, page, uuid):  Observable<any> {
       // It is a guest user
-      let apiURL = serverUrl + "/get-comments-guest";
+      const apiURL = serverUrl + '/get-comments-guest';
       return this.http.get(apiURL, {
         params: {event_id: eventId, page: page, uuid: uuid}
       });
   }
 
   getDatesByPeriod(startDate, endDate):  Observable<any> {
-    let apiURL = serverUrl + "/get-meeting-dates";
+    const apiURL = serverUrl + '/get-meeting-dates';
     return this.http.get(apiURL, {
       params: {startDate: startDate.toUTCString(), endDate: endDate.toUTCString()}
     }).pipe(map(this.extractData))
@@ -292,8 +292,8 @@ export class DataService {
   }
 
   deleteComment(comment: any) {
-    let apiURL = serverUrl + "/delete-comment";
-    let headers = new HttpHeaders({
+    const apiURL = serverUrl + '/delete-comment';
+    const headers = new HttpHeaders({
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
@@ -302,16 +302,16 @@ export class DataService {
       .pipe(catchError(this.handleError));
   }
 
-  postComment(comment : any){
+  postComment(comment: any) {
     let apiURL;
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
     });
-    if(comment.uuid){
-      apiURL = serverUrl + "/create-comment-guest";
+    if (comment.uuid) {
+      apiURL = serverUrl + '/create-comment-guest';
       return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers}).pipe(map(this.extractData))
         .pipe(catchError(this.handleError));
-    }else{
-      apiURL = serverUrl + "/create-comment";
+    } else {
+      apiURL = serverUrl + '/create-comment';
       return this.http.post(`${apiURL}`, JSON.stringify(comment), {headers: headers}).pipe(map(this.extractData))
         .pipe(catchError(this.handleError));
     }
@@ -323,21 +323,21 @@ export class DataService {
   updateContactStatus(contactEventId: number, status: string) {
     let apiURL;
 
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
 
-    apiURL = serverUrl + "/update-contact-status";
+    apiURL = serverUrl + '/update-contact-status';
     return this.http.post(`${apiURL}`, JSON.stringify({contactEventId: contactEventId, status: status}), {headers: headers})
       .pipe(map(this.extractData))
       .pipe(catchError(this.handleError));
   }
 
   contactUs(message: { name: any; email: any; title: any; message: any }) {
-    let apiURL = serverUrl + "/contact-us";
+    const apiURL = serverUrl + '/contact-us';
 
-    let headers = new HttpHeaders({
+    const headers = new HttpHeaders({
       'Content-Type': 'text/json',
       'Accept': 'application/json'
     });
@@ -350,21 +350,22 @@ export class DataService {
   dataURItoBlob(dataURI) {
     // convert base64/URLEncoded data component to raw binary data held in a string
     let byteString;
-    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
       byteString = atob(dataURI.split(',')[1]);
-    else
+    } else {
       byteString = unescape(dataURI.split(',')[1]);
+    }
 
     // separate out the mime component
-    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
 
     // write the bytes of the string to a typed array
-    let ia = new Uint8Array(byteString.length);
+    const ia = new Uint8Array(byteString.length);
     for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
     }
 
-    return new Blob([ia], {type:mimeString});
+    return new Blob([ia], {type: mimeString});
   }
 
 }

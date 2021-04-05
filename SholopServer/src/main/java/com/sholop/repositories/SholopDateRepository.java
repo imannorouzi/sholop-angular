@@ -6,9 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -35,6 +33,24 @@ public interface SholopDateRepository extends JpaRepository<EventDate, Integer> 
                                      @Param("start_date") Timestamp startDate,
                                      @Param("end_date") Timestamp endDate);
 
+    @Query( value = "select ed.* from sh_event e " +
+            " inner join sh_contact_event sce on e.id = sce.event_id " +
+            " inner join sh_event_date ed on e.id = ed.event_id " +
+            " where " +
+            " ed.date >= :date  and " +
+            " ( e.chair_id = :user_id or sce.email = :email ) ", nativeQuery = true)
+    List<EventDate> findEventDatesForward(@Param("user_id") int userId,
+                                          @Param("email") String email,
+                                          @Param("date") Timestamp date );
 
+    @Query( value = "select ed.* from sh_event e " +
+            " inner join sh_contact_event sce on e.id = sce.event_id " +
+            " inner join sh_event_date ed on e.id = ed.event_id " +
+            " where " +
+            " ed.date < :date  and " +
+            " ( e.chair_id = :user_id or sce.email = :email ) ", nativeQuery = true)
+    List<EventDate> findEventDatesBackward(@Param("user_id") int userId,
+                                          @Param("email") String email,
+                                          @Param("date") Timestamp date );
 }
 

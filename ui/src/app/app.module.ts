@@ -87,6 +87,7 @@ import {ContentModalComponent} from "./common-components/content-modal/content-m
 import {ModalModule} from "ngx-bootstrap/modal";
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { ContactEventMeetingComponent } from './contact-event-meeting/contact-event-meeting.component';
+import { ProfileNavbarComponent } from './profile-navbar/profile-navbar.component';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { ContactEventMeetingComponent } from './contact-event-meeting/contact-ev
     OverlaySpinnerComponent,
     ContentModalComponent,
     MeetingDetailsComponent,
-    ContactEventMeetingComponent
+    ContactEventMeetingComponent,
+    ProfileNavbarComponent
   ],
   imports: [
     BrowserModule,
