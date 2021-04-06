@@ -63,6 +63,7 @@ public class FileStorageService {
 
             return filename;
         } catch (IOException ex) {
+            ex.printStackTrace();
             throw new Exception("Could not store file " + filename + ". Please try again!", ex);
         }
     }
@@ -88,14 +89,14 @@ public class FileStorageService {
 
         String filename = "qr_code_" + (new Date()).toString().replaceAll(" ", "") + ".png";
 
-        Path fileLocation = Paths.get(applicationConfiguration.getUploadDir() + "/QRCodes")
+        Path fileLocation = Paths.get(applicationConfiguration.getUploadDir() + "/images/QRCodes")
                 .toAbsolutePath().normalize();
         // Copy file to the target location (Replacing existing file with the same name)
         Path targetLocation = fileLocation.resolve(filename);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", targetLocation);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/download/QRCodes/")
+                .path("/download/")
                 .path(filename)
                 .toUriString();
         return Utils.fixUri(fileDownloadUri);
@@ -139,12 +140,12 @@ public class FileStorageService {
             if(resp.getStatus() == 200)
             {
                 InputStream is = resp.readEntity(InputStream.class);
-                this.storeFile(is, filename, "/venues");
+                this.storeFile(is, "images/venues/" + filename, "");
 
                 IOUtils.closeQuietly(is);
 
                 fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/download/venues/")
+                        .path("/download/")
                         .path(filename)
                         .toUriString();
             }

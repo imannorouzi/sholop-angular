@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AlertService} from '../alert.service';
 import {environment} from '../../environments/environment';
 import {User} from '../user';
+import {CommonService} from "./common.service";
 
 
 const serverUrl = environment.serverUrl;
@@ -20,13 +21,16 @@ export class AuthService {
 
   constructor(private localStorageService: LocalStorageService,
               private http: HttpClient,
-              private alertService: AlertService) {
+              private alertService: AlertService,
+              public commonService: CommonService) {
     this.loadFromSessionStorage();
   }
 
   login(user: User): void {
+    if(user.imageUrl) {
+      user.imageUrl = this.commonService.getBase() + user.imageUrl;
+    }
     this.user = user;
-
     this.saveToSessionStorage(user);
   }
 

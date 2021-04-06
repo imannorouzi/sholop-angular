@@ -4,7 +4,7 @@ export class User {
   password: string;
   name: string;
   imageUrl: string;
-  image: File;
+  image: string;
   fileName: string;
   latitude: number;
   longitude: number;

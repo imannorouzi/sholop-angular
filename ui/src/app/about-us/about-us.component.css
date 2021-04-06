@@ -1,6 +1,7 @@
 .about-us-image{
-  width: 200px;
-  height: 200px;
+  width: 100%;
+  max-width: 150px;
+  max-height: 150px;
   border-radius: 50%;
 }
 

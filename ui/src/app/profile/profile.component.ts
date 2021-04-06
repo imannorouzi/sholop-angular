@@ -92,6 +92,7 @@ export class ProfileComponent implements OnInit {
 
   imageCropped(event: ImageCroppedEvent) {
     this.user.imageUrl = event.base64;
+    this.user.image = event.base64;
   }
   loadImageFailed() {
     // show message

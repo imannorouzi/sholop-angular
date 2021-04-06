@@ -10,6 +10,7 @@ import {ReceptionService} from '../reception/reception.service';
 import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {SwitchButtonComponent} from '../common-components/switch-button/switch-button.component';
 import {MeetingService} from '../meetings/meeting.service';
+import {DateService} from "../utils/date.service";
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,7 @@ export class HomeComponent implements OnInit {
 
   constructor(public navigationService: NavigationService,
               public authService: AuthService,
+              public dateService: DateService,
               private qrCodeService: QrCodeService,
               private dataService: DataService,
               private receptionService: ReceptionService,

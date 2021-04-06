@@ -22,8 +22,7 @@
 
 .navbar .dropdown-item:hover,
 .navbar .dropdown-item:active {
-  color: red;
-  text-decoration: none;
+  color: white;
   background-color: #3a3f48;
 }
 
@@ -126,9 +125,13 @@ button{
 }
 
 .search-container{
-  flex-grow: 1;
-  margin: 0 20px
+  /*flex-grow: 1;*/
+  /*margin: 0 10px*/
 }
 #navbarSupportedContent{
   flex-grow: 0;
+}
+
+.navbar-toggler{
+  color: white;
 }

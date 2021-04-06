@@ -1,7 +1,28 @@
 <nav class="navbar navbar-expand-lg ">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <i class="fa fa-bars"></i>
-  </button>
+  <div class=" ml-1" id="navbasrText">
+    <ul class="navbar-nav me-auto ">
+
+      <li class="nav-item dropdown" *ngIf="authService.isLoggedIn()">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="user-item ">
+            <img class="user-img" [src]="authService.imageUrl" alt="User picture">
+          </div>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/profile">
+            <div class="user-info flexbox-item-grow">
+              <app-profile-navbar></app-profile-navbar>
+            </div>
+          </a>
+          <a class="dropdown-item" routerLink="/login" ><i class="pr-2 fa fa-sign-out"></i>خروج</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!--<div class="navbar-toggler"  data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i class="fa fa-ellipsis-v"></i>
+  </div>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav me-auto ">
@@ -10,7 +31,7 @@
         <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <div class="user-item ">
 
-            <img class="user-img" [src]="[authService.imageUrl]"
+            <img class="user-img" [src]="authService.imageUrl"
                  alt="User picture">
             <strong class="user-name">{{authService.name}}</strong>
           </div>
@@ -39,7 +60,7 @@
           بیشتر...
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <!--(click)="scanner.show()"-->
+          &lt;!&ndash;(click)="scanner.show()"&ndash;&gt;
           <a class="dropdown-item" [routerLink]=""  ><i class="pr-2 fa fa-id-card"></i>ایجاد مجوز ورود</a>
           <a class="dropdown-item" [routerLink]="" ><i class="pr-2 fa fa-qrcode"></i>اسکن بارکد ورود</a>
         </div>
@@ -54,18 +75,18 @@
         </div>
       </li>
     </ul>
-  </div>
+  </div>-->
 
 
-  <div class="search-container" id="">
+  <div class="search-container " id="">
       <input class="form-control mr-sm-2 w-100" type="search" placeholder="بگردید..." aria-label="Search">
   </div>
 
-  <div class=" " id="navbarText">
+  <div class="mr-auto ml-1" id="navbarText">
     <ul class="navbar-nav mr-auto ">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img src="assets/images/Sholop-Logo-White.png" alt="" width="80"/>
+        <a class="nav-link dropdown-toggle mr-3" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="assets/images/Sholop-Logo-White.png" alt="" width="50"/>
         </a>
         <div class="dropdown-menu left" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" routerLink="/about-us">

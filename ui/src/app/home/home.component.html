@@ -7,14 +7,14 @@
 <div [class]="(authService.isLoggedIn() ? 'container' : '' ) + ' home h-100 '" id="home">
 
   <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'toggled ' : '')
-      + (sidebar ? 'open' : '')" #pageWrapper>
+      + (sidebar ? 'open' : 'closed')" #pageWrapper>
 
     <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
-      <div class="sidebar-content pl-2 pr-2">
+      <div class="sidebar-content ">
 
         <div class="sidebar-brand  text-left" id="sidebar-brand-close">
           <div id="close-sidebar"  (click)="this.toggleSidebar()">
-            <i class="fa fa-remove nav-icon active "></i>
+            <i [class]="'fa nav-icon active ' + (sidebar ? 'fa-arrow-right' : 'fa-arrow-left')"></i>
           </div>
         </div>
 
@@ -32,34 +32,38 @@
             </div>
 
           </div>
-        </div>
+        </div>-->
 
-        <div class="input-group ">
+        <!--<div class="input-group ">
           <button class="form-control mt-3 primary" routerLink="/create-meeting" >ایجاد ملاقات</button>
         </div>
 
         <div class="input-group ">
           <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
-        </div>
+        </div>-->
 
-        <hr>-->
 
-        <div class="calendar-wrapper">
-<!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
-          <calendar #calendar (onDateSelected)="onDateSelected($event)"></calendar>
-        </div>
-
-        <hr>
-
-        <div class="sidebar-menu">
+        <div class="sidebar-menu mt-4">
           <ul>
-            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
+            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-meeting') ? 'selected' : '')" [routerLink]="'/create-meeting'">
+              <a [routerLink]="">
+                <i class="fa fa-handshake-o"></i>
+                <span>ایجاد ملاقات</span>
+              </a>
+            </li>
+            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-token') ? 'selected' : '')" [routerLink]="'/create-token'">
+              <a [routerLink]="">
+                <i class="fa fa-id-badge"></i>
+                <span>صدور اجازه ورود</span>
+              </a>
+            </li>
+            <li class="sidebar-item " [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
               <a [routerLink]="">
                 <i class="fa fa-users"></i>
                 <span>جلسات</span>
               </a>
             </li>
-            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation === '/tokens' ? 'selected' : '')" [routerLink]="'/tokens'">
+            <li class=" sidebar-item " [class]="(navigationService.currentLocation === '/tokens' ? 'selected' : '')" [routerLink]="'/tokens'">
               <a [routerLink]="">
                 <i class="fa fa-id-card"></i>
                 <span>مجوزهای ورود</span>
@@ -87,21 +91,21 @@
               </div>
             </li>-->
 
-            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation === '/address-book' ? 'selected' : '')" [routerLink]="'/address-book'">
+            <li class="sidebar-item" [class]="(navigationService.currentLocation === '/address-book' ? 'selected' : '')" [routerLink]="'/address-book'">
               <a [routerLink]="">
                 <i class="fa fa-address-book"></i>
                 <span>دفترچه افراد</span>
               </a>
             </li>
 
-            <li class="sidebar-dropdown" [class]="(navigationService.currentLocation === '/venues' ? 'selected' : '')" [routerLink]="'/venues'">
+            <li class="sidebar-item" [class]="(navigationService.currentLocation === '/venues' ? 'selected' : '')" [routerLink]="'/venues'">
               <a [routerLink]="">
                 <i class="fa fa-map-marker"></i>
                 <span>مکان‌های جلسات</span>
               </a>
             </li>
 
-            <li class="sidebar-dropdown" *ngIf="false" [class]="(navigationService.currentLocation === '/messages' ? 'selected' : '')" [routerLink]="'/messages'">
+            <li class="sidebar-item" *ngIf="false" [class]="(navigationService.currentLocation === '/messages' ? 'selected' : '')" [routerLink]="'/messages'">
               <a [routerLink]="">
                 <i class="fa fa-inbox"></i>
                 <span>پیام‌ها</span>
@@ -125,6 +129,15 @@
           </div>-->
         </div>
 
+
+        <hr>
+
+        <div class="calendar-wrapper">
+          <!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
+          <calendar class="calendar" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
+
+          <span class="calendar-banner">{{calendar.selectedDate ? dateService.greToPersian(calendar.selectedDate.gDate , true) : ''}}</span>
+        </div>
         <!-- sidebar-menu  -->
       </div>
       <!-- sidebar-content  -->

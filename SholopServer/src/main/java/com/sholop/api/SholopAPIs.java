@@ -4,6 +4,7 @@ import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
+import com.sholop.Application;
 import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
@@ -15,10 +16,16 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -351,4 +358,10 @@ public class SholopAPIs {
     }
 
 
+    @RequestMapping(value = "/{[path:[^\\.]*}")
+    public ResponseEntity<Resource> ui(HttpServletRequest request) throws Exception {
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        return ResponseEntity.ok(new InputStreamResource(Objects.requireNonNull(classloader.getResourceAsStream("public/index.html"))));
+
+    }
 }

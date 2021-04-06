@@ -343,7 +343,7 @@ public class MeetingAPI {
 
     @PostMapping("/uploadFile")
     public Response uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-        String fileName = fileStorageService.storeFile(file, file.getOriginalFilename(), "/");
+        String fileName = fileStorageService.storeFile(file, file.getOriginalFilename(), "/images");
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/downloadFile/")
@@ -368,12 +368,13 @@ public class MeetingAPI {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/download/{type}/{fileName:.+}")
+    @GetMapping("/download/{dir}/{type}/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName,
                                                  @PathVariable String type,
+                                                 @PathVariable String dir,
                                                  HttpServletRequest request) throws Exception {
         // type could be venues, users, contacts
-        Resource resource = fileStorageService.loadFileAsResource(fileName, "/" + type);
+        Resource resource = fileStorageService.loadFileAsResource(fileName, dir + "/" + type);
 
         // Try to determine file's content type
         String contentType = null;
@@ -393,4 +394,7 @@ public class MeetingAPI {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+
+
 }

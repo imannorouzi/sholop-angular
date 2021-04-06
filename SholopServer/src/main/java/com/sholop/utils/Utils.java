@@ -54,7 +54,7 @@ public class Utils {
     }
 
     public static String fixUri(String fileDownloadUri) {
-        return fileDownloadUri.replace("http://localhost:8083", "/sholop-api");
+        return fileDownloadUri.replace("http://localhost:8083", "/");
     }
 
     /*public static String saveFile(InputStream uploadedInputStream,

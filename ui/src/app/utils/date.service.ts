@@ -46,6 +46,10 @@ export class DateService {
   constructor() { }
 
   greToPersian(date, long: boolean = false): string{
+    if(!date){
+      return '';
+    }
+
     if(typeof (date) === "string"){
       date = new Date(Date.parse(date));
     }

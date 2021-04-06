@@ -111,17 +111,17 @@ public class ContactAPIs {
             }
 
             Contact repetitive = repositoryFactory.getContactRepository().findFirstByEmailAndUserId(contact.getEmail(), user.getId());
-            if(repetitive != null){
+            if(contact.getId() == -1 && repetitive != null){
                 return Response.ok(gson.toJson(new ResponseObject("CONTACT_EXISTS", repetitive))).build();
             }
 
             if(filename != null && !filename.isEmpty() && file != null) {
                 filename = "contact_" + user.getId() + "_" + filename.replaceAll("\\s+", "");
 
-                String fileName = fileStorageService.storeFile(file, filename, "/contacts");
+                String fileName = fileStorageService.storeFile(file, "images/contacts/" + filename, "/");
 
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/download/contacts/")
+                        .path("/download/")
                         .path(fileName)
                         .toUriString();
 

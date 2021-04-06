@@ -230,9 +230,9 @@ public class AuthAPI {
 
             if(filename != null && file != null) {
                 filename = "user_" + user.getId() + "_" + filename.replaceAll("\\s+", "");
-                String fileName = fileStorageService.storeFile(file, filename, "/users");
+                String fileName = fileStorageService.storeFile(file, "images/users/" + filename, "/");
                 String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                        .path("/download/users/")
+                        .path("/download/")
                         .path(fileName)
                         .toUriString();
 

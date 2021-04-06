@@ -12,6 +12,7 @@ import {AuthService} from '../utils/auth.service';
 import {SuggestingItemInputComponent} from '../suggesting-item-input/suggesting-item-input.component';
 import { switchMap} from 'rxjs/operators';
 import {ImageCropperComponent} from 'ngx-image-cropper';
+import {CommonService} from "../utils/common.service";
 
 @Component({
   selector: 'create-meeting',
@@ -41,6 +42,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
               private alertService: AlertService,
               private mapsAPILoader: MapsAPILoader,
               private ngZone: NgZone,
+              public commonService: CommonService,
               public dateService: DateService) {
   }
 

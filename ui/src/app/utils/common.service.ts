@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Subject} from "rxjs";
+import {environment} from "../../environments/environment";
 
+
+const serverUrl = environment.serverUrl;
 
 @Injectable({
   providedIn: 'root'
@@ -151,4 +154,7 @@ export class CommonService {
     return true;
   }
 
+  getBase() {
+    return serverUrl;
+  }
 }

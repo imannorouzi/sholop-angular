@@ -6,7 +6,7 @@ import {DateService} from '../utils/date.service';
 import {AlertService} from '../alert.service';
 import {MeetingService, readMethod} from './meeting.service';
 import {CommonService} from '../utils/common.service';
-import {Subscription} from 'rxjs';
+import {Subscription} from 'rxjs/internal/Subscription';
 
 @Component({
   selector: 'app-meetings',
