@@ -45,18 +45,6 @@
 
         <div class="sidebar-menu mt-4">
           <ul>
-            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-meeting') ? 'selected' : '')" [routerLink]="'/create-meeting'">
-              <a [routerLink]="">
-                <i class="fa fa-handshake-o"></i>
-                <span>ایجاد ملاقات</span>
-              </a>
-            </li>
-            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-token') ? 'selected' : '')" [routerLink]="'/create-token'">
-              <a [routerLink]="">
-                <i class="fa fa-id-badge"></i>
-                <span>صدور اجازه ورود</span>
-              </a>
-            </li>
             <li class="sidebar-item " [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
               <a [routerLink]="">
                 <i class="fa fa-users"></i>
@@ -120,7 +108,20 @@
                 <span>تنظیمات</span>
               </a>
             </li>-->
+            <hr>
 
+            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-meeting') ? 'selected' : '')" [routerLink]="'/create-meeting'">
+              <a [routerLink]="">
+                <i class="fa fa-handshake-o"></i>
+                <span>ایجاد ملاقات</span>
+              </a>
+            </li>
+            <li class="sidebar-item" [class]="(navigationService.currentLocation.startsWith('/create-token') ? 'selected' : '')" [routerLink]="'/create-token'">
+              <a [routerLink]="">
+                <i class="fa fa-id-badge"></i>
+                <span>صدور اجازه ورود</span>
+              </a>
+            </li>
 
           </ul>
 

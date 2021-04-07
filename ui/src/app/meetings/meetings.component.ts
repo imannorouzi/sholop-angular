@@ -88,7 +88,8 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (data.msg === 'OK') {
 
           if (data.object) {
-            data.object.forEach(event => {
+            data.object.forEach(ev => {
+              const event = this.meetingService.localize(ev);
               event.dates.forEach(ed => {
                 const date = new Date(ed.date);
                 if (!this.meetings[date.toISOString()]) {

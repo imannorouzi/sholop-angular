@@ -70,7 +70,7 @@
 }
 
 .dropdown-toggle::after {
-  margin-right: 7px;
+  margin-right: 4px;
   vertical-align: 0;
   margin-left: 0;
   content: "";
@@ -127,6 +127,7 @@ button{
 .search-container{
   /*flex-grow: 1;*/
   /*margin: 0 10px*/
+  max-width: 400px;
 }
 #navbarSupportedContent{
   flex-grow: 0;
