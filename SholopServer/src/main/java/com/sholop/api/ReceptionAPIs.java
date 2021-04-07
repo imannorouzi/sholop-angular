@@ -1,51 +1,31 @@
 package com.sholop.api;
 
-import com.amazonaws.util.json.JSONArray;
-import com.amazonaws.util.json.JSONException;
-import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
-import com.sholop.mail.MailMessage;
-import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
-import com.sholop.utils.Utils;
-import org.apache.commons.io.FileUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.security.PermitAll;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 public class ReceptionAPIs {
 
+    final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    RepositoryFactory repositoryFactory;
-
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
     Gson gson = new Gson();
+
+    public ReceptionAPIs(RepositoryFactory repositoryFactory, FileStorageService fileStorageService) {
+        this.repositoryFactory = repositoryFactory;
+        this.fileStorageService = fileStorageService;
+    }
 
     @GetMapping("/get-reception")
     public Response getMeetings( @AuthenticationPrincipal UserDetails u,

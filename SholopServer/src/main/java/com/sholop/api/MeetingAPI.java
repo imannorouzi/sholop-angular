@@ -9,7 +9,6 @@ import com.sholop.objects.*;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,21 +32,22 @@ import java.util.stream.Collectors;
 @RestController
 public class MeetingAPI {
 
-    @Autowired
-    RepositoryFactory repositoryFactory;
+    final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
     Gson gson = new Gson();
+
+    public MeetingAPI(RepositoryFactory repositoryFactory, FileStorageService fileStorageService) {
+        this.repositoryFactory = repositoryFactory;
+        this.fileStorageService = fileStorageService;
+    }
 
     @PermitAll
     @PostMapping("/create-meeting")
     public Response createMeeting(@AuthenticationPrincipal UserDetails u, @RequestBody String jsonMeetingString)  {
 
-
         int id = -1;
-
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
             JSONObject jsonEvent = new JSONObject(jsonMeetingString);

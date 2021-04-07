@@ -4,7 +4,6 @@ import com.amazonaws.util.json.JSONArray;
 import com.amazonaws.util.json.JSONException;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
-import com.sholop.Application;
 import com.sholop.mail.MailMessage;
 import com.sholop.mail.MailUtils;
 import com.sholop.objects.*;
@@ -15,7 +14,6 @@ import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -43,11 +42,14 @@ import java.util.*;
 public class SholopAPIs {
 
 
-    @Autowired
-    RepositoryFactory repositoryFactory;
+    final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
+
+    public SholopAPIs(RepositoryFactory repositoryFactory, FileStorageService fileStorageService) {
+        this.repositoryFactory = repositoryFactory;
+        this.fileStorageService = fileStorageService;
+    }
 
     @GetMapping("/send-mail/{template}/{to}")
     public Response sendmail(@PathVariable("template") String template, @PathVariable("to") String to){

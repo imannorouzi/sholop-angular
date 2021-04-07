@@ -2,11 +2,13 @@ package com.sholop.api;
 
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
-import com.sholop.objects.*;
+import com.sholop.objects.Contact;
+import com.sholop.objects.ContactEvent;
+import com.sholop.objects.ResponseObject;
+import com.sholop.objects.User;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +23,16 @@ import java.util.Optional;
 @RestController
 public class ContactAPIs {
 
-    @Autowired
-    RepositoryFactory repositoryFactory;
+    final RepositoryFactory repositoryFactory;
 
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
     Gson gson = new Gson();
+
+    public ContactAPIs(RepositoryFactory repositoryFactory, FileStorageService fileStorageService) {
+        this.repositoryFactory = repositoryFactory;
+        this.fileStorageService = fileStorageService;
+    }
 
 //    @Autowired
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;

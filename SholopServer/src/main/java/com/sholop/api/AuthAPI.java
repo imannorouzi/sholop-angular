@@ -3,20 +3,13 @@ package com.sholop.api;
 import com.amazonaws.util.json.JSONObject;
 import com.google.gson.Gson;
 import com.sholop.auth.JwtTokenUtil;
-import com.sholop.auth.JwtUserDetailsService;
-import com.sholop.auth.PasswordHash;
 import com.sholop.mail.MailUtils;
-import com.sholop.objects.Contact;
 import com.sholop.objects.ResponseObject;
 import com.sholop.objects.User;
 import com.sholop.repositories.RepositoryFactory;
 import com.sholop.utils.FileStorageService;
 import com.sholop.utils.Utils;
 import org.apache.commons.io.FilenameUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -29,36 +22,29 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.ws.rs.core.Response;
-import javax.xml.crypto.Data;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @RestController
 @CrossOrigin
 public class AuthAPI {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
 
-    @Autowired
-    RepositoryFactory repositoryFactory;
-
-    @Autowired
-    private FileStorageService fileStorageService;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    final RepositoryFactory repositoryFactory;
+    private final FileStorageService fileStorageService;
+    private final AuthenticationManager authenticationManager;
 
     Gson gson = new Gson();
 
-    public AuthAPI() {
+    public AuthAPI(JwtTokenUtil jwtTokenUtil, RepositoryFactory repositoryFactory, FileStorageService fileStorageService, AuthenticationManager authenticationManager) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.repositoryFactory = repositoryFactory;
+        this.fileStorageService = fileStorageService;
+        this.authenticationManager = authenticationManager;
     }
 
 

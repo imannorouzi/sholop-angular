@@ -10,9 +10,9 @@
       + (sidebar ? 'open' : 'closed')" #pageWrapper>
 
     <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
-      <div class="sidebar-content ">
+      <div class="sidebar-content ltr">
 
-        <div class="sidebar-brand  text-left" id="sidebar-brand-close">
+        <div class="sidebar-brand rtl text-left" id="sidebar-brand-close">
           <div id="close-sidebar"  (click)="this.toggleSidebar()">
             <i [class]="'fa nav-icon active ' + (sidebar ? 'fa-arrow-right' : 'fa-arrow-left')"></i>
           </div>
@@ -42,8 +42,7 @@
           <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
         </div>-->
 
-
-        <div class="sidebar-menu mt-4">
+        <div class="sidebar-menu rtl mt-4">
           <ul>
             <li class="sidebar-item " [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
               <a [routerLink]="">
@@ -130,10 +129,9 @@
           </div>-->
         </div>
 
-
         <hr>
 
-        <div class="calendar-wrapper">
+        <div class="calendar-wrapper rtl">
           <!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
           <calendar class="calendar" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
 
