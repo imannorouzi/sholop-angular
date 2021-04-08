@@ -1,9 +1,11 @@
-
+.times-wrapper{
+  /*position: relative;*/
+}
 .times-container{
   position: absolute;
   width: 100%;
-  left: 0;
-  top: 100%;
+  right: 0;
+  top: 0;
   z-index: 200;
 
   border-radius: .4em;
@@ -12,6 +14,11 @@
   background: #f5f7fa;
   -webkit-transition: opacity .3s linear;
   transition: opacity .3s linear;
+  max-width: 130px;
+}
+
+button{
+  width: 100%;
 }
 
 .time-arrows{

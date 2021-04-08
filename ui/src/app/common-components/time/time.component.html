@@ -1,4 +1,4 @@
-<div class="iconed-input" click-zone (clickOutside)="clickOutside($event)">
+<div class="times-wrapper iconed-input" click-zone (clickOutside)="clickOutside($event)">
 
   <div class="frame flexbox-parent-row">
     <input #input (change)="onTimeChanged()"
@@ -10,9 +10,9 @@
            [placeholder]="placeholder? placeholder : 'Time'" >
   </div>
 
-  <div class="unselectable"   *ngIf="isShowing" >
+  <div class="unselectable position-relative"  >
 
-    <div class="times-container ltr" >
+    <div   *ngIf="isShowing"  class="times-container ltr" >
 
 
       <div class="flexbox-parent-row ltr p-2">

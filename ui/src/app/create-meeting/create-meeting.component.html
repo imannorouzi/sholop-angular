@@ -23,20 +23,19 @@
         <div class="col-lg-5 mb-1">
           <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
         </div>
-        <div class="col-lg-3 flexbox-parent-row line-height mb-1">
-          <span class="ml-2">از ساعت</span>
-          <div class="flexbox-item-grow">
+        <div class="col-lg-6 flexbox-parent-row line-height mb-1">
+          <span class="ml-2">از</span>
+          <div class="flexbox-item-grow-1">
             <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
           </div>
-        </div>
-        <div class="col-lg-3 flexbox-parent-row line-height mb-1">
-          <span class="ml-2">تا ساعت</span>
-          <div class="flexbox-item-grow">
+          <span class="ml-2 mr-2">تا</span>
+          <div class="flexbox-item-grow-1">
             <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
           </div>
+
+          <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
         <div class="col-lg-1 mb-1">
-          <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
       </div>
       <div class=" row ">
