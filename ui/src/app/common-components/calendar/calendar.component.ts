@@ -69,7 +69,7 @@ export class CalendarComponent implements OnInit {
     this.today = this.dateService.getSholopDate(date);
     // date.setMonth(date.getMonth()+monthOffset)
 
-    this.selectedDate = this.today;
+    this.selectedDate = this.today.gDate;
 
     this.month.currentMonth = parseInt(this.today.jDate.month);
     this.month.currentYear = this.today.jDate.year;

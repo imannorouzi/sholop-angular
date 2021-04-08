@@ -37,14 +37,19 @@
   cursor: pointer;
 }
 
+.calendar-banner:hover{
+  color: #005ea6;
+}
+
 .calendar-banner{
   display: none;
   transform: rotate(-90deg);
   transform-origin: 0 0 ;
   line-height: 2.5;
   white-space: nowrap;
-  height: 120px;
+  /*height: 120px;*/
   margin-top: 50px;
+  cursor: pointer;
 }
 
 /*************** */
@@ -131,7 +136,7 @@
 
 
 @media screen and (min-width: 768px) {
-  .page-wrapper.toggled .page-content {
+  .page-wrapper.has-sidebar.toggled .page-content {
     padding-right: 260px;
   }
   .page-wrapper.toggled .sidebar-wrapper {
@@ -147,7 +152,7 @@
   }
 }
 @media screen and (max-width: 767px) {
-  .page-wrapper .page-content {
+  .page-wrapper.has-sidebar .page-content {
     padding-right: 40px;
   }
 
@@ -261,6 +266,7 @@
 .sidebar-content {
   max-height: calc(100% - 30px);
   height: calc(100% - 30px);
+  /*height: 100%;*/
   overflow-y: auto;
   position: relative;
   padding: 5px;
@@ -494,7 +500,10 @@
 
 /*--------------------------page-content-----------------------------*/
 
-.page-wrapper .page-content {
+.page-wrapper.no-sidebar .sidebar-wrapper {
+  display: none;
+}
+.page-wrapper.has-sidebar .page-content {
   display: inline-block;
   width: 100%;
   padding-right: 40px;

@@ -1,18 +1,15 @@
 import {Component, OnInit, ViewChild, AfterViewInit, ElementRef, NgZone, Input} from '@angular/core';
-import {TEHRAN, Venue} from '../venue';
 import { DataService } from '../utils/data.service';
 import {ModalComponent} from '../common-components/ng-modal/modal.component';
 import {NavigationService} from '../utils/navigation.service';
-import {AddAttendeeComponent} from '../add-attendee/add-attendee.component';
 import {AlertService} from '../alert.service';
-import {MapsAPILoader} from '@agm/core';
 import {DateService} from '../utils/date.service';
-import {ContactsModalComponent} from '../contacts-modal/contacts-modal.component';
 import {AuthService} from '../utils/auth.service';
 import {SuggestingItemInputComponent} from '../suggesting-item-input/suggesting-item-input.component';
-import { switchMap} from 'rxjs/operators';
 import {ImageCropperComponent} from 'ngx-image-cropper';
 import {CommonService} from "../utils/common.service";
+import {MapComponent} from "../map/map.component";
+import {GuestsComponent} from "../guests/guests.component";
 
 @Component({
   selector: 'create-meeting',
@@ -25,12 +22,11 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   @ViewChild('address2') address2: ElementRef;
   @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal: ModalComponent;
-  @ViewChild('contactsModal') contactsModal: ContactsModalComponent;
   @ViewChild('venuesModal') venuesModal: ModalComponent;
+  @ViewChild('map') mapComponent: MapComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
-  @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
   @ViewChild('selectChair') selectChair: SuggestingItemInputComponent;
-  @ViewChild('selectGuest') selectGuest: SuggestingItemInputComponent;
+  @ViewChild('guests') guests: GuestsComponent;
 
   name: string;
   step = 0;
@@ -40,13 +36,9 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
               private navigationService: NavigationService,
               private authService: AuthService,
               private alertService: AlertService,
-              private mapsAPILoader: MapsAPILoader,
-              private ngZone: NgZone,
               public commonService: CommonService,
               public dateService: DateService) {
   }
-
-  public zoom: number;
 
   times: string[] = [];
   event = {
@@ -55,18 +47,13 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     dateStrings: [],
     attendees: [],
     title: '',
-    venue: new Venue(),
+    venue: undefined,
     chairId: -1,
     chair: this.authService.getCurrentUser(),
     welcomeMessage: '',
     eventType: 'MEETING',
     imChair: true
   };
-  mapLat: number = TEHRAN.lat;
-  mapLng: number = TEHRAN.lng;
-
-  guests: any[];
-  guestHint = '';
 
   chairs: any[];
   chairHint: string = this.authService.name;
@@ -78,62 +65,12 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
     this.user = this.authService.getCurrentUser();
 
-    // set google maps defaults
-    this.zoom = 12;
-    // this.latitude = 18.5793;
-    // this.longitude = 73.8143;
-    // set current position
-    if (!this.event.venue || this.event.venue.id <= 0) {
-      this.setCurrentPosition();
-    }
-
     const d = new Date(); d.setHours(0, 0, 0, 0);
     this.event.dates.push({date: d, startTime: new Date(), endTime: new Date()});
     for (let h = 0; h < 24; h++) {
       for (let m = 0; m < 12; m++) {
         this.times.push(( h < 10 ? '0' + h : h) + ':' + ( m < 2 ? '0' + (m * 5) : (m * 5) ) );
       }
-    }
-
-
-    // load Places Autocomplete
-    this.mapsAPILoader.load().then(() => {
-      const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
-        types: ['address']
-      });
-      autocomplete.addListener('place_changed', () => {
-        this.ngZone.run(() => {
-          // get the place result
-          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-
-          // verify result
-          if (place.geometry === undefined || place.geometry === null) {
-            return;
-          }
-
-          // set latitude, longitude and zoom
-          this.event.venue.latitude = place.geometry.location.lat();
-          this.event.venue.longitude = place.geometry.location.lng();
-          this.zoom = 12;
-
-          this.mapLat = place.geometry.location.lat();
-          this.mapLng = place.geometry.location.lng();
-        });
-      });
-    });
-  }
-
-  private setCurrentPosition() {
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.event.venue.latitude = position.coords.latitude;
-        this.event.venue.longitude = position.coords.longitude;
-        this.zoom = 12;
-
-        this.mapLat = position.coords.latitude;
-        this.mapLng = position.coords.longitude;
-
-      });
     }
   }
 
@@ -162,19 +99,8 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     if (this.validateForm()) {
-      if (this.event.venue && this.event.venue.id === 0) {
-        // this.event.userId = this.authService.getUser().id;
-        this.event.venue = new Venue(
-          -1,
-          '',
-          this.event.venue.latitude,
-          this.event.venue.longitude,
-          this.searchInput.nativeElement.value,
-          this.address2.nativeElement.value,
-          ''// this.map['mapUrl']
-        );
-      }
-
+      this.event.venue = this.mapComponent.getVenue();
+      this.event.attendees = this.guests.getAttendees();
       // take times to utc format
       if (this.event.dates) {
         this.event.dateStrings = this.event.dates.map(d => {
@@ -206,61 +132,6 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     }
   }
 
-  onImportClick(event) {
-    this.contactsModal.show();
-    event.preventDefault();
-  }
-
-  removeContact($event, index) {
-    this.event.attendees.splice(index, 1);
-    event.preventDefault();
-  }
-
-  addGuests(event) {
-    this.addAttendee.reset();
-    this.addAttendee.show();
-    event.preventDefault();
-  }
-
-  onGuestsSelected(guests) {
-    guests.forEach( guest => {
-      this.event.attendees = this.event.attendees.filter( a => {
-        return guest.email !== a.email;
-      });
-      this.event.attendees.push(guest);
-    });
-  }
-
-  onGuestAdded(guest: any) {
-
-    if (guest.type === 'USER') {
-      this.alertService.warn('همکاری با این ایمیل ثبت شده است.');
-    }
-
-     this.event.attendees = this.event.attendees.filter( a => {
-      return guest.email !== a.email;
-    });
-
-     this.event.attendees.push(guest);
-     this.guestHint = '';
-  }
-
-  onVenueImportClick(event) {
-    this.venuesModal.show();
-    event.preventDefault();
-
-  }
-
-
-
-  onVenueSelected(venue: any) {
-    this.event.venue = venue;
-    this.mapLat = venue.latitude;
-    this.mapLng = venue.longitude;
-  }
-
-
-
   fromTimeChanged(dateObj, i) {
     this.event.dates[i].startTime = dateObj;
   }
@@ -275,41 +146,6 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
       this.event.userId = chair.id;
       this.chairHint = chair.name;
     }
-  }
-
-  markerMoved(e) {
-
-    this.event.venue.latitude = e.coords.lat;
-    this.event.venue.longitude = e.coords.lng;
-
-    const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({'location': e.coords}, (res, status) => {
-      if (status === google.maps.GeocoderStatus.OK && res.length) {
-        this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
-      }
-    });
-  }
-
-  mapClicked(e) {
-
-    this.event.venue.latitude = e.coords.lat;
-    this.event.venue.longitude = e.coords.lng;
-
-    const geocoder = new google.maps.Geocoder;
-    geocoder.geocode({'location': e.coords}, (res, status) => {
-      if (status === google.maps.GeocoderStatus.OK && res.length) {
-        this.ngZone.run(() => this.event.venue.farsiAddress1 = res[0].formatted_address);
-      }
-    });
-  }
-
-  setLocation(place) {
-    this.event.venue.latitude = place.geometry.location.lat();
-    this.event.venue.longitude = place.geometry.location.lng();
-  }
-
-  goTo(url) {
-    this.navigationService.navigate(url);
   }
 
   ngAfterViewInit(): void {
@@ -340,48 +176,6 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
     }
 
     this.selectChair.onKeyUp(event);
-    event.preventDefault();
-  }
-
-  onGuestInputKeyUp(event: KeyboardEvent) {
-    switch (event.keyCode) {
-
-      case 13: // Enter
-      case 38: // Arrow Up
-      case 40: // Arrow Down
-        break;
-
-      default:
-        this.dataService.getUsers(this.guestHint)
-          .pipe(switchMap( data => {
-              if (data.msg === 'OK') {
-                this.guests = data.object.map(
-                  u => {
-                    return u;
-                  }
-                );
-              }
-              return this.dataService.getContacts(this.guestHint);
-            }
-          ))
-          .subscribe(
-            data => {
-              if (data.msg === 'OK') {
-                const contacts = data.object.map(
-                  u => {
-                    return u;
-                  }
-                );
-                this.guests = [...contacts, ...this.guests];
-              }
-            },
-            error1 => {
-              console.log(error1);
-            }
-          );
-    }
-
-    this.selectGuest.onKeyUp(event);
     event.preventDefault();
   }
 

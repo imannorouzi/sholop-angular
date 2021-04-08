@@ -4,9 +4,10 @@
 <overlay-spinner [text]="'در حال دریافت اطلاعات...'" *ngIf="loadingReception"></overlay-spinner>
 <confirm #prompt [type]="'PROMPT'" [title]="''">{{promptText}}</confirm>
 
+<app-floating-button></app-floating-button>
 <div [class]="(authService.isLoggedIn() ? 'container' : '' ) + ' home h-100 '" id="home">
 
-  <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'toggled ' : '')
+  <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'has-sidebar toggled ' : ' no-sidebar ')
       + (sidebar ? 'open' : 'closed')" #pageWrapper>
 
     <nav id="sidebar" class="sidebar-wrapper" #sidebarWrapper>
@@ -135,10 +136,12 @@
           <!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
           <calendar class="calendar" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
 
-          <span class="calendar-banner">{{calendar.selectedDate ? dateService.greToPersian(calendar.selectedDate.gDate , true) : ''}}</span>
+          <span class="calendar-banner" (click)="toggleSidebar()">{{calendar.selectedDate ? dateService.greToPersian(calendar.selectedDate , true) : 's'}}</span>
         </div>
         <!-- sidebar-menu  -->
       </div>
+
+
       <!-- sidebar-content  -->
     </nav>
 

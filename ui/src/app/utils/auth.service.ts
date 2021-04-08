@@ -28,7 +28,7 @@ export class AuthService {
 
   login(user: User): void {
     if(user.imageUrl) {
-      user.imageUrl = this.commonService.getBase() + user.imageUrl;
+      // user.imageUrl = this.commonService.getBase() + user.imageUrl;
     }
     this.user = user;
     this.saveToSessionStorage(user);

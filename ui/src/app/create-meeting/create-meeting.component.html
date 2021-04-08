@@ -51,41 +51,12 @@
 
       <div class="" [class.editing]="(step===2 && editingStep === -1) || editingStep === 2">
         <label class="font-weight-bold">محل ملاقات</label>
-        <div class="frame flexbox-parent-row">
-          <i class=" ml-3 icon fa fa-map-marker"></i>
-          <input type="text" class="flexbox-item-grow" size=80
-                 [(ngModel)]="event.venue.farsiAddress1"
-                 autocomplete="off"
-                 #searchBox name="address_1" placeholder="شهر،‌ خیابان">
-          <div class="text-left"><i class="mr-3 action-icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i></div>
-
-        </div>
-
-        <div class="frame flexbox-parent-row">
-          <i class=" ml-3 icon fa fa-map-marker"></i>
-          <input type="text" class="flexbox-item-grow" :size=80
-                 [(ngModel)]="event.venue.farsiAddress2"
-                 #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد">
-        </div>
-        <venues-modal (onSelected)="onVenueSelected($event)" #venuesModal ></venues-modal>
+        <app-map #map></app-map>
       </div>
-
-      <agm-map class="map"
-               [latitude]="mapLat"
-               [longitude]="mapLng"
-               [scrollwheel]="true"
-               [zoom]="zoom"
-               (mapClick)="mapClicked($event)">
-        <agm-marker [markerDraggable]="true"
-                    (dragEnd)="markerMoved($event)"
-                    [latitude]="event.venue.latitude" [longitude]="event.venue.longitude"></agm-marker>
-      </agm-map>
-
       <p class="card-text" [class.editing]="step===2 || editingStep === 2"><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
     </div>
 
     <!-- host-->
-
     <div class="box" [class.editing]="(step===3 && editingStep === -1) || editingStep === 3">
       <label class="font-weight-bold">میزبان ملاقات</label>
 
@@ -106,46 +77,11 @@
       <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
     </div>
 
-
     <!-- guests -->
     <div class="box">
         <label class="font-weight-bold">میهمانان</label>
-
-        <suggesting-item-input #selectGuest  click-zone (clickOutside)="selectGuest.outsideClicked($event)"
-                               (itemSelected)="onGuestAdded($event)" [items]="guests|generalFilter:guestHint">
-          <div class="frame flexbox-parent-row">
-            <i class="ml-3 icon fa fa-users"></i>
-            <input type="text" class="flexbox-item-grow"
-                   autocomplete="off"
-                   (focus)="selectGuest.showing=true" (keyup)="onGuestInputKeyUp($event)"
-                   name="title" placeholder="جستجوی میهمانان" [(ngModel)]="guestHint">
-
-            <i class="mr-3 action-icon fa fa-user-plus" (click)="addGuests($event)"></i>
-            <i class=" action-icon fa fa-address-book" (click)="onImportClick($event)"></i>
-          </div>
-        </suggesting-item-input>
-
-        <div class="row">
-
-          <div *ngFor="let contact of event.attendees; let i=index;" class="col-md-4 contact ">
-            <div class="contact-border mb-1">
-                <div class="text-right flexbox-parent-row">
-                  <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-
-                  <div class="font-noraml flexbox-item-grow mr-2" >{{contact.name}}</div>
-                  <i class="mr-3 action-icon fa fa-remove" (click)="removeContact($event, i)"></i>
-                </div>
-            </div>
-
-          </div>
-        </div>
-
-
+        <app-guests #guests></app-guests>
     </div>
-
-    <add-attendee (onAttendeeAdded)="onGuestAdded($event);" #addAttendee></add-attendee>
-    <contacts-modal (onSelected)="onGuestsSelected($event)" #contactsModal ></contacts-modal>
-
 
     <!-- welcome msg-->
     <div class="box" [class.editing]="step===5 || editingStep === 5">

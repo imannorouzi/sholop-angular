@@ -47,7 +47,7 @@ export class DateService {
 
   greToPersian(date, long: boolean = false): string{
     if(!date){
-      return '';
+      return 'f';
     }
 
     if(typeof (date) === "string"){

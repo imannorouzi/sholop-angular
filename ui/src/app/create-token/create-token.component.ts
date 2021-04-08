@@ -82,51 +82,5 @@ export class CreateTokenComponent implements OnInit {
     }
   }
 
-  onImportClick(event) {
-    this.contactsModal.show();
-    // this.contactsModal.setSelected(this.event.attendees);
-    event.preventDefault();
-  }
-  addContact(event) {
-    this.addAttendee.reset();
-    this.addAttendee.show();
-    event.preventDefault();
-  }
-  removeContact($event, index) {
-    this.event.attendees.splice(index, 1);
-    event.preventDefault();
-  }
 
-  onContactsSelected(contacts) {
-
-    contacts.forEach( contact => {
-      for(let i=0; i<this.event.attendees.length; i++){
-        if(this.event.attendees[i].id === contact.id){
-          this.event.attendees.splice(i, 1);
-          break;
-        }
-      }
-      this.event.attendees.push(contact);
-    })
-  }
-
-  onVenueImportClick(event) {
-    this.venuesModal.show();
-    event.preventDefault();
-
-  }
-
-  onVenueSelected(venue: any) {
-    this.event.venue = venue;
-  }
-
-  onAttendeeAdded(contact: any) {
-    this.event.attendees.push(contact);
-  }
-
-
-  chairSelected(contact: any) {
-    this.event.userId = contact.id;
-    this.event.chair = contact;
-  }
 }

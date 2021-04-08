@@ -1,0 +1,18 @@
+<div [class.toggled]="toggled" class="wrapper floating-button-container" click-zone (clickOutside)="clickOutside($event)">
+  <ul class="action-list">
+    <li class="action-item" (click)="route('/create-meeting')">
+      <i class="fa fa-handshake-o ml-3"></i>
+      <span class="action-name">ایجاد ملاقات</span>
+    </li>
+    <li class="action-item" (click)="route('/create-token')">
+      <i class="fa fa-handshake-o ml-3"></i>
+      <span class="action-name">ایجاد مجوز ورود</span>
+    </li>
+  </ul>
+
+
+  <button class="floating-button" (click)="toggled=!toggled">
+    <i class="fa fa-plus"></i>
+  </button>
+
+</div>

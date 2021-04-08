@@ -88,6 +88,9 @@ import {ModalModule} from "ngx-bootstrap/modal";
 import { MeetingDetailsComponent } from './meeting-details/meeting-details.component';
 import { ContactEventMeetingComponent } from './contact-event-meeting/contact-event-meeting.component';
 import { ProfileNavbarComponent } from './profile-navbar/profile-navbar.component';
+import { FloatingButtonComponent } from './floating-button/floating-button.component';
+import { MapComponent } from './map/map.component';
+import { GuestsComponent } from './guests/guests.component';
 
 @NgModule({
   declarations: [
@@ -154,7 +157,10 @@ import { ProfileNavbarComponent } from './profile-navbar/profile-navbar.componen
     ContentModalComponent,
     MeetingDetailsComponent,
     ContactEventMeetingComponent,
-    ProfileNavbarComponent
+    ProfileNavbarComponent,
+    FloatingButtonComponent,
+    MapComponent,
+    GuestsComponent
   ],
   imports: [
     BrowserModule,
