@@ -49,6 +49,11 @@ export class CalendarComponent implements OnInit {
     this.month.monthOffset = monthOffset%12;
 
     let date = new Date();
+
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
     this.today = this.dateService.getSholopDate(date);
 
     let counter = 0;
@@ -69,7 +74,7 @@ export class CalendarComponent implements OnInit {
     this.today = this.dateService.getSholopDate(date);
     // date.setMonth(date.getMonth()+monthOffset)
 
-    this.selectedDate = this.today.gDate;
+    this.selectedDate = this.today;
 
     this.month.currentMonth = parseInt(this.today.jDate.month);
     this.month.currentYear = this.today.jDate.year;
@@ -82,7 +87,8 @@ export class CalendarComponent implements OnInit {
     let firstDayInCalendar = this.dateService.getSholopDate(
       new Date(this.today.gDate.getFullYear(),
         this.today.gDate.getMonth(),
-        this.today.gDate.getDate() - this.today.jDate.date
+        this.today.gDate.getDate() - this.today.jDate.date,
+        0, 0, 0, 0
       )
     );
 
@@ -100,7 +106,8 @@ export class CalendarComponent implements OnInit {
         this.dateService.getSholopDate(
           new Date(this.today.gDate.getFullYear(),
             this.today.gDate.getMonth(),
-            this.today.gDate.getDate() - this.today.jDate.date + d
+            this.today.gDate.getDate() - this.today.jDate.date + d,
+            0, 0, 0, 0
           )
         )
       );

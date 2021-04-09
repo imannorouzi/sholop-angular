@@ -4,31 +4,24 @@
 
     <!-- dates -->
     <div class="frame">
+      <i class=" ml-1 icon fa fa-clock-o"></i>
       <label class="font-weight-bold">اعتبار اجازه ورود</label>
-      <div class="frame flexbox-parent-row">
-        <i class=" ml-3 icon fa fa-clock-o"></i>
-        <select class="flexbox-item-grow">
-          <option value="0">انتخاب کنید</option>
-          <option value="1">تا آخر امروز</option>
-          <option value="2">دو روز</option>
-          <option value="3">سه روز</option>
-          <option value="7">یک هفته</option>
-          <option value="30">یک ماه</option>
-          <option value="-1">همیشه</option>
-        </select>
+
+      <div class="flexbox-parent-row">
+        <div class="ml-2 flexbox-item-grow-2" >
+          <date [inputClasses]="'form-control'"></date>
+        </div>
+        <div class="flexbox-item-grow-1">
+          <app-time [inputClasses]="''" [date]="date" ></app-time>
+        </div>
       </div>
+
     </div>
 
-    <div class="box">
-      <div class="custom-control custom-checkbox p-2">
-        <input type="checkbox" class="custom-control-input" [(ngModel)]="event.oneTime" id="oneTime">
-        <label class="custom-control-label" for="oneTime">مجوز یک بار مصرف است</label>
-      </div>
-    </div>
-
-    <div class="box">
+    <div class="mt-4">
 
       <div class="">
+        <i class="ml-1 icon fa fa-coffee"></i>
         <label class="font-weight-bold">محل ملاقات</label>
         <app-map #map></app-map>
       </div>
@@ -36,13 +29,21 @@
     </div>
 
     <!-- guests -->
-    <div class="box">
+    <div class="mt-4">
+      <i class="ml-1 icon fa fa-users"></i>
       <label class="font-weight-bold">میهمانان</label>
       <app-guests></app-guests>
     </div>
 
+    <div class="mt-4">
+      <div class="custom-control custom-checkbox ">
+        <input type="checkbox" class="custom-control-input" [(ngModel)]="event.oneTime" id="oneTime">
+        <label class="custom-control-label" for="oneTime">مجوز یک بار مصرف است.</label>
+      </div>
+    </div>
+
     <!-- buttons -->
-    <div class="text-right">
+    <div class="text-right mt-4">
       <button type="button" [disabled]="submitting" class="primary " (click)="onSubmit()">صدور اجازه ورود<i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
     </div>
   </div>

@@ -113,7 +113,7 @@ td{
 
 .inline:hover .calendar-container{
   display: block;
-  animation: fade-in .2s ease both;
+  /*animation: fade-in .2s ease both;*/
 }
 
 

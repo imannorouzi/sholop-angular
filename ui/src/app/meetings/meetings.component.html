@@ -1,5 +1,5 @@
 <meeting-item-modal #meetingModal  [event]="selectedMeeting"></meeting-item-modal>
-<div class=" h-100 p-3 meeting-container ">
+<div class=" h-100  meeting-container ">
   <div class="p-3 h-100 ">
 
     <div class="text-center owl-container" *ngIf="!loading && (commonService.isEmpty(meetings))">
@@ -11,7 +11,7 @@
 
 
     <div *ngIf="!noMoreBackward; else noMoreB" class="btn-container">
-      <a class="btn load-more-btn" (click)="loadMoreBackward()"><i class="fa fa-angle-up"></i> ملاقات‌های قبلی </a>
+      <a class="btn load-more-btn" (click)="loadMoreBackward()"><i class="fa fa-angle-double-up"></i> ملاقات‌های قبلی </a>
     </div>
     <ng-template #noMoreB>
       <span>قبل از این تاریخ ملاقاتی ثبت نشده است.</span>
@@ -40,7 +40,7 @@
     </div>
 
     <div *ngIf="!noMoreForward; else noMoreF" class="btn-container">
-      <a class="btn load-more-btn" (click)="loadMoreForward()"> ملاقات‌های بعدی <i class="fa fa-angle-down"></i></a>
+      <a class="btn load-more-btn" (click)="loadMoreForward()"> ملاقات‌های بعدی <i class="fa fa-angle-double-down"></i></a>
     </div>
     <ng-template #noMoreF>
       <span>بعد از این تاریخ ملاقاتی ثبت نشده است.</span>

@@ -64,12 +64,7 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
     let params = {};
     switch (method) {
       case readMethod.INITIAL:
-        this.meetings = {};
-        this.meetings[this.meetingService.getDate().toISOString()] = [];
-        this.earliestDate = new Date(this.meetingService.getDate());
-        this.latestDate = new Date(this.meetingService.getDate());
-        this.noMoreForward = false;
-        this.noMoreBackward = false;
+        this.loading = true;
         params = {date: this.meetingService.getDate().toISOString(), period: this.meetingService.period.toString()};
         break;
       case readMethod.MORE_BACKWARD:
@@ -86,6 +81,15 @@ export class MeetingsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataService.getMeetings(params).subscribe(
       data => {
         if (data.msg === 'OK') {
+
+          if( method === readMethod.INITIAL) {
+            this.meetings = {};
+            this.meetings[this.meetingService.getDate().toISOString()] = [];
+            this.earliestDate = new Date(this.meetingService.getDate());
+            this.latestDate = new Date(this.meetingService.getDate());
+            this.noMoreForward = false;
+            this.noMoreBackward = false;
+          }
 
           if (data.object) {
             data.object.forEach(ev => {

@@ -5,6 +5,7 @@ import {SpinnerComponent} from '../spinner/spinner.component';
 import {AlertService} from '../alert.service';
 import {AuthService} from '../utils/auth.service';
 import {ImageCroppedEvent, ImageCropperComponent} from 'ngx-image-cropper';
+import {CommonService} from "../utils/common.service";
 
 @Component({
   selector: 'add-contact',
@@ -29,7 +30,7 @@ export class AddContactComponent implements OnInit {
     email: '',
     phone: '',
     imageUrl: '',
-    image: File,
+    image: '',
     id: -1,
     fileName: '',
   };
@@ -41,7 +42,8 @@ export class AddContactComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private alertService: AlertService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private commonService: CommonService) {
   }
 
   ngOnInit() {
@@ -109,6 +111,9 @@ export class AddContactComponent implements OnInit {
       this.dataService.updateContact(this.contact).subscribe(
         (value: any) => {
           if (value.msg === 'OK') {
+            if(value.object.imageUrl && this.commonService.getBase()){
+              value.object.imageUrl = this.commonService.getBase() + value.object.imageUrl;
+            }
             this.onContactAdded.emit(value.object);
           } else if (value.msg === 'CONTACT_EXISTS') {
             this.alertService.warn('مخاطبی با این ایمیل قبلا ثبت شده است.');
@@ -129,6 +134,7 @@ export class AddContactComponent implements OnInit {
   }
 
   imageCropped(event: ImageCroppedEvent) {
+    this.contact.image = event.base64;
     this.contact.imageUrl = event.base64;
   }
   loadImageFailed() {

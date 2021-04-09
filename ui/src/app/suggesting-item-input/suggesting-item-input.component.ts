@@ -11,15 +11,16 @@ export class SuggestingItemInputComponent implements OnInit {
   @ViewChild("spinner", {static: true}) spinner: SpinnerComponent;
 
   @Input() type: string = 'users';
+  @Input() guestsHint: string = '';
   @Input() items: any[] = [];
-  showing: boolean = true;
+  showing: boolean = false;
   loading: boolean = false;
 
   selectedIndex = 0;
 
   @Output() itemSelected: EventEmitter<any> = new EventEmitter();
 
-  constructor(private dataService: DataService) { }
+  constructor() { }
 
   ngOnInit() {
   }

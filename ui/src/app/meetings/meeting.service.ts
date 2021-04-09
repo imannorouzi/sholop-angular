@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {NavigationService} from '../utils/navigation.service';
 import {Subject} from 'rxjs';
+import {CommonService} from "../utils/common.service";
 
 export enum readMethod {INITIAL, MORE_FORWARD, MORE_BACKWARD}
 
@@ -13,7 +14,8 @@ export class MeetingService {
   period = 5; // days with or without meetings
   limit = 1; // days with meetings
 
-  constructor(private navigationService: NavigationService) { }
+  constructor(private navigationService: NavigationService,
+              private commonService: CommonService) { }
 
   loadMeetings(date: Date | undefined) {
     this.date = date;
@@ -54,6 +56,13 @@ export class MeetingService {
       ev.pointedDate.startTime = new Date(ev.pointedDate.startTime + ' UTC');
       ev.pointedDate.endTime = new Date(ev.pointedDate.endTime + ' UTC');
     }
+
+    let base = this.commonService.getBase();
+    ev.attendees.forEach( at => {
+          if(at.imageUrl && base) {
+            at.imageUrl = base + at.imageUrl;
+          }
+    });
 
     return ev;
   }

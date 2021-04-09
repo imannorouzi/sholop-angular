@@ -5,19 +5,21 @@
 
       <div class="row ">
 
-        <div class="col-sm-2 meeting-time text-right" >
+        <div class="col-sm-6 flexbox-parent-row" >
 
-          <div *ngIf="event.pointedDate">
+          <div class=" meeting-time text-right" *ngIf="event.pointedDate">
             <span *ngIf="event.pointedDate.startTime" class="meeting-time">
               <i class="fa fa-clock-o ml-2"></i>
               <span>{{dateService.getTimeFromDateString(event.pointedDate.startTime)}}</span>
             </span>
           </div>
+
+          <div class=" text-right meeting-title-wrapper">
+            <span [class]="'meeting-title mr-2 ' + (event.title ? 'font-weight-bold' : 'text-muted')">{{event.title ? event.title : 'بدون عنوان'}}</span>
+          </div>
         </div>
 
-        <div class="col-sm-4 text-right meeting-title-wrapper">
-          <span [class]="'meeting-title mr-2 ' + (event.title ? 'font-weight-bold' : 'text-muted')">{{event.title ? event.title : 'بدون عنوان'}}</span>
-        </div>
+
 
         <div class="col-sm-6 text-left" >
           <div class="panel text-right flexbox-parent-row" >

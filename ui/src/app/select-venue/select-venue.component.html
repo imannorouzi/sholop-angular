@@ -1,0 +1,29 @@
+<div class="">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+      <li class="nav-item" (click)="tab=2"  >
+        <a class="nav-link" id="in-person-tab"
+           [class.active]="tab===2" data-toggle="tab"
+           href="#in-person" role="tab" aria-controls="in-person"
+           aria-selected="false">حضوری</a>
+      </li>
+      <li class="nav-item" (click)="tab=1">
+        <a [class]="'nav-link ' " [class.active]="tab===1" id="virtual-tab" data-toggle="tab"
+           href="#virtual" role="tab"
+           aria-controls="virtual" aria-selected="true">غیر حضوری</a>
+      </li>
+    </ul>
+    <div class="tab-content " id="myTabContent">
+
+      <div [class]="'tab-pane h-100 '+ (tab===2 ? 'show fade active': '')" id="in-person" [class.active]="tab===2"  role="tabpanel" aria-labelledby="in-person-tab">
+        <div class="mt-4">
+          <app-map #map></app-map>
+        </div>
+      </div>
+      <div [class]="'tab-pane h-100 ' + (tab===1 ? 'show fade active': '')" id="virtual" role="tabpanel" aria-labelledby="virtual-tab">
+        <div class="mt-4">
+          <app-virtual-venue #virtualVenue></app-virtual-venue>
+        </div>
+      </div>
+    </div>
+  </div>

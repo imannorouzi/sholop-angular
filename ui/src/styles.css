@@ -116,7 +116,7 @@ html{
   flex: 1; /* same as flex: 1 1 auto; */
 }
 .flexbox-item-grow-2{
-  flex: 1; /* same as flex: 1 1 auto; */
+  flex: 2; /* same as flex: 1 1 auto; */
 }
 
 

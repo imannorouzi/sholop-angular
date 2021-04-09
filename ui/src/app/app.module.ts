@@ -91,6 +91,8 @@ import { ProfileNavbarComponent } from './profile-navbar/profile-navbar.componen
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { MapComponent } from './map/map.component';
 import { GuestsComponent } from './guests/guests.component';
+import { SelectVenueComponent } from './select-venue/select-venue.component';
+import { VirtualVenueComponent } from './virtual-venue/virtual-venue.component';
 
 @NgModule({
   declarations: [
@@ -160,7 +162,9 @@ import { GuestsComponent } from './guests/guests.component';
     ProfileNavbarComponent,
     FloatingButtonComponent,
     MapComponent,
-    GuestsComponent
+    GuestsComponent,
+    SelectVenueComponent,
+    VirtualVenueComponent
   ],
   imports: [
     BrowserModule,

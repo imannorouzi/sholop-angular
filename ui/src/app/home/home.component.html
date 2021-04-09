@@ -4,7 +4,7 @@
 <overlay-spinner [text]="'در حال دریافت اطلاعات...'" *ngIf="loadingReception"></overlay-spinner>
 <confirm #prompt [type]="'PROMPT'" [title]="''">{{promptText}}</confirm>
 
-<app-floating-button></app-floating-button>
+<!--<app-floating-button></app-floating-button>-->
 <div [class]="(authService.isLoggedIn() ? 'container' : '' ) + ' home h-100 '" id="home">
 
   <div [class]="' page-wrapper flexbox-parent chiller-theme ' + (authService.isLoggedIn() ? 'has-sidebar toggled ' : ' no-sidebar ')
@@ -43,7 +43,7 @@
           <button class="form-control mt-3 secondary" routerLink="/create-token" >صدور اجازه ورود</button>
         </div>-->
 
-        <div class="sidebar-menu rtl mt-4">
+        <div class="sidebar-menu rtl ">
           <ul>
             <li class="sidebar-item " [class]="(navigationService.currentLocation.startsWith('/meetings') ? 'selected' : '')" [routerLink]="'/meetings'">
               <a [routerLink]="">
@@ -134,9 +134,9 @@
 
         <div class="calendar-wrapper rtl">
           <!--          <app-switch-button #switch [leftText]="'نمایش همه'" [rightText]="'بر اساس روز'" (switchChanged)="switchChanged($event)"></app-switch-button>-->
-          <calendar class="calendar" #calendar (onDateSelected)="onDateSelected($event)"></calendar>
+          <calendar class="calendar" #calendar (onDateSelected)="onDateSelected($event.gDate)"></calendar>
 
-          <span class="calendar-banner" (click)="toggleSidebar()">{{calendar.selectedDate ? dateService.greToPersian(calendar.selectedDate , true) : 's'}}</span>
+          <span class="calendar-banner" (click)="toggleSidebar()">{{calendar.selectedDate ? calendar.selectedDate.dateString : ''}}</span>
         </div>
         <!-- sidebar-menu  -->
       </div>

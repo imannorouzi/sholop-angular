@@ -28,7 +28,8 @@ export class CreateTokenComponent implements OnInit {
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
 
-  name:string;
+  name: string;
+  date: Date;
 
   constructor(private dataService : DataService,
               private navigationService: NavigationService,
@@ -58,6 +59,11 @@ export class CreateTokenComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.getCurrentUser();
+
+    this.date = new Date();
+    this.date.setHours(23);
+    this.date.setMinutes(59);
+    this.date.setSeconds(59);
   }
 
   private validateForm() {

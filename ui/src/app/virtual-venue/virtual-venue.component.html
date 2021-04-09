@@ -1,0 +1,23 @@
+<suggesting-item-input #selectVenue click-zone (clickOutside)="selectVenue.outsideClicked($event)"
+                       (itemSelected)="venueSelected($event)" [items]="virtualVenues" [type]="'virtual-venues'">
+  <div class="frame flexbox-parent-row">
+    <img class="rounded-circle contact-image ml-2"
+         [src]="venue && venue.mapUrl ? venue.mapUrl : 'assets/images/virtual-meeting.png'">
+    <input type="text" class="flexbox-item-grow"
+           autocomplete="off"
+           readonly
+           [value]="venue ? venue.farsiAddress1 : ''"
+           (focus)="selectVenue.showing=true" (keyup)="selectVenue.onKeyUp($event)"
+           name="title" placeholder="انتخاب کنید">
+  </div>
+</suggesting-item-input>
+
+<div class="mt-4" >
+  <div class="frame">
+    <i class="ml-1 icon fa fa-link"></i>
+    <label class="font-weight-bold">لینک ملاقات</label>
+    <div class="frame ">
+      <input type="text" name="input" class="text-left" placeholder="لینک جلسه" [(ngModel)]="link">
+    </div>
+  </div>
+</div>

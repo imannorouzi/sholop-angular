@@ -1,37 +1,27 @@
-
-
 <!-- guests -->
 <div class="box">
 
   <suggesting-item-input #selectGuest  click-zone (clickOutside)="selectGuest.outsideClicked($event)"
-                         (itemSelected)="onGuestAdded($event)" [items]="guests|generalFilter:guestHint">
+                         (itemSelected)="onGuestAdded($event)" [guestsHint]="guestHint"  [items]="guests|generalFilter:guestHint">
     <div class="frame flexbox-parent-row">
-      <i class="ml-3 icon fa fa-users"></i>
       <input type="text" class="flexbox-item-grow"
              autocomplete="off"
              (focus)="selectGuest.showing=true" (keyup)="onGuestInputKeyUp($event)"
              name="title" placeholder="جستجوی میهمانان" [(ngModel)]="guestHint">
 
-      <i class="mr-3 action-icon fa fa-user-plus" (click)="addGuests($event)"></i>
+      <i class="mr-2 action-icon fa fa-user-plus" (click)="addGuests($event)"></i>
       <i class=" action-icon fa fa-address-book" (click)="onImportClick($event)"></i>
     </div>
   </suggesting-item-input>
 
-  <div class="row">
 
-    <div *ngFor="let contact of attendees; let i=index;" class="col-md-4 contact ">
-      <div class="contact-border mb-1">
-        <div class="text-right flexbox-parent-row">
-          <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
-
-          <div class="font-noraml flexbox-item-grow mr-2" >{{contact.name}}</div>
-          <i class="mr-3 action-icon fa fa-remove" (click)="removeContact($event, i)"></i>
-        </div>
-      </div>
-
+  <div class="selected-contacts">
+    <div *ngFor="let contact of attendees; let i=index;" class="flexbox-parent-row contact ">
+      <img class="rounded-circle contact-image" [src]="contact.imageUrl ? contact.imageUrl : '../assets/images/user-placeholder.png'">
+      <div class="contact-name flexbox-item-grow mr-2" >{{contact.name}}</div>
+      <i class=" contact-remove fa fa-remove" (click)="removeContact($event, i)"></i>
     </div>
   </div>
-
 
 </div>
 

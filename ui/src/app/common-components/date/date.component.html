@@ -1,11 +1,15 @@
 <div class="iconed-input" click-zone (clickOutside)="clickOutside($event)">
 
   <div class="frame flexbox-parent-row">
-    <i class=" ml-3 icon fa fa-calendar"></i>
-    <input class="flexbox-item-grow" type="text" [value]="dateService.greToPersian(selectedDate)" (focus)="onFocus()" name="date" [placeholder]="dateService.greToPersian(selectedDate)" >
+    <input class="flexbox-item-grow"
+           type="text"
+           autocomplete="off"
+           [value]="calendar.selectedDate ? dateService.greToPersian(calendar.selectedDate.gDate) : ''"
+           (focus)="onFocus()"
+           name="date">
   </div>
 
-  <div id="calendar-container" class="form-group" *ngIf="isShowing"  >
-    <calendar [mode]="'inline'" id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
+  <div id="calendar-container" class="form-group" [hidden]="!isShowing"  >
+    <calendar #calendar [mode]="'inline'" id="calendar" (onDateSelected)="onDaySelected($event)"></calendar>
   </div>
 </div>

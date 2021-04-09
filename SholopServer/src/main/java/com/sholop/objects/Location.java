@@ -39,6 +39,8 @@ public class Location {
     @Column(name = "description") String description;
     @Column(name = "map_url") String mapUrl;
     @Column(name = "is_active") Boolean isActive;
+    @Column(name = "is_Virtual") Boolean isVirtual;
+    @Column(name = "link") String link;
 
     @Column(name = "latitude") double latitude;
     @Column(name = "longitude") double longitude;
@@ -63,6 +65,9 @@ public class Location {
         this.setTitle(jo.has("title") ? jo.getString("title") : jo.getString("farsiAddress1"));
         this.setDescription(jo.has("welcomeMessage") ? jo.getString("welcomeMessage") : "");
         this.setUserId(jo.has("chairId") ? jo.getInt("chairId") : -1);
+        this.setId(jo.has("id") ? jo.getInt("id") : -1);
+        this.setVirtual(jo.has("virtual") && jo.getBoolean("virtual"));
+        this.setLink(jo.has("link") ? jo.getString("link") : "");
         this.setId(jo.has("id") ? jo.getInt("id") : -1);
     }
 
@@ -152,5 +157,21 @@ public class Location {
 
     public void setActive(Boolean active) {
         isActive = active;
+    }
+
+    public Boolean getVirtual() {
+        return isVirtual;
+    }
+
+    public void setVirtual(Boolean virtual) {
+        isVirtual = virtual;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

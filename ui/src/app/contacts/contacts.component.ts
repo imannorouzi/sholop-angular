@@ -49,6 +49,10 @@ export class ContactsComponent implements OnInit {
           this.contacts = [];
 
           data.object.forEach(contact => {
+
+            if(contact.imageUrl && this.commonService.getBase()){
+              contact.imageUrl = this.commonService.getBase() + contact.imageUrl;
+            }
             this.contacts.push(contact);
           });
         }

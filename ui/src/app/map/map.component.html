@@ -1,17 +1,15 @@
 
   <div class="">
     <div class="frame flexbox-parent-row">
-      <i class=" ml-3 icon fa fa-map-marker"></i>
       <input type="text" class="flexbox-item-grow" size=80
              [(ngModel)]="venue.farsiAddress1"
              autocomplete="off"
              #searchBox name="address_1" placeholder="شهر،‌ خیابان">
-      <div class="text-left"><i class="mr-3 action-icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i></div>
+      <div class="text-left"><i class="mr-2 action-icon input-button fa fa-search" (click)="onVenueImportClick($event)"></i></div>
 
     </div>
 
     <div class="frame flexbox-parent-row">
-      <i class=" ml-3 icon fa fa-map-marker"></i>
       <input type="text" class="flexbox-item-grow" :size=80
              [(ngModel)]="venue.farsiAddress2"
              #address2  name="address_2" placeholder="کوچه،‌ پلاک، واحد">

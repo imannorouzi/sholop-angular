@@ -1,7 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
-  selector: 'time',
+  selector: 'app-time',
   templateUrl: './time.component.html',
   styleUrls: ['./time.component.css']
 })

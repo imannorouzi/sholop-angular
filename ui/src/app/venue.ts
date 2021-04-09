@@ -8,6 +8,9 @@ export class Venue {
   farsiAddress1: string = '';
   farsiAddress2: string = '';
   mapUrl: string = '';
+  description: string = '';
+  link: string = '';
+  virtual: boolean = false;
 
 
   constructor(

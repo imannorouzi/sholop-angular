@@ -47,7 +47,7 @@ export class DateService {
 
   greToPersian(date, long: boolean = false): string{
     if(!date){
-      return 'f';
+      return '';
     }
 
     if(typeof (date) === "string"){
@@ -82,6 +82,7 @@ export class DateService {
   }
 
   getSholopDate(gregorianDate = new Date()): any{
+
     let perDate = this.toPersian(gregorianDate);
 
     let retVal = {

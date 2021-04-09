@@ -29,9 +29,8 @@
     </div>
   </div>
 </div>
-<div class="text-center owl-container" *ngIf="items.length === 0">
-  <object class="w-75" type="image/svg+xml" data="../../assets/images/home/owl.svg">
-    <param name="class" value="look-around" />
-  </object>
-  <div class="text-muted">هیچی پیدا نکردم</div>
+
+<div class="text-right " *ngIf="items.length === 0">
+  <img class="small-owl"  src="../../assets/images/home/owl.svg">
+  <div class="d-inline-block">کسی ثبت نشده.</div>
 </div>

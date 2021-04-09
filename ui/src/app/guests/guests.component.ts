@@ -5,7 +5,6 @@ import {ContactsModalComponent} from "../contacts-modal/contacts-modal.component
 import {AddAttendeeComponent} from "../add-attendee/add-attendee.component";
 import {AlertService} from "../alert.service";
 import {CommonService} from "../utils/common.service";
-import {DateService} from "../utils/date.service";
 import {DataService} from "../utils/data.service";
 
 @Component({
@@ -19,7 +18,8 @@ export class GuestsComponent implements OnInit {
   @ViewChild('addAttendee') addAttendee: AddAttendeeComponent;
 
   constructor(private alertService: AlertService,
-              private dataService: DataService,) { }
+              private dataService: DataService,
+              private commonService: CommonService,) { }
 
   guests: any[] = [];
   guestHint = '';
@@ -96,8 +96,13 @@ export class GuestsComponent implements OnInit {
           .subscribe(
             data => {
               if (data.msg === 'OK') {
+                let base = this.commonService.getBase();
                 const contacts = data.object.map(
                   u => {
+
+                    if(u.imageUrl && base){
+                      u.imageUrl = base + u.imageUrl;
+                    }
                     return u;
                   }
                 );

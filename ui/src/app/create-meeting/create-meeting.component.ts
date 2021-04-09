@@ -8,8 +8,8 @@ import {AuthService} from '../utils/auth.service';
 import {SuggestingItemInputComponent} from '../suggesting-item-input/suggesting-item-input.component';
 import {ImageCropperComponent} from 'ngx-image-cropper';
 import {CommonService} from "../utils/common.service";
-import {MapComponent} from "../map/map.component";
 import {GuestsComponent} from "../guests/guests.component";
+import {SelectVenueComponent} from "../select-venue/select-venue.component";
 
 @Component({
   selector: 'create-meeting',
@@ -23,7 +23,7 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
   @ViewChild('cropper', {static: true}) cropper: ImageCropperComponent;
   @ViewChild('imageCropperModal', {static: true}) imageCropperModal: ModalComponent;
   @ViewChild('venuesModal') venuesModal: ModalComponent;
-  @ViewChild('map') mapComponent: MapComponent;
+  @ViewChild('selectVenueComponent') selectVenueComponent: SelectVenueComponent;
   @ViewChild('fileInput', {static: true}) fileInput: ElementRef;
   @ViewChild('selectChair') selectChair: SuggestingItemInputComponent;
   @ViewChild('guests') guests: GuestsComponent;
@@ -99,16 +99,16 @@ export class CreateMeetingComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     if (this.validateForm()) {
-      this.event.venue = this.mapComponent.getVenue();
+      this.event.venue = this.selectVenueComponent.getVenue();
       this.event.attendees = this.guests.getAttendees();
       // take times to utc format
       if (this.event.dates) {
         this.event.dateStrings = this.event.dates.map(d => {
           return {
-            date: d.date.toISOString(),
+            date: d.date.gDate.toISOString(),
             startTime: d.startTime.toISOString(),
             endTime: d.endTime.toISOString(),
-            dateString: this.dateService.getPersianDateString(d.date, d.startTime, d.endTime)
+            dateString: this.dateService.getPersianDateString(d.date.gDate, d.startTime, d.endTime)
           };
         });
       }

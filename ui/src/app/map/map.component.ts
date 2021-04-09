@@ -15,7 +15,7 @@ export class MapComponent implements OnInit {
 
   mapLat: number = TEHRAN.lat;
   mapLng: number = TEHRAN.lng;
-  public zoom: number;
+  public zoom: number = 12;
   map: any;
 
   venue = new Venue();
@@ -23,9 +23,7 @@ export class MapComponent implements OnInit {
               private mapsAPILoader: MapsAPILoader,) { }
 
   ngOnInit(): void {
-    if (!this.venue || this.venue.id <= 0) {
-      this.setCurrentPosition();
-    }
+
     // load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
       const autocomplete = new google.maps.places.Autocomplete(this.searchInput.nativeElement, {
@@ -55,16 +53,17 @@ export class MapComponent implements OnInit {
   }
 
   private setCurrentPosition() {
-    if ('geolocation' in navigator) {
+    if ( (!this.venue || this.venue.id <= 0) && false && 'geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.venue.latitude = position.coords.latitude;
         this.venue.longitude = position.coords.longitude;
-        this.zoom = 12;
-
         this.mapLat = position.coords.latitude;
         this.mapLng = position.coords.longitude;
 
       });
+    }else {
+      this.mapLat = this.venue.latitude;
+      this.mapLng = this.venue.longitude;
     }
   }
 
@@ -117,5 +116,8 @@ export class MapComponent implements OnInit {
         }
       });
     });
+
+
+      this.setCurrentPosition();
   }
 }

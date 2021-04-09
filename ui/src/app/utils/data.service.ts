@@ -213,6 +213,7 @@ export class DataService {
       formData.append('file', this.dataURItoBlob(contact.image), contact.fileName);
       formData.append('filename', contact.fileName);
       contact.image = null;
+      contact.imageUrl = null;
     } else {
       formData.append('file', null);
       formData.append('filename', '');

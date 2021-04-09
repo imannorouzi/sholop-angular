@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DataService} from '../../utils/data.service';
 import {ModalComponent} from '../../common-components/ng-modal/modal.component';
+import {CommonService} from "../../utils/common.service";
 
 @Component({
   selector: 'app-guest-list',
@@ -17,7 +18,8 @@ export class GuestListComponent implements OnInit {
   items: any[] = [];
   loading = false;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService,
+              public commonService: CommonService) { }
 
   ngOnInit() {
     this.readitems();
@@ -33,6 +35,9 @@ export class GuestListComponent implements OnInit {
       data => {
         if (data.object && data.object ) {
           data.object.forEach(contact => {
+            if(contact.imageUrl && this.commonService.getBase()){
+              contact.imageUrl = this.commonService.getBase() + contact.imageUrl;
+            }
             this.items.push(contact);
           });
         }

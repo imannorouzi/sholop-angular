@@ -1,7 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {DateService} from "../../utils/date.service";
 
-
 @Component({
   selector: 'date',
   templateUrl: './date.component.html',
@@ -9,8 +8,6 @@ import {DateService} from "../../utils/date.service";
 })
 export class DateComponent implements OnInit {
   @ViewChild('input', {static: true}) input: ElementRef;
-
-  @Input() selectedDate;
 
   @Input() inputClasses: string = '';
   @Output() onDateSelected: EventEmitter<any> = new EventEmitter();
@@ -23,10 +20,9 @@ export class DateComponent implements OnInit {
     // this.selectedDate = new Date();
   }
 
-  onDaySelected(day) {
+  onDaySelected(sholopDate) {
+    this.onDateSelected.emit(sholopDate);
     this.isShowing = false;
-    this.selectedDate = day;
-    this.onDateSelected.emit(day);
   }
 
   onFocus(){
@@ -37,11 +33,7 @@ export class DateComponent implements OnInit {
     this.isShowing = false;
   }
 
-  getValue(){
-    return this.input.nativeElement.value;
-  }
-
-  clickOutside(value: boolean = false) {
-    this.isShowing = value;
+  clickOutside(inside: boolean = false) {
+    if(!inside) this.isShowing = inside;
   }
 }

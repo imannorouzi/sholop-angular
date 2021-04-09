@@ -1,4 +1,4 @@
-.contacts{
+.items{
   top: 100%;
   right: 0;
   width: 100%;
@@ -16,20 +16,29 @@
   transition: opacity .3s linear;
 }
 
-.contact:last-child{
+.item:last-child{
   border-bottom: none;
 }
-.contact:hover{
+.item:hover{
   background: #E0E2E6;
 }
-.contact.selected{
-  background: #66afe9;
-  font-weight: bold;
+.item.selected{
+  background: #184e88;
+  /* font-weight: bold; */
+  color: white;
 }
-.contact{
+.item{
   border-bottom: 1px dotted #9da3a6;
   cursor: pointer;
-  line-height: 3;
+}
+
+.contact_name{
+  line-height: 2;
+}
+
+.contact-image{
+  width: 30px;
+  height: 30px;
 }
 
 .frame{

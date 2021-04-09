@@ -1,41 +1,41 @@
-<div class="h-100 overflow-auto " >
+<div class="h-100  " >
 
   <div class="text-right bg-white p-3">
 
     <!-- title -->
-    <div class="box" [class.editing]="(step===0 && editingStep === -1) || editingStep ===0">
+    <div class="mt-4" [class.editing]="(step===0 && editingStep === -1) || editingStep ===0">
 
       <div class="frame">
+        <i class=" ml-1 icon fa fa-tag"></i>
         <label class="font-weight-bold">عنوان ملاقات</label>
-        <div class="frame flexbox-parent-row">
-          <i class=" ml-3 icon fa fa-tag"></i>
-          <input class="flexbox-item-grow" type="text" name="input" placeholder="مصاحبه برای پست مهندس کامپیوتر" [(ngModel)]="event.title">
+        <div class="frame ">
+          <input class="" type="text" name="input" placeholder="مصاحبه برای پست مهندس کامپیوتر" [(ngModel)]="event.title">
         </div>
       </div>
     </div>
 
     <!-- dates -->
-    <div class="box" [class.editing]="(step===1 && editingStep === -1) || editingStep === 1">
+    <div class="mt-4" [class.editing]="(step===1 && editingStep === -1) || editingStep === 1">
 
+
+      <i class=" ml-1 icon fa fa-calendar"></i>
       <label class="font-weight-bold" >زمان ملاقات</label>
 
       <div class="row" *ngFor="let date of event.dates; let i = index" [attr.data-index]="i">
-        <div class="col-lg-5 mb-1">
+        <div class="col-lg-6 mb-1">
           <date (onDateSelected)="onDateSelected(i, $event)" [selectedDate]="date.date" [inputClasses]="'form-control'"></date>
         </div>
         <div class="col-lg-6 flexbox-parent-row line-height mb-1">
           <span class="ml-2">از</span>
           <div class="flexbox-item-grow-1">
-            <time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></time>
+            <app-time [inputClasses]="''" [date]="date.startTime" (onTimeSelected)="fromTimeChanged($event, i)"></app-time>
           </div>
           <span class="ml-2 mr-2">تا</span>
           <div class="flexbox-item-grow-1">
-            <time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></time>
+            <app-time [inputClasses]="''" [date]="date.endTime" (onTimeSelected)="toTimeChanged($event, i)"></app-time>
           </div>
 
-          <div class="text-left"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
-        </div>
-        <div class="col-lg-1 mb-1">
+          <div class="text-left mr-2"><i class="fa fa-remove action-icon" (click)="removeDateTime($event, i)"></i></div>
         </div>
       </div>
       <div class=" row ">
@@ -46,23 +46,20 @@
     </div>
 
     <!-- location -->
-    <div class="box" [class.editing]="step>=2">
-
-      <div class="" [class.editing]="(step===2 && editingStep === -1) || editingStep === 2">
-        <label class="font-weight-bold">محل ملاقات</label>
-        <app-map #map></app-map>
-      </div>
-      <p class="card-text" [class.editing]="step===2 || editingStep === 2"><small class="text-muted">با استفاده از نشانگر مکان دقیق جلسه را مشخص کنید.</small></p>
+    <div class="mt-4">
+      <i class=" ml-1 icon fa fa-map-marker"></i>
+      <label class="font-weight-bold">محل ملاقات</label>
+      <app-select-venue #selectVenueComponent></app-select-venue>
     </div>
 
     <!-- host-->
-    <div class="box" [class.editing]="(step===3 && editingStep === -1) || editingStep === 3">
+    <div class="mt-4" [class.editing]="(step===3 && editingStep === -1) || editingStep === 3">
+      <i class="ml-1 icon fa fa-coffee"></i>
       <label class="font-weight-bold">میزبان ملاقات</label>
 
       <suggesting-item-input #selectChair  click-zone (clickOutside)="selectChair.outsideClicked($event)"
                              (itemSelected)="chairSelected($event)" [items]="chairs|generalFilter:chairHint">
         <div class="frame flexbox-parent-row">
-          <i class="ml-3 icon fa fa-coffee"></i>
           <img class="rounded-circle contact-image ml-2" *ngIf="event.chair"
                [src]="event.chair.imageUrl ? (event.chair.imageUrl) : 'assets/images/user-placeholder.png'">
           <input type="text" class="flexbox-item-grow"
@@ -70,31 +67,32 @@
                  placeholder="نام همکار میزبان"
                  [(ngModel)]="chairHint" >
 
-          <i class="mr-3 action-icon fa fa-remove" (click)="clearChairInput()"></i>
+          <i class="mr-2 action-icon fa fa-remove" (click)="clearChairInput()"></i>
         </div>
       </suggesting-item-input>
       <p class="card-text"><small class="text-muted">میزبان ملاقات یا هماهنگ کننده</small></p>
     </div>
 
     <!-- guests -->
-    <div class="box">
+    <div class="mt-4">
+      <i class="ml-1 icon fa fa-users"></i>
         <label class="font-weight-bold">میهمانان</label>
         <app-guests #guests></app-guests>
     </div>
 
     <!-- welcome msg-->
-    <div class="box" [class.editing]="step===5 || editingStep === 5">
+    <div class="mt-4" [class.editing]="step===5 || editingStep === 5">
 
+      <i class="ml-1 icon fa fa-smile-o"></i>
       <label class="font-weight-bold">متن دعوت</label>
       <div class="frame flexbox-parent-row">
-        <i class="ml-3 icon fa fa-smile-o"></i>
         <textarea rows="4" type="text" name="welcome" [(ngModel)]="event.welcomeMessage" class="flexbox-item-grow" placeholder="پیام خوشامد گویی"></textarea>
       </div>
       <p class="card-text"><small class="text-muted">این متن به عنوان دعوت و خوشامدگویی برای میهمان ارسال می شود.</small></p>
     </div>
 
     <!-- buttons -->
-    <div class="text-right">
+    <div class="text-right mt-4">
       <button type="button" [disabled]="submitting" class="primary " (click)="onSubmit()" >ایجاد <i *ngIf="submitting" class="fa fa-refresh fa-spin"></i></button>
     </div>
   </div>

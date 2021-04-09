@@ -22,7 +22,7 @@
   background: #fff;
   border-bottom-color: rgb(157, 163, 166);
 
-  line-height: 3;
+  line-height: 2.5;
 }
 
 .meeting-tool:hover{
@@ -44,6 +44,9 @@
   cursor: pointer;
 }
 
+.meeting-time {
+  white-space: nowrap;
+}
 .meeting-time .fa{
   font-size: 20px;
   white-space: nowrap;

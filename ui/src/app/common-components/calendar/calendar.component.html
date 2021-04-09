@@ -3,8 +3,6 @@
   <div class="row">
     <div class="span12 w-100">
 
-
-
       <div class="calendar-container">
         <table class="calendar-table table-condensed w-100 text-center" >
           <thead >
@@ -39,9 +37,9 @@
           </thead>
           <tbody class="calendar-content">
           <tr *ngFor="let week of month.weeks; ">
-            <td (click)="onDaySelected(day.gDate)"
+            <td (click)="onDaySelected(day)"
                 [class.meeting-day]="day && meetingMap[day.gDate.getDate()]>0"
-                [class.selected]="day && selectedDate===day.gDate" class="calendar-day position-relative"
+                [class.selected]="day && selectedDate.gDate.toISOString()===day.gDate.toISOString()" class="calendar-day position-relative"
                 [class.today]="monthOffset === 0 && day && (today.gDate.getDate()===day.gDate.getDate())"
                 *ngFor="let day of week;  let i = index;">
               <div *ngIf="day" class="calendar-cell" >
