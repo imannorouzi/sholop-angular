@@ -39,7 +39,7 @@ public class Location {
     @Column(name = "description") String description;
     @Column(name = "map_url") String mapUrl;
     @Column(name = "is_active") Boolean isActive;
-    @Column(name = "is_Virtual") Boolean isVirtual;
+    @Column(name = "is_virtual") Boolean isVirtual;
     @Column(name = "link") String link;
 
     @Column(name = "latitude") double latitude;

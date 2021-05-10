@@ -10,7 +10,7 @@ import java.util.List;
 public interface LocationRepository extends JpaRepository<Location, Integer> {
 
     // custom query to search to blog post by title or content
-    List<Location> findAllByUserIdAndIsActive(Integer userId, boolean isActive);
+    List<Location> findAllByUserIdAndIsActiveAndIsVirtual(Integer userId, boolean isActive, boolean isVirtual);
 
 }
 

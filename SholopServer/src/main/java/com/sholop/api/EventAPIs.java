@@ -41,7 +41,7 @@ public class EventAPIs {
         User user = repositoryFactory.getUserRepository().findByUsername(u.getUsername());
         try {
 
-            List<Location> locations = repositoryFactory.getLocationRepository().findAllByUserIdAndIsActive(user.getId(), true);
+            List<Location> locations = repositoryFactory.getLocationRepository().findAllByUserIdAndIsActiveAndIsVirtual(user.getId(), true, false);
             return Response.ok(gson.toJson(new ResponseObject("OK", locations))).build();
 
         } catch (Exception e) {
