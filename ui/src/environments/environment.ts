@@ -15,7 +15,7 @@ export const environment = {
       messagingSenderId: '635253433511'
     },
   baseUrl: '',
-  serverUrl: '/sholop-api',
+  serverUrl: '/api',
 };
 
 /*
